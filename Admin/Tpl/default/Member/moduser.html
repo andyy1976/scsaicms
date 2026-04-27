@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>网站后台管理</title>
+<link href="__PUBLIC__/Admin/images/Admin_css.css" type=text/css rel=stylesheet>
+<link rel="shortcut icon" href="__PUBLIC__/Admin/images/myfav.ico" type="image/x-icon" />
+<link rel="stylesheet" href="__PUBLIC__/js/pikaday/css/pikaday.css" type="text/css" media="screen" />
+<script type="text/javascript" src="__PUBLIC__/js/pikaday/moment.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/pikaday/pikaday.js"></script>
+<import file= "Admin.setdate.WdatePicker,Admin.js.admin,Admin.js.Ajax,Admin.js.Jquery"/>
+	
+<script type="text/javascript" language="javascript" src="__PUBLIC__/js/jsAddress.js"></script>
+
+<script charset="gbk" src="__PUBLIC__/Editor/kindeditor-min.js"></script>
+<script charset="utf-8" src="__PUBLIC__/Editor/lang/zh_CN.js"></script>
+
+
+<script>
+
+var KE;
+KindEditor.options.filterMode = false;
+KindEditor.ready(function(K) {
+K.create('#descript',{ items : [
+						'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+						'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+						'insertunorderedlist', '|', 'emoticons', 'image', 'link'],afterBlur: function(){this.sync();}
+});
+});
+
+$(document).ready(function() 
+{
+	addressInit('province', 'city', 'area','{$info.province}','{$info.city}','{$info.area}');
+	 $("#starttime").change(function() 
+	    {
+	     $("#starttime").val($(this).val());
+	    });
+		 $("#endtime").change(function() 
+	    {
+	     $("#endtime").val($(this).val());
+	    });
+		var pks = ['starttime','endtime'];
+			for (var i in pks )
+			{
+				new Pikaday(
+				{
+	        field: document.getElementById(pks[i]),
+	        format: 'YYYY-MM-DD',
+	        firstDay: 1,
+	        minDate: new Date('<?php echo date('Y').'-'.date('m').'-'.date('d')-10;?>'),
+	        maxDate: new Date('2100-01-01'),
+	        yearRange: [<?php echo date('Y');?>,<?php echo date('Y')+10;?>],
+	        i18n:
+	        {
+	          previousMonth : '上个月',
+	          nextMonth     : '下个月',
+	          months        : ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
+	          weekdays      : ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
+	          weekdaysShort : ['日','一','二','三','四','五','六']
+					}
+				});
+			}
+});
+</script> 
+</head>
+<body>
+<div class="main_center" style="margin-top:10px;">
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">修改会员资料</h3>
+  </div>
+  <div class="panel-body">
+<form class="form-horizontal" role="form" method="post" action="">
+  <div class="form-group">
+    <label for="inputEmail3" class="col-sm-2 control-label">用户名</label>
+    <div class="col-sm-10">
+     {$info.username}<input name="id" type="hidden" value="{$info.id}">
+    </div>
+  </div>
+  
+     <div class="form-group">
+				    <label for="inputPassword3" class="col-sm-2 control-label">头像照片</label>
+				    <div class="col-sm-8">
+				      <script>KindEditor.ready(function(K){var editor = K.editor({allowFileManager : true});K("#insertfile_file_url").click(function() {editor.loadPlugin("insertfile", function() {editor.plugin.fileDialog({fileUrl : K("#file_url").val(),clickFn : function(url, title) {K("#file_url").val(url);editor.hideDialog();}});});});});</script><input type="text" id="file_url" name="icon" value="{$info.icon}" style='width:380px;'/> <input type="button" id="insertfile_file_url" value="选择文件" />
+				    <neq name="info.icon" value=""><br><br><img src="{$info.icon}" width="32" height="32" border="0"></neq>
+				    </div>
+		  </div>
+				  
+    <div class="form-group">
+    <label for="inputEmail3" class="col-sm-2 control-label">用户昵称</label>
+    <div class="col-sm-10">
+     <input type="text" class="form-control" id="screenName" name="screenName" value="{$info.screenName}" placeholder="用户昵称">
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">所在会员组</label>
+    <div class="col-sm-10">
+		<select class="form-control" name="group_id">
+		<option value="0">请选择</option>
+		<arclist model="member_group" id="vo">
+		<option value="{$vo.group_id}" <eq name="info.group_id" value="$vo[group_id]">selected="selected"</eq>>{$vo.group_name}</option>
+		</arclist>
+		</select>
+    </div>
+  </div>
+    
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">会员开始日期</label>
+    <div class="col-sm-10">
+											
+      <input type="text" class="form-control" id="starttime" name="starttime" value="{$info.starttime}">
+    </div>
+  </div>
+  
+    <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">会员结束日期</label>
+    <div class="col-sm-10">
+											
+      <input type="text" class="form-control" id="endtime" name="endtime" value="{$info.endtime}">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">所在博客组</label>
+    <div class="col-sm-10">
+			<select class="form-control" name="group">
+				<option value="subscriber" <eq name="info.group" value="subscriber">selected="selected"</eq>>订阅者</option>
+				<option value="contributor" <eq name="info.group" value="contributor">selected="selected"</eq>>贡献者</option>
+				<option value="editor" <eq name="info.group" value="editor">selected="selected"</eq>>编辑</option>
+				<option value="visitor" <eq name="info.group" value="visitor">selected="selected"</eq>>访客</option>
+				<option value="administrator" <eq name="info.group" value="administrator">selected="selected"</eq>>管理员</option>
+			</select>
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">密码</label>
+    <div class="col-sm-10">
+      <input type="password" class="form-control" id="userpwd1" name="userpwd1" value="" placeholder="如需修改密码请输入，不修改不输入">
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">确认密码</label>
+    <div class="col-sm-10">
+      <input type="password" class="form-control" id="userpwd2" name="userpwd2" value="" placeholder="如需修改密码请再次输入，不修改不输入">
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">真实姓名</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="realname" name="realname" value="{$info.realname}" placeholder="您的真实姓名用于收货确认等">
+    </div>
+  </div>
+   <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">本站资金(元)</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="money" name="money" value="{$info.money}" placeholder="在本站拥有的资金">
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">联系电话</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="tel" name="tel" value="{$info.tel}" placeholder="您的收货联系电话">
+    </div>
+  </div>
+  
+   <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">电子邮件</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="email" name="email" value="{$info.email}" placeholder="电子邮件">
+    </div>
+  </div>
+  
+   <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">个人主页</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="url" name="url" value="{$info.url}" placeholder="个人主页">
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">居住地区</label>
+  
+    <div class="col-sm-10">
+    
+    <div class="col-sm-4" style="padding-left:0px;">
+    	<select  name="province" id="province"  class="form-control"></select>
+    </div>
+    <div class="col-sm-4" >
+    	<select  name="city" id="city"  class="form-control"></select>
+    </div>
+    <div class="col-sm-4">
+    	<select  name="area" id="area"  class="form-control"></select>
+    </div>
+     
+    </div>
+  </div>
+  
+    <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">居住地</label>
+    
+    <div class="col-sm-10">
+      <input type="text" class="form-control" name="address" id="address" placeholder="您的居住地用于收货" value="{$info.address}">
+    </div>
+  </div>
+    <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">性别</label>
+    <div class="col-sm-10">
+    <select  name="sex" id="sex"  class="form-control">
+    <neq name="info.sex" value=""><option value="{$info.sex}">{$info.sex}</option></neq>
+    <option value="男">男</option>
+    <option value="女">女</option>
+    </select>
+    </div>
+  </div>
+    
+    <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">出生日期</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="birthday" name="birthday" value="{$info.birthday}" placeholder="您的出生年月 格式: 1986-07-22">
+    </div>
+  </div>
+    <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">职务</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="zhiwu" value="{$info.zhiwu}" name="zhiwu" placeholder="">
+    </div>
+  </div>
+    <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">血型</label>
+    <div class="col-sm-10">
+    <select  name="xuexing" id="xuexing"  class="form-control">
+    <neq name="info.xuexing" value=""><option value="{$info.xuexing}">{$info.xuexing}</option></neq>
+    <option value="A型">A型</option>
+     <option value="B型">B型</option>
+      <option value="AB型">AB型</option>
+       <option value="O型">O型</option>
+    </select>
+    
+    </div>
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">特长</label>
+    <div class="col-sm-10"> 
+
+    	<textarea class="form-control"  name="description" cols="80" rows="10" id="description">{$info.description}</textarea></td>
+
+    </div>
+  </div>
+    
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-success">保&nbsp;&nbsp;存</button>&nbsp;&nbsp;<button type="button" class="btn btn-default" onClick="history.go(-1);">返&nbsp;&nbsp;回</button>
+    </div>
+  </div>
+</form>
+    
+  </div>
+</div>
+</div>
+</body>
+</html>

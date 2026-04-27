@@ -1,0 +1,381 @@
+<!-- 底部 -->
+        <div class="he_foot">
+
+            <div class="he_footin he_common">
+
+                <div class="he_footnav fl">
+
+                    <div class="he_footnavle fl">
+
+                        <div class="he_footlogo">
+
+                            <a href="/" target="_self">
+
+                                <img src="__PUBLIC__/Uploads/logo/{$config.sitelogo}" alt="超云智能">
+
+                            </a>
+
+                        </div>
+
+                        <div class="he_foottet">
+
+                            <p>{$config.sitedescription}</p>
+
+                        </div>
+
+                        <div class="he_footewm">
+
+                            <div class="he_footewmtu fl">
+
+                                <img src="__TMPL__images/foote1.jpg" alt="超云智能">
+
+                            </div>
+
+                            <div class="he_footewmte fl">
+
+                                <p>扫码关注公众号</p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="he_footnavri fl">
+
+                        <div class="he_footnavrit">
+
+                            <div class="he_footnavritle fl">
+
+                                <h3>关于我们</h3>
+
+                                <ul class="he_footnavritleul">
+
+                                    <li>
+
+                                        <a href="<eq name="about.id" value="">/about.html<else/>{$about.id|url=page,###}</eq>" target="_self">公司简介</a>
+
+                                    </li>
+
+                                    <li>
+
+                                        <a href="/contact.html" target="_self">联系我们</a>
+
+                                    </li>
+
+                                </ul>
+
+                            </div>
+
+                            <div class="he_footnavritle fl">
+
+                                <h3>产品中心</h3>
+
+                                <ul class="he_footnavritleul">
+
+                                    <volist name="menu" id="vo" offset="1" length="3">
+
+                                        <li>
+
+                                            <a href="<eq name="vo.url" value="">{$vo.typeid|url=lists,###}<else/>__ROOT__{$vo.url}</eq>" target="<eq name="vo.target" value="1">_self<else/>_blank</eq>">{$vo.typename}</a>
+
+                                        </li>
+
+                                    </volist>
+
+                                </ul>
+
+                            </div>
+
+                            <div class="he_footnavritle fl">
+
+                                <h3>解决方案</h3>
+
+                                <ul class="he_footnavritleul">
+
+                                    <volist name="menu" id="vo" offset="4" length="3">
+
+                                        <li>
+
+                                            <a href="<eq name="vo.url" value="">{$vo.typeid|url=lists,###}<else/>__ROOT__{$vo.url}</eq>" target="<eq name="vo.target" value="1">_self<else/>_blank</eq>">{$vo.typename}</a>
+
+                                        </li>
+
+                                    </volist>
+
+                                </ul>
+
+                            </div>
+
+                            <div class="he_footnavritle fl">
+
+                                <h3>联系我们</h3>
+
+                                <ul class="he_footnavritleul">
+
+                                    <li>
+
+                                        <a href="/contact.html" target="_self">联系方式</a>
+
+                                    </li>
+
+                                    <li>
+
+                                        <a href="/digital_employee.html" target="_self">数字员工</a>
+
+                                    </li>
+
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="he_foote">
+
+            <div class="he_footein he_common">
+
+                <div class="he_footeinle fl">
+
+                    <p>© 2024 超云智能科技（深圳）有限公司 版权所有 粤ICP备2024041528号</p>
+
+                </div>
+
+                <div class="he_footeinri fr">
+
+                    <a href="/" target="_self">首页</a>
+
+                    <a href="/contact.html" target="_self">联系我们</a>
+
+                    <a href="/about.html" target="_self">关于我们</a>
+
+                    <a href="/digital_employee.html" target="_self">数字员工</a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- 回到顶部 -->
+
+        <div class="he_backtop">
+
+            <img src="__TMPL__images/backtop.png" alt="回到顶部" class="he_backimg">
+
+        </div>
+
+        <!-- 侧边导航 -->
+
+        <div class="he_cubnav">
+
+            <div class="he_cubnavsh">
+
+                <div class="he_cubnavul">
+
+                    <div class="he_cubnavli">
+
+                        <a href="#" class="he_cubnavli_a">
+
+                            <img src="__TMPL__images/qq.png" alt="QQ咨询">
+
+                        </a>
+
+                        <div class="he_cubnavli_a_te">
+
+                            <p>QQ咨询</p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="he_cubnavli">
+
+                        <a href="#" class="he_cubnavli_a">
+
+                            <img src="__TMPL__images/wechat.png" alt="微信咨询">
+
+                        </a>
+
+                        <div class="he_cubnavli_a_te">
+
+                            <p>微信咨询</p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="he_cubnavli">
+
+                        <a href="#" class="he_cubnavli_a">
+
+                            <img src="__TMPL__images/phone.png" alt="电话咨询">
+
+                        </a>
+
+                        <div class="he_cubnavli_a_te">
+
+                            <p>电话咨询</p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="he_cubnavli">
+
+                        <a href="#" class="he_cubnavli_a">
+
+                            <img src="__TMPL__images/message.png" alt="留言反馈">
+
+                        </a>
+
+                        <div class="he_cubnavli_a_te">
+
+                            <p>留言反馈</p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- 弹窗 -->
+
+        <div class="mc_popup" style="display:none">
+
+            <div class="mc_popup_con">
+
+                <div class="mc_popup_con_close">
+
+                    <img src="__TMPL__images/he_close.png">
+
+                </div>
+
+                <div class="mc_popup_con_tit">
+
+                    <h3>联系我们</h3>
+
+                </div>
+
+                <div class="mc_popup_con_form">
+
+                    <form action="" method="post">
+
+                        <div class="mc_popup_con_form_item">
+
+                            <input type="text" placeholder="姓名" name="name" required>
+
+                        </div>
+
+                        <div class="mc_popup_con_form_item">
+
+                            <input type="tel" placeholder="电话" name="phone" required>
+
+                        </div>
+
+                        <div class="mc_popup_con_form_item">
+
+                            <input type="email" placeholder="邮箱" name="email">
+
+                        </div>
+
+                        <div class="mc_popup_con_form_item">
+
+                            <textarea placeholder="留言内容" name="content" required></textarea>
+
+                        </div>
+
+                        <div class="mc_popup_con_form_submit">
+
+                            <button type="submit">提交</button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- 引入 jQuery -->
+
+        <script src="__TMPL__js/jquery-3.3.1.min.js" defer></script>
+
+        <!-- 引入 Slick 轮播 -->
+
+        <script src="__TMPL__js/slick.min.js" defer></script>
+
+        <!-- 引入自定义脚本 -->
+
+        <script src="__TMPL__js/common.js" defer></script>
+
+        <script src="__TMPL__js/main.js" defer></script>
+
+        <script src="__TMPL__js/menu.js" defer></script>
+
+        <!-- 引入动画库 -->
+
+        <script src="__TMPL__js/wow.min.js" defer></script>
+
+        <script src="__TMPL__js/jquery.mCustomScrollbar.min.js" defer></script>
+
+        <!-- 平滑滚动和回到顶部 -->
+
+        <script>
+            // 初始化 Wow 动画
+            document.addEventListener('DOMContentLoaded', function() {
+                new WOW().init();
+                
+                // 回到顶部功能
+                const backTop = document.querySelector('.he_backtop');
+                backTop.addEventListener('click', function() {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+                
+                // 侧边导航栏响应式调整
+                function adjustSideNav() {
+                    const sideNav = document.querySelector('.he_cubnav');
+                    if (window.innerWidth < 768) {
+                        sideNav.style.right = '10px';
+                    } else {
+                        sideNav.style.right = '30px';
+                    }
+                }
+                
+                // 初始调整
+                adjustSideNav();
+                
+                // 窗口大小变化时调整
+                window.addEventListener('resize', adjustSideNav);
+                
+                // 滚动显示/隐藏回到顶部按钮
+                window.addEventListener('scroll', function() {
+                    if (window.scrollY > 300) {
+                        backTop.style.display = 'block';
+                    } else {
+                        backTop.style.display = 'none';
+                    }
+                });
+            });
+        </script>
+
+    </body>
+
+    </html>

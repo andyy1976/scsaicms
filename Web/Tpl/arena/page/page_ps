@@ -1,0 +1,128 @@
+<include file="./head"/>
+
+<div id="obtn">
+    <div class="slideBoxBg wow fadeInUp">
+        <div class="container2">
+            <div class="pz_SideLayerNews">
+		
+									<php>
+									//	$first_id=get_first_father($type['typeid']);
+										$fid=get_field('type','typeid='.$type[typeid],'fid');
+										
+										if($fid==0)
+										{ 
+											$pid=$type[typeid]; 
+											$pname=$type[typename];
+										}
+										else
+										{ 
+											$pid=$fid; 
+											$pname=get_field('type','typeid='.$pid,'typename');
+										}
+								  </php>
+								  
+								  
+									
+								
+									<category parentid="$pid" id="vo">
+										<li class="l1 <php>if($type['typeid'] == $vo['typeid']){</php>  on <php>}</php>">
+											
+										
+											<a href='{$vo.typeid|url=lists,###}'>{$vo.typename}</a>
+												<!--判定是否有子类-->
+												<php>{</php>
+													<ul>
+														<category parentid="$vo[typeid]" id="voo">
+													
+															
+														<li><span class="file <php>if($type['typeid'] == $voo['typeid']){</php>  active <php>}</php>"><a href='{$voo.typeid|url=lists,###}' >{$voo.typename}</a></span></li> 
+														</category>
+													</ul>
+												<php>}</php>
+										</li>
+									</category>
+	                      
+            </div>
+            <div class="l1 searchBox newskuang">
+							<p>咨询热线：13661068044,微信同号</p>
+                <!---form action="/plus/search.php" name="formsearch">
+                <input type="hidden" name="typeid" value="32"> 
+                <input id="search-keyword" name="q"  type="text" type="text" placeholder="请输入搜索内容" id="searchText" autocomplete="off">
+                <button id="searchBtn" type="submit" name="submit">搜索</button>
+               </form--->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="obtn">
+    <div class="container2">
+        <div class="pageNewsList wow fadeInLeft">
+        	
+        			<div class="curLocation wow fadeInUp">你的位置：{$nav}   </div>
+		          
+										&nbsp;
+		           
+		           <div class="tH1 wow fadeInUp"> 
+		        		<h1>{$article.title}<present name="nowpage">({$nowpage})</present><notempty name="article.titlecolor"></font></notempty> <present name="nowpage">({$nowpage})</present></h1>
+		        	</div>
+		        		&nbsp;
+						  <div class="curLocLabel wow fadeInUp">
+	                <span><img src="/Web/Tpl/qrw/images/new8.png"/> &nbsp;SuperCloud</span>
+	                <span><img src="/Web/Tpl/qrw/images/new9.png"/> &nbsp;{$article.addtime}</span>
+	                <span><img src="/Web/Tpl/qrw/images/new7.png"/> &nbsp;{$article.keywords}</span>
+	            </div>
+											
+    
+						&nbsp;
+            
+             <div class="pageNewsText wow fadeInUp">		
+             	{$article.content}
+             	
+             	
+		             	 <div class="pageFy wow fadeInUp">
+		                <div class="leftFy">
+		                   {$page}
+		                </div>
+		                <div class="rightFy">
+		                   {$updown}
+		                </div>
+		       	     </div>
+													
+             	
+            </div>
+            
+         
+        </div>
+        
+        <div class="pageHotNews wow fadeInRight">
+            <div class="newsH1 wow fadeInUp">热门文章 <img src="/Web/Tpl/qrw/images/new1.png" alt="热门文章"/></div>
+            <ul class="wow fadeInUp">
+                       
+										<php>		$number=1 </php>
+									<volist name="list" id="vo">
+
+												<li>
+											 <a href='/index.php?s=article&aid={$vo.aid}' target='_blank'>
+                        <h4>{$vo.title|msubstr=###,0,38,'utf-8'}</h4>
+                        <div class="p1">{$vo.title|msubstr=###,0,100,'utf-8'}...</div>
+                        
+               		     </a>	
+											
+								
+												</li>
+									</volist>
+						 </ul>
+        </div>
+      
+    </div>
+</div>
+
+
+
+
+<include file="$footer"/>
+
+</body>
+
+</html>

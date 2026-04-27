@@ -1,0 +1,289 @@
+﻿﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="referrer" content="no-referrer" />
+<meta name="keywords" content="航空航天"/>
+<meta name="description" content="航空航天"/>
+<title>
+航空航天-企软网-专业的企业软件研发和培训网站</title>
+<link href="/Web/Tpl/lvbo/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+<link href="/Web/Tpl/lvbo/css/main.css" rel="stylesheet" type="text/css"/>
+
+<script src="/Web/Tpl/lvbo/js/jquery-1.10.2.min.js" type="text/javascript"></script>
+<script src="/Web/Tpl/lvbo/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="/Web/Tpl/lvbo/js/main.js" type="text/javascript"></script>
+<script src="/Web/Tpl/lvbo/js/jquery.jslides.js" type="text/javascript" ></script>
+<script type="text/javascript"> 
+			
+function GetQueryString(name) 
+{
+		    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+		    var r = window.location.search.substr(1).match(reg);
+		    if (r != null) return decodeURI(r[2]);
+		    return null;
+}
+
+
+ 
+function Active_menu(i)
+{
+		//$('.header-left .active').removeClass('active');
+		//alert(i);
+			$("#menu_"+i).addClass('active');
+			//$('#menu_1').addClass('nav_h1');
+}
+	
+
+$(document).ready(function()
+{ 
+		//$('#shouye').addClass("nav_h11"); 
+	
+//alert("aa");
+  //  		alert("a");
+	var id=6;
+
+		var s=GetQueryString("s");
+	//alert(s);
+	
+		if(s==null)
+		{
+			//alert("1");
+		 id=1;
+		}
+		
+		else if(s.indexOf("memberlist")!=-1)
+		{
+			id=7;
+		}
+		else if(s.indexOf('wenda')!=-1)
+		{
+		 id=6;
+		}
+		/*
+		else if(s.indexOf('search')!=-1)
+		{
+		 //alert("search");
+		 id=GetQueryString("typeid");
+		 alert(id);
+		}
+		*/
+		else
+		{
+				 id=s.split('/')[2][0];
+		}
+		//alert(id);
+		Active_menu(id);
+
+
+
+
+});  
+</script> 
+</head>
+<body>
+<div class="head-top">
+	<div class="width-block">
+		<ul>
+			<li><a href="/index.php?s=/lists/91.html">关于我们</a></li>
+		
+			<script src="/index.php?s=/api/login_js.html"></script>
+			
+		</ul>
+	</div>
+</div>
+<div class="head">
+	<div class="width-block">
+		<div class="logo"> 	<a href="/"><img src="/Public/Uploads/logo/logo_20200302000256.png" alt="企软网"></a></div>
+		<div class="search">
+			<div class="search-info">
+		   <form class="form" id="search" method="post" action="/index.php?s=/search/Index.html" role="search">
+				<div class="search-left">
+					<div class="language">
+										
+									
+											<select  class="select" style="height:40px;border:0px;" name="typeid" id="typeid">
+											<option  class="list1" value="-1" ><span>全部文章</span><i></i></option>
+												<option class="list1" value="6"  ><p>问答</p> </option><option class="list1" value="5"  ><p>产品</p> </option><option class="list1" value="4"  ><p>课堂</p> </option><option class="list1" value="2"  ><p>方案</p> </option><option class="list1" value="3"  ><p>案例</p> </option><option class="list1" value="7"  ><p>博客 </p> </option><option class="list1" value="8"  ><p>应用</p> </option>											</select>
+																								
+								
+					</div>
+					<div class="search-input">
+					<input type="text" id="search"  name="k"  placeholder="请输入搜索关键字" onBlur="if(this.value=='') this.value='';" value=""/>
+					
+					</div>
+				</div>
+				<div class="search-btn"><button id="search_btn" type="submit"><i class="fa fa-search"></i>搜 索</button></div>
+				 </form>
+			</div>
+			<div class="census">已收录文章（案例） 162 篇，今天新增 0 篇</div>
+		</div>
+	</div>
+</div>
+<div class="nav">
+	<div class="nav-t">
+		<ul>
+			<li id="menu_-1"><a href="/">首页</a></li>
+
+	        <li id="menu_6"><a href="/index.php?s=wenda/index.html"  target="_self">问答</a></li><li id="menu_5"><a href="/index.php?s=/lists/5.html"  target="_self">产品</a></li><li id="menu_4"><a href="/index.php?s=/lists/4.html"  target="_self">课堂</a></li><li id="menu_2"><a href="/index.php?s=/lists/2.html"  target="_self">方案</a></li><li id="menu_3"><a href="/index.php?s=/lists/3.html"  target="_self">案例</a></li><li id="menu_7"><a href="http://www.qiruanwang.com/blog/"  target="_self">博客 </a></li><li id="menu_8"><a href="/index.php?s=/lists/8.html"  target="_self">应用</a></li>			
+		</ul>
+	</div>
+	<div class="nav-b"></div>
+</div>
+<div id="slide">
+	<div class="width-block">
+		<div id="full-screen-slider">
+			<ul id="slides">
+				<li style="background:url('/Public/Uploads/hd/1588943403.png') no-repeat center top"><!--<a href="/index.php?s=/lists/4.html" target="_blank">1</a>--></li><li style="background:url('/Public/Uploads/hd/1588943436.png') no-repeat center top"><!--<a href="" target="_blank">1</a>--></li><li style="background:url('/Public/Uploads/hd/1588943453.png') no-repeat center top"><!--<a href="" target="_blank">1</a>--></li>	        
+
+			</ul>
+		</div>	
+	</div>
+</div>
+
+
+
+	
+
+
+<div class="second">
+	<div class="width-block">
+		<div class="second-left">
+			<div class="left-list">
+				<div class="second-treemenu">
+					<div class="title"><h3><a href="#">主题分类</a></h3></div>
+					<div class="treemenu">
+						<ul>
+							<!--当前级的上一级菜单，本级循环二级-->
+								
+																	  
+								  	 							<li><span class="arrow"></span><span class="file 	 "><a href='/index.php?s=/lists/3.html'>案例(0)</a></span>
+								<ul>	
+									<li>
+											<span class="arrow"></span>
+																						<span class="file   active  "><a href='/index.php?s=/lists/31.html'>航空航天(0)</a></span><!--判定是否有子类-->
+																						</li><li>
+											<span class="arrow"></span>
+																						<span class="file  "><a href='/index.php?s=/lists/32.html'>中小企业(0)</a></span><!--判定是否有子类-->
+																						</li>								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+				
+					<div class="second-info">
+					<div class="title"><h3>效力级别</h3></div>
+					<div class="list">
+							<ul>  
+														  <td colspan=4 class=b1_1><li value="1" ><a href="/index.php?s=/lists/31/&effectlevel=1">法律(0)</a></li><li value="2" ><a href="/index.php?s=/lists/31/&effectlevel=2">行政法规(0)</a></li><li value="3" ><a href="/index.php?s=/lists/31/&effectlevel=3">司法解释/文件(0)</a></li><li value="4" ><a href="/index.php?s=/lists/31/&effectlevel=4">部委规章(0)</a></li><li value="5" ><a href="/index.php?s=/lists/31/&effectlevel=5">地方法律(0)</a></li>					 		</ul>
+					</div>
+				</div>
+				
+				<div class="second-treemenu">
+					<div class="title"><h3>地域范围</h3></div>
+					<div class="treemenu">
+						<ul>
+
+							  <td colspan=4 class=b1_1><li value="1" ><a href="/index.php?s=/lists/31/&location=1">全国(0)</a></li><li value="2" ><a href="/index.php?s=/lists/31/&location=2">北京(0)</a></li><li value="3" ><a href="/index.php?s=/lists/31/&location=3">上海(0)</a></li><li value="4" ><a href="/index.php?s=/lists/31/&location=4">天津(0)</a></li><li value="5" ><a href="/index.php?s=/lists/31/&location=5">重庆(0)</a></li><li value="13" ><a href="/index.php?s=/lists/31/&location=13">广东省(0)</a></li><li value="131" ><a href="/index.php?s=/lists/31/&location=131">广州市(0)</a></li><li value="132" ><a href="/index.php?s=/lists/31/&location=132">深圳市(0)</a></li><li value="24" ><a href="/index.php?s=/lists/31/&location=24">浙江(0)</a></li><li value="241" ><a href="/index.php?s=/lists/31/&location=241">杭州市(0)</a></li><li value="242" ><a href="/index.php?s=/lists/31/&location=242">宁波市(0)</a></li><li value="28" ><a href="/index.php?s=/lists/31/&location=28">山东省(0)</a></li><li value="281" ><a href="/index.php?s=/lists/31/&location=281">青岛市(0)</a></li><li value="282" ><a href="/index.php?s=/lists/31/&location=282">济南市(0)</a></li>					 		</ul>
+					</div>
+				</div>
+				
+			</div>
+			<div class="ranking">
+				<div class="title">文章访问排行</div>
+							<ul>
+																										</ul>
+			</div>	
+		</div>
+		<div class="second-right">
+			<div class="pusl-list">
+				<div class="joint">航空航天 ， 共有<span>	0</span>篇文章 
+												,未<a href="#" class="dl-tc">登录</a>时只显示前10篇文章
+													</div>
+				<div class="bule"></div>
+				<ul>
+												</ul>
+							</div>
+		</div>
+	</div>
+</div>
+﻿<div class="footer">
+	<div class="width-block">
+		<p><a href="javascript:">版权声明</a>  |  <a href="javascript:">免责声明</a>  |  <a href="javascript:">服务条款</a>  |  <a href="javascript:">隐私政策</a>  |  <a href="javascript:">关于我们</a>  |  <a href="javascript:">联系我们</a></p>
+		<p>Copyright © HR. All rights reserved &nbsp; 京ICP备18052489号</p>
+		<p>客服微信：andyy1976 &nbsp; 客服电话：13661068044 &nbsp;  客服邮箱:tuan_zhang@sina.com</p>
+	</div>
+</div>
+
+			
+<!--登录弹层-->
+<div class="box-dl" style="display: none;">
+	<div class="register dl-login">
+		<div class="reg-block">
+		<div class="caption"><h3>用户登录</h3>
+		<span class="pul-close"><img src="/Web/Tpl/lvbo/images/modal-close.png" width="18"></span>
+		</div>
+		<div class="reg-list">
+			<form role="form" action="/index.php?s=/member/dologin.html" method="post">
+				<div class="reg-info">
+					<div class="name"><font>*</font>用户名：</div>
+					<div class="rit-input"><input type="text" name="username" placeholder="请输入用户名"></div>
+				</div>
+				<div class="reg-info">
+					<div class="name"><font>*</font>密码：</div>
+					<div class="rit-input"><input type="password" name="userpwd"  placeholder="请输入密码"></div>
+				</div>
+					  					  <!--
+					    <div class="form-group">
+					   <label for="remember"><input type="checkbox" name="remember" class="checkbox" value="1" id="remember" /> 下次自动登录</label>
+					    <div>
+					    	-->
+					  <input name="lasturl" type="hidden" value="http%3A%2F%2Fwww.qiruanwang.com%2Findex.php%3Fs%3D%2Flists%2F31.html" />
+				<div class="reg-btn"><button type="submit">立即登录</button></div>
+				<div class="lb-bt pad-jl">
+				<a href="javascript:" class="zc-tc">立即注册</a><a href="/index.php?s=/member/find_password.html" class="ps">忘记密码?</a>
+				</div>
+				</form>
+			</div>
+	
+			
+		</div>
+	</div>
+</div>
+
+<!--注册弹层-->
+<div class="box-zc" style="display: none;">
+	<div class="register zc-reg">
+		<div class="reg-block">
+			<div class="caption"><h3>用户注册</h3><span class="pul-close"><img src="/Web/Tpl/lvbo/images/modal-close.png" width="18"></span></div>
+			<div class="reg-list">
+			 	<form action="/index.php?s=/member/doreg.html" name="reg_form" id="regform" method="post" class="form-horizontal">
+
+				<div class="reg-info">
+					<div class="name"><font>*</font>用户名：</div>
+					<div class="rit-input"><input type="text" name="username" id="username" placeholder="请输入用户名"></div>
+				</div>
+				<div class="reg-info">
+					<div class="name"><font>*</font>密码：</div>
+					<div class="rit-input"><input type="password" id="userpwd" name="userpwd" placeholder="请输入密码"></div>
+				</div>
+				<div class="reg-info">
+					<div class="name"><font>*</font>确认密码：</div>
+					<div class="rit-input"><input type="password" name="userpwd2" id="userpwd2" placeholder="再次输入密码确认"></div>
+				</div>
+				<div class="reg-info">
+					<div class="name"><font>*</font>Email：</div>
+					<div class="rit-input"><input type="text" name="email" id="email" placeholder="请输入Email"></div>
+				</div>
+				<div class="reg-btn"><button type="submit">立即注册</button></div>
+			<!--	<div class="agree"><label><input type="checkbox">阅读并接受<a href="javscript:">《用户注册协议》</a></label></div>-->
+			</form>
+			</div>
+			
+		</div>
+	</div>
+</div>
+</body>
+</html>

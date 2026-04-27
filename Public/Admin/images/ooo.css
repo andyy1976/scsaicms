@@ -1,0 +1,189 @@
+body {
+  color: #404771;
+  background: #f7f7fa
+}
+.color-006dce {
+  color: #2f323d
+}
+.ss-head {
+  background: #fff;
+}
+
+.ss-c-head {
+  margin-top: 80px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+  -webkit-flex-flow: row nowrap;
+     -moz-box-orient: horizontal;
+     -moz-box-direction: reverse;
+      -ms-flex-flow: row nowrap;
+          flex-flow: row nowrap;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+     -moz-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+          -webkit-box-align: center;
+          -webkit-align-items: center;
+             -moz-box-align: center;
+              -ms-flex-align: center;
+                  align-items: center;
+}
+
+.ss-c-head .item-photo {
+  width: 32px;
+  height: 32px;
+  border-radius: 32px;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.ss-btn-default {
+  background-color: #2f323d;
+  border-color: #2f323d;
+}
+.pagination .page-item.active a,
+.pagination .page-item:hover a {
+  background: #2f323d;
+}
+
+.ss-body-table tbody, .pagination, .pagination-info {
+  color: #666;
+}
+
+.ss-bh-left p {
+  color: #404771;
+}
+
+
+
+.ss-navigation a, .ss-navigation .item-title {
+  color: #fff;
+}
+
+.ss-bh-left {
+  color: #2f323d;
+}
+.ss-navigation li, .ss-navigation{
+  border-bottom: 1px solid #3a3c47
+}
+.ss-navigation li:hover >.item-title {
+  background: #21232b;
+}
+.ss-navbar-default, .ss-navigation li.active >.item-title {
+  background: #2f323d;
+}
+
+
+.ss-tag-fff-fc4944 {
+  background: #FC4944;
+  border: 1px solid transparent;
+  border-color: #FC4944;
+  color: #fff;
+}
+.ss-bg-fff-45 {
+  background: none;
+  margin-top: 30px
+}
+.ss-bg-fff-45.ss-shadow {
+  box-shadow: none
+}
+.ss-head {
+  box-shadow: 0px 0px 7px 0px rgba(85,89,179,0.28)
+}
+.ss-head-right .item-icon {
+  color: #2f323d;
+  margin-left: 42px
+}
+.icon-nav, .ss-head-right a {
+  color: #2f323d;
+}
+.ss-head-photo {
+  margin-left: 39px;
+  margin-right: 20px;
+}
+.ss-body-head, .ss-body-table {
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px 0px rgba(63,68,145,0.1);
+}
+
+.ss-body-table tbody, .pagination, .pagination-info {
+  color: #404771;
+}
+
+.bootstrap-table .fixed-table-container .fixed-table-body {
+  padding: 0 20px;
+}
+
+.ss-bootstrapTable td,
+.ss-bootstrapTable th {
+  border: 1px solid #eeedff;
+}
+
+.ss-bootstrapTable thead {
+  background: #f6f6f9;
+  border-top: 1px solid #eeedff;
+  border-bottom: 1px solid #eeedff;
+}
+
+.ss-bootstrapTable tbody >tr:nth-of-type(even) {
+  background: #f6f6f9;
+}
+
+.ss-search-input {
+  border-radius: 0;
+  background: none;
+  height: auto;
+  padding: 0;
+}
+.ss-search-input input{
+  border: 1px solid #ededff;
+  background: #f7f7fa;
+  padding: 4px 10px;
+}
+.ss-search-input button {
+  width: 45px;
+  height: 38px;
+  background: #2f323d;
+  color: #fff;
+  font-size: 16px;
+}
+.ss-head-left .ss-logo {
+  color: #000;
+}
+
+.color-9999cc {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+
+.br-10 {
+  border-radius: 10px;
+}
+
+.bg-fff {
+  border-radius: 10px;
+}
+
+.br-t-10 {
+  border-radius: 10px 10px 0 0
+}
+
+.br-b-10 {
+  border-radius: 0 0 10px 10px
+}
+
+.ss-topic {
+  border-radius: 10px 10px 0 0 ;
+}
+.ss-topic ~.bg-fff{
+  border-radius: 0 0 10px 10px;
+}
+
+.modal-dialog {
+  border-radius: 10px
+}

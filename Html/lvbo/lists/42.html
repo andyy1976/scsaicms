@@ -1,0 +1,364 @@
+﻿﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="referrer" content="no-referrer" />
+<meta name="keywords" content="律师说法"/>
+<meta name="description" content="律师说法"/>
+<title>
+律师说法-律伯法律服务网-专业的法律服务网站</title>
+<link href="/Web/Tpl/lvbo/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+<link href="/Web/Tpl/lvbo/css/main.css" rel="stylesheet" type="text/css"/>
+
+<script src="/Web/Tpl/lvbo/js/jquery-1.10.2.min.js" type="text/javascript"></script>
+<script src="/Web/Tpl/lvbo/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="/Web/Tpl/lvbo/js/main.js" type="text/javascript"></script>
+<script src="/Web/Tpl/lvbo/js/jquery.jslides.js" type="text/javascript" ></script>
+<script type="text/javascript"> 
+			
+function GetQueryString(name) 
+{
+		    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+		    var r = window.location.search.substr(1).match(reg);
+		    if (r != null) return decodeURI(r[2]);
+		    return null;
+}
+
+
+ 
+function Active_menu(i)
+{
+		//$('.header-left .active').removeClass('active');
+		//alert(i);
+			$("#menu_"+i).addClass('active');
+			//$('#menu_1').addClass('nav_h1');
+}
+	
+
+$(document).ready(function()
+{ 
+		//$('#shouye').addClass("nav_h11"); 
+	
+//alert("aa");
+  //  		alert("a");
+	var id=6;
+
+		var s=GetQueryString("s");
+	//alert(s);
+	
+		if(s==null)
+		{
+			//alert("1");
+		 id=1;
+		}
+		
+		else if(s.indexOf("memberlist")!=-1)
+		{
+			id=7;
+		}
+		else if(s.indexOf('wenda')!=-1)
+		{
+		 id=6;
+		}
+		/*
+		else if(s.indexOf('search')!=-1)
+		{
+		 //alert("search");
+		 id=GetQueryString("typeid");
+		 alert(id);
+		}
+		*/
+		else
+		{
+				 id=s.split('/')[2][0];
+		}
+		//alert(id);
+		Active_menu(id);
+
+
+
+
+});  
+</script> 
+</head>
+<body>
+<div class="head-top">
+	<div class="width-block">
+		<ul>
+			<li><a href="/index.php?s=/lists/91.html">关于我们</a></li>
+		
+			<script src="/index.php?s=/api/login_js.html"></script>
+			
+		</ul>
+	</div>
+</div>
+<div class="head">
+	<div class="width-block">
+		<div class="logo"> 	<a href="/"><img src="/Public/Uploads/logo/logo_20190705082119.jpg" alt="律伯法律服务网"></a></div>
+		<div class="search">
+			<div class="search-info">
+		   <form class="form" id="search" method="post" action="/index.php?s=/search/Index.html" role="search">
+				<div class="search-left">
+					<div class="language">
+										
+									
+											<select  class="select" style="height:40px;border:0px;" name="typeid" id="typeid">
+											<option  class="list1" value="-1" ><span>全部文章</span><i></i></option>
+												<option class="list1" value="6"  ><p>专家问答</p> </option><option class="list1" value="5"  ><p>业务指引</p> </option><option class="list1" value="4"  ><p>务实课堂</p> </option><option class="list1" value="2"  ><p>法规解读</p> </option><option class="list1" value="3"  ><p>典型案例</p> </option><option class="list1" value="7"  ><p>专家页面</p> </option><option class="list1" value="8"  ><p>业务工具</p> </option>											</select>
+																								
+								
+					</div>
+					<div class="search-input">
+					<input type="text" id="search"  name="k"  placeholder="请输入搜索关键字" onBlur="if(this.value=='') this.value='';" value=""/>
+					
+					</div>
+				</div>
+				<div class="search-btn"><button id="search_btn" type="submit"><i class="fa fa-search"></i>搜 索</button></div>
+				 </form>
+			</div>
+			<div class="census">已收录文章（案例） 372 篇，今天新增 0 篇</div>
+		</div>
+	</div>
+</div>
+<div class="nav">
+	<div class="nav-t">
+		<ul>
+			<li id="menu_-1"><a href="/">首页</a></li>
+
+	        <li id="menu_6"><a href="/index.php?s=wenda/index.html"  target="_self">专家问答</a></li><li id="menu_5"><a href="/index.php?s=/lists/5.html"  target="_self">业务指引</a></li><li id="menu_4"><a href="/index.php?s=/lists/4.html"  target="_self">务实课堂</a></li><li id="menu_2"><a href="/index.php?s=/lists/2.html"  target="_self">法规解读</a></li><li id="menu_3"><a href="/index.php?s=/lists/3.html"  target="_self">典型案例</a></li><li id="menu_7"><a href="http://localhost/blog/"  target="_self">专家页面</a></li><li id="menu_8"><a href="/index.php?s=/lists/8.html"  target="_self">业务工具</a></li>			
+		</ul>
+	</div>
+	<div class="nav-b"></div>
+</div>
+<div id="slide">
+	<div class="width-block">
+		<div id="full-screen-slider">
+			<ul id="slides">
+					        
+
+			</ul>
+		</div>	
+	</div>
+</div>
+
+
+
+	
+
+
+<div class="second">
+	<div class="width-block">
+		<div class="second-left">
+			<div class="left-list">
+				<div class="second-treemenu">
+					<div class="title"><h3>实务课堂</h3></div>
+					<div class="treemenu">
+						<ul>
+							<li><span class="arrow"></span><span class="file active"><a href="./page_course.html">法律解读课程 (54)</a></span>
+								<ul>
+									<li><span class="file"><a href="javascript:">初级基础课程 (20)</a></span></li>
+									<li><span class="file"><a href="javascript:">中级技巧课程 (18)</a></span></li>
+									<li><span class="file"><a href="javascript:">高级进阶课程 (16)</a></span></li>
+								</ul>
+							</li>
+							<li><span class="arrow"></span><span class="file"><a href="javascript:">专题专项课程 (25)</a></span></li>
+						</ul>
+					</div>
+				</div>
+				
+				<div class="second-treemenu">
+					<div class="title"><h3>实务课堂</h3></div>
+					<div class="treemenu">
+						<ul>
+							<li><span class="arrow"></span><span class="file"><a href="javascript:">法律解读课程 (54)</a></span>
+								<ul>
+									<li><span class="file"><a href="javascript:">初级基础课程 (20)</a></span></li>
+									<li><span class="file"><a href="javascript:">中级技巧课程 (18)</a></span></li>
+									<li><span class="file"><a href="javascript:">高级进阶课程 (16)</a></span></li>
+								</ul>
+							</li>
+							<li><span class="arrow"></span><span class="file"><a href="javascript:">专题专项课程 (25)</a></span></li>
+						</ul>
+					</div>
+				</div>
+				
+				<div class="second-info">
+					<div class="title"><h3>效力级别</h3></div>
+					<div class="list">
+						<ul>
+							<li class="active"><a href="javascrit:">法律(191)</a></li>
+							<li><a href="javascrit:">行政法规(846)</a></li>
+							<li><a href="javascrit:">司法解释/文件(279)</a></li>
+							<li><a href="javascrit:">部委规章(21848)</a></li>
+							<li><a href="javascrit:">地方法规(169724)</a></li>
+						</ul>
+					</div>
+				</div>
+				
+				
+			</div>
+		</div>
+		<div class="second-right">
+			
+			<div class="pusl-list questions">
+				<div class="joint"><a href="javascript:">法律解读课程</a> > 高级进阶课程</div>
+				<div class="bule"></div>
+				<div class="curriculum">
+					<div class="list-block">
+						<div class="cdc-tips">新课程上线预告</div>
+						<div class="cdc-title">高阶增长黑客实战</div>
+						<div class="cdc-price"><span class="price">￥2999</span><span class="date">预计上线时间：2019年8月</span></div>
+						<div class="cdc_bottom">
+							<p class="cdc_bottom-text1">实操真实问题，学习一线增长技能</p>
+							<p class="cdc_bottom-text2">查看课程详情</p>
+						</div>
+					</div>
+					<div class="list-block">
+						<div class="cdc-tips">新课程上线预告</div>
+						<div class="cdc-title">高阶增长黑客实战</div>
+						<div class="cdc-price"><span class="price">￥2999</span><span class="date">预计上线时间：2019年8月</span></div>
+						<div class="cdc_bottom">
+							<p class="cdc_bottom-text1">实操真实问题，学习一线增长技能</p>
+							<p class="cdc_bottom-text2">查看课程详情</p>
+						</div>
+					</div>
+					<div class="list-block">
+						<div class="cdc-tips">新课程上线预告</div>
+						<div class="cdc-title">高阶增长黑客实战</div>
+						<div class="cdc-price"><span class="price">￥2999</span><span class="date">预计上线时间：2019年8月</span></div>
+						<div class="cdc_bottom">
+							<p class="cdc_bottom-text1">实操真实问题，学习一线增长技能</p>
+							<p class="cdc_bottom-text2">查看课程详情</p>
+						</div>
+					</div>
+					<div class="list-block">
+						<div class="cdc-tips">新课程上线预告</div>
+						<div class="cdc-title">高阶增长黑客实战</div>
+						<div class="cdc-price"><span class="price">￥2999</span><span class="date">预计上线时间：2019年8月</span></div>
+						<div class="cdc_bottom">
+							<p class="cdc_bottom-text1">实操真实问题，学习一线增长技能</p>
+							<p class="cdc_bottom-text2">查看课程详情</p>
+						</div>
+					</div>
+					<div class="list-block">
+						<div class="cdc-tips">新课程上线预告</div>
+						<div class="cdc-title">高阶增长黑客实战</div>
+						<div class="cdc-price"><span class="price">￥2999</span><span class="date">预计上线时间：2019年8月</span></div>
+						<div class="cdc_bottom">
+							<p class="cdc_bottom-text1">实操真实问题，学习一线增长技能</p>
+							<p class="cdc_bottom-text2">查看课程详情</p>
+						</div>
+					</div>
+					<div class="list-block">
+						<div class="cdc-tips">新课程上线预告</div>
+						<div class="cdc-title">高阶增长黑客实战</div>
+						<div class="cdc-price"><span class="price">￥2999</span><span class="date">预计上线时间：2019年8月</span></div>
+						<div class="cdc_bottom">
+							<p class="cdc_bottom-text1">实操真实问题，学习一线增长技能</p>
+							<p class="cdc_bottom-text2">查看课程详情</p>
+						</div>
+					</div>
+				</div>
+				
+				<div class="page-al">
+					<div class="dataTables_paginate pagination">
+					    <nav>
+					        <ul class="pagination">
+					       	 	<li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">首页</span></a></li>
+					            <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">上一页</span></a></li>
+					            <li class="active"><a href="#">1</a></li>
+					            <li><a href="#">2</a></li>
+					            <li><a href="#">3</a></li>
+					            <li><a href="#">4</a></li>
+					            <li><a href="#">5</a></li>
+					            <li><a href="#" aria-label="Next"><span aria-hidden="true">下一页</span></a></li>
+					            <li><a href="#" aria-label="Next"><span aria-hidden="true">尾页</span></a></li>
+					        </ul>
+					    </nav>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</div>
+﻿<div class="footer">
+	<div class="width-block">
+		<p><a href="javascript:">版权声明</a>  |  <a href="javascript:">免责声明</a>  |  <a href="javascript:">服务条款</a>  |  <a href="javascript:">隐私政策</a>  |  <a href="javascript:">关于我们</a>  |  <a href="javascript:">联系我们</a></p>
+		<p>Copyright © HR. All rights reserved &nbsp; 京ICP证110088号</p>
+		<p>客服电话：400-555-888 &nbsp;  客服邮箱:Support@HR.com</p>
+	</div>
+</div>
+
+			
+<!--登录弹层-->
+<div class="box-dl" style="display: none;">
+	<div class="register dl-login">
+		<div class="reg-block">
+		<div class="caption"><h3>用户登录</h3>
+		<span class="pul-close"><img src="/Web/Tpl/lvbo/images/modal-close.png" width="18"></span>
+		</div>
+		<div class="reg-list">
+			<form role="form" action="/index.php?s=/member/dologin.html" method="post">
+				<div class="reg-info">
+					<div class="name"><font>*</font>用户名：</div>
+					<div class="rit-input"><input type="text" name="username" placeholder="请输入用户名"></div>
+				</div>
+				<div class="reg-info">
+					<div class="name"><font>*</font>密码：</div>
+					<div class="rit-input"><input type="password" name="userpwd"  placeholder="请输入密码"></div>
+				</div>
+					  					  <!--
+					    <div class="form-group">
+					   <label for="remember"><input type="checkbox" name="remember" class="checkbox" value="1" id="remember" /> 下次自动登录</label>
+					    <div>
+					    	-->
+					  <input name="lasturl" type="hidden" value="http%3A%2F%2Flocalhost%2Findex.php%3Fs%3D%2Flists%2F42.html" />
+				<div class="reg-btn"><button type="submit">立即登录</button></div>
+				<div class="lb-bt pad-jl">
+				<a href="javascript:" class="zc-tc">立即注册</a><a href="/index.php?s=/member/find_password.html" class="ps">忘记密码?</a>
+				</div>
+				</form>
+			</div>
+	
+			
+		</div>
+	</div>
+</div>
+
+<!--注册弹层-->
+<div class="box-zc" style="display: none;">
+	<div class="register zc-reg">
+		<div class="reg-block">
+			<div class="caption"><h3>用户注册</h3><span class="pul-close"><img src="/Web/Tpl/lvbo/images/modal-close.png" width="18"></span></div>
+			<div class="reg-list">
+			 	<form action="/index.php?s=/member/doreg.html" name="reg_form" id="regform" method="post" class="form-horizontal">
+
+				<div class="reg-info">
+					<div class="name"><font>*</font>用户名：</div>
+					<div class="rit-input"><input type="text" name="username" id="username" placeholder="请输入用户名"></div>
+				</div>
+				<div class="reg-info">
+					<div class="name"><font>*</font>密码：</div>
+					<div class="rit-input"><input type="password" id="userpwd" name="userpwd" placeholder="请输入密码"></div>
+				</div>
+				<div class="reg-info">
+					<div class="name"><font>*</font>确认密码：</div>
+					<div class="rit-input"><input type="password" name="userpwd2" id="userpwd2" placeholder="再次输入密码确认"></div>
+				</div>
+				<div class="reg-info">
+					<div class="name"><font>*</font>Email：</div>
+					<div class="rit-input"><input type="text" name="email" id="email" placeholder="请输入Email"></div>
+				</div>
+				<div class="reg-btn"><button type="submit">立即注册</button></div>
+			<!--	<div class="agree"><label><input type="checkbox">阅读并接受<a href="javscript:">《用户注册协议》</a></label></div>-->
+			</form>
+			</div>
+			
+		</div>
+	</div>
+</div>
+</body>
+</html>

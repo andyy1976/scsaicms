@@ -1,0 +1,210 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="referrer" content="no-referrer" />
+<meta name="keywords" content="律伯律伯公司简介,律伯公司简介,公司简介,"/>
+<meta name="description" content="sss"/>
+<title>
+律伯公司简介-企软网-专业的企业软件研发和培训网站</title>
+<link href="/Web/Tpl/lvbo/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+<link href="/Web/Tpl/lvbo/css/main.css" rel="stylesheet" type="text/css"/>
+
+<script src="/Web/Tpl/lvbo/js/jquery-1.10.2.min.js" type="text/javascript"></script>
+<script src="/Web/Tpl/lvbo/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="/Web/Tpl/lvbo/js/main.js" type="text/javascript"></script>
+<script src="/Web/Tpl/lvbo/js/jquery.jslides.js" type="text/javascript" ></script>
+<script type="text/javascript"> 
+			
+function GetQueryString(name) 
+{
+		    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+		    var r = window.location.search.substr(1).match(reg);
+		    if (r != null) return decodeURI(r[2]);
+		    return null;
+}
+
+
+ 
+function Active_menu(i)
+{
+		//$('.header-left .active').removeClass('active');
+		//alert(i);
+			$("#menu_"+i).addClass('active');
+			//$('#menu_1').addClass('nav_h1');
+}
+	
+
+$(document).ready(function()
+{ 
+		//$('#shouye').addClass("nav_h11"); 
+	
+//alert("aa");
+  //  		alert("a");
+	var id=6;
+
+		var s=GetQueryString("s");
+	//alert(s);
+	
+		if(s==null)
+		{
+			//alert("1");
+		 id=1;
+		}
+		
+		else if(s.indexOf("memberlist")!=-1)
+		{
+			id=7;
+		}
+		else if(s.indexOf('wenda')!=-1)
+		{
+		 id=6;
+		}
+		/*
+		else if(s.indexOf('search')!=-1)
+		{
+		 //alert("search");
+		 id=GetQueryString("typeid");
+		 alert(id);
+		}
+		*/
+		else
+		{
+				 id=s.split('/')[2][0];
+		}
+		//alert(id);
+		Active_menu(id);
+
+
+
+
+});  
+</script> 
+</head>
+<body>
+<div class="head-top">
+	<div class="width-block">
+		<ul>
+			<li><a href="/index.php?s=/lists/91.html">关于我们</a></li>
+		
+			<script src="/index.php?s=/api/login_js.html"></script>
+			
+		</ul>
+	</div>
+</div>
+<div class="head">
+	<div class="width-block">
+		<div class="logo"> 	<a href="/"><img src="/Public/Uploads/logo/logo_20200302000256.png" alt="企软网"></a></div>
+		<div class="search">
+			<div class="search-info">
+		   <form class="form" id="search" method="post" action="/index.php?s=/search/Index.html" role="search">
+				<div class="search-left">
+					<div class="language">
+										
+									
+											<select  class="select" style="height:40px;border:0px;" name="typeid" id="typeid">
+											<option  class="list1" value="-1" ><span>全部文章</span><i></i></option>
+												<option class="list1" value="6"  ><p>问答</p> </option><option class="list1" value="5"  ><p>产品</p> </option><option class="list1" value="4"  ><p>课堂</p> </option><option class="list1" value="2"  ><p>方案</p> </option><option class="list1" value="3"  ><p>案例</p> </option><option class="list1" value="7"  ><p>博客 </p> </option><option class="list1" value="8"  ><p>应用</p> </option>											</select>
+																								
+								
+					</div>
+					<div class="search-input">
+					<input type="text" id="search"  name="k"  placeholder="请输入搜索关键字" onBlur="if(this.value=='') this.value='';" value=""/>
+					
+					</div>
+				</div>
+				<div class="search-btn"><button id="search_btn" type="submit"><i class="fa fa-search"></i>搜 索</button></div>
+				 </form>
+			</div>
+			<div class="census">已收录文章（案例） 182 篇，今天新增 0 篇</div>
+		</div>
+	</div>
+</div>
+<div class="nav">
+	<div class="nav-t">
+		<ul>
+			<li id="menu_-1"><a href="/">首页</a></li>
+
+	        <li id="menu_6"><a href="/index.php?s=wenda/index.html"  target="_self">问答</a></li><li id="menu_5"><a href="/index.php?s=/lists/5.html"  target="_self">产品</a></li><li id="menu_4"><a href="/index.php?s=/lists/4.html"  target="_self">课堂</a></li><li id="menu_2"><a href="/index.php?s=/lists/2.html"  target="_self">方案</a></li><li id="menu_3"><a href="/index.php?s=/lists/3.html"  target="_self">案例</a></li><li id="menu_7"><a href="http://www.qiruanwang.com/blog/"  target="_self">博客 </a></li><li id="menu_8"><a href="/index.php?s=/lists/8.html"  target="_self">应用</a></li>			
+		</ul>
+	</div>
+	<div class="nav-b"></div>
+</div>
+<div id="slide">
+	<div class="width-block">
+		<div id="full-screen-slider">
+			<ul id="slides">
+				<li style="background:url('/Public/Uploads/hd/1588943403.png') no-repeat center top"><!--<a href="/index.php?s=/lists/4.html" target="_blank">1</a>--></li><li style="background:url('/Public/Uploads/hd/1588943436.png') no-repeat center top"><!--<a href="" target="_blank">1</a>--></li><li style="background:url('/Public/Uploads/hd/1588943453.png') no-repeat center top"><!--<a href="" target="_blank">1</a>--></li>	        
+
+			</ul>
+		</div>	
+	</div>
+</div>
+
+
+
+	
+
+
+
+	<div class="crumb"><span>你的位置：<a href="qiruanwang.com">首页</a>&nbsp;&gt;&nbsp;<a href="/index.php?s=/lists/5.html">产品</a>&nbsp;&gt;&nbsp;<a href="/index.php?s=/lists/53.html">物资管理</a> > 文档查看</span></div>
+<div class="width-block">
+	
+	<div class="business">
+		<div class="title">律伯公司简介</div>
+		<div class="menu">
+			<ul>
+				<li class="active">内容简介</li>
+				<li>作者简介</li>
+				<li>架构</li>
+				<li>特色</li>
+			</ul>
+		</div>
+		<div class="m-what" style="display: block;">
+北京三智超凡科技有限公司的名称源于公司的三个创始人都来自名校名企的高智商人士，拥有超凡的技术实力、一流的管理能力和无穷的创造力，她象征着公司打造的软件研发平台能够把品牌做大、做强、做响，使政府和企业提高运		</div>
+		<div class="m-what">
+			<p><b>未知</b></p>
+sss		</div>
+		<div class="m-what">
+		
+<p style="margin-top:0px;margin-bottom:0px;box-sizing:border-box;padding:0px;line-height:24px;white-space:normal;background-color:#FFFFFF;border:0px;color:#0000FF;font-family:"font-size:18px;">
+	北京三智超凡科技有限公司的名称源于公司的三个创始人都来自名校名企的高智商人士，拥有超凡的技术实力、一流的管理能力和无穷的创造力，她象征着公司打造的软件研发平台能够把品牌做大、做强、做响，使政府和企业提高运作效率，节省成本，更好的服务社会，不断的引领社会创新变革!
+</p>
+<p style="margin-top:0px;margin-bottom:0px;box-sizing:border-box;padding:0px;line-height:24px;white-space:normal;background-color:#FFFFFF;border:0px;color:#0000FF;font-family:"font-size:18px;">
+	<a href="http://www.qiruanwang.com/" target="_blank" style="margin-right:auto;margin-left:auto;box-sizing:border-box;color:#333333;text-decoration-line:none;background-color:transparent;"><a href="http://www.qiruanwang.com" target="_blank">企软网</a></a>成立于2012年7月，是一家专业的企业软件研发和共享的门户型网站，前期主要开发制造业相关的企业软件系统，逐步建立了自己的研发实验室，研究世界上最先进的软件技术，运用到软件开发中去。2015年，<a href="http://www.qiruanwang.com/" target="_blank" style="margin-right:auto;margin-left:auto;box-sizing:border-box;color:#333333;text-decoration-line:none;background-color:transparent;"><a href="http://www.qiruanwang.com" target="_blank">企软网</a></a>并入三智超凡科技有限公司，作为其互联网+和智能制造战略的基石。
+</p>
+<p style="margin-top:0px;margin-bottom:0px;box-sizing:border-box;padding:0px;line-height:24px;white-space:normal;background-color:#FFFFFF;border:0px;color:#0000FF;font-family:"font-size:18px;">
+	随着工业4.0战略的不断发展，以及“互联网+”时代创客大军的迅猛来袭，三智超凡科技与时俱进，倡导企业管理新理念，一方面从生产流程、业务绩效、系统监督等方面为企业客户打造独具特色的智能制造车间执行力管理平台，快速实现转型升级;另一方面致力于互联网高新技术研究，坚持以技术为先锋，以专利产品为核心，为互联网创客提供互联网+电子商务网站平台全方位优质解决方案，让用户享受个性化的智能工业管理系统咨询、软件开发、微信互动营销、网站建设、推广优化、UI设计及互联网全方位解决方案服务，致力于政府、企业、银行、制造业、服务业等领域信息数据化建设，让客户提高运营效率，降低成本，提升核心竞争力，创造社会价值!
+</p>
+<p style="margin-top:0px;margin-bottom:0px;box-sizing:border-box;padding:0px;line-height:24px;white-space:normal;background-color:#FFFFFF;border:0px;color:#0000FF;font-family:"font-size:18px;">
+	三智超凡工业4.0智能管理系统包含：PLM系统、MES系统、SCM系统、EAM系统、生产管理系统、设备管理系统、车间管理系统、成本管理系统、工艺设计和管理系统以及质量管理系统。
+</p>
+<p style="margin-top:0px;margin-bottom:0px;box-sizing:border-box;padding:0px;line-height:24px;white-space:normal;background-color:#FFFFFF;border:0px;color:#0000FF;font-family:"font-size:18px;">
+	三智超凡互联网+网络营销型产品包含：第三方微信公众平台、防伪溯源防窜货系统、B2B网站 、O2O模式网站、B2C网站、C2C网站、跨境电商平台以及电子商务网站建设。
+</p>
+<p style="margin-top:0px;margin-bottom:0px;box-sizing:border-box;padding:0px;line-height:24px;white-space:normal;background-color:#FFFFFF;border:0px;color:#0000FF;font-family:"font-size:18px;">
+	人类社会已进入了信息社会，传统的管理模式和产业链条逐步被信息化的软件系统所取代，三智超凡站在时代的节点，为政府和企业提供更好的软件产品，提高社会运转效率，促进社会创新变革，这是三智超凡的追求也是三智超凡的目标，改变社会必须改变自己，引领时代必须挑战现实。互联网社会逐步替代和颠覆传统社会，进入信息社会，追溯人类几千年的发展史，每个时代都有每个时代的轨迹。农业社会谁拥有了土地谁就拥有了一切;工业社会谁拥有了工厂谁就掌握了经济命脉;信息社会谁掌握了信息谁就主导了这个时代。互联网、软件行业为大家插上理想的翅膀，让我们展翅高飞，实现理想和抱负。
+</p>		</div>
+		<div class="m-what" style="display: none;">
+			
+
+
+		</div>
+		
+	</div>
+		
+</div>
+
+<div class="footer">
+	<div class="width-block">
+		<p><a href="javascript:">版权声明</a>  |  <a href="javascript:">免责声明</a>  |  <a href="javascript:">服务条款</a>  |  <a href="javascript:">隐私政策</a>  |  <a href="javascript:">关于我们</a>  |  <a href="javascript:">联系我们</a></p>
+		<p>Copyright © HR. All rights reserved &nbsp; 京ICP证110088号</p>
+		<p>客服电话：400-555-888 &nbsp;  客服邮箱:Support@HR.com</p>
+	</div>
+</div>
+
+</body>
+
+</html>

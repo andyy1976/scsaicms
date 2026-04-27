@@ -1,0 +1,157 @@
+<include file="./head_inner"/>
+
+<div class="mainer">
+<div class="mainer-list-side">
+		<div class="mainer-side">
+	
+			
+		
+					<div class="public-side-name">
+							
+				
+							<!--当前级的上一级菜单，本级循环二级-->
+								
+									<php>
+								//	$first_id=get_first_father($type['typeid']);
+								//$all_ids=get_children($first_id);
+										$fid=get_field('type','typeid='.$type[typeid],'fid');
+										
+										if($fid==0)
+										{ 
+											$pid=$type[typeid]; 
+											$pname=$type[typename];
+										}
+										else
+										{ 
+											$pid=$fid; 
+											$pname=get_field('type','typeid='.$pid,'typename');
+										}
+								  </php>
+								  
+								  	 <?php
+															//查询数据库和缓存
+													$article = D('ArticleView');
+													
+													//封装条件
+									        $map['status'] = 1;
+													
+									        $arr = get_children($pid);
+									        //echo $arr[0];
+									        $map['article.typeid'] = array('in', $arr);
+									       
+									        $countofcurrenttypeid = $article->where($map)->count();
+												//echo  $countofcurrenttypeid;
+											?>
+							<h1>{$pname}</h1>
+								<ul>	
+									<category parentid="$pid" id="vo">
+									
+										
+											<?php
+														
+													
+									        $arr = get_children($vo['typeid']);
+									        //echo $arr[0];
+									        $map['article.typeid'] = array('in', $arr);
+									       
+									        $countofcurrenttypeid = $article->where($map)->count();
+												//echo  $countofcurrenttypeid;
+											?>
+											<li class="<php>if($type['typeid'] == $vo['typeid']){</php>  onm <php>}</php> "><a href='{$vo.typeid|url=lists,###}'>{$vo.typename}(<?php echo $countofcurrenttypeid  ?>)</a>
+												<php>
+													$cid = get_children($vo['typeid']);
+													
+													
+													if($vo['typeid'] != $cid)
+													{</php>
+													<ul>
+														<category parentid="$vo[typeid]" id="voo">
+														<?php
+														
+													
+												        $arr = get_children($voo['typeid']);
+												        //echo $arr[0];
+												        $map['article.typeid'] = array('in', $arr);
+												       
+												        $countofcurrenttypeid = $article->where($map)->count();
+															//echo  $countofcurrenttypeid;
+														?>
+															
+														<li><span class="file <php>if($type['typeid'] == $voo['typeid']){</php>  active <php>}</php>"><a href='{$voo.typeid|url=lists,###}' >{$voo.typename}(<?php echo $countofcurrenttypeid  ?>)</a></span></li> 
+														</category>
+													</ul>
+												<php>}</php>
+											</li>
+									</category>
+								</ul>
+						
+					
+	
+				</div>
+
+		</div>
+	<div class="mainer-square">
+				<div class="mainer-path">
+					<span class='guide_menu'>你的位置：{$nav}</span>
+				</div>
+				<div class="mainer-page-list">
+					<php>if(count($list)==1){</php>
+						<!--content start-->
+					
+						
+							<div class='caption'>
+											<h1>{$list[0]['title']}</h1>
+											
+										
+					     		  </div>
+								
+								
+								
+								
+				
+										<div class="width-block">
+											
+									
+											
+											<div class="text-conent">
+												
+												<div class="text-info">
+											
+																	
+													
+																{$list[0]['content']}
+											
+			
+														
+												</div>
+											</div>
+											
+										</div>
+						
+						
+						
+						
+						<php>}else{</php>
+
+						<div class='public-title-list'>
+								
+									<!--文章列表-->
+						  <ul class='clearfix'>
+
+								<volist name="list" id="vo">
+								<li><div class='inside-times'><b>{$vo.addtime|msubstr=###,0,10}</b></div><div class='inside-title-intro'><a href='{$vo.aid|url=articles,###}' target='_blank'><notempty name="vo.titlecolor"><font color="{$vo.titlecolor}"></notempty>{$vo.title|msubstr=###,0,128,'utf-8'}<notempty name="vo.titlecolor"></font></notempty></a></div></li>
+								</volist>
+	  					</ul>
+						</div>
+			
+					  <div id="pagelist">{$page}	</div>
+								<br><br>
+							
+					<php>}</php>
+					
+				</div>
+		</div>
+</div>
+</div>
+<include file="$footer"/>
+

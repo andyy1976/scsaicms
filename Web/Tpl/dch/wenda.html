@@ -1,0 +1,201 @@
+<include file="./head_inner"/>
+	<script type="text/javascript" src="__TMPL__/js/ajaxwd.js"></script>
+
+<div class="second">
+	<div class="width-block">
+		<div class="second-left">
+			<div class="left-list">
+				<div class="second-treemenu">
+						<div class="title"><h3><a href="#">主题分类</a></h3></div>
+					<div class="treemenu">
+						<ul>
+							
+								  	<?php
+															//查询数据库和缓存
+													$wendagroup = M('wenda_group');
+													//相关判断
+												  $map['status'] = 1;
+													$grouplist = $wendagroup->where($map)->select();
+															
+													$wenda = M('wenda');
+													
+													//封装条件
+									        $map['status'] = 1;
+
+											?>
+											<volist name="grouplist" id="vo">
+											<?php
+												
+									        $map['group_id'] = $vo['group_id'];
+									       
+									        $countofwenda= $wenda->where($map)->count();
+
+											?>
+										<li>
+											<php>if($group_id == $vo['group_id']){</php>
+											<span class="arrow"></span><span class="file active">
+											
+												<php>}else{</php>	
+												<span class="arrow"></span><span class="file">
+												<php>}</php>	
+												
+														<a href='/index.php?s=wenda&group_id={$vo.group_id}' target='_blank'>{$vo.group_name|msubstr=###,0,38,'utf-8'}(<?php echo $countofwenda ?>)</a>
+											</span>
+										</li>
+									</volist>
+						</ul>
+					</div>
+				</div>
+				<!--
+				<div class="second-info">
+					<div class="title"><h3>效力级别</h3></div>
+					<div class="list">
+							<ul>  
+							<?php  
+							$url="/index.php?s=wenda&group_id=".$group_id."&";
+							$id=$group_id;
+							?>
+							  <td colspan=4 class=b1_1>{:show_field("wenda",$id,"effectlevel",$effectlevel,"法律|1,行政法规|2,司法解释/文件|3,部委规章|4,地方法律|5",$url)}
+					 		</ul>
+					</div>
+				</div>
+				
+				<div class="second-treemenu">
+					<div class="title"><h3>地域范围</h3></div>
+					<div class="treemenu">
+						<ul>
+
+							  <td colspan=4 class=b1_1>{:show_field("wenda",$id,"location",$location,"全国|1,北京|2,上海|3,天津|4,重庆|5,广东省|13,广州市|131,深圳市|132,浙江|24,杭州市|241,宁波市|242,山东省|28,青岛市|281,济南市|282",$url)}
+					 		</ul>
+					</div>
+				</div>
+				-->
+			</div>
+			<div class="ranking">
+				<div class="title">问题访问排行</div>
+							<ul>
+										<php>		$number=1 </php>
+									<volist name="list" id="vo">
+
+												<li>
+												<php>if($number<4){</php>	
+												<span class="topic_flag_hot">{$number++}</span>
+												<php>}else{</php>	
+												<span class="topic_flag">{$number++}</span>
+												<php>}</php>	
+												<div>
+															<a href='/index.php?s=wendadisplay&qid={$vo.id}' target='_blank'>{$vo.content|msubstr=###,0,38,'utf-8'}</a>
+												</div>
+												</li>
+									</volist>
+							</ul>
+			</div>	
+		</div>
+		<div class="second-right">
+			<php>if((isset($_SESSION['cms_username'])&&$_SESSION['cms_username'] !='')){</php>
+			<div class="tw-menu">
+				<ul>
+					<li class="active"><a href="index.php?s=wenda">全部问题</a></li>
+					<php>if($_SESSION['cms_bloggroup'] !='visitor'&& $_SESSION['cms_bloggroup'] !='subscriber'){</php>
+							<li><a href="index.php?s=wenda/answerlist">待回复问题</a></li>
+							<li><a href="index.php?s=wenda/myanswerlist">我回复的问题</a></li>
+								<php>	}else{</php>
+								<li><a href="index.php?s=wenda/mywendalist">我的问题</a></li>
+				<!--	<li><a href="index.php?s=wenda/tiwen">我要提问<i></i></a></li>-->
+							<php>	}</php>
+					
+				</ul>
+			</div>
+			<php>	}</php>
+			<div class="pusl-list questions">
+				<div class="joint">专家问答全部问题 ， 共有<span>{$count}</span>条信息 
+					<php>if(!(isset($_SESSION['cms_username'])&&$_SESSION['cms_username'] !='')){</php>
+						,未<a href="#" class="dl-tc">登录</a>时只显示前10条信息
+					<php>	}</php>
+			    </div>
+				<div class="bule"></div>
+				<ul>
+			
+					<volist name="list" id="vo">
+						<li>
+							<div class="number">{$startnumber++}</div>
+							<div class="rit-cont">
+							   <div class="name"><i>Q</i><a href='/index.php?s=wendadisplay&qid={$vo.id}' target='_blank'>[{$vo.title}][{$vo.content|msubstr=###,0,100,'utf-8'}]</a></div>
+							   <div class="info"><i>A</i>{$vo.recontent|msubstr=###,0,200,'utf-8'}</div>
+							   <div class="tips"><span>分类: {:get_field('wenda_group','group_id='.$vo[group_id],'group_name')}</span> 时间:{$vo.addtime|msubstr=###,0,10}</div>
+						</div>
+						</li>
+					</volist>
+				</ul>
+					<php>if((isset($_SESSION['cms_username'])&&$_SESSION['cms_username'] !='')){</php>
+				<div class="page-al">
+					<div class="dataTables_paginate pagination">
+					    <nav>
+					        <ul class="pagination">
+					        	
+					        	 {$page}
+					        </ul>
+					    </nav>
+					</div>
+				</div>
+				<php>	}</php>
+			</div>
+		</div>
+	</div>
+</div>
+					<php>if((isset($_SESSION['cms_username'])&&$_SESSION['cms_username'] !='')){</php>
+	<script>
+				var root = "{$url}";
+			//	alert("aa");
+	</script>
+	<form id="form1" name="form1" method="post" action="">
+		<div class="connect">
+			<div class="title">
+				<h3>我要提问</h3>
+				<div class="open-retract"></div>
+			</div>
+			<div class="leave">客户提问</div>
+			<div class="input-pad">
+				<div class="input-info">
+					<label><i class="fa fa-user"></i></label>
+					<input type="text" placeholder="请在此输入问题的标题，我们会尽快与您联系。（必填）" name="title" id="title"  value="" />
+				</div>
+				<div class="input-textarea">
+					<textarea rows="4" placeholder="请在此输入问题的详细描述" name="wendaanswercontent" id="wendaanswercontent"></textarea>
+				</div>
+
+				<div class="input-info">
+					<label><i class="fa fa-user"></i></label>
+					<input type="text" placeholder="姓名" name="author" id="Author" readonly="true" value="{$_SESSION['cms_realname']}"/>
+				</div>
+				<div class="input-info">
+					<label><i class="fa fa-phone"></i></label>
+					<input type="text" placeholder="电话"  name='tel' id="tel"/>
+				</div>
+				<div class="input-info">
+					<label><i class="fa fa-envelope"></i></label>
+					<input type="text" placeholder="邮箱"  name="email" id="email" />
+				</div>
+				<!--
+				<div class="input-info">
+					<label><i class="fa fa-map-marker"></i></label>
+					<input type="text" placeholder="地址">
+				</div>
+				-->
+				<div class="input-info" style="display:block;">
+					<label><i class="fa fa-envelope"></i></label>
+				 <select class="form-control" name="group_id" id="group_id">
+									<option value="-1">请选择分组</option>
+										<arclist model="wenda_group" id="vo">
+										<option value="{$vo.group_id}" <eq name="info.group_id" value="$vo[group_id]">selected="selected"</eq>>{$vo.group_name}</option>
+										</arclist>
+									</select>
+				</div>
+				<div class="btn-hf">
+					<button   id="sendWendaQuestion" onClick="AddWendaQuestion();">提问</button>
+					</div>
+			</div>
+		</div>
+	</form>
+	<php>	}</php>
+<include file="$footer"/>

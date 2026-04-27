@@ -1,0 +1,111 @@
+<include file="./head_inner"/>
+
+ <script type="text/javascript">
+   function ongroupchange()
+			 {
+			 	var group_id=$("#group_id").val();
+			 	//alert(group_id);
+
+			 	window.location.href="index.php?m=member&a=vip&group_id="+group_id;
+			 }
+    	 _.ready(function()
+				{
+					
+					}); 
+    </script>	
+<div class="second">
+	<div class="width-block">
+		<div class="second-left">
+			<div class="left-list">
+				<div class="second-treemenu">
+					<div class="title"><h3><a href="/index.php?s=/member/main.html">用户中心</a></h3></div>
+					<div class="treemenu">
+						<ul id='suckertree1'>
+							<volist name='member_menu' id='vo'>
+							<li><span class="arrow"></span><span class="file"><a href="__ROOT__{$vo.url}" target="_self">{$vo.name}</a></span>
+							<!--判定是否有子类-->
+							</li>
+							</volist>
+						</ul>
+					</div>
+				</div>
+
+			</div>
+
+</div>
+<div class="second-right">
+	<div class="joint"><span>你的位置：{$nav}购买会员</span></div>
+
+			<div class="pusl-list">
+				<div class="bule"></div>
+			
+<form class="form-horizontal"  name=alipayment action="<if condition="C('AP_TYPE') eq 1">./Trade/ap_jishi/alipayapi.php<else/>./Trade/ap_danbao/alipayapi.php</if>" method=post target="_blank">
+  <div class="form-group">
+    <label for="inputEmail3" class="col-sm-2 control-label">用户名</label>
+    <div class="col-sm-10">
+    	<input type="hidden" size="30" name="username" />
+     {$_SESSION.cms_username}
+    </div>
+  </div>
+   
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">所在会员组</label>
+    <div class="col-sm-10">
+			<select class="form-control" name="group_id" id="group_id" onchange="ongroupchange();">
+			<option value="0">请选择</option>
+			<volist name="membergroup" id="vo">
+
+			<option value="{$vo.group_id}" <?php echo $vo['group_id'] == (isset($_GET['group_id']) ? $_GET['group_id'] : '') ? 'selected="selected"' : '';?>>{$vo.group_name}</option>
+			</volist>
+			</select>
+    </div>
+  </div>
+  
+  
+    <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">会员对应的金额</label>
+    
+    <div class="col-sm-10">
+    	
+      <input type="number" class="form-control" name="WIDtotal_fee" id="WIDtotal_fee" value="{$group.fee}" placeholder="会员所对应的费用">
+    </div>
+  </div>
+   
+   <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">付款名称</label>
+    
+    <div class="col-sm-10">
+     <input size="30" name="WIDsubject" value="{$config.sitetitle}会员在线充值" />
+    </div>
+  </div>
+  
+     <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">备注</label>
+    
+    <div class="col-sm-10">
+    <input size="30" name="WIDbody" />
+    </div>
+  </div>
+  
+       <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">联系人手机号码</label>
+    
+    <div class="col-sm-10">
+    <input size="30" name="WIDreceive_mobile" />
+																                        <span>如：13312341234</span>
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-success">确定购买</button>
+      
+    </div>
+  </div>
+</form>
+			
+			</div>
+		</div>
+</div>
+</div>
+<include file="$footer"/>

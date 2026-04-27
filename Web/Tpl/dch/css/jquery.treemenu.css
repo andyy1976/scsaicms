@@ -1,0 +1,47 @@
+/* For treemenu.js */
+.tree ul{
+	padding: 4px 0 0 18px;
+}
+
+.tree li{
+    padding: 4px 2px;
+}
+
+.tree li a {
+    text-decoration: none;
+}
+
+.tree li a:hover {
+    color: #ea1515;
+}
+
+.tree .active {
+    color: #ea1515;
+}
+
+.tree .active a {
+    color: #ea1515;
+}
+
+.tree li a.active:hover {
+    background-color: none;
+}
+
+
+.treemenu li { list-style: none; }
+
+.treemenu .toggler {
+    cursor: pointer;
+    
+}
+
+.treemenu .toggler:before {
+    float: left;
+    margin: 0 4px 0 0;
+    font-size: 14px;
+}
+
+li.tree-empty > .toggler { color: #aaa;  }
+li.tree-empty > .toggler:before { content: url(../images/jian-icon.png); opacity: .4;}
+li.tree-closed > .toggler:before { content: url(../images/jia-icon.png); }
+li.tree-opened > .toggler:before { content: url(../images/jian-icon.png); }

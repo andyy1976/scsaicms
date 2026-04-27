@@ -1,0 +1,46 @@
+<include file="$head"/>
+	<div class="news">
+    <div class="news-list">
+        <div class="news-head">资讯</div>
+        <div class="news-title">
+        	<div class="public-title" style="overflow: hidden; position: relative;">
+        		<ul style="margin: 0px; padding: 0px; overflow: hidden; position: relative; list-style: none; width: 9840px; left: -528px;">
+        	
+        
+        			 <arclist model='article' where="status=1" order='ishot desc,addtime desc' num='9' id='vo'>
+                   		<li class="title1" style="position: relative; overflow: hidden; float: left;"><a href="{$vo.aid|url=articles,###}" target="_blank" title="{$vo.title}" class="a-title">
+                   			{$vo.title}</a><span>{$vo.addtime|msubstr=###,0,10}</span></li>
+                   
+                    <tr>
+                        <td width='80%' class='ListTitle'><a href='{$vo.aid|url=articles,###}' target='_blank'
+                                                             title='{$vo.title}'>{$vo.title}</a></td>
+                        <td width='20%'><span>{$vo.addtime|msubstr=###,0,10}</span></td>
+                    </tr>
+                </arclist>
+        			
+        			</ul>
+        			</div>
+        			</div>
+        <div class="news-more"><a href="{:url('lists',4)}"></a></div>
+    </div>
+    <script type="text/javascript">
+        (function () {
+            $(".public-title").imgscroll({
+                speed: 100,    //图片滚动速度
+                amount: 0,    //图片滚动过渡时间
+                width: 1,     //图片滚动步数
+                dir: "left"   // "left" 或 "up" 向左或向上滚动
+            });
+        })(jQuery)
+    </script>
+</div>
+	
+	
+	
+	
+	
+	
+	
+	
+
+<include file="$footer"/> 

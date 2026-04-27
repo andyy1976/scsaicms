@@ -1,0 +1,224 @@
+﻿<include file="./head_inner"/>
+	<script type="text/javascript" src="__TMPL__/js/ajaxwd.js"></script>
+	<script type="text/javascript"> 
+
+$(document).ready(function() 
+{
+	//右侧划入
+	
+		var p=GetQueryString("p");
+	
+		if(p!=null)
+		{
+					
+						if($(".side-bar").css("right")=="-626px")
+						{
+							$(".side-bar").animate({right:'0'},100);
+						}
+					
+			
+		}
+		else 
+		{
+				var page=GetQueryString("page");
+	
+				if(page!=null)
+				{
+					
+						if($(".side-bar2").css("right")=="-626px")
+						{
+							$(".side-bar2").animate({right:'0'},100);
+						}
+				}
+				else
+				{
+						var type=GetQueryString("type");
+	
+						if(type==2)
+						{
+							
+								if($(".side-bar").css("right")=="-626px")
+								{
+									$(".side-bar").animate({right:'0'},100);
+								}
+						}
+						
+						else if(type==3)
+						{
+							
+								if($(".side-bar2").css("right")=="-626px")
+								{
+									$(".side-bar2").animate({right:'0'},100);
+								}
+						}
+				}
+		}
+		$(".relation-al,.gl-close2").click(function()
+		{
+			//alert("a");
+		if($(".side-bar2").css("right")=="-626px"){
+			$(".side-bar2").animate({right:'0'},100);
+		}
+		else
+		{
+			$(".side-bar2").animate({right:'-626px'},100);
+		};
+		
+		});
+	
+	$(".relation-fl,.gl-close").click(function()
+	{
+		if($(".side-bar").css("right")=="-626px"){
+			$(".side-bar").animate({right:'0'},100);
+		}
+		else
+		{
+			$(".side-bar").animate({right:'-626px'},100);
+		};
+		
+	});
+	
+});
+	</script> 
+		 
+<div class="second">
+	<div class="width-block">
+		<div class="second-left">
+			<div class="left-list">
+				<div class="second-treemenu">
+						<div class="title"><h3><a href="#">主题分类</a></h3></div>
+						<div class="treemenu">
+							<ul>
+								
+									  	<?php
+																//查询数据库和缓存
+														$wendagroup = M('wenda_group');
+														//相关判断
+													  $map['status'] = 1;
+														$grouplist = $wendagroup->where($map)->select();
+																
+														$wenda = M('wenda');
+														
+														//封装条件
+										        $map['status'] = 1;
+
+												?>
+										<volist name="grouplist" id="vo">
+												<?php
+													
+										        $map['group_id'] = $vo['group_id'];
+										       
+										        $countofwenda= $wenda->where($map)->count();
+
+											?>
+										<li>
+											<php>if($group_id == $vo['group_id']){</php>
+											<span class="arrow"></span><span class="file active">
+											
+												<php>}else{</php>	
+												<span class="arrow"></span><span class="file">
+												<php>}</php>	
+												
+													<a href='/index.php?s=wenda/mywendalist&group_id={$vo.group_id}' target='_blank'>{$vo.group_name|msubstr=###,0,38,'utf-8'}(<?php echo $countofwenda ?>)</a>
+											</span>
+										</li>
+									</volist>
+						</ul>
+					</div>
+				</div>
+				
+			
+			</div>
+			
+			</div>
+
+				
+			<div class="second-right">
+				<div class="tw-menu">
+					<ul>
+						<li><a href="index.php?s=wenda/index.html">全部问题</a></li>
+						<li><a href="index.php?s=wenda/answerlist">待回答问题</a></li>
+						<li class="active"><a href="index.php?s=wenda/tiwen">回复问题<i></i></a></li>
+					</ul>
+				
+				</div>
+				
+				<div class="pusl-list questions">
+					<div class="bule"></div>
+					<form id="form1" name="form1" method="post" action="">
+							<input type="hidden"  name="qid" id="qid"  value="{$qid}">
+						<div class="tw-all">
+							<div class="tw-tips"><i>●</i> 欢迎使用律伯专业问答，进入该页面的您是被系统认可的相关领域专家，您的回复是专业和被认可的，
+					请按标准格式作答，您的答案会有专业人士审核后呈现给用户。如果您有任何疑问，请及时拨打我们的客服电话400-111-8282（工作时间：周一至周五9:00~18:00）。对于有代表性的问题和回答，我们会以匿名方式在专家问答栏目发布。</div>
+					<div class="input-wor"><label>问题分类：</label>
+							   	  <select  name="group_id" id="group_id" disabled>
+									<!--	<option value="-1">请选择</option>-->
+										<arclist model="wenda_group" id="vo" >
+										<option value="{$vo.group_id}" <eq name="info.group_id" value="$vo[group_id]">selected="selected"</eq>>{$vo.group_name}</option>
+										</arclist>
+										</select>
+									  </div>
+  
+							 <div class="input-wor"><label>问题标题：</label>
+		
+							      <input type="text" readonly="true"  name="title" id="title" value="{$info.title}" >
+								  <span>*</span>
+							    </div>
+ 						
+							   <div class="input-wor"><label>问题内容：</label>
+							      <input type="text" readonly="true" class="form-control" name="content" id="content" value="{$info.content}" >
+							    </div>
+ 							 	<div class="input-wor"><label>您的姓名：</label>
+
+							      	<input type="text" class="form-control" name="author" id="Author" readonly="true" value="{$_SESSION['cms_realname']}">
+							    </div>
+ 							<div class="input-wor"><label>您的答案：</label>
+							    
+							   
+							      <textarea class="form-control" rows="4" name="recontent" id="recontent">{$info.recontent}</textarea>
+ 							 		</div>
+								<div class="input-wor"><label>法律依据：</label>
+							    
+							   
+							    <textarea rows="4" class="form-control" name="approval" id="approval">{$info.approval}</textarea>
+ 							 </div>
+ 							 <div class="tw-gl">
+ 							<!-- <a href="/index.php?s=Wendalinkarticle&typeid=2&qid={$info.id}" target="_blank">关联法律依据</a>
+								<a href="#" class="relation-fl" onclick="guanlianfagui(2,{$info.id});" >关联法律依据</a>-->
+								<a href="#" class="relation-fl" >关联法律依据</a>
+							<!--	<button type="button" class="btn btn-default" title="新建" data-toggle="modal" 
+									data-target="#editModal" ng-click="entity={}" ><i class="fa fa-file-o"></i> 新建</button>-->
+ 
+							 </div>
+							 <div class="input-wor"><label>操作指引：</label>
+							   		<textarea rows="4" class="form-control" name="guide" id="guide">{$info.guide}</textarea>
+ 							 </div>
+ 							<div class="input-wor"><label>典型案例：</label>
+							    
+							    
+							     <textarea rows="2" class="form-control" name="cases" id="cases">{$info.cases}</textarea>
+							    
+ 							 </div>
+ 							<div class="tw-gl">
+ 								<!--<a href="/index.php?s=Wendalinkarticle&typeid=3&qid={$info.id}" target="_blank">关联典型案例</a>
+ 								<a href="#" onclick="guanliananli();" >关联典型案例</a></div>-->
+ 								<a href="#" class="relation-al" >关联案例</a>
+ 								</div>
+
+								<div class="tw-btn">
+
+							<button type="button"  id="sendWendaAnswer" onClick="AddWendaAnswer();">提交答案 </button>
+						 		</div>
+						 	</div>
+						</div>
+					</form>
+				</div>
+			</div>
+				<script>
+				var root = "{$url}";
+				</script>
+	</div>
+</div>
+
+
+<include file="./footer-wenda-answer"/>

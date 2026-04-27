@@ -1,0 +1,90 @@
+﻿<include file="./head_inner"/>
+   
+
+<div class="second">
+	<div class="width-block">
+		<div class="second-left">
+			<div class="left-list">
+				
+					<div class="second-info">
+					<div class="title"><h3>专家页面</h3></div>
+						<div class="list">
+						<ul>
+							<li class="active"><a href="index.php?s=memberlist">团队展示</a></li>
+							<php>if((isset($_SESSION['cms_username'])&&$_SESSION['cms_username'] !='' && $_SESSION['cms_bloggroup'] !='visitor' && $_SESSION['cms_bloggroup'] !='subscriber')){</php>
+							<li><a href="/blog/admin/">我的文章</a></li>
+							<php>	}</php>
+						</ul>
+						</div>
+					</div>
+					<div class="second-treemenu">
+					<div class="title"><h3><a href="#">主题分类</a></h3></div>
+					<div class="treemenu">
+						<ul id='suckertree1'>
+							
+								  	<?php
+															//查询数据库和缓存
+													$category = M('metas');
+													//相关判断
+												  $map['type'] = "category";
+												  $map['parent'] =0;
+													$categorylist = $category->where($map)->select();
+															
+													$content = M('relationships');
+													
+													
+
+											?>
+											<volist name="categorylist" id="vo">
+											<?php
+												
+									        $map['mid'] = $vo['mid'];
+									       
+									        $countofblogarticle= $content->where($map)->count();
+
+											?>
+										<li>
+													<a href='/blog/index.php/category/{$vo.slug}' >{$vo.name|msubstr=###,0,38,'utf-8'}(<?php echo $countofblogarticle ?>)</a>
+										</li>
+									</volist>
+						</ul>
+					</div>
+				</div>
+				
+					</div>
+		</div>
+		<div class="second-right">
+			
+			<div class="pusl-list questions">
+				<div class="joint"><a href="/blog/">专家页面</a> > 团队展示</div>
+				<div class="bule"></div>
+				
+				<div class="proficient-all">
+					<volist name="list" id="vo"> 
+					<div class="proficient-info">
+						<dl>
+							<dt><img src="{$vo.icon}" width="160" height="160"></dt>
+							<dd class="name"><a href="index.php?s=memberlist/user&userid={$vo.id}">{$vo.realname}</a></dd>
+							<dd class="suggest">{$vo.description}</dd>
+						</dl>
+					</div>
+					
+					</volist>
+				</div>
+				
+				<div class="page-al">
+					<div class="dataTables_paginate pagination">
+					    <nav>
+					        <ul class="pagination">
+					        	
+					        	 {$page}
+					        </ul>
+					    </nav>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<include file="$footer"/>

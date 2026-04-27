@@ -1,0 +1,73 @@
+/* 
+.ss-head {
+  background: #317eb6;
+  color: #fff
+}
+.icon-nav, .ss-head-right a , .ss-head-right .item-icon{
+  color: #fff
+}
+.ss-head-left .ss-logo {
+  background: #317eb6;
+}
+.ss-search-input {
+  background: #fff
+} */
+.ss-navbar-default {
+  background: #006DCE;
+}
+
+.ss-navigation li, .ss-navigation {
+  border-bottom: 1px solid #0978dc;
+}
+
+.ss-search-input button {
+  background: #006DCE;
+}
+
+.icon-nav, .ss-head-right a, .ss-head-right .item-icon {
+  color: #006DCE;
+}
+
+.ss-navigation .item-title.active, .ss-navigation .item-title:hover, .ss-navigation li.active >.item-title, .ss-navigation li:hover >.item-title, .ss-btn-default {
+  background: #005eaf;
+}
+.ss-btn-default {
+  border-color: #005eaf;
+}
+
+.pagination .page-item.active a,
+.pagination .page-item:hover a {
+  background: #006DCE;
+}
+
+.bg-gradients-1 {
+  background: none;
+}
+.bg-gradients-2 {
+  background: none;
+}
+.bg-gradients-3 {
+  background: none;
+}
+.bg-gradients-43 {
+  background: none;
+}
+.bg-gradients-5 {
+  background: none;
+}
+.bg-gradients-6 {
+  background: none;
+}
+
+.login-page {
+  background: url('../../images/bg-3.jpg') no-repeat;
+  background-position: bottom;
+  background-size: cover;
+}
+
+.ss-tag-fff-ff9900{
+  background: #006DCE;
+  border: 1px solid transparent;
+  border-color: #006DCE;
+  color: #fff;
+}

@@ -1,0 +1,180 @@
+﻿﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="referrer" content="no-referrer" />
+<meta name="keywords" content="航空航天"/>
+<meta name="description" content="航空航天"/>
+<title>
+航空航天-企软网-专业的企业软件研发和培训网站</title>
+<link rel="stylesheet" type="text/css" href="/Web/Tpl/w3g/css/main.css">
+<script src="/Web/Tpl/w3g/img/flexible.js"></script>
+<script src="/Web/Tpl/w3g/img/jquery-1.10.2.min.js"></script>
+<script src="/Web/Tpl/w3g/img/main.js"></script>
+<script src="/Web/Tpl/w3g/js/jquery.jslides.js" type="text/javascript" ></script>
+<script type="text/javascript"> 
+			
+function GetQueryString(name) 
+{
+		    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+		    var r = window.location.search.substr(1).match(reg);
+		    if (r != null) return decodeURI(r[2]);
+		    return null;
+}
+
+
+ 
+function Active_menu(i)
+{
+		//$('.header-left .active').removeClass('active');
+		//alert(i);
+			$("#menu_"+i).addClass('active');
+			//$('#menu_1').addClass('nav_h1');
+}
+	
+
+$(document).ready(function()
+{ 
+		//$('#shouye').addClass("nav_h11"); 
+	
+//alert("aa");
+  //  		alert("a");
+	var id=6;
+
+		var s=GetQueryString("s");
+	//alert(s);
+	
+		if(s==null)
+		{
+			//alert("1");
+		 id=1;
+		}
+		
+		else if(s.indexOf("memberlist")!=-1)
+		{
+			id=7;
+		}
+		else if(s.indexOf('wenda')!=-1)
+		{
+		 id=6;
+		}
+		/*
+		else if(s.indexOf('search')!=-1)
+		{
+		 //alert("search");
+		 id=GetQueryString("typeid");
+		 alert(id);
+		}
+		*/
+		else
+		{
+				 id=s.split('/')[2][0];
+		}
+		//alert(id);
+		Active_menu(id);
+
+
+
+
+});  
+</script> 
+</head>
+
+<body>
+	<div class="header">
+		<div class="logo"><img src="/Web/Tpl/w3g/img/logo.png"></div>
+		<div class="rit"><script src="/index.php?s=/api/login_js_wap.html"></script></div>
+	</div>
+	<div class="nav">
+		<ul>
+			<li class="active"><a href="/">首页</a></li>
+			    <li id="menu_6" style="display:none;block"><a href="/index.php?s=wenda/index.html"  target="_self">问答</a></li><li id="menu_5" style="block"><a href="/index.php?s=/lists/5.html"  target="_self">产品</a></li><li id="menu_4" style="display:none;"><a href="/index.php?s=/lists/4.html"  target="_self">课堂</a></li><li id="menu_2" style="block"><a href="/index.php?s=/lists/2.html"  target="_self">方案</a></li><li id="menu_3" style="block"><a href="/index.php?s=/lists/3.html"  target="_self">案例</a></li><li id="menu_7" style="display:none;block"><a href="http://www.qiruanwang.com/blog/"  target="_self">博客 </a></li><li id="menu_8" style="block"><a href="/index.php?s=/lists/8.html"  target="_self">应用</a></li>						
+		
+		</ul>
+	</div>
+	<div class="search">
+			   <form class="form" id="search" method="post" action="/index.php?s=/search/Index.html" role="search">
+		<div class="search-left">
+					<div class="language">
+	<select  class="select" style="height:40px;border:0px;" name="typeid" id="typeid">
+											<option  class="list1" value="-1" ><span>全部文章</span><i></i></option>
+												<option class="list1" value="6"   		style="display:none;block"	><p>问答</p> </option><option class="list1" value="5"   		style="block"	><p>产品</p> </option><option class="list1" value="4"   		style="display:none;"	><p>课堂</p> </option><option class="list1" value="2"   		style="block"	><p>方案</p> </option><option class="list1" value="3"   		style="block"	><p>案例</p> </option><option class="list1" value="7"   		style="display:none;block"	><p>博客 </p> </option><option class="list1" value="8"   		style="block"	><p>应用</p> </option>											</select>
+		</div>
+		<div class="search-input">
+		<input type="text" id="search"  name="k"  placeholder="请输入搜索内容" onBlur="if(this.value=='') this.value='';" value=""/>
+		</div>
+	</div>
+		<div class="search-btn"><button id="search_btn" type="submit">搜 索</button></div>
+				 </form>
+	</div>
+
+
+
+	<div class="joint">
+				航空航天 ， 共有<span>	0</span>篇文章 
+												,未<a href="#" class="dl-tc">登录</a>时只显示前10篇文章
+													</div>
+	<div class="tag-column">
+		<ul>
+			<li>隐藏摘要</li>
+			<li class="screen">筛选<img src="/Web/Tpl/w3g//img/screen.png"></li>
+		</ul>
+	</div>
+	
+							
+					
+	<!--筛选-->
+	<div class="sx-backg">
+	<div class="sx-layer">
+		<div class="title">目录</div>
+		<div class="lot-block">
+			<div class="unfold"><h2>内容分类</h2><em></em></div>
+			<div class="cont-show">
+				<ul>
+							<!--当前级的上一级菜单，本级循环二级-->
+								
+																	  
+								  	 							<li><span class="arrow"></span><span class="file 	 "><a href='/index.php?s=/lists/3.html'>案例(0)</a></span>
+								<ul>	
+									<li>
+											<span class="arrow"></span>
+																						<span class="file   active  "><a href='/index.php?s=/lists/31.html'>航空航天(0)</a></span><!--判定是否有子类-->
+																						</li><li>
+											<span class="arrow"></span>
+																						<span class="file  "><a href='/index.php?s=/lists/32.html'>中小企业(0)</a></span><!--判定是否有子类-->
+																						</li>								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+				
+		<div class="lot-block">
+			<div class="unfold"><h2>效力级别</h2><em></em></div>
+			<div class="cont-show">
+							<ul>  
+														 <td colspan=4 class=b1_1><li value="1" class="active"><a href="/index.php?s=/lists/31/&effectlevel=1">法律(0)</a></li><li value="2" ><a href="/index.php?s=/lists/31/&effectlevel=2">行政法规(0)</a></li><li value="3" ><a href="/index.php?s=/lists/31/&effectlevel=3">司法解释/文件(0)</a></li><li value="4" ><a href="/index.php?s=/lists/31/&effectlevel=4">部委规章(0)</a></li><li value="5" ><a href="/index.php?s=/lists/31/&effectlevel=5">地方法律(0)</a></li>					 		</ul>
+					</div>
+				</div>
+				
+		<div class="lot-block">
+			<div class="unfold"><h2>地域范围</h2><em></em></div>
+			<div class="cont-show">
+						<ul>
+
+							  <td colspan=4 class=b1_1><li value="1" ><a href="/index.php?s=/lists/31/&location=1">全国(0)</a></li><li value="2" ><a href="/index.php?s=/lists/31/&location=2">北京(0)</a></li><li value="3" ><a href="/index.php?s=/lists/31/&location=3">上海(0)</a></li><li value="4" ><a href="/index.php?s=/lists/31/&location=4">天津(0)</a></li><li value="5" ><a href="/index.php?s=/lists/31/&location=5">重庆(0)</a></li><li value="13" ><a href="/index.php?s=/lists/31/&location=13">广东省(0)</a></li><li value="131" ><a href="/index.php?s=/lists/31/&location=131">广州市(0)</a></li><li value="132" ><a href="/index.php?s=/lists/31/&location=132">深圳市(0)</a></li><li value="24" ><a href="/index.php?s=/lists/31/&location=24">浙江(0)</a></li><li value="241" ><a href="/index.php?s=/lists/31/&location=241">杭州市(0)</a></li><li value="242" ><a href="/index.php?s=/lists/31/&location=242">宁波市(0)</a></li><li value="28" ><a href="/index.php?s=/lists/31/&location=28">山东省(0)</a></li><li value="281" ><a href="/index.php?s=/lists/31/&location=281">青岛市(0)</a></li><li value="282" ><a href="/index.php?s=/lists/31/&location=282">济南市(0)</a></li>					 		</ul>
+					</div>
+				</div>
+				
+			</div>
+				
+	<div class="right-arrow"><img src=""/Web/Tpl/w3g/img/right-arrow.png"></div>
+		</div>
+﻿<div class="footer">
+		<p><a href="javascript:">版权声明</a>  |  <a href="javascript:">免责声明</a>  |  <a href="javascript:">服务条款</a>  |  <a href="javascript:">隐私政策</a>  |  <a href="javascript:">关于我们</a>  |  <a href="javascript:">联系我们</a></p>
+		<p>Copyright © HR. All rights reserved &nbsp; 京ICP证110088号</p>
+		<p>客服电话：400-555-888 &nbsp;  客服邮箱:Support@HR.com</p>
+	</div>
+</body>
+</html>

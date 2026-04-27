@@ -1,0 +1,7 @@
+http://www.fayuan.cn/shuofa/page_2.html
+
+http://www.fayuan.cn/shuofa/{*}.html
+
+.fy_statistics_name
+
+.fy_statistics_body

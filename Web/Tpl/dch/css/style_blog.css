@@ -1,0 +1,84 @@
+
+
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Helvetica Neue",Helvetica,Arial,"PingFang SC","Hiragino Sans GB","WenQuanYi Micro Hei","Microsoft Yahei",sans-serif;
+}
+
+input[type="text"], input[type="email"], input[type="url"], input[type="password"], textarea {
+    padding: 5px;
+    border: 1px solid #E9E9E9;
+    width: 100%;
+    border-radius: 2px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+textarea {
+    resize: vertical;
+}
+
+
+#header {
+    padding-top: 35px;
+    border-bottom: 1px solid #EEE;
+}
+
+#logo 
+{
+    color: #333;
+    font-size: 2.5em;
+}
+
+    #logo img {
+        max-height: 64px;
+    }
+
+.description {
+    margin: .5em 0 0;
+    color: #999;
+    font-style: italic;
+}
+
+
+
+#search {
+    position: relative;
+    margin-top: 15px;
+}
+
+    #search input {
+        padding-right: 30px;
+    }
+
+    #search button {
+        position: absolute;
+        right: 4px;
+        top: 2px;
+        border: none;
+        padding: 0;
+        width: 24px;
+        height: 24px;
+        background: transparent url(images/icon-search.png) no-repeat center center;
+        direction: ltr;
+        text-indent: -9999em;
+    }
+
+@media(-webkit-min-device-pixel-ratio:2),(min-resolution:192dpi) 
+{
+    #search button {
+        background-image: url(images/icon-search@2x.png);
+        -webkit-background-size: 24px 24px;
+        -moz-background-size: 24px 24px;
+        -o-background-size: 24px 24px;
+        background-size: 24px 24px;
+    }
+}
+
+
+
+
+
+
+

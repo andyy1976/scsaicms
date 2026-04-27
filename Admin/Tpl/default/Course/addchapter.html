@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>网站后台管理</title>
+<link href="__PUBLIC__/Admin/images/Admin_css.css" type=text/css rel=stylesheet>
+<script charset="gbk" src="__PUBLIC__/Editor/kindeditor-min.js"></script>
+
+<script charset="utf-8" src="__PUBLIC__/Editor/lang/zh_CN.js"></script>
+<link rel="shortcut icon" href="__PUBLIC__/Admin/images/myfav.ico" type="image/x-icon" />
+<import file= "Admin.js.admin,Admin.js.Ajax,Admin.js.Jquery"/> 
+<script> 
+var KE;
+KindEditor.options.filterMode = false;
+KindEditor.ready(function(K) {
+K.create('#descript',{ items : [
+						'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+						'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+						'insertunorderedlist', '|', 'emoticons', 'image', 'link'],afterBlur: function(){this.sync();}
+});
+});
+</script>
+</head>
+<body>
+<table width="95%" border="0" cellspacing="2" cellpadding="3"  align=center class="admintable" style="margin-bottom:5px;">
+    <tr>
+      <td height="25" bgcolor="f7f7f7">快速查找：
+        <SELECT onChange="javascript:window.open(this.options[this.selectedIndex].value,'main')"  size="1" name="s">
+        <OPTION value="" selected>-=请选择=-</OPTION>
+        <OPTION value="__URL__/index/">所有课程</OPTION>
+        <OPTION value="__URL__/index/status/1">已审的问答</OPTION>
+        <OPTION value="__URL__/index/status/0">未审的问答</OPTION>
+      </SELECT> </td>
+      <td bgcolor="f7f7f7">
+	  <form name="form1" method="post" action="__URL__/search">
+        <input name="keywords" type="text" id="keyword" value="" class="s26">
+        <input name="Submit2" type="submit" class="btn btn-warning" value="搜索">
+        </td>
+    </form>
+    </tr>
+</table>
+<table width="95%" border="0"  align=center cellpadding="3" cellspacing="2" bgcolor="#FFFFFF" class="admintable">
+<form name="myform" action="__URL__/doaddChapter" method=post>
+<tr> 
+    <td colspan="5" class="admintitle">添加章节
+	    <input name="courseId" type="hidden" id="courseId" value="{$courseId}" class="s26">
+	
+	</td>
+</tr>
+
+<tr>
+  <td bgcolor="#f7f7f7">章节名称</td>
+  <td colspan=4 bgcolor="#f7f7f7" class=td><input name="chapter_name" type="text" class="inputbg" id="chapter_name" size="30"></td>
+</tr>
+	 
+<tr>
+  <td bgcolor="#f7f7f7">播放文件</td>
+  <td colspan=4 bgcolor="#f7f7f7" class=td>
+  <script>KindEditor.ready(function(K){var editor = K.editor({allowFileManager : true});K("#insertfile_file_url").click(function() {editor.loadPlugin("insertfile", function() {editor.plugin.fileDialog({fileUrl : K("#file_url").val(),clickFn : function(url, title) {K("#file_url").val(url);editor.hideDialog();}});});});});</script><input type="text" id="file_url" name="icon" value="{$info.icon}" style='width:380px;'/> <input type="button" id="insertfile_file_url" value="选择文件" />
+				    <neq name="info.icon" value=""><br><br><img src="{$info.icon}" width="32" height="32" border="0"></neq>
+  
+  </td>
+</tr>	 
+
+				    <label for="inputPassword3" class="col-sm-2 control-label"></label>
+				    <div class="col-sm-8">
+				    
+				    </div>
+				  </div>
+<tr>
+  <td bgcolor="#f7f7f7">发布时间</td>
+
+      <td bgcolor="#FFFFFF">
+			  <input name="onlinetime" id="onlinetime" type="text" class="input" value="{:date("Y-m-d H:i:s");}" size="20">
+       </td>
+    </tr>
+
+<tr>
+  <td bgcolor="#f7f7f7">章节介绍</td>
+  <td colspan=4 bgcolor="#f7f7f7" class=td>
+  <textarea name="content" cols="80" rows="10" id="content"></textarea></td>
+</tr>
+<tr> 
+<td width="20%"></td>
+<td colspan=4 class=td>	 
+<input type="hidden" name="status" value="1">
+<!--<input type="hidden" name="tel" value="">
+<input type="hidden" name="ip" value="">-->
+<input name="submit" type="submit" class="btn btn-success" value="提 交">  
+<input name="Submit22" type="button" class="btn btn-info" onClick="history.go(-1)" value="返 回">  </td>
+</tr>
+</form>
+</table>
+
+</body>
+</html>

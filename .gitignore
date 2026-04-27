@@ -1,0 +1,44 @@
+# 系统文件
+Thumbs.db
+.DS_Store
+
+# 编译产物
+node_modules/
+dist/
+build/
+
+# 环境变量
+.env
+.env.local
+.env.*.local
+
+# 日志文件
+*.log
+logs/
+
+# 数据库文件
+*.sql
+*.bak
+*.rar
+
+# 临时文件
+temp/
+tmp/
+
+# IDE配置
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# 操作系统文件
+Thumbs.db
+.DS_Store
+
+# 安装包
+*.exe
+*.msi
+
+# 其他
+workbuddy-repo/
+workbuddy-claw-wechat-publisher/node_modules/

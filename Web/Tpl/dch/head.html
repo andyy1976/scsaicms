@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml2/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=7">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><neq name="title" value="">{$title}-</neq>{$config.sitetitle}-{$config.sitetitle2}</title>
+<meta name="keywords" content="{$keywords}"/>
+<meta name="description" content="{$description}"/>
+<link href="__TMPL__css/index.css" rel="stylesheet" type="text/css" />
+<link href="__TMPL__css/banner.css" rel="stylesheet" type="text/css" />
+<script src="__TMPL__/js/jquery-1.10.2.min.js" type="text/javascript"></script>
+<script src="__TMPL__js/bootstrap.min.js" type="text/javascript"></script>
+<script src="__TMPL__js/main.js" type="text/javascript"></script>
+<script src="__TMPL__js/jquery.jslides.js" type="text/javascript" ></script>
+
+    <script language="JavaScript" type="text/javascript" src="__TMPL__js/scrollall.js"></script>
+    <script language="JavaScript" type="text/javascript" src="__TMPL__js/pageScroll.js"></script>
+    <script language="JavaScript" type="text/javascript" src="__TMPL__js/jquery.event.drag-1.5.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="__TMPL__js/jquery.touchSlider.js"></script>
+    <script language="JavaScript" type="text/javascript" src="__TMPL__js/common.js"></script>
+    <script language="JavaScript" type="text/javascript" src="__TMPL__js/jquery-menu.js"></script>
+
+</head>
+
+<body>
+	
+<div class="header">
+    <div class="logo-menu">
+        <div class="logo"><a href="/"></div>
+        <div class="menu">
+            <ul id="nav-menu">
+            <li class="navOn0"><a href='/' target="_self" class="menu_ico0">首页</a></li>
+									<volist name="menu" id="vo" offset="0" length='7' key="k"> 
+									<li class="navOn{$vo.drank}" ><a class="menu_ico{$vo.drank}" href="<eq name="vo.url" value="">{$vo.typeid|url=lists,###}<else/>__ROOT__{$vo.url}</eq>" target="<eq name="vo.target" value="1">_self<else/>_blank</eq>">{$vo.typename}</a>
+									<!--第二级-->
+									<php>if($vo[submenu]){</php>
+									<!--[if lte IE 6]><table><tr><td><![endif]-->
+									<ul>
+									<volist name="vo[submenu]" id="sub" key="m">
+									<li><a href="{$sub.typeid|url=lists,###}">{$sub.typename}</a>
+									<!--第三级-->
+									<php>if(have_child($sub[typeid])){</php>
+									<!--[if lte IE 6]><table><tr><td><![endif]-->
+									<ul>
+									<arclist model="type" where="fid=$sub[typeid]" order="drank asc" id="tree">
+									<li><a href='{$tree.typeid|url=lists,###}'>{$tree.typename}</a></li>
+									</arclist>
+									</ul>
+									<!--[if lte IE 6]></td></tr></table></a><![endif]-->
+									<php>}</php>
+									</li>
+									</volist>
+									</ul>
+									<!--[if lte IE 6]></td></tr></table></a><![endif]-->
+									<php>}</php>
+									</li>
+									</volist>	
+					  </ul>       
+             </div>
+    </div>
+</div>
+<div class="banner" id="slide">
+<div class="main_visual" id="full-screen-slider">
+
+
+	
+	
+			<ul class="main_image" id="slides">
+				<arclist model="flash" where="status=1" order="rank asc" id="vo">
+					
+					 <li style="background:url('__PUBLIC__/Uploads/hd/{$vo.pic}') no-repeat 50% 0px"><!--<a href="{$vo.url}" target="_blank">1</a>--></li>
+	     
+	      		</arclist>
+	        
+
+			</ul>
+				<a href="javascript:;" id="btn_prev"></a><a href="javascript:;" id="btn_next"></a>
+
+
+</div>
+
+</div>
+
+
+

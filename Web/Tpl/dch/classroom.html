@@ -1,0 +1,259 @@
+﻿<include file="./head_inner"/>
+
+<div class="second">
+	<div class="width-block">
+		<div class="second-left">
+			<div class="left-list">
+				<div class="second-treemenu">
+					<div class="title"><h3>实务课堂分类</h3></div>
+					<div class="treemenu">
+						<ul>
+						  
+							<li><span class="arrow"></span><span class="file active"><a href="./page_course.html">法律解读课程 (54)</a></span>
+								<ul>
+									<?php
+															//查询数据库和缓存
+													$courseCategory = M('course_category');
+													//相关判断
+												  $map['status'] = 1;
+													$Category = $courseCategory->where($map)->select();
+															
+													$course = M('course');
+													
+													//封装条件
+									        $map['status'] = 1;
+
+											?>
+											<volist name="Category" id="vo">
+											<?php
+												
+									        $map['CategoryId'] = $vo['CategoryId'];
+									       
+									        $countofwenda= $course->where($map)->count();
+
+											?>
+										<li>
+										<a href='/index.php?s=classroom&CategoryId={$vo.CategoryId}' target='_blank'>{$vo.CategoryName|msubstr=###,0,38,'utf-8'}(<?php echo $countofwenda ?>)</a>
+										</li>
+									</volist>
+									
+								</ul>
+							</li>
+							<li><span class="arrow"></span><span class="file"><a href="javascript:">专题专项课程 (25)</a></span></li>
+						</ul>
+					</div>
+				</div>
+				
+				<!-- <div class="second-treemenu"> -->
+					<!-- <div class="title"><h3>实务课堂</h3></div> -->
+					<!-- <div class="treemenu"> -->
+						<!-- <ul> -->
+							<!-- <li><span class="arrow"></span><span class="file"><a href="javascript:">法律解读课程 (54)</a></span> -->
+								<!-- <ul> -->
+									<!-- <li><span class="file"><a href="javascript:">初级基础课程 (20)</a></span></li> -->
+									<!-- <li><span class="file"><a href="javascript:">中级技巧课程 (18)</a></span></li> -->
+									<!-- <li><span class="file"><a href="javascript:">高级进阶课程 (16)</a></span></li> -->
+								<!-- </ul> -->
+							<!-- </li> -->
+							<!-- <li><span class="arrow"></span><span class="file"><a href="javascript:">专题专项课程 (25)</a></span></li> -->
+						<!-- </ul> -->
+					<!-- </div> -->
+				<!-- </div> -->
+				
+				<!-- <div class="second-info"> -->
+					<!-- <div class="title"><h3>效力级别</h3></div> -->
+					<!-- <div class="list"> -->
+						<!-- <ul> -->
+							<!-- <li class="active"><a href="javascrit:">法律(191)</a></li> -->
+							<!-- <li><a href="javascrit:">行政法规(846)</a></li> -->
+							<!-- <li><a href="javascrit:">司法解释/文件(279)</a></li> -->
+							<!-- <li><a href="javascrit:">部委规章(21848)</a></li> -->
+							<!-- <li><a href="javascrit:">地方法规(169724)</a></li> -->
+						<!-- </ul> -->
+					<!-- </div> -->
+				<!-- </div> -->
+				
+				
+			</div>
+		</div>
+		<div class="second-right">
+			
+			<div class="pusl-list questions">
+				<div class="joint"><a href="javascript:">法律解读课程</a> > 高级进阶课程</div>
+				<div class="bule"></div>
+				<div class="curriculum">
+					<volist name="list" id="vo"> 
+					<div class="list-block">
+						<div class="cdc-tips">新课程上线预告</div>
+						<div class="cdc-title"><a href='/index.php?s=chapter&courseId={$vo.id}&CategoryId={$vo.CategoryId}' target='_blank'>{$vo.course_name}</a></div>
+						<div class="cdc-price"><span class="price">￥{$vo.price}</span><span class="date"   onclick="DoCourse('{$vo.id}')"  >
+						预计上线时间：{$vo.online_time}</span></div>
+						<div class="cdc_bottom">
+							<p class="cdc_bottom-text1">实操真实问题，学习一线增长技能</p>
+							<p class="cdc_bottom-text2"><a href='javascript:void(0);' onclick="layer_show('订单详情','__URL__/chapter/buyid/{$vo.id}','','')">查看课程详情</a></p>
+						</div>
+					</div>
+						</volist>
+					<div class="list-block">
+						<div class="cdc-tips">新课程上线预告</div>
+						<div class="cdc-title"><a href="www.baidu.com">高阶增长黑客实战</a></div>
+						<div class="cdc-price"><span class="price">￥2999</span><span class="date">预计上线时间：2019年8月</span></div>
+						<div class="cdc_bottom">
+							<p class="cdc_bottom-text1">实操真实问题，学习一线增长技能</p>
+							<p class="cdc_bottom-text2">查看课程详情</p>
+						</div>
+					</div>
+					<div class="list-block">
+						<div class="cdc-tips">新课程上线预告</div>
+						<div class="cdc-title">高阶增长黑客实战</div>
+						<div class="cdc-price"><span class="price">￥2999</span><span class="date">预计上线时间：2019年8月</span></div>
+						<div class="cdc_bottom">
+							<p class="cdc_bottom-text1">实操真实问题，学习一线增长技能</p>
+							<p class="cdc_bottom-text2">查看课程详情</p>
+						</div>
+					</div>
+					<div class="list-block">
+						<div class="cdc-tips">新课程上线预告</div>
+						<div class="cdc-title">高阶增长黑客实战</div>
+						<div class="cdc-price"><span class="price">￥2999</span><span class="date">预计上线时间：2019年8月</span></div>
+						<div class="cdc_bottom">
+							<p class="cdc_bottom-text1">实操真实问题，学习一线增长技能</p>
+							<p class="cdc_bottom-text2">查看课程详情</p>
+						</div>
+					</div>
+					<div class="list-block">
+						<div class="cdc-tips">新课程上线预告</div>
+						<div class="cdc-title">高阶增长黑客实战</div>
+						<div class="cdc-price"><span class="price">￥2999</span><span class="date">预计上线时间：2019年8月</span></div>
+						<div class="cdc_bottom">
+							<p class="cdc_bottom-text1">实操真实问题，学习一线增长技能</p>
+							<p class="cdc_bottom-text2">查看课程详情</p>
+						</div>
+					</div>
+					<div class="list-block">
+						<div class="cdc-tips">新课程上线预告</div>
+						<div class="cdc-title">高阶增长黑客实战</div>
+						<div class="cdc-price"><span class="price">￥2999</span><span class="date">预计上线时间：2019年8月</span></div>
+						<div class="cdc_bottom">
+							<p class="cdc_bottom-text1">实操真实问题，学习一线增长技能</p>
+							<p class="cdc_bottom-text2">查看课程详情</p>
+						</div>
+					</div>
+				</div>
+				
+				<div class="page-al">
+					<div class="dataTables_paginate pagination">
+					    <nav>
+					        <ul class="pagination">
+					       	 	<li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">首页</span></a></li>
+					            <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">上一页</span></a></li>
+					            <li class="active"><a href="#">1</a></li>
+					            <li><a href="#">2</a></li>
+					            <li><a href="#">3</a></li>
+					            <li><a href="#">4</a></li>
+					            <li><a href="#">5</a></li>
+					            <li><a href="#" aria-label="Next"><span aria-hidden="true">下一页</span></a></li>
+					            <li><a href="#" aria-label="Next"><span aria-hidden="true">尾页</span></a></li>
+					        </ul>
+					    </nav>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript"> 
+ function  DoCourse(courseid)
+ {
+     $('.box-xq').fadeIn();
+	//alert(courseid);
+	<!-- var webpath=getRootPath_web(); -->
+	<!-- alert(webpath+"/courseDetail.php?courseid="+courseid); -->
+	
+	<!-- $.getJSON({$url}+"/courseDetail.php?courseid="+courseid,function(json){ -->
+	<!-- alert(json); -->
+	  <!-- $.each(json,function(index,array){ -->
+	  	<!-- alert(array['courseName']);   -->
+	  <!-- }); -->
+	<!-- }); -->
+	   var webpath=getRootPath_web();
+	alert(webpath+"/courseDetail.php?courseid="+courseid);
+	$.ajax({
+
+    //async:false,//把异步关闭,相当于开启同步
+ alert("ok");
+    url:"courseDetail.php",
+
+    dataType:"TEXT",
+    success: function(data){ //success: function(){}是执行完成之前执行
+
+  alert(data);
+
+     /// $("#sel").html(str);
+
+      //alert($("#sel").val());
+
+     }
+
+   });
+
+
+
+	
+ }
+
+</script>
+<script> 
+
+function getRootPath_web() {
+            //获取当前网址，如： http://localhost:8083/uimcardprj/share/meun.jsp
+            var curWwwPath = window.document.location.href;
+            //获取主机地址之后的目录，如： uimcardprj/share/meun.jsp
+            var pathName = window.document.location.pathname;
+            var pos = curWwwPath.indexOf(pathName);
+            //获取主机地址，如： http://localhost:8083
+            var localhostPaht = curWwwPath.substring(0, pos);
+            //获取带"/"的项目名，如：/uimcardprj
+            var projectName = pathName.substring(0, pathName.substr(1).indexOf('/') + 1);
+            return (localhostPaht + projectName);
+        }
+ //webpath就是目录路径变量 
+</script> 
+<script type="text/javascript" src="__TMPL__lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="__TMPL__lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="__TMPL__static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="__TMPL__static/h-ui.admin/js/H-ui.admin.js"></script> 
+<include file="$footer"/>
+
+
+<!----查看详情---->
+<div class="box-xq">
+    <div class="modal-content user-dialog">
+    	<div class="modal-close"><img src="__TMPL__images/modal-close.png" width="18"></div>
+      	<div class="modal-js">
+      		<h3>增长黑客高阶实战营</h3>
+      		<p><b>为什么本门课程能帮你成为实战型增长黑客?</b></p>
+      		<p style="color: #666">市面上大部分“增长黑客课程”都停留在表层教你如何理解增长概念和理论，仅仅这些是无法帮你做好增长工作的，课程为了教你掌握实战型增长方法，我们<font color="#eb2a4e">邀请豆瓣增长领域最高分 《 硅谷增长黑客实战指南 》 书籍作者曲卉老师，带你全方位从制定增长策略、增长实验、数据平台</font>等方面深度实战学习，培养你成为实战型增长黑客。</p>
+      		<br />
+      		<p><b>这门课程为什么值得学习？</b></p>
+      		<p style="color: #666">1 、体系化增长工作流程与方法教学<br />
+      		 2 、<font color="#eb2a4e">理论与实战结合让你掌握落地的增长方法 </font><br />
+      		 3 、腾讯、阿里等一线互联网公司增长讲师 <br />
+      		 4 、美国最大微投资平台 Acorns 增长副总裁， Sean 日 Iis 增长黑客网负责人实战经验传授</p>
+      	</div>
+      	<div class="modal-nr">
+      		<div class="modal-kcnr">
+      			<h3>课程内容</h3>
+      			<p>
+      				• 制定增长策略，搭建增长团队<br />
+      				• 在 A / B 测试和数据中挖掘增长线索<br />
+      				• 搭建产品和策略机制提升活跃与留存<br />
+      				• 产品和机制化手段提升用户激活和留存
+      			</p>
+      		</div>
+      		<div class="modal-jg">课程价格：<em>￥2999</em></div>
+      		<div class="modal-cz"><button type="button" class="cz-btn">立即充值</button><button type="button" class="yy-btn">正式上线提醒我</button></div>
+      	</div>
+    </div>
+</div>

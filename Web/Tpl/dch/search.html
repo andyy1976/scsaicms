@@ -1,0 +1,43 @@
+<include file="./head_inner"/>
+<div class="second">
+	<div class="width-block">
+		
+			
+		<div class="pusl-list">
+			<div class="joint">关键字<span style="font-color:red;">"{$_REQUEST['k']}"</span>的搜索结果， 共有<span>	{$count}</span>篇文章
+				<php>if(!(isset($_SESSION['cms_username'])&&$_SESSION['cms_username'] !='')){</php>
+						,未<a href="#" class="dl-tc">登录</a>时只显示前10篇文章
+				<php>	}</php>
+			</div>
+			<div class="bule"></div>
+			<ul>
+			
+				<volist name="list" id="vo">
+					<li>
+							<div class="number">{$startnumber++}</div>
+						<div class="rit-cont">
+							<div class="name"><a href='{$vo.aid|url=articles,###}' target='_blank'><notempty name="vo.titlecolor"><font color="{$vo.titlecolor}"></notempty>{$vo.title|msubstr=###,0,100,'utf-8'}<notempty name="vo.titlecolor"></font></notempty></a></div>
+							<div class="tips">[{$vo.typename|msubstr=###,0,80,'utf-8'}] [最后更新 {$vo.addtime|msubstr=###,0,10}]</div>
+							<div class="info">{$vo.note|msubstr=###,0,200,'utf-8'}</div>
+						</div>
+						</li>
+					</volist>
+				</ul>
+				<php>if((isset($_SESSION['cms_username'])&&$_SESSION['cms_username'] !='')){</php>
+				<div class="page-al">
+					<div class="dataTables_paginate pagination">
+					    <nav>
+					        <ul class="pagination">
+					        	
+					        	 {$page}
+					        </ul>
+					    </nav>
+					</div>
+				</div>
+				<php>	}</php>
+		</div>
+	</div>
+</div>
+
+<include file="$footer"/>
+
