@@ -1,0 +1,877 @@
+<include file="./head_inner"/>
+<link rel="stylesheet" href="__TMPL__css/unified-style.css">
+
+<style>
+.course-plan-container {
+    padding: 40px 0;
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    min-height: 100vh;
+}
+
+.course-plan-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.course-plan-header {
+    background: rgba(255,255,255,0.95);
+    border-radius: 20px;
+    padding: 60px 40px;
+    text-align: center;
+    margin-bottom: 40px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+.course-plan-header h1 {
+    font-size: 42px;
+    font-weight: 800;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.course-plan-header .subtitle {
+    font-size: 24px;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.course-plan-header .tagline {
+    font-size: 18px;
+    color: #11998e;
+    font-weight: 600;
+    margin-bottom: 30px;
+}
+
+.course-plan-header .company {
+    font-size: 16px;
+    color: #999;
+}
+
+.course-plan-header .date {
+    font-size: 14px;
+    color: #999;
+    margin-top: 10px;
+}
+
+.section-card {
+    background: rgba(255,255,255,0.95);
+    border-radius: 16px;
+    padding: 40px;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.section-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 3px solid #11998e;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.section-title .icon {
+    font-size: 32px;
+}
+
+.subsection-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #11998e;
+    margin: 25px 0 15px 0;
+}
+
+.content-text {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.content-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.content-list li {
+    padding: 12px 0 12px 30px;
+    position: relative;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #444;
+    border-bottom: 1px dashed #eee;
+}
+
+.content-list li:last-child {
+    border-bottom: none;
+}
+
+.content-list li::before {
+    content: "▸";
+    position: absolute;
+    left: 0;
+    color: #11998e;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 14px;
+}
+
+.schedule-table th {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    color: #fff;
+    padding: 15px 10px;
+    text-align: left;
+    font-weight: 600;
+}
+
+.schedule-table td {
+    padding: 12px 10px;
+    border-bottom: 1px solid #eee;
+    color: #444;
+}
+
+.schedule-table tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.schedule-table tr:hover {
+    background-color: #e8f8f5;
+}
+
+.week-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 20px;
+    border-left: 4px solid #11998e;
+}
+
+.week-card h4 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.week-card .week-badge {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    color: #fff;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+.week-content {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.week-content-item {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.week-content-item h5 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #11998e;
+    margin-bottom: 10px;
+}
+
+.week-content-item p {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.6;
+}
+
+.highlight-box {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    color: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    margin: 20px 0;
+}
+
+.highlight-box h4 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.highlight-box ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.highlight-box li {
+    padding: 8px 0;
+    font-size: 14px;
+    opacity: 0.95;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin: 30px 0;
+}
+
+.stat-card {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    color: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.stat-card .stat-number {
+    font-size: 36px;
+    font-weight: 800;
+    margin-bottom: 5px;
+}
+
+.stat-card .stat-label {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.resource-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.resource-card {
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.resource-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.resource-card .icon {
+    font-size: 40px;
+    margin-bottom: 15px;
+}
+
+.resource-card h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.resource-card p {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.5;
+}
+
+.cta-section {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    color: #fff;
+    padding: 60px 40px;
+    border-radius: 20px;
+    text-align: center;
+    margin-top: 40px;
+}
+
+.cta-section h2 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.cta-section p {
+    font-size: 18px;
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 15px 40px;
+    background: #fff;
+    color: #11998e;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 30px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.feature-banner {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    margin: 20px 0;
+    text-align: center;
+}
+
+.feature-banner h3 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.feature-banner p {
+    font-size: 16px;
+    opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+    .course-plan-header h1 {
+        font-size: 28px;
+    }
+    
+    .week-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .resource-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .schedule-table {
+        font-size: 12px;
+    }
+    
+    .schedule-table th,
+    .schedule-table td {
+        padding: 8px 5px;
+    }
+}
+</style>
+
+<div class="course-plan-container">
+    <div class="course-plan-content">
+        <!-- 头部区域 -->
+        <div class="course-plan-header">
+            <h1>SCSAI All in AI</h1>
+            <p class="subtitle">工业智能体 + 数字化转型 + 市场营销</p>
+            <p class="tagline">面向对象建模与市场营销</p>
+            <p class="company">武汉云链星图科技有限公司</p>
+            <p class="date">2025年10月20日</p>
+        </div>
+
+        <!-- 特色标签 -->
+        <div class="feature-banner">
+            <h3>🚀 五位一体培养模式</h3>
+            <p>一边培训 · 一边实习 · 一边实战 · 一边共创 · 一边变现</p>
+        </div>
+
+        <!-- 课程定位与目标 -->
+        <div class="section-card">
+            <h2 class="section-title"><span class="icon">🎯</span>课程定位与目标体系（星火计划入门）</h2>
+            
+            <div class="subsection-title">1.1 课程定位</div>
+            <p class="content-text">
+                本课程是"SCSAI星火计划"核心入门课程，采用"理论-工具-实战-就业"全链路培养模式，聚焦"AI辅助中小企业数字化转型+营销破冰"双主线。学员需完成"1个转型任务+1个营销任务"的双实战考核，获取"数字建模师（初级）+AI营销助理（初级）"双认证。
+            </p>
+
+            <div class="subsection-title">1.2 学习目标体系</div>
+            
+            <div class="highlight-box">
+                <h4>📚 知识目标</h4>
+                <ul>
+                    <li>理解工业4.0和智能制造的核心概念</li>
+                    <li>掌握对象建模和数字孪生的基本原理</li>
+                    <li>了解AI智能体的技术架构和工业应用场景</li>
+                    <li>掌握中小企业数字化转型基础标准（Bom/流程数字化）</li>
+                    <li>了解工业AI营销内容设计原则和获客逻辑</li>
+                </ul>
+            </div>
+
+            <div class="highlight-box" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                <h4>💪 能力目标</h4>
+                <ul>
+                    <li>使用SCSAI平台构建产品数字孪生模型</li>
+                    <li>配置基础业务流程和自动化工作流</li>
+                    <li>运用AI工具（Coze/N8N）辅助设计与决策</li>
+                    <li>完成50个零部件Bom建模，识别企业2类核心转型痛点</li>
+                    <li>通过AI智能体生成3类工业营销内容，辅助触达2家潜在客户</li>
+                </ul>
+            </div>
+
+            <div class="highlight-box" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                <h4>🌟 素养目标</h4>
+                <ul>
+                    <li>建立数字化思维和工业创新意识</li>
+                    <li>培养团队协作与跨岗位沟通能力</li>
+                    <li>形成持续学习和实战优化的习惯</li>
+                </ul>
+            </div>
+
+            <div class="highlight-box" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                <h4>💼 就业目标</h4>
+                <ul>
+                    <li>具备数字化助理、AI营销助理岗位核心能力</li>
+                    <li>构建个人实战作品集和职业发展路径</li>
+                    <li>获得行业认可的双初级认证证书</li>
+                </ul>
+            </div>
+
+            <div class="subsection-title">1.3 适配人群</div>
+            <ul class="content-list">
+                <li>高校大二及以上学生（无专业限制，具备计算机基础操作能力）</li>
+                <li>中小企业基层员工（生产、行政、销售岗，需提升数字化工具使用能力及营销效率者）</li>
+                <li>职场转型人群（希望进入工业数字化、AI营销领域，需系统搭建基础能力者）</li>
+            </ul>
+        </div>
+
+        <!-- 课程模块总览 -->
+        <div class="section-card">
+            <h2 class="section-title"><span class="icon">📋</span>课程模块总览与教学安排</h2>
+            
+            <table class="schedule-table">
+                <thead>
+                    <tr>
+                        <th>模块</th>
+                        <th>周次</th>
+                        <th>主题</th>
+                        <th>理论</th>
+                        <th>实验</th>
+                        <th>关键产出</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>理念导入：AI驱动的工业数字化与营销融合</td>
+                        <td>2</td>
+                        <td>2</td>
+                        <td>个人学习计划、企业转型痛点报告</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>2-3</td>
+                        <td>数字孪生构建：Bom数字化+营销展示</td>
+                        <td>4</td>
+                        <td>6</td>
+                        <td>产品Bom模型（50个零部件）、3D展示页</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>4</td>
+                        <td>流程数字化：审批流程自动化+效率营销</td>
+                        <td>2</td>
+                        <td>2</td>
+                        <td>自动化审批流程、流程优化演示视频</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>5-6</td>
+                        <td>AI内容生成：工业营销文案+获客</td>
+                        <td>4</td>
+                        <td>4</td>
+                        <td>推广文案5条、渠道推送记录</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>7-8</td>
+                        <td>数据可视化：转型效果看板+营销分析</td>
+                        <td>4</td>
+                        <td>6</td>
+                        <td>转型-营销数据看板、数据分析报告</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>9</td>
+                        <td>中期评审：转型+营销项目阶段性验收</td>
+                        <td>2</td>
+                        <td>2</td>
+                        <td>阶段性项目成果包</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>10-11</td>
+                        <td>营销自动化：获客流程配置+线索管理</td>
+                        <td>4</td>
+                        <td>4</td>
+                        <td>获客自动化流程、线索管理表</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>12-13</td>
+                        <td>转型方案优化：AI辅助决策+效果评估</td>
+                        <td>4</td>
+                        <td>6</td>
+                        <td>转型优化方案、效果评估报告</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>14-15</td>
+                        <td>综合实战：数字化转型+AI营销完整项目</td>
+                        <td>4</td>
+                        <td>8</td>
+                        <td>完整项目包（含转型方案、营销成果）</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>16</td>
+                        <td>总结展望：职业发展与生态协同</td>
+                        <td>2</td>
+                        <td>2</td>
+                        <td>个人职业发展计划、求职材料、双认证申请</td>
+                    </tr>
+                    <tr style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: #fff; font-weight: bold;">
+                        <td colspan="3">合计</td>
+                        <td>30</td>
+                        <td>40</td>
+                        <td>70课时</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 详细教学计划 -->
+        <div class="section-card">
+            <h2 class="section-title"><span class="icon">📅</span>详细教学计划（第1-16周）</h2>
+            
+            <!-- 第1周 -->
+            <div class="week-card">
+                <h4><span class="week-badge">第1周</span>理念导入——AI驱动的工业数字化与营销融合</h4>
+                <div class="week-content">
+                    <div class="week-content-item">
+                        <h5>核心内容</h5>
+                        <p>工业4.0与智能制造发展趋势；AI原生企业架构特征；SCSAI平台战略定位与功能全景；案例拆解：五金厂"Bom数字化+AI营销"增收30%逻辑</p>
+                    </div>
+                    <div class="week-content-item">
+                        <h5>实训任务</h5>
+                        <p>完成SCSAI平台账户配置与环境搭建；用"转型痛点识别智能体"分析1家本地企业案例；撰写1000字转型痛点报告；制定个人学习计划</p>
+                    </div>
+                    <div class="week-content-item">
+                        <h5>AI智能体支持</h5>
+                        <p>平台导览智能体：操作指导、问题实时解答；案例分析师：案例解读、趋势延伸</p>
+                    </div>
+                    <div class="week-content-item">
+                        <h5>考核标准（10分）</h5>
+                        <p>账户配置完成（2分）；痛点报告逻辑清晰（4分）；学习计划可行（4分）</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第2-3周 -->
+            <div class="week-card">
+                <h4><span class="week-badge">第2-3周</span>数字孪生构建——Bom数字化+营销展示</h4>
+                <div class="week-content">
+                    <div class="week-content-item">
+                        <h5>核心内容</h5>
+                        <p>对象建模理论与设计原则；产品数据管理（Pdm）体系基础；数字孪生商业价值；中小企业Bom数字化标准</p>
+                    </div>
+                    <div class="week-content-item">
+                        <h5>实训任务</h5>
+                        <p>选定一款工业产品，分析其结构需求；设计对象模型关系结构；完成50个零部件Bom建模（数字化率100%）；用SCSAI生成产品3D展示页</p>
+                    </div>
+                    <div class="week-content-item">
+                        <h5>AI智能体支持</h5>
+                        <p>对象建模助手：模型校验、标准推荐；Bom优化顾问：结构优化、合规检查</p>
+                    </div>
+                    <div class="week-content-item">
+                        <h5>考核标准（20分）</h5>
+                        <p>Bom结构合理（8分）；数字化信息完整（6分）；3D展示页直观（6分）</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第4周 -->
+            <div class="week-card">
+                <h4><span class="week-badge">第4周</span>流程数字化——审批流程自动化+效率营销</h4>
+                <div class="week-content">
+                    <div class="week-content-item">
+                        <h5>核心内容</h5>
+                        <p>业务流程管理与优化方法；数字化流程设计原则；流程自动化降本率计算逻辑</p>
+                    </div>
+                    <div class="week-content-item">
+                        <h5>实训任务</h5>
+                        <p>分析某企业"采购审批"现有痛点；设计数字化流程方案（自动化率≥50%）；用SCSAI配置流程表单与审批规则；生成流程优化效果AI演示视频（1分钟）</p>
+                    </div>
+                    <div class="week-content-item">
+                        <h5>AI智能体支持</h5>
+                        <p>流程分析专家：流程评估、优化建议；变更影响分析器：风险预判</p>
+                    </div>
+                    <div class="week-content-item">
+                        <h5>考核标准（10分）</h5>
+                        <p>流程方案可行（4分）；自动化配置完成（3分）；演示视频清晰（3分）</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第5-6周 -->
+            <div class="week-card">
+                <h4><span class="week-badge">第5-6周</span>AI内容生成——工业营销文案+获客</h4>
+                <div class="week-content">
+                    <div class="week-content-item">
+                        <h5>核心内容</h5>
+                        <p>工业营销内容策略与创作方法；AI生成技术原理与应用边界；多渠道内容适配技巧；工业产品AI营销转化率提升要点</p>
+                    </div>
+                    <div class="week-content-item">
+                        <h5>实训任务</h5>
+                        <p>基于第2-3周Bom产品，制定内容策略；用Coze生成5条推广文案（分渠道适配）；测试文案质量，优化至预测转化率≥8%；通过指定代理人渠道完成推送，保留记录</p>
+                    </div>
+                    <div class="week-content-item">
+                        <h5>AI智能体支持</h5>
+                        <p>内容创作智能体：内容生成、风格适配；文案优化师：质量检查、转化优化</p>
+                    </div>
+                    <div class="week-content-item">
+                        <h5>考核标准（20分）</h5>
+                        <p>策略贴合产品（5分）；文案质量达标（8分）；推送记录完整（7分）</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第7-8周 -->
+            <div class="week-card">
+                <h4><span class="week-badge">第7-8周</span>数据可视化——转型效果看板+营销分析</h4>
+                <div class="week-content">
+                    <div class="week-content-item">
+                        <h5>核心内容</h5>
+                        <p>数据可视化设计原则；SCSAI看板制作工具使用；转型数据（降本/提效）与营销数据（转化/获客）关联逻辑</p>
+                    </div>
+                    <div class="week-content-item">
+                        <h5>实训任务</h5>
+                        <p>收集Bom数字化与营销推送数据；用SCSAI制作"转型-营销"联动数据看板；分析数据关联关系，撰写800字数据分析报告；标注核心优化点</p>
+                    </div>
+                    <div class="week-content-item">
+                        <h5>AI智能体支持</h5>
+                        <p>数据分析师智能体：数据清洗、关联分析；看板设计助手：布局优化、指标提炼</p>
+                    </div>
+                    <div class="week-content-item">
+                        <h5>考核标准（20分）</h5>
+                        <p>看板指标完整（7分）；数据关联清晰（6分）；分析建议可行（7分）</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第9周 -->
+            <div class="week-card">
+                <h4><span class="week-badge">第9周</span>中期评审——转型+营销项目阶段性验收</h4>
+                <div class="week-content">
+                    <div class="week-content-item">
+                        <h5>核心内容</h5>
+                        <p>项目验收标准解读；成果展示与答辩技巧；常见问题与优化方向指导</p>
+                    </div>
+                    <div class="week-content-item">
+                        <h5>实训任务</h5>
+                        <p>整理前8周成果，形成阶段性项目包；制作5分钟答辩Ppt；参与小组答辩，记录评审意见；制定后续优化计划</p>
+                    </div>
+                    <div class="week-content-item">
+                        <h5>评审重点</h5>
+                        <p>转型任务进度（Bom/流程）；营销任务效果（文案/获客）；问题解决能力</p>
+                    </div>
+                    <div class="week-content-item">
+                        <h5>考核标准（10分）</h5>
+                        <p>成果包完整（4分）；答辩表达清晰（3分）；优化计划合理（3分）</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第10-11周 -->
+            <div class="week-card">
+                <h4><span class="week-badge">第10-11周</span>营销自动化——获客流程配置+线索管理</h4>
+                <div class="week-content">
+                    <div class="week-content-item">
+                        <h5>核心内容</h5>
+                        <p>工业获客自动化流程逻辑；N8N获客节点配置方法；线索分级与管理规范；营销自动化工具安全操作</p>
+                    </div>
+                    <div class="week-content-item">
+                        <h5>实训任务</h5>
+                        <p>基于前期营销数据，设计"线索捕捉-分级-通知"自动化流程；用N8N配置流程节点，关联企业微信/邮件；模拟导入10条潜在线索，测试流程运行；制作线索管理表，标注跟进状态</p>
+                    </div>
+                    <div class="week-content-item">
+                        <h5>AI智能体支持</h5>
+                        <p>流程配置助手：节点推荐、逻辑校验；线索管理智能体：分级标准推荐</p>
+                    </div>
+                    <div class="week-content-item">
+                        <h5>考核标准（20分）</h5>
+                        <p>流程设计合理（8分）；配置运行正常（6分）；管理表规范（6分）</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第12-13周 -->
+            <div class="week-card">
+                <h4><span class="week-badge">第12-13周</span>转型方案优化——AI辅助决策+效果评估</h4>
+                <div class="week-content">
+                    <div class="week-content-item">
+                        <h5>核心内容</h5>
+                        <p>数字化转型效果评估指标体系；AI辅助决策的方法与工具；中小企业转型成本控制技巧</p>
+                    </div>
+                    <div class="week-content-item">
+                        <h5>实训任务</h5>
+                        <p>基于前期Bom与流程成果，收集优化需求；用SCSAI AI决策模块生成优化建议；撰写完整转型优化方案（含成本收益测算）；制作效果评估报告，标注降本/提效数据</p>
+                    </div>
+                    <div class="week-content-item">
+                        <h5>AI智能体支持</h5>
+                        <p>决策分析智能体：方案对比、数据测算；成本优化顾问：费用控制点推荐</p>
+                    </div>
+                    <div class="week-content-item">
+                        <h5>考核标准（20分）</h5>
+                        <p>方案逻辑清晰（7分）；数据测算准确（6分）；优化方向明确（7分）</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第14-15周 -->
+            <div class="week-card">
+                <h4><span class="week-badge">第14-15周</span>综合实战——数字化转型+AI营销完整项目</h4>
+                <div class="week-content">
+                    <div class="week-content-item">
+                        <h5>核心内容</h5>
+                        <p>完整项目整合方法；成果包装与展示技巧；企业需求匹配与落地要点；实战问题应急处理</p>
+                    </div>
+                    <div class="week-content-item">
+                        <h5>实训任务</h5>
+                        <p>3-5人小组协作，整合前13周成果；完成"1个转型任务（Bom+流程）+1个营销任务（文案+获客）"完整项目；补充落地数据，制作项目说明书；录制3分钟项目演示视频</p>
+                    </div>
+                    <div class="week-content-item">
+                        <h5>团队协作要求</h5>
+                        <p>明确分工（需求组/开发组/营销组）；每日15分钟站会同步进度；共同完成项目答辩Ppt</p>
+                    </div>
+                    <div class="week-content-item">
+                        <h5>考核标准（30分）</h5>
+                        <p>项目完整性（10分）；转型价值（8分）；营销价值（8分）；团队协作（4分）</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第16周 -->
+            <div class="week-card">
+                <h4><span class="week-badge">第16周</span>总结展望——职业发展与生态协同</h4>
+                <div class="week-content">
+                    <div class="week-content-item">
+                        <h5>核心内容</h5>
+                        <p>课程核心知识点复盘；工业数字化岗位发展路径；SCSAI生态资源与进阶通道；双认证申请流程解读</p>
+                    </div>
+                    <div class="week-content-item">
+                        <h5>实训任务</h5>
+                        <p>整理个人实战作品集；撰写个人职业发展计划；准备求职材料（简历+作品集）；提交双认证申请</p>
+                    </div>
+                    <div class="week-content-item">
+                        <h5>就业支持</h5>
+                        <p>企业岗位内推机会；简历优化指导；模拟面试训练；职业发展顾问1对1答疑</p>
+                    </div>
+                    <div class="week-content-item">
+                        <h5>考核标准（10分）</h5>
+                        <p>作品集完整（3分）；发展计划清晰（3分）；求职材料规范（4分）</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 考核体系 -->
+        <div class="section-card">
+            <h2 class="section-title"><span class="icon">📊</span>考核体系</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">30分</div>
+                    <div class="stat-label">理论考核</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">40分</div>
+                    <div class="stat-label">实训任务</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">30分</div>
+                    <div class="stat-label">共创贡献</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">100分</div>
+                    <div class="stat-label">总分</div>
+                </div>
+            </div>
+
+            <div class="subsection-title">考核细则</div>
+            <ul class="content-list">
+                <li><strong>理论考核（30分）：</strong>2次阶段性测试（第8周、第16周），题型为选择（10分）+实操问答（20分），侧重基础概念与工具操作</li>
+                <li><strong>实训任务（40分）：</strong>16周周任务完成率（20分）+成果质量（20分），按"完整性60%+准确性40%"评分</li>
+                <li><strong>共创贡献（30分）：</strong>素材累计≥10条（15分）+素材质量（15分，基地+导师联合评分），优秀素材额外加5分</li>
+            </ul>
+        </div>
+
+        <!-- 教学资源配置 -->
+        <div class="section-card">
+            <h2 class="section-title"><span class="icon">📚</span>教学资源配置</h2>
+            
+            <div class="subsection-title">4.1 教材资源体系</div>
+            <div class="resource-grid">
+                <div class="resource-card">
+                    <div class="icon">📖</div>
+                    <h4>主教材系列</h4>
+                    <p>《工业智能体基础教程》《SCSAI平台操作指南》《数字化转型案例集》《AI营销实战手册》</p>
+                </div>
+                <div class="resource-card">
+                    <div class="icon">📚</div>
+                    <h4>参考书库</h4>
+                    <p>技术类：《工业4.0实战》《数字孪生技术》；商业类：《数字化转型》《增长黑客》</p>
+                </div>
+                <div class="resource-card">
+                    <div class="icon">🎁</div>
+                    <h4>专属资源包</h4>
+                    <p>20个中小企业转型案例、AI营销工具包、Coze营销智能体模板、转化率评估工具</p>
+                </div>
+            </div>
+
+            <div class="subsection-title">4.2 在线资源平台</div>
+            <ul class="content-list">
+                <li><strong>学习管理系统：</strong>课程视频库、互动实验环境、在线测试系统、讨论交流论坛</li>
+                <li><strong>开发资源中心：</strong>Api文档和Sdk、代码示例库、工具插件集、最佳实践库</li>
+                <li><strong>实战对接平台：</strong>10家企业实时需求板块、项目验收板块、优秀项目营销补贴板块</li>
+            </ul>
+
+            <div class="subsection-title">4.3 实验环境配置</div>
+            <ul class="content-list">
+                <li><strong>个人实验环境：</strong>SCSAI开发沙箱、项目协作空间、功能测试环境、运行监控平台</li>
+                <li><strong>基础硬件支持：</strong>5G传感器套件（数据采集演示）、边缘计算设备（本地处理模拟）</li>
+            </ul>
+        </div>
+
+        <!-- CTA区域 -->
+        <div class="cta-section">
+            <h2>开启您的工业AI之旅</h2>
+            <p>加入SCSAI星火计划，掌握对象建模与市场营销核心技能，获取双认证证书</p>
+            <a href="?s=Classroom/index" class="cta-button">立即报名课程</a>
+        </div>
+    </div>
+</div>
+
+<include file="../footer_unified"/>

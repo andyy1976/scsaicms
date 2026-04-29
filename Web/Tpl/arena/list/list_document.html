@@ -1,0 +1,233 @@
+<include file="./head_ps" />
+
+<section class="doc-solutions" id="scsai-docs">
+	<div class="section-header">
+		<h2>SCSAI智能文档管理解决方案</h2>
+		<p>重新定义云端文档控制的新标准</p>
+	</div>
+
+	<!-- 核心增强功能模块 -->
+	<div class="enhancement-grid">
+		<!-- 本土化集成 -->
+		<div class="enhancement-card">
+			<div class="ecard-header">
+				<img src="assets/local-integration.png" alt="本土化集成" class="feature-icon">
+				<h3>深度本土化集成</h3>
+			</div>
+			<div class="ecard-body">
+				<div class="integration-list">
+					<div class="integration-item">
+						<img src="assets/dingtalk.png" alt="钉钉" class="platform-logo">
+						<div class="integration-info">
+							<h4>钉钉/企业微信原生支持</h4>
+							<ul class="feature-list">
+								<li>📌 聊天窗口直接审批文档</li>
+								<li>📌 自动同步组织架构权限</li>
+								<li>📌 消息提醒直达审批人</li>
+							</ul>
+						</div>
+					</div>
+					<div class="integration-item">
+						<img src="assets/wps.png" alt="WPS" class="platform-logo">
+						<div class="integration-info">
+							<h4>WPS云文档深度整合</h4>
+							<ul class="feature-list">
+								<li>🚀 无需下载即时编辑</li>
+								<li>🔗 版本自动关联PLM系统</li>
+								<li>📊 在线协作人数无上限</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 智能合规引擎 -->
+		<div class="enhancement-card">
+			<div class="ecard-header">
+				<img src="assets/compliance.png" alt="合规引擎" class="feature-icon">
+				<h3>智能合规守护者</h3>
+			</div>
+			<div class="ecard-body">
+				<div class="compliance-demo">
+					<div class="compliance-step active">
+						<div class="step-header">
+							<span class="step-number">1</span>
+							<h4>文档智能预检</h4>
+						</div>
+						<div class="step-content">
+							<div class="compliance-check">
+								<span class="check-item success">✔ GMP必要字段检测通过</span>
+								<span class="check-item warning">⚠ ISO13485风险分析待补充</span>
+								<span class="check-item">⏳ 自动生成整改建议...</span>
+							</div>
+						</div>
+					</div>
+					<div class="controls">
+						<button class="btn-prev" onclick="navigateStep(-1)">← 上一步</button>
+						<button class="btn-next" onclick="navigateStep(1)">下一步 →</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 安全控制体系 -->
+		<div class="enhancement-card security-section">
+			<div class="ecard-header">
+				<img src="assets/shield.png" alt="安全控制" class="feature-icon">
+				<h3>军工级安全防护</h3>
+			</div>
+			<div class="ecard-body">
+				<div class="security-features">
+					<div class="security-item">
+						<div class="watermark-preview">
+							<div class="document-content">
+								<p>机密文档示例内容</p>
+								<div class="dynamic-watermark"></div>
+							</div>
+						</div>
+						<h4>动态隐形水印</h4>
+					</div>
+					<div class="security-item">
+						<div class="permission-matrix">
+							<div class="permission-row">
+								<span class="role">研发工程师</span>
+								<div class="permissions">
+									<span class="perm read">读取</span>
+									<span class="perm comment">批注</span>
+								</div>
+							</div>
+							<div class="permission-row">
+								<span class="role">质量经理</span>
+								<div class="permissions">
+									<span class="perm read">读取</span>
+									<span class="perm edit">编辑</span>
+									<span class="perm approve">审批</span>
+								</div>
+							</div>
+						</div>
+						<h4>细粒度权限控制</h4>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 对比分析模块 -->
+	<div class="competitive-analysis">
+		<h3>SCSAI vs 传统解决方案</h3>
+		<div class="analysis-grid">
+			<div class="metric-card">
+				<div class="metric-value">83%</div>
+				<div class="metric-title">审批效率提升</div>
+				<div class="metric-detail">传统5天 → SCSAI 8小时</div>
+			</div>
+			<div class="comparison-chart" id="complianceChart"></div>
+		</div>
+	</div>
+</section>
+
+<style>
+	/* 增强功能卡片样式 */
+	.enhancement-grid {
+		display: grid;
+		gap: 2rem;
+		margin: 2rem 0;
+	}
+
+	.enhancement-card {
+		background: white;
+		border-radius: 12px;
+		box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+		padding: 1.5rem;
+	}
+
+	.ecard-header {
+		display: flex;
+		align-items: center;
+		margin-bottom: 1.5rem;
+	}
+
+	.feature-icon {
+		width: 40px;
+		height: 40px;
+		margin-right: 1rem;
+	}
+
+	/* 合规演示交互 */
+	.compliance-step {
+		display: none;
+		padding: 1rem;
+		border: 1px solid #eee;
+		border-radius: 8px;
+	}
+
+		.compliance-step.active {
+			display: block;
+			animation: slideIn 0.3s ease;
+		}
+
+	/* 安全控制可视化 */
+	.dynamic-watermark {
+		position: absolute;
+		opacity: 0.1;
+		background: repeating-linear-gradient( -45deg, transparent, transparent 10px, var(--primary-color) 10px, var(--primary-color) 20px );
+		pointer-events: none;
+	}
+
+	.permission-matrix {
+		border: 1px solid #eee;
+		border-radius: 8px;
+		overflow: hidden;
+	}
+
+	/* 对比分析图表 */
+	#complianceChart {
+		height: 300px;
+		margin: 2rem 0;
+	}
+
+	@keyframes slideIn {
+		from {
+			transform: translateX(20px);
+			opacity: 0;
+		}
+
+		to {
+			transform: translateX(0);
+			opacity: 1;
+		}
+	}
+</style>
+
+<script>
+    // 合规步骤导航
+    let currentStep = 0;
+    const steps = document.querySelectorAll('.compliance-step');
+
+    function navigateStep(direction) {
+        steps[currentStep].classList.remove('active');
+        currentStep = Math.max(0, Math.min(steps.length - 1, currentStep + direction));
+        steps[currentStep].classList.add('active');
+    }
+
+    // 合规对比图表
+    const complianceChart = new ApexCharts(document.querySelector('#complianceChart'), {
+        chart: { type: 'bar' },
+        series: [{
+            name: 'SCSAI',
+            data: [95, 88, 92]
+        },{
+            name: '行业平均',
+            data: [65, 72, 68]
+        }],
+        xaxis: {
+            categories: ['审计准备', '版本追溯', '协作效率']
+        },
+        colors: ['#2A5CAA', '#999']
+    });
+    complianceChart.render();
+</script>
+
+
+<include file="../footer_unified" />

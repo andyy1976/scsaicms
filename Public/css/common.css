@@ -1,0 +1,36 @@
+.structured-data {
+  display: none;
+}
+
+.itemscope {
+  margin: 0;
+  padding: 0;
+}
+
+.schema-org {
+  background: url(/image/schema-logo.png) no-repeat;
+  height: 20px;
+  width: 80px;
+}
+
+/* 产品微数据样式 */
+.tech-specs[itemscope] {
+  position: relative;
+  padding-left: 90px;
+}
+
+.product-meta {
+  display: inline-block;
+  margin-right: 15px;
+}
+
+/* 面包屑导航语义化 */
+.breadcrumb nav[itemscope] {
+  font-size: 0.9em;
+}
+
+/* 组织架构数据 */
+.organization-markup {
+  border-left: 2px solid #0073aa;
+  padding-left: 15px;
+}

@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="zh-CN" dir="ltr">
+<head>
+    <!-- 增强的Meta信息 -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="author" content="超云智能（SCIOT)">
+    <meta name="format-detection" content="telephone=no, email=no">
+    <meta name="theme-color" content="#2A5D84">
+    
+    <!-- 动态SEO优化 -->
+    <title>
+        <neq name="title" value="">{$title} - </neq>
+        {$config.sitetitle} - 工业互联网解决方案专家
+    </title>
+    <meta name="keywords" content="{$keywords|default=$config.sitekeywords}">
+    <meta name="description" content="{$description|default=$config.sitedescription}">
+    
+    <!-- 结构化数据 -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "超云智能",
+        "url": "https://www.sciot.com",
+        "logo": "__PUBLIC__/Uploads/logo/{$config.sitelogo}",
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+86-186-0192-1816",
+            "contactType": "customer service"
+        }
+    }
+    </script>
+
+    <!-- 优化资源加载 -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@mdi/font@6.5.95/css/materialdesignicons.min.css" as="style">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@6.5.95/css/materialdesignicons.min.css">
+</head>
+
+<body>
+    <!-- 增强的Header -->
+    <header class="sciot-header" role="banner">
+        <div class="header-container">
+            <a href="/" class="brand-logo" aria-label="返回首页">
+                <img src="__PUBLIC__/Uploads/logo/{$config.sitelogo}" 
+                     alt="{$config.sitetitle} Logo"
+                     width="160"
+                     height="48"
+                     class="logo"
+                     loading="eager">
+            </a>
+
+            <!-- 导航系统 -->
+            <nav class="main-nav" role="navigation" aria-label="主菜单">
+                <button class="mobile-toggle" 
+                        aria-expanded="false"
+                        aria-label="切换菜单">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+
+                <ul class="nav-list" role="menubar">
+                    <li class="nav-item" role="none">
+                        <a href="/" class="nav-link" role="menuitem" aria-current="page">首页</a>
+                    </li>
+                    
+                    <volist name="menu" id="vo">
+                    <li class="nav-item" role="none">
+                        <a href="{$vo.url}" 
+                           class="nav-link"
+                           role="menuitem"
+                           <php>if($vo['submenu']){</php>
+                           aria-haspopup="true"
+                           <php>}</php>>
+                            {$vo.typename}
+                            <php>if($vo['submenu']){</php>
+                            <i class="arrow" aria-hidden="true"></i>
+                            <php>}</php>
+                        </a>
+                        
+                        <php>if($vo['submenu']){</php>
+                        <ul class="submenu" role="menu">
+                            <volist name="vo['submenu']" id="sub">
+                            <li class="sub-item" role="none">
+                                <a href="{$sub.url}" 
+                                   class="sub-link"
+                                   role="menuitem"
+                                   <php>if(have_child($sub[typeid])){</php>
+                                   aria-haspopup="true"
+                                   <php>}</php>>
+                                    {$sub.typename}
+                                </a>
+                                
+                                <php>if(have_child($sub[typeid])){</php>
+                                <ul class="third-menu" role="menu">
+                                    <arclist model="type" where="fid=$sub[typeid]" order="drank asc" id="tree">
+                                    <li role="none">
+                                        <a href="{$tree.typeid|url=lists,###}" 
+                                           class="third-link"
+                                           role="menuitem">
+                                           {$tree.typename}
+                                        </a>
+                                    </li>
+                                    </arclist>
+                                </ul>
+                                <php>}</php>
+                            </li>
+                            </volist>
+                        </ul>
+                        <php>}</php>
+                    </li>
+                    </volist>
+                </ul>
+            </nav>
+
+            <!-- 实用工具 -->
+            <div class="header-utils">
+                <div class="util-item phone-contact">
+                    <i class="iconfont icon-phone" aria-hidden="true"></i>
+                    <a href="tel:18601921816" aria-label="拨打电话">186-0192-1816</a>
+                </div>
+                
+                <div class="util-item search-box">
+                    <form action="{:U('Search/Index')}" method="post" role="search">
+                        <div class="search-input">
+                            <label for="global-search" class="sr-only">搜索关键词</label>
+                            <input type="search" 
+                                   id="global-search"
+                                   name="k" 
+                                   placeholder="请输入关键词..."
+                                   value="{$keyword}"
+                                   autocomplete="off"
+                                   aria-required="true">
+                            <button type="submit" class="search-btn" aria-label="执行搜索">
+                                <i class="iconfont icon-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+			<!-- 主要内容区 -->
+<main class="sciot-main">
+    <!-- 增强型Banner -->
+    <section class="hero-banner">
+        <div class="banner-media">
+            <img src="/Public/Uploads/uploadfile/images/H1guanyuwomen.jpg" 
+                 alt="SCIOT智能制造平台" 
+                 class="banner-image fade-in"
+                 data-src="/Public/Uploads/uploadfile/images/H1guanyuwomen.jpg">
+        </div>
+        <div class="banner-content">
+            <div class="content-wrapper">
+                <h1 class="banner-title">SCIOT智能制造+工业互联网平台</h1>
+                <p class="banner-description">坚持自主创新，研发国产自主可控的智能制造+工业互联网平台软件，赋能中国工业创新发展。</p>
+                <div class="cta-buttons">
+                    <a href="http://114.113.153.234/scplm/front/X-cache=scplm_1.0.0.1-X/scripts/mainpage.aspx#" 
+                       class="primary-cta">
+                        <span>免费体验</span>
+                        <i class="iconfont icon-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 智能导航 -->
+    <nav class="smart-nav">
+        <div class="nav-container">
+            <div class="breadcrumb">你的位置：{$nav}</div>
+            <div class="nav-tabs">
+                <category parentid="$pid" id="vo">
+                <a href="{$vo.typeid|url=lists,###}" 
+                   class="nav-tab <eq name="type.typeid" value="$vo.typeid">active</eq>">
+                   {$vo.typename}
+                </a>
+                </category>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 动态内容区 -->
+    <php>if(count($list)==1){</php>
+    <article class="article-detail">
+        <header class="article-header">
+            <h1 class="article-title">{$list[0]['title']}</h1>
+            <div class="article-meta">
+                <time>{$list[0]['addtime']|msubstr=###,0,10}</time>
+                <div class="social-share">
+                    <button class="share-btn weibo">
+                        <i class="iconfont icon-weibo"></i>
+                    </button>
+                    <button class="share-btn wechat">
+                        <i class="iconfont icon-wechat"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+        <div class="article-content">
+            {$list[0]['content']}
+        </div>
+    </article>
+    <php>}else{</php>
+    <section class="article-list">
+        <div class="list-container">
+            <volist name="list" id="vo">
+            <article class="article-card fade-in">
+                <a href="{$vo.aid|url=articles,###}" class="card-link">
+                    <figure class="card-media">
+                        <img src="<eq name="vo.imgurl" value="">__TMPL__images/default_img.jpg<else/>__ROOT__{$vo.imgurl}</eq>" 
+                             alt="{$vo.title}"
+                             class="lazy-load">
+                    </figure>
+                    <div class="card-body">
+                        <h3 class="card-title">{$vo.title}</h3>
+                        <p class="card-excerpt">{$vo.description}</p>
+                        <div class="card-meta">
+                            <time>{$vo.addtime|msubstr=###,0,10}</time>
+                            <span class="read-more">
+                                了解更多
+                                <i class="iconfont icon-arrow-right"></i>
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            </article>
+            </volist>
+        </div>
+        <div class="pagination-wrapper">
+            {$page}
+        </div>
+    </section>
+    <php>}</php>
+</main>
+
+<style>
+/* 统一视觉风格 */
+.sciot-main {
+    padding: 40px 0;
+    background: #f8fafc;
+}
+
+.hero-banner {
+    position: relative;
+    min-height: 560px;
+    overflow: hidden;
+}
+
+.banner-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.6s;
+}
+
+.banner-image.loaded {
+    opacity: 1;
+}
+
+.banner-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, rgba(42,93,132,0.9) 30%, rgba(42,93,132,0.6));
+}
+
+.content-wrapper {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: white;
+}
+
+.banner-title {
+    font-size: 2.8rem;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.primary-cta {
+    background: #FF6B35;
+    padding: 1rem 2rem;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.3s;
+}
+
+.primary-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255,107,53,0.3);
+}
+
+/* 智能导航 */
+.smart-nav {
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    margin: -40px auto 40px;
+    max-width: 1280px;
+    border-radius: 8px;
+    padding: 1rem 24px;
+}
+
+.nav-tabs {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+}
+
+.nav-tab {
+    color: #64748b;
+    padding: 0.8rem 0;
+    position: relative;
+}
+
+.nav-tab.active {
+    color: #2A5D84;
+    font-weight: 500;
+}
+
+.nav-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #FF6B35;
+}
+
+/* 文章卡片 */
+.article-list {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.list-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 2rem 0;
+}
+
+.article-card {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.article-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.card-media {
+    aspect-ratio: 16/9;
+    overflow: hidden;
+}
+
+.card-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.article-card:hover img {
+    transform: scale(1.05);
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.card-title {
+    color: #1e293b;
+    margin-bottom: 0.8rem;
+    font-size: 1.1rem;
+}
+
+.card-excerpt {
+    color: #64748b;
+    line-height: 1.6;
+    margin-bottom: 1.2rem;
+}
+
+/* 分页样式 */
+.pagination-wrapper {
+    padding: 2rem 0;
+    text-align: center;
+}
+
+.pagination a,
+.pagination span {
+    padding: 0.5rem 1rem;
+    margin: 0 0.2rem;
+    border-radius: 4px;
+}
+
+.pagination a {
+    color: #2A5D84;
+    background: #f1f5f9;
+}
+
+.pagination a:hover {
+    background: #e2e8f0;
+}
+
+.pagination .current {
+    background: #2A5D84;
+    color: white;
+}
+
+/* 分页极简优化 */
+.pagination-list li {
+    display: inline-block;
+    margin: 0 5px;
+}
+
+.pagination-list a, 
+.pagination-list span {
+    display: block;
+    padding: 8px 16px;
+    background: #fff;
+    border: 1px solid #2A5D84;
+    border-radius: 4px;
+    color: #2A5D84;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.pagination-list a:hover {
+    background: #2A5D84;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.pagination-list .active span {
+    background: #2A5D84;
+    color: white;
+    border-color: #2A5D84;
+}
+
+@media (max-width: 768px) {
+    .banner-title {
+        font-size: 2rem;
+    }
+    
+    .nav-tabs {
+        gap: 1rem;
+        padding-bottom: 0.5rem;
+    }
+}
+</style>
+
+
+ 
+
+<!-- 页脚 -->
+<footer class="sciot-footer">
+    <div class="footer-container">
+        <!-- 主要内容区 -->
+        <div class="footer-main">
+            <!-- 导航区块 -->
+            <div class="footer-nav">
+                <nav class="nav-grid">
+                    <volist name="menu" id="vo">
+                    <div class="nav-column">
+                        <h4 class="nav-title">
+                            <a href="<eq name="vo.url" value="">{$vo.typeid|url=lists,###}<else/>__ROOT__{$vo.url}</eq>">
+                                {$vo.typename}
+                            </a>
+                        </h4>
+                        <php>if($vo['submenu']){</php>
+                        <ul class="nav-links">
+                            <volist name="vo['submenu']" id="sub">
+                            <li>
+                                <a href="{$sub.typeid|url=lists,###}" class="nav-link">
+                                    {$sub.typename}
+                                    <php>if(have_child($sub[typeid])){</php>
+                                    <span class="expand-icon"></span>
+                                    <php>}</php>
+                                </a>
+                                <php>if(have_child($sub[typeid])){</php>
+                                <ul class="submenu">
+                                    <arclist model="type" where="fid=$sub[typeid]" order="drank asc" id="tree">
+                                    <li><a href='{$tree.typeid|url=lists,###}'>{$tree.typename}</a></li>
+                                    </arclist>
+                                </ul>
+                                <php>}</php>
+                            </li>
+                            </volist>
+                        </ul>
+                        <php>}</php>
+                    </div>
+                    </volist>
+                </nav>
+            </div>
+
+            <!-- 联系信息 -->
+            <div class="contact-info">
+                <div class="contact-card">
+                    <h4 class="contact-title">立即联系</h4>
+                    <ul class="contact-list">
+                        <li>
+                            <i class="iconfont icon-phone"></i>
+                            <a href="tel:18601921816">186-0192-1816</a>
+                        </li>
+                        <li>
+                            <i class="iconfont icon-email"></i>
+                            <a href="mailto:tuan_zhang@sina.com">tuan_zhang@sina.com</a>
+                        </li>
+                        <li>
+                            <i class="iconfont icon-map"></i>
+                            北京昌平区建材城西路9号金燕龙写字楼616
+                        </li>
+                    </ul>
+                    <div class="social-links">
+                        <a href="#" class="social-icon wechat" data-qr="__TMPL__images/we_chat.jpg">
+                            <i class="iconfont icon-wechat"></i>
+                        </a>
+                        <a href="#" class="social-icon weibo" data-qr="__TMPL__images/wb.png">
+                            <i class="iconfont icon-weibo"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 合作伙伴 -->
+        <div class="partners-section">
+            <h5 class="section-title">合作伙伴</h5>
+            <ul class="partner-list">
+                <arclist model='link' where="status=1" order='rank asc' id='vo'>
+                <li>
+                    <a href="{$vo.url}" target="_blank" rel="noopener">
+                        <img src="{$vo.logo}" alt="{$vo.title}">
+                    </a>
+                </li>
+                </arclist>
+            </ul>
+        </div>
+
+        <!-- 版权信息 -->
+        <div class="footer-bottom">
+            <div class="legal-links">
+                <a href="http://www.beian.miit.gov.cn/" target="_blank" rel="noopener">{$config.sitetcp}</a>
+                <a href="/privacy">隐私政策</a>
+                <a href="/sitemap">网站地图</a>
+            </div>
+            <p class="copyright">
+                &copy; 2015-2025 东方艾艾工业软件 版权所有
+            </p>
+        </div>
+    </div>
+
+    <!-- 返回顶部 -->
+    <button class="back-to-top">
+        <i class="iconfont icon-arrow-up"></i>
+        <span class="sr-only">返回顶部</span>
+    </button>
+</footer>
+
+<style>
+/* 现代页脚样式 */
+.sciot-footer {
+    background: #2A5D84;
+    color: rgba(255,255,255,0.8);
+    padding: 40px 0 20px;
+    position: relative;
+}
+
+.footer-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.footer-main {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 40px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.nav-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 30px;
+}
+
+.nav-title {
+    color: #fff;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-link {
+    color: rgba(255,255,255,0.8);
+    padding: 8px 0;
+    display: block;
+    transition: all 0.3s;
+}
+
+.nav-link:hover {
+    color: #FF6B35;
+    transform: translateX(5px);
+}
+
+.contact-card {
+    background: rgba(255,255,255,0.05);
+    padding: 24px;
+    border-radius: 8px;
+}
+
+.contact-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px;
+}
+
+.contact-list li {
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+}
+
+.contact-list .iconfont {
+    margin-right: 12px;
+    font-size: 18px;
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.social-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: all 0.3s;
+}
+
+.social-icon:hover {
+    background: #FF6B35;
+}
+
+.partners-section {
+    padding: 30px 0;
+}
+
+.partner-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+}
+
+.partner-list img {
+    height: 30px;
+    opacity: 0.8;
+    transition: all 0.3s;
+}
+
+.partner-list img:hover {
+    opacity: 1;
+}
+
+.footer-bottom {
+    padding-top: 20px;
+    text-align: center;
+}
+
+.legal-links {
+    margin-bottom: 10px;
+}
+
+.legal-links a {
+    color: rgba(255,255,255,0.8);
+    margin: 0 15px;
+}
+
+.back-to-top {
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    background: #FF6B35;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.3s;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+}
+
+@media (max-width: 1024px) {
+    .footer-main {
+        grid-template-columns: 1fr;
+    }
+    
+    .nav-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .legal-links {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+</style>
+
+<script>
+// 返回顶部按钮
+window.addEventListener('scroll', function() {
+    const backBtn = document.querySelector('.back-to-top');
+    backBtn.classList.toggle('visible', window.scrollY > 500);
+});
+
+document.querySelector('.back-to-top').addEventListener('click', function() {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+});
+
+// 二维码悬浮显示
+document.querySelectorAll('.social-icon').forEach(icon => {
+    const qr = document.createElement('div');
+    qr.className = 'qr-popup';
+    qr.innerHTML = `<img src="${icon.dataset.qr}" alt="二维码">`;
+    
+    icon.addEventListener('mouseenter', () => {
+        icon.appendChild(qr);
+    });
+    
+    icon.addEventListener('mouseleave', () => {
+        qr.remove();
+    });
+});
+
+</script>
+
+ <!-- 响应式样式优化 -->
+ <style>
+    /* 基础重置 */
+    :root {
+        --primary-color: #2A5D84;
+        --accent-color: #FF6B35;
+        --text-primary: #2D3748;
+    }
+
+    .sciot-header {
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+    }
+
+    /* 导航交互优化 */
+    .nav-link {
+        color: var(--text-primary);
+        padding: 1rem 0;
+        position: relative;
+        transition: color 0.3s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link:focus {
+        color: var(--accent-color);
+        outline: none;
+    }
+
+    .nav-item.active .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--accent-color);
+    }
+
+    /* 移动端优化 */
+    @media (max-width: 1024px) {
+        .mobile-toggle {
+            display: block;
+            z-index: 1001;
+        }
+
+        .nav-list {
+            position: fixed;
+            top: 60px;
+            left: -100%;
+            width: 100%;
+            height: calc(100vh - 60px);
+            overflow-y: auto;
+            background: #fff;
+            padding: 1rem;
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-list.active {
+            left: 0;
+        }
+
+        .submenu {
+            box-shadow: none;
+            position: static;
+            background: rgba(0,0,0,0.03);
+        }
+    }
+    </style>
+
+    <!-- 交互脚本 -->
+    <script>
+    // 响应式导航
+    const mobileToggle = document.querySelector('.mobile-toggle');
+    const navList = document.querySelector('.nav-list');
+
+    mobileToggle.addEventListener('click', () => {
+        const expanded = mobileToggle.getAttribute('aria-expanded') === 'true';
+        mobileToggle.setAttribute('aria-expanded', !expanded);
+        navList.classList.toggle('active');
+        document.body.classList.toggle('no-scroll', !expanded);
+    });
+
+    // 动态加载图片
+    const lazyLoad = () => {
+        const lazyImages = document.querySelectorAll('.lazy-load');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+                    img.classList.add('loaded');
+                    observer.unobserve(img);
+                }
+            });
+        });
+
+        lazyImages.forEach(img => observer.observe(img));
+    };
+
+    // 初始化
+    document.addEventListener('DOMContentLoaded', () => {
+        lazyLoad();
+        
+        // 子菜单交互
+        document.querySelectorAll('[aria-haspopup="true"]').forEach(item => {
+            item.addEventListener('click', (e) => {
+                if (window.innerWidth < 1024) {
+                    e.preventDefault();
+                    const submenu = item.nextElementSibling;
+                    submenu.classList.toggle('open');
+                }
+            });
+        });
+    });
+    </script>
+
+</body>
+
+
+
+</html>
