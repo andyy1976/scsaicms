@@ -42,3 +42,8 @@ Thumbs.db
 # 其他
 workbuddy-repo/
 workbuddy-claw-wechat-publisher/node_modules/
+
+# 调试文件
+debug_*.php
+test_*.php
+temp_*.txt

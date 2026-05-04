@@ -6,12 +6,15 @@ return array(
 
     // 模板设置
 
-    'DEFAULT_THEME' => 'arena',
+    'DEFAULT_THEME' => 'huatian',
     'TMPL_TEMPLATE_SUFFIX' => '.html',
     'TMPL_L_DELIM' => '{',
     'TMPL_R_DELIM' => '}',
     'TAGLIB_BEGIN' => '{',
     'TAGLIB_END' => '}',
+    'TMPL_PARSE_STRING' => array(
+        '__TMPL__' => '/Web/Tpl/huatian/',
+    ),
 
     // 语言设置
 

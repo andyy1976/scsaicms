@@ -1,4 +1,4 @@
-<include file="$head"/>
+<?php if (!defined('THINK_PATH')) exit();?><include file="$head"/>
   
 
         <div class="g_sy he_main">
@@ -1047,8 +1047,8 @@
 
 																						 <arclist model='article' where="status=1" order='ishot desc,addtime desc' num='6' id='vo'>
 																		                   	     <div class="g_sect6cen wow g_fadeup1">
-																		                   		<a href="{$vo.aid|url=articles,###}" target="_blank" title="{$vo.title}" >
-																		                   	<h5>{$vo.title}</h5>
+																		                   		<a href="<?php echo (url(articles,$vo["aid"])); ?>" target="_blank" title="<?php echo ($vo["title"]); ?>" >
+																		                   	<h5><?php echo ($vo["title"]); ?></h5>
 																		                   
 																		                      </a>
                                        							 </div>
@@ -1077,4 +1077,4 @@
 	
 
 
-<include file="$footer"/> 
+<include file="$footer"/>
