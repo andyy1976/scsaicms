@@ -104,7 +104,7 @@
 
                 <div class="he_plnavul he_common">
                 	
-                				 	<php>
+                				 	{php}
 									//	$first_id=get_first_father($type['typeid']);
 										$fid=get_field('type','typeid='.$type[typeid],'fid');
 										
@@ -118,24 +118,24 @@
 											$pid=$fid; 
 											$pname=get_field('type','typeid='.$pid,'typename');
 										}
-								  </php>
+								  {/php}
 									<category parentid="$pid" id="vo">
-										<div class="he_plnavli <php>if($type['typeid'] == $vo['typeid']){</php>  yxnav_active2 <php>}</php> ">
+										<div class="he_plnavli {php}if($type['typeid'] == $vo['typeid']){{/php}  yxnav_active2 {php}}{/php} ">
 											
 										
 										<h2>	<a href='{$vo.typeid|url=lists,###}'>{$vo.typename}</a></h2>
 												<!--判定是否有子类-->
-												<php>{</php>
+												{php}{{/php}
 												<div class="he_plnavli">
 													<ul>
 														<category parentid="$vo[typeid]" id="voo">
 														
 															
-														<li><span class="file <php>if($type['typeid'] == $voo['typeid']){</php>  active <php>}</php>"><a href='{$voo.typeid|url=lists,###}' >{$voo.typename}(<?php echo $countofcurrenttypeid  ?>)</a></span></li> 
+														<li><span class="file {php}if($type['typeid'] == $voo['typeid']){{/php}  active {php}}{/php}"><a href='{$voo.typeid|url=lists,###}' >{$voo.typename}(<?php echo $countofcurrenttypeid  ?>)</a></span></li> 
 														</category>
 													</ul>
 													</div>
-												<php>}</php>
+												{php}}{/php}
 										</div>
 									</category>
 						<!--			
@@ -157,7 +157,7 @@
         </div>
         
              		&nbsp;
-        	<php>if(count($list)==1){</php>
+        	{php}if(count($list)==1){{/php}
 						 	<div class="he_common">
 
                 <div class="he_d2bxny">
@@ -193,7 +193,7 @@
           			</div>
           		</div>
 						
-							<php>}else{</php>
+							{php}}else{{/php}
 						
                <div class="he_ny he_e1bx he_main">
 
@@ -209,7 +209,7 @@
 
 												
 																					<volist name="list" id="vo">
-																	  				<php>$idnumber= $idnumber+1;</php>
+																	  				{php}$idnumber= $idnumber+1;{/php}
 																				
 																						
 																							<div class="he_e1p1li">
@@ -407,6 +407,6 @@
 			            </div>
 
    				     </div>
-               	<php>}</php>
+               	{php}}{/php}
 
       <include file="./footer_ps"/>

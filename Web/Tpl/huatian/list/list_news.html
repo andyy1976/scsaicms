@@ -1,4 +1,4 @@
-﻿<!--演示包括其他模板文件-->
+<!--演示包括其他模板文件-->
 <include file="./head_qrw"/>
 
 <!--pz_bannner-->
@@ -18,7 +18,7 @@
         <div class="container2">
             <div class="pz_SideLayerNews">
 		
-									<php>
+									{php}
 									//	$first_id=get_first_father($type['typeid']);
 										$fid=get_field('type','typeid='.$type[typeid],'fid');
 										
@@ -32,25 +32,25 @@
 											$pid=$fid; 
 											$pname=get_field('type','typeid='.$pid,'typename');
 										}
-								  </php>
+								  {/php}
 								  
 								  	
 								
 									<category parentid="$pid" id="vo">
-										<li class="l1 <php>if($type['typeid'] == $vo['typeid']){</php>  on <php>}</php> ">
+										<li class="l1 {php}if($type['typeid'] == $vo['typeid']){{/php}  on {php}}{/php} ">
 											
 										
 											<a href='{$vo.typeid|url=lists,###}'>{$vo.typename}</a>
 												<!--判定是否有子类-->
-												<php>{</php>
+												{php}{{/php}
 													<ul>
 														<category parentid="$vo[typeid]" id="voo">
 														
 															
-														<li><span class="file <php>if($type['typeid'] == $voo['typeid']){</php>  active <php>}</php>"><a href='{$voo.typeid|url=lists,###}' >{$voo.typename}(<?php echo $countofcurrenttypeid  ?>)</a></span></li> 
+														<li><span class="file {php}if($type['typeid'] == $voo['typeid']){{/php}  active {php}}{/php}"><a href='{$voo.typeid|url=lists,###}' >{$voo.typename}(<?php echo $countofcurrenttypeid  ?>)</a></span></li> 
 														</category>
 													</ul>
-												<php>}</php>
+												{php}}{/php}
 										</li>
 									</category>
 	                      
@@ -71,7 +71,7 @@
     <div class="container2">
         <div class="pageNewsList wow fadeInLeft">
         		&nbsp;
-        	<php>if(count($list)==1){</php>
+        	{php}if(count($list)==1){{/php}
 						<!--content start-->
 					<div class="curLocation wow fadeInUp">
                   <span class='guide_menu'>你的位置：{$nav}</span>           </div>
@@ -93,12 +93,12 @@
             </div>
 					
 											
-						<php>}else{</php>
+						{php}}else{{/php}
             <ul class="wow fadeInUp">
             	
-        		<php>$idnumber = 0;</php>
+        		{php}$idnumber = 0;{/php}
 						<volist name="list" id="vo">
-		  				<php>$idnumber= $idnumber+1;</php>
+		  				{php}$idnumber= $idnumber+1;{/php}
 							<li>
 							
 								<div class="rit-cont">
@@ -134,7 +134,7 @@
              <div class="yemianfenye">
  							 {$page}
 						 </div>
-						 	<php>}</php>
+						 	{php}}{/php}
 						 
         </div>
         
