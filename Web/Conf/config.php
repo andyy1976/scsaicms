@@ -23,8 +23,11 @@ return array(
 
     // URL模式
 
-    'URL_MODEL' => 2,
+    'URL_MODEL' => 3,
+    'URL_PATHINFO_DEPR' => '/',
+    'URL_ROUTER_ON' => true,
     'URL_ROUTE_RULES' => require APP_PATH.'Conf/routes.php',
+    'URL_HTML_SUFFIX' => 'html',
 
     // 数据库配置
 
