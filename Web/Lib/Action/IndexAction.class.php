@@ -128,7 +128,11 @@ class IndexAction extends BaseAction
 				*/
 				
 				//输出模板
-        $this->display(TMPL_PATH . cookie('think_template') . '/index.html');
+        $template = cookie('think_template');
+        if (empty($template)) {
+            $template = 'huatian';
+        }
+        $this->display(TMPL_PATH . $template . '/index.html');
         
       /*  if ($is_build == 1) 
         {

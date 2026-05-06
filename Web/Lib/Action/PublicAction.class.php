@@ -65,8 +65,14 @@ class PublicAction extends Action
         $this->assign('nav', $nav);
         //释放内存
         unset($type, $article);
-        $this->assign('head', TMPL_PATH . cookie('think_template') . '/head.html');
-        $this->assign('footer', TMPL_PATH . cookie('think_template') . '/footer.html');
+        
+        // 获取模板名称，默认使用huatian
+        $template = cookie('think_template');
+        if (empty($template)) {
+            $template = 'huatian';
+        }
+        $this->assign('head', TMPL_PATH . $template . '/head.html');
+        $this->assign('footer', TMPL_PATH . $template . '/footer.html');
     }
 
     function py_link()

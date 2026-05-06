@@ -7,11 +7,12 @@ return array(
     // 模板设置
 
     'DEFAULT_THEME' => 'huatian',
+    'TMPL_ENGINE_TYPE' => 'Think',
     'TMPL_TEMPLATE_SUFFIX' => '.html',
     'TMPL_L_DELIM' => '{',
     'TMPL_R_DELIM' => '}',
-    'TAGLIB_BEGIN' => '{',
-    'TAGLIB_END' => '}',
+    'TAGLIB_BEGIN' => '<',
+    'TAGLIB_END' => '>',
     'TMPL_PARSE_STRING' => array(
         '__TMPL__' => '/Web/Tpl/huatian/',
     ),

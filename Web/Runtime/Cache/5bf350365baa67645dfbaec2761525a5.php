@@ -1,4 +1,165 @@
-<?php if (!defined('THINK_PATH')) exit();?><include file="$head"/>
+<?php if (!defined('THINK_PATH')) exit();?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="referrer" content="no-referrer" />
+<meta name="keywords" content="<?php echo ($keywords); ?>"/>
+<meta name="description" content="<?php echo ($description); ?>"/>
+<title>
+<?php if(($title) != ""): echo ($title); ?>-<?php endif; echo ($config["sitetitle"]); ?>-<?php echo ($config["sitetitle2"]); ?>
+</title>
+<link href="__TMPL__/css/bootstrap.min-v3.3.5.css" rel="stylesheet" type="text/css"/>
+<link href="__TMPL__/css/base-v1.4.css" rel="stylesheet" type="text/css"/>
+<link href="__TMPL__/css/slick.css" rel="stylesheet" type="text/css"/>
+<link href="__TMPL__/css/slick-theme.css" rel="stylesheet" type="text/css"/>
+<link href="__TMPL__/css/jquery.mCustomScrollbar.min.css" rel="stylesheet" type="text/css"/>
+<link href="__TMPL__/css/animate.min.css" rel="stylesheet" type="text/css"/>
+<link href="__TMPL__/css/main.css" rel="stylesheet" type="text/css"/>
+<link href="__TMPL__/css/media.css" rel="stylesheet" type="text/css"/>
+<link href="__TMPL__/css/style.css" rel="stylesheet" type="text/css"/>
+<link href="__TMPL__/css/iconfont.css" rel="stylesheet" type="text/css"/>
+
+<script src="__TMPL__/js/jquery-1.10.2.min.js" type="text/javascript"></script>
+<script src="__TMPL__/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="__TMPL__/js/main.js" type="text/javascript"></script>
+<script src="__TMPL__/js/jquery.jslides.js" type="text/javascript" ></script>
+<script type="text/javascript"> 
+			
+function GetQueryString(name) 
+{
+		    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+		    var r = window.location.search.substr(1).match(reg);
+		    if (r != null) return decodeURI(r[2]);
+		    return null;
+}
+
+
+ 
+function Active_menu(i)
+{
+		//$('.header-left .active').removeClass('active');
+		//alert(i);
+			$("#menu_"+i).addClass('active');
+			//$('#menu_1').addClass('nav_h1');
+}
+	
+
+$(document).ready(function()
+{ 
+		//$('#shouye').addClass("nav_h11"); 
+	
+//alert("aa");
+  //  		alert("a");
+	var id=6;
+
+		var s=GetQueryString("s");
+	//alert(s);
+	
+		if(s==null)
+		{
+			//alert("1");
+		 id=1;
+		}
+		
+		else if(s.indexOf("memberlist")!=-1)
+		{
+			id=7;
+		}
+		else if(s.indexOf('wenda')!=-1)
+		{
+		 id=6;
+		}
+		/*
+		else if(s.indexOf('search')!=-1)
+		{
+		 //alert("search");
+		 id=GetQueryString("typeid");
+		 alert(id);
+		}
+		*/
+		else
+		{
+				 id=s.split('/')[2][0];
+		}
+	//	alert(id);
+		Active_menu(id);
+
+
+
+
+});  
+</script> 
+</head>
+<body>
+<div class="head-top">
+	<div class="width-block">
+		<ul>
+			<li><a href="index.php?s=articles/1685.html">关于我们</a></li>
+		  <li><a href="index.php?s=articles/1690.html">联系我们</a></li>
+			<script src="<?php echo U('Api/login_js');?>"></script>
+			
+		</ul>
+	</div>
+</div>
+<div class="head">
+	<div class="width-block">
+		<div class="logo"> 	<a href="/"><img src="__PUBLIC__/Uploads/logo/<?php echo ($config["sitelogo"]); ?>" alt="<?php echo ($config["sitetitle"]); ?>"></a></div>
+		<div class="search">
+			<div class="search-info">
+		   <form class="form" id="search" method="post" action="<?php echo U('Search/Index');;?>" role="search">
+				<div class="search-left">
+					<div class="language">
+										
+									
+											<select  class="select" style="height:40px;border:0px;" name="typeid" id="typeid">
+											<option  class="list1" value="-1" ><span>全部文章</span><i></i></option>
+												<?php if(is_array($menu)): $k = 0; $__LIST__ = array_slice($menu,0,8,true);if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($k % 2 );++$k;?><option class="list1" value="<?php echo ($vo["typeid"]); ?>"  <?php if(($typeid) == $vo[typeid]): ?>selected='selected'<?php endif; ?>><p><?php echo ($vo["typename"]); ?></p> </option><?php endforeach; endif; else: echo "" ;endif; ?>
+											</select>
+																								
+								
+					</div>
+					<div class="search-input">
+					<input type="text" id="search"  name="k"  placeholder="请输入搜索关键字" onBlur="if(this.value=='') this.value='';" value="<?php echo ($keyword); ?>"/>
+					
+					</div>
+				</div>
+				<div class="search-btn"><button id="search_btn" type="submit"><i class="fa fa-search"></i>搜 索</button></div>
+				 </form>
+			</div>
+			<div class="census">已收录文章（案例） <?php echo ($counttotal); ?> 篇，今天新增 <?php echo ($counttoday); ?> 篇</div>
+		</div>
+	</div>
+</div>
+<div class="nav">
+	<div class="nav-t">
+		<ul>
+			<li id="menu_-1"><a href="/">首页</a></li>
+
+	        <?php if(is_array($menu)): $k = 0; $__LIST__ = array_slice($menu,0,8,true);if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($k % 2 );++$k;?><li id="menu_<?php echo ($vo["typeid"]); ?>"><a href="<?php if(($vo["url"]) == ""): echo (url(lists,$vo["typeid"])); else: ?>__ROOT__<?php echo ($vo["url"]); endif; ?>"  target="<?php if(($vo["target"]) == "1"): ?>_self<?php else: ?>_blank<?php endif; ?>"><?php echo ($vo["typename"]); ?></a></li><?php endforeach; endif; else: echo "" ;endif; ?>
+			
+		</ul>
+	</div>
+	<div class="nav-b"></div>
+</div>
+<div id="slide">
+	<div class="width-block">
+		<div id="full-screen-slider">
+			<ul id="slides">
+				<?php $m=new Model("lvbo_flash",NULL);$ret=$m->Distinct()->field("")->where("status=1")->group("")->order("rank asc")->limit("")->select();if(is_array($ret)):$i = 0;foreach($ret as $key=>$vo):++$i;?><li style="background:url('__PUBLIC__/Uploads/hd/<?php echo ($vo["pic"]); ?>') no-repeat center top"><!--<a href="<?php echo ($vo["url"]); ?>" target="_blank">1</a>--></li><?php endforeach;endif; ?>
+	        
+
+			</ul>
+		</div>	
+	</div>
+</div>
+
+
+
+	
+
+
   
 
         <div class="g_sy he_main">
@@ -9,9 +170,9 @@
 
                     <div class="g_title">
 
-                        <h3 class="g_fadeup1 wow">推荐产品，1000+中小企业用户的选择</h3>
+                        <h3 class="g_fadeup1 wow">推荐产品�?000+中小企业用户的选择</h3>
 
-                        <p class="g_fadeup2 wow">支持MTK、Amlogic、全志三大硬件平台、拥有智能智造、数字资产管理、微信公众平台三大技术平台和产品全生命周期管理、卓越制造、数字化服务三大系列产品线。</p>
+                        <p class="g_fadeup2 wow">支持MTK、Amlogic、全志三大硬件平台、拥有智能智造、数字资产管理、微信公众平台三大技术平台和产品全生命周期管理、卓越制造、数字化服务三大系列产品线�?/p>
 
                     </div>
 
@@ -24,7 +185,7 @@
 
 	                                <a href="index.php?s=/lists/2260.html">
 
-	                                    <div class="g_sect1tu"><img src="__TMPL__images/hwicon.png" alt="hwicon" alt=""></div>
+	                                    <div class="g_sect1tu"><img src="__TMPL__/images/hwicon.png" alt="hwicon" alt=""></div>
 
 	                                    <span>平板产品</span>
 
@@ -42,11 +203,11 @@
 
 	                                <a href="index.php?s=/lists/54.html">
 
-	                                    <div class="g_sect1tu"><img src="__TMPL__images/syicon1.png" alt="PLM，PLM软件" alt=""></div>
+	                                    <div class="g_sect1tu"><img src="__TMPL__/images/syicon1.png" alt="PLM，PLM软件" alt=""></div>
 
 	                                    <span>SCPLM</span>
 
-	                                    <p>产品全生命周期管理</p>
+	                                    <p>产品全生命周期管�?/p>
 
 	                                </a>
 
@@ -64,7 +225,7 @@
 
 	                                    <span>SCPPS</span>
 
-	                                    <p>工艺设计与管理</p>
+	                                    <p>工艺设计与管�?/p>
 
 	                                </a>
 
@@ -80,7 +241,7 @@
 
 	                                    <span>SCMES</span>
 
-	                                    <p>生产制造执行系统</p>
+	                                    <p>生产制造执行系�?/p>
 
 	                                </a>
 
@@ -97,7 +258,7 @@
 
 	                                <a href="index.php?s=/lists/51.html">
 
-	                                    <div class="g_sect1tu"><img src="__TMPL__images/cc.png" alt="QMS,QPMS,质量管理，质量过程管理" alt=""></div>
+	                                    <div class="g_sect1tu"><img src="__TMPL__images/cc.png" alt="QMS,QPMS,质量管理，质量过程管�? alt=""></div>
 
 	                                    <span>SCQMS</span>
 
@@ -134,7 +295,7 @@
 
 	                                    <span>SCPM</span>
 
-	                                    <p>项目，项目成本管理</p>
+	                                    <p>项目，项目成本管�?/p>
 
 	                                </a>
 
@@ -181,9 +342,9 @@
 
                 <div class="g_title">
 
-                    <h3 class="g_fadeup1 wow">数字视显、工业互联网、智能制造、数据资产管理、微信公众平台解决方案</h3>
+                    <h3 class="g_fadeup1 wow">数字视显、工业互联网、智能制造、数据资产管理、微信公众平台解决方�?/h3>
 
-                    <p class="g_fadeup2 wow">聚焦航天、机械、电力、食品等多个行业，为企业提供全过程解决方案，助力企业数字化转型升级，赋能中国制造业创新发展。</p>
+                    <p class="g_fadeup2 wow">聚焦航天、机械、电力、食品等多个行业，为企业提供全过程解决方案，助力企业数字化转型升级，赋能中国制造业创新发展�?/p>
 
                 </div>
 
@@ -234,7 +395,7 @@
 
                                     <h4>数字视显</h4>
 
-                                    <p>数字视显解决方案产品支持 10-100 寸的显示。普遍适用于智慧显示终端产品、视频类终端产品、工业自 动化终端产品，如：广告机、数字标牌、智能自助终端、智能零售终端、O2O 智能设备、工控主机、机器人设备、大屏多媒体显示等。
+                                    <p>数字视显解决方案产品支持 10-100 寸的显示。普遍适用于智慧显示终端产品、视频类终端产品、工业自 动化终端产品，如：广告机、数字标牌、智能自助终端、智能零售终端、O2O 智能设备、工控主机、机器人设备、大屏多媒体显示等�?
                                     </p>
 
                                     <div class="g_sect2wzbtn clearfix">
@@ -260,15 +421,15 @@
 
                 		    <div class="g_sect2all  fl" data-num="1">
 
-                            <div class="g_sect2bjwz">智能智造</div>
+                            <div class="g_sect2bjwz">智能智�?/div>
 
                             <div class="g_sect2wz">
 
                                 <div class="he_serh2">
 
-                                    <h4>智能智造</h4>
+                                    <h4>智能智�?/h4>
 
-                                    <p>在产品的全生命周期管理中，越来越多环节需要产品的数据协同，在这其中以3D模型为数据基础，以PLM,PDM作为基础平台，向各阶段人员提供一致的产品和项目信息，达到更好的沟通和协作，模拟真实性以便让各方更高效、更精确的生产制造。
+                                    <p>在产品的全生命周期管理中，越来越多环节需要产品的数据协同，在这其中以3D模型为数据基础，以PLM,PDM作为基础平台，向各阶段人员提供一致的产品和项目信息，达到更好的沟通和协作，模拟真实性以便让各方更高效、更精确的生产制造�?
                                     </p>
 
                                     <div class="g_sect2wzbtn clearfix">
@@ -303,15 +464,15 @@
                         </div>
                         <div class="g_sect2all  fl" data-num="2">
 
-                            <div class="g_sect2bjwz">工业互联网</div>
+                            <div class="g_sect2bjwz">工业互联�?/div>
 
                             <div class="g_sect2wz">
 
                                 <div class="he_serh2">
 
-                                    <h4>工业互联网</h4>
+                                    <h4>工业互联�?/h4>
 
-                                    <p>超云智能工业互联网解决方案，围绕为企业降成本、为经济谋发展的定位，以助力智能制造、推动企业数字化转型、构建产业互联为核心功能，有力推动工业产业数字化转型。。
+                                    <p>超云智能工业互联网解决方案，围绕为企业降成本、为经济谋发展的定位，以助力智能制造、推动企业数字化转型、构建产业互联为核心功能，有力推动工业产业数字化转型。�?
                                     </p>
 
                                     <div class="g_sect2wzbtn clearfix">
@@ -354,7 +515,7 @@
 
                                     <h4>数据资产管理</h4>
 
-                                    <p>数据资产管理解决方案 灵活定制企业数据资产目录,通过搜索引擎和数据目录,快速查询所需数据,提高数据利用效率,同时保证数据安全可控。
+                                    <p>数据资产管理解决方案 灵活定制企业数据资产目录,通过搜索引擎和数据目�?快速查询所需数据,提高数据利用效率,同时保证数据安全可控�?
                                     </p>
 
                                     <div class="g_sect2wzbtn clearfix">
@@ -389,15 +550,15 @@
                         </div>
                         <div class="g_sect2all  fl" data-num="4">
 
-                            <div class="g_sect2bjwz">中小企业工程项目及成本管理</div>
+                            <div class="g_sect2bjwz">中小企业工程项目及成本管�?/div>
 
                             <div class="g_sect2wz">
 
                                 <div class="he_serh2">
 
-                                    <h4>中小企业工程项目及成本管理</h4>
+                                    <h4>中小企业工程项目及成本管�?/h4>
 
-                                    <p>超云智能工程项目管理，是结合二十多年来公司在行业项目管理系统研发和实施经验，提炼出来的一套项目管理产品。本项目管理产品主要重点关注项目的"计划进度、人力资源、成本费用、质量评价、成果归档"等五大要素，同时贯穿 ISO质量体系思想，对整个设计业务的计划、生产、成果、控制、质量、流程等全过程进行管理与控制。 该产品不仅为一线人员提供统一的项目级协同工作平台，帮助作业层人员提高工作效率；同时对项目过程数据进行智能分析，为项目管理人员及公司领导提供实时掌握项目计划进度、成本费用、资源负荷、质量状况、成果交付等方面的智能化项目监控管理功能，为高层管理者提供决策支持。
+                                    <p>超云智能工程项目管理，是结合二十多年来公司在行业项目管理系统研发和实施经验，提炼出来的一套项目管理产品。本项目管理产品主要重点关注项目�?计划进度、人力资源、成本费用、质量评价、成果归�?等五大要素，同时贯穿 ISO质量体系思想，对整个设计业务的计划、生产、成果、控制、质量、流程等全过程进行管理与控制�?该产品不仅为一线人员提供统一的项目级协同工作平台，帮助作业层人员提高工作效率；同时对项目过程数据进行智能分析，为项目管理人员及公司领导提供实时掌握项目计划进度、成本费用、资源负荷、质量状况、成果交付等方面的智能化项目监控管理功能，为高层管理者提供决策支持�?
                                     </p>
 
                                     <div class="g_sect2wzbtn clearfix">
@@ -440,7 +601,7 @@
 
                                     <h4>微信公众平台</h4>
 
-                                    <p>超云智能微信公众平台解决方案，基于微擎开源系统，集成了企业最常用的移动办公、物业管理、自媒体、图文视频审核等常用移动应用和小程序，可以为中小企业提供一站式公众号或小程序搭建与制作服务。                              </p>
+                                    <p>超云智能微信公众平台解决方案，基于微擎开源系统，集成了企业最常用的移动办公、物业管理、自媒体、图文视频审核等常用移动应用和小程序，可以为中小企业提供一站式公众号或小程序搭建与制作服务�?                             </p>
 
                                     <div class="g_sect2wzbtn clearfix">
 
@@ -485,7 +646,7 @@
 
                                     <h4>更多方案</h4>
 
-                                    <p>超云智能现已形成工业互联网、智能智造、数据资产管理、微信公众平台、项目管理、视讯显示等不同领域跨行业解决方案，助力企业数字化转型升级。
+                                    <p>超云智能现已形成工业互联网、智能智造、数据资产管理、微信公众平台、项目管理、视讯显示等不同领域跨行业解决方案，助力企业数字化转型升级�?
                                     </p>
 
                                     <div class="g_sect2wzbtn clearfix">
@@ -520,7 +681,7 @@
 
                 <div class="g_title">
 
-                    <h3 class="g_fadeup1 wow">我们的最佳实践</h3>
+                    <h3 class="g_fadeup1 wow">我们的最佳实�?/h3>
 
                     <p class="g_fadeup2 wow">专注智能制造近30年，始终坚持自主创新，用专业创造价值，凭真诚赢得信赖！</p>
 
@@ -546,7 +707,7 @@
 
                                         </div>
 
-                                        <h3>超云智能数字资产管理系统助力某电网公司数据资源关系管理 </h3>
+                                        <h3>超云智能数字资产管理系统助力某电网公司数据资源关系管�?</h3>
 
                                         <p><span>数据资源关系提取</span><span>易用好用</span></p>
 
@@ -562,7 +723,7 @@
 
                                         <div class="he_lokewp">
 
-                                            <p>借助工具进行数据提取逻辑、业务与数据映射关系、数据表间关联关系、主键、数据关联逻辑关系等数据业务化信息梳理，形成知识沉淀，实现数据提取逻辑、数据关联关系的快速查询和获取，降低用户找数用数门槛。</p>
+                                            <p>借助工具进行数据提取逻辑、业务与数据映射关系、数据表间关联关系、主键、数据关联逻辑关系等数据业务化信息梳理，形成知识沉淀，实现数据提取逻辑、数据关联关系的快速查询和获取，降低用户找数用数门槛�?/p>
 
                                         </div>
 
@@ -624,7 +785,7 @@
 
                                         <div class="he_lokewp">
 
-                                            <p>通过SCIOT平台，全面集成QMS,PPS,MES,ERP，打造全厂可视化、智能化、全过程可管控、可追溯的数字化工厂，全面提质增效。</p>
+                                            <p>通过SCIOT平台，全面集成QMS,PPS,MES,ERP，打造全厂可视化、智能化、全过程可管控、可追溯的数字化工厂，全面提质增效�?/p>
 
                                         </div>
 
@@ -670,7 +831,7 @@
 
                                         </div>
 
-                                        <h3>超云智能QMS,PPS,MES助力航天卓越轻松实现航天过程质量管控，工艺三维设计，车间数字化和智能化 </h3>
+                                        <h3>超云智能QMS,PPS,MES助力航天卓越轻松实现航天过程质量管控，工艺三维设计，车间数字化和智能�?</h3>
 
                                         <p><span>航天质量控制</span><span>无缝衔接客户</span></p>
 
@@ -686,7 +847,7 @@
 
                                         <div class="he_lokewp">
 
-                                            <p>超云智能QMS,PPS,MES助力航天卓越轻松实现航天过程质量管控，工艺三维设计，车间数字化和智能化。</p>
+                                            <p>超云智能QMS,PPS,MES助力航天卓越轻松实现航天过程质量管控，工艺三维设计，车间数字化和智能化�?/p>
 
                                         </div>
 
@@ -754,9 +915,9 @@
 
                 <div class="g_title">
 
-                    <h3 class="g_fadeup1 wow">客户说</h3>
+                    <h3 class="g_fadeup1 wow">客户�?/h3>
 
-                    <p class="g_fadeup2 wow">我们拥有一流的客户， 也是一流客户所信赖的合作伙伴</p>
+                    <p class="g_fadeup2 wow">我们拥有一流的客户�?也是一流客户所信赖的合作伙�?/p>
 
                 </div>
 
@@ -770,14 +931,14 @@
 
                                 <p> 
 
-                                    超云智能智能智造整体解决方案支持打造智能化、可视化、全流程可追踪的数字化工厂，在质量管控、仓储物流、生产执行过程、生产现场可视化管理”等主要应用功能，全面提高了公司白酒的罐装和存储过程管理水平。
+                                    超云智能智能智造整体解决方案支持打造智能化、可视化、全流程可追踪的数字化工厂，在质量管控、仓储物流、生产执行过程、生产现场可视化管理”等主要应用功能，全面提高了公司白酒的罐装和存储过程管理水平�?
                                 </p>
 
                                 <div class="g_sect4nr_all clearfix">
 
                                     <div class="g_sect4nrtu fl"><img src="__TMPL__images/jjh.png" alt="将军红MES"></div>
 
-                                    <h4 class="fl">湖北将军红酒业股份有限公司</h4>
+                                    <h4 class="fl">湖北将军红酒业股份有限公�?/h4>
 
                                 </div>
 
@@ -797,12 +958,12 @@
 
                                 <p> 
 
-                                    通过应用超云智能质量管理系统QMS、工艺设计与管理系统PPS，实现了对质量的航天级过程管控，工艺支持二维和三维设计，实现工艺环节的仿真分析，与车间制造执行系统集成形成整体解决方案，实现三维可视化下厂指导，提高了产品的装配质量，有效避免错漏装。
+                                    通过应用超云智能质量管理系统QMS、工艺设计与管理系统PPS，实现了对质量的航天级过程管控，工艺支持二维和三维设计，实现工艺环节的仿真分析，与车间制造执行系统集成形成整体解决方案，实现三维可视化下厂指导，提高了产品的装配质量，有效避免错漏装�?
                                 </p>
 
                                 <div class="g_sect4nr_all clearfix">
 
-                                    <div class="g_sect4nrtu fl"><img src="__TMPL__images/syicon10-704.png" alt="工艺设计与管理"></div>
+                                    <div class="g_sect4nrtu fl"><img src="__TMPL__images/syicon10-704.png" alt="工艺设计与管�?></div>
 
                                     <h4 class="fl">航天某所</h4>
 
@@ -823,7 +984,7 @@
 
                                 <p> 
 
-                                    基于PLM的智能智造整体解决方案正式上线，给我们公司工作带来了革命性的改变，比如： 原来的资料分散保存、工作流程不清，变成了资料统一保存、系统规范性的工作流程；超云智能PLM让我们大大提高了工作效率。
+                                    基于PLM的智能智造整体解决方案正式上线，给我们公司工作带来了革命性的改变，比如： 原来的资料分散保存、工作流程不清，变成了资料统一保存、系统规范性的工作流程；超云智能PLM让我们大大提高了工作效率�?
                                 </p>
 
                                 <div class="g_sect4nr_all clearfix">
@@ -851,7 +1012,7 @@
 
                                 <p> 
 
-                                    通过应用超云智能的基于微信公众平台和PLM的Chatbot管理平台，不仅全面支持5G消息的收发，在消息内容存储以及流程管控方面具备独特的优势。
+                                    通过应用超云智能的基于微信公众平台和PLM的Chatbot管理平台，不仅全面支�?G消息的收发，在消息内容存储以及流程管控方面具备独特的优势�?
                                 </p>
 
                                 <div class="g_sect4nr_all clearfix">
@@ -878,7 +1039,7 @@
 
                                 <p> 
 
-                                    通过应用超云智能的公众平台程序，在物业管理、小区停车、智能办公等领域实现了全面进步，目前已经实现了物业通知采购 订单协同、计划协同、仓储协同、结算协同、质量协同等业务的管理，实现了采 购业务的电子化管理，解决了主机厂与供应商及代办员之间的业务协同问题。
+                                    通过应用超云智能的公众平台程序，在物业管理、小区停车、智能办公等领域实现了全面进步，目前已经实现了物业通知采购 订单协同、计划协同、仓储协同、结算协同、质量协同等业务的管理，实现了采 购业务的电子化管理，解决了主机厂与供应商及代办员之间的业务协同问题�?
                                 </p>
 
                                 <div class="g_sect4nr_all clearfix">
@@ -904,7 +1065,7 @@
 
                                 <p> 
 
-                                    运用 SINOVATION 软件间隙设计模块的凸包处理、压料面处理、侧壁处理 和强压空开处理功能，快速生成偏置面，同时可以自动生成高质量的过渡面，使 得处理后的模面光顺性得到保证。
+                                    运用 SINOVATION 软件间隙设计模块的凸包处理、压料面处理、侧壁处�?和强压空开处理功能，快速生成偏置面，同时可以自动生成高质量的过渡面，使 得处理后的模面光顺性得到保证�?
                                 </p>
 
                                 <div class="g_sect4nr_all clearfix">
@@ -953,9 +1114,9 @@
 
                     <div class="g_title">
 
-                        <h3 class="g_fadeup1 wow">生态合作，开启工业创新和智能制造</h3>
+                        <h3 class="g_fadeup1 wow">生态合作，开启工业创新和智能制�?/h3>
 
-                        <p class="g_fadeup2 wow">工业互联、智能制造、数字化转型万亿级市场蓝海，等您加入。与优秀为伍，与卓越同行，超云智能期待与您共奋进！</p>
+                        <p class="g_fadeup2 wow">工业互联、智能制造、数字化转型万亿级市场蓝海，等您加入。与优秀为伍，与卓越同行，超云智能期待与您共奋进�?/p>
 
                     </div>
 
@@ -981,7 +1142,7 @@
 
                     <h3 class="g_fadeup1 wow">我们从未停止探索</h3>
 
-                    <p class="g_fadeup2 wow">了解超云智能的最新动态，企业新闻，技术文章</p>
+                    <p class="g_fadeup2 wow">了解超云智能的最新动态，企业新闻，技术文�?/p>
 
                 </div>
 
@@ -1003,7 +1164,7 @@
 
                                 <div class="g_sect6wz">
 
-                                    <h5>限时优惠活动！</h5>
+                                    <h5>限时优惠活动�?/h5>
 
                                     <p>SCIOT,SCPLM, SCMES,SCPDM ,SCPPS,SCQMS,SCERP限时优惠</p>
 
@@ -1028,9 +1189,9 @@
 
                                 <div class="g_sect6wz">
 
-                                    <h5>湖北将军红酒业集团，签约超云智能SCIOT平台！</h5>
+                                    <h5>湖北将军红酒业集团，签约超云智能SCIOT平台�?/h5>
 
-                                    <p>湖北将军红酒业集团，签约超云智能PLM！</p>
+                                    <p>湖北将军红酒业集团，签约超云智能PLM�?/p>
 
                                     <span>2024-04-07</span>
 
@@ -1045,14 +1206,12 @@
 
                     <div class="g_sect6nrfr fl">
 
-																						 <arclist model='article' where="status=1" order='ishot desc,addtime desc' num='6' id='vo'>
-																		                   	     <div class="g_sect6cen wow g_fadeup1">
+																						 <?php $m=new Model("lvbo_article",NULL);$ret=$m->Distinct()->field("")->where("status=1")->group("")->order("ishot desc,addtime desc")->limit("6")->select();if(is_array($ret)):$i = 0;foreach($ret as $key=>$vo):++$i;?><div class="g_sect6cen wow g_fadeup1">
 																		                   		<a href="<?php echo (url(articles,$vo["aid"])); ?>" target="_blank" title="<?php echo ($vo["title"]); ?>" >
 																		                   	<h5><?php echo ($vo["title"]); ?></h5>
 																		                   
 																		                      </a>
-                                       							 </div>
-																		                </arclist>
+                                       							 </div><?php endforeach;endif; ?>
 
                  
                     </div>
@@ -1074,7 +1233,3 @@
             </section>
 
         </div>
-	
-
-
-<include file="$footer"/>
