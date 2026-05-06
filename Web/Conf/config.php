@@ -24,6 +24,7 @@ return array(
     // URL模式
 
     'URL_MODEL' => 2,
+    'URL_ROUTE_RULES' => require APP_PATH.'Conf/routes.php',
 
     // 数据库配置
 
