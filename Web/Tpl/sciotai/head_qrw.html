@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+<meta name="renderer" content="webkit|ie-comp|ie-stand" />
+<meta name="format-detection" content="telephone=no" />
+<title><neq name="title" value="">{$title}-</neq>{$config.sitetitle}-{$config.sitetitle2}</title>
+<meta name="keywords" content="{$keywords}"/>
+<meta name="description" content="{$description}"/>
+	
+<link rel="icon" href="favicon.ico" type="image/x-icon" />
+<link href="__TMPL__css/public.css" rel="stylesheet" type="text/css" />
+<link href="__TMPL__css/animate.min.css" rel="stylesheet" type="text/css" />
+<link href="__TMPL__css/style_qrw.css" rel="stylesheet" type="text/css" />
+
+
+
+
+</head>
+
+<body>
+	<!--pc obtn-->
+<div id="obtn">
+    <div class="head">
+        <div class="container1">
+            <div class="logo"><a href="/"><img width="100%" src="__PUBLIC__/Uploads/logo/{$config.sitelogo}" _tip="137*28" alt="{$config.sitetitle}" /></a></div>
+            <div class="menuph" id="menuph">
+                <div class="point">
+                    <span class="navbtn"></span>
+                </div>
+            </div>
+            <div class="cloud"><a href="http://218.245.61.108/scplm/front/X-cache=scplm_1.0.0.1-X/scripts/mainpage.aspx#" rel="nofollow" target="_blank" data-agl-cvt="5">在线体验</a></div>
+						  <div class="cloud">	
+						  		<a href="{:U('Member/login')}">登录</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{:U('Member/register')}">注册</a>
+					    
+						   
+						  </div>
+					
+						 <div class="menu">
+		 					 <ul>
+	         			   <li class="nli active"><span ><a href='/' data-n="1" target="_self" >首页</a></span></li>
+										<volist name="menu" id="vo" offset="0" length='7' key="k"> 
+													<li class="nli" ><span><a data-n="{$vo.drank}"  href="<eq name="vo.url" value="">{$vo.typeid|url=lists,###}<else/>__ROOT__{$vo.url}</eq>" target="<eq name="vo.target" value="1">_self<else/>_blank</eq>">{$vo.typename}</a></span>
+														<!--第二级-->
+														<php>if($vo[submenu]){</php>
+														<!--[if lte IE 6]><table><tr><td><![endif]-->
+														<ul class="sub" data-m="{$vo.drank}">
+															  <div class="subBox">
+																	<volist name="vo[submenu]" id="sub" key="m">
+																			<li><a href="{$sub.typeid|url=lists,###}">{$sub.typename}</a>
+																					
+																			</li>
+																	</volist>
+																</div>
+														</ul>
+																	<!--[if lte IE 6]></td></tr></table></a><![endif]-->
+														<php>}</php>
+												</li>
+									</volist>										
+				       </ul>  
+						 </div>
+					    
+        </div>
+    </div> 
+			
+			 <!-- ph下拉 -->
+    <div class="xialaph">
+      		  <ul class="ul1">		  
+										<li>
+										  <h4>
+	                    <div class="container">
+											<a href='/' target="_self">首页</a>
+											</div>
+	              		  </h4>
+										</li>
+									<volist name="menu" id="vo" offset="0" length='7' key="k"> 
+										
+													<li>
+														<h4>
+                					    <div class="container">
+														
+															<a href="<eq name="vo.url" value="">{$vo.typeid|url=lists,###}<else/>__ROOT__{$vo.url}</eq>" target="<eq name="vo.target" value="1">_self<else/>_blank</eq>">{$vo.typename}</a>
+															<!--第二级-->
+																<php>if($vo[submenu]){</php>
+														  	<img class="img_s" src="/Web/TPL/qrw/images/xiap11.png">
+                     				    <img class="img_d" src="/Web/TPL/qrw/images/xiap1.png">
+                     				    	<php>}</php>
+					                    </div>
+					           		    </h4>
+													
+														<!--第二级-->
+														<php>if($vo[submenu]){</php>
+													
+														<ul class="ul2">
+															<volist name="vo[submenu]" id="sub" key="m">
+																 <div class="container">
+																		<li><h5><a href="{$sub.typeid|url=lists,###}">{$sub.typename}</a></h5>
+																			<!--第三级-->
+																			<php>if(have_child($sub[typeid])){</php>
+																			<!--[if lte IE 6]><table><tr><td><![endif]-->
+																			<ul>
+																			<arclist model="type" where="fid=$sub[typeid]" order="drank asc" id="tree">
+																			<li><a href='{$tree.typeid|url=lists,###}'>{$tree.typename}</a></li>
+																			</arclist>
+																			</ul>
+																			<!--[if lte IE 6]></td></tr></table></a><![endif]-->
+																			<php>}</php>
+																		</li>
+																	</div>
+															</volist>
+														</ul>
+														<!--[if lte IE 6]></td></tr></table></a><![endif]-->
+														<php>}</php>
+													</li>
+									</volist>													
+					  </ul>       
+    </div>
+  	 
+</div>
+
+<!--pz_bannner-->
+<!--
+<div id="obtn">
+    <div class="slide_banner">
+	     
+			<arclist model="flash" where="status=1" order="rank asc" id="vo">
+
+	  
+	          <div>
+	            <div class="box hidden-xs">     
+							   <a href="{$vo.url}"  rel="nofollow" target="_blank" >	
+							   <img src="__PUBLIC__/Uploads/hd/{$vo.pic}" alt="{$vo.title}" width="100%"  />		
+							   </a>
+	            </div>  
+	         
+	            <div class="box visible-xs">     
+						   <a href="{$vo.url}" rel="nofollow" target="_blank" >	
+			               <img src="__PUBLIC__/Uploads/hd/{$vo.pic}" alt="{$vo.title}" width="100%" />  		
+						   </a>
+	            </div>
+	           
+
+	             
+			
+            </div>
+
+				</arclist>
+
+	</div>
+
+</div>
+
+-->
+

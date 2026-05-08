@@ -1,0 +1,390 @@
+<include file="./head_ps"/>
+
+ <!-- banner -->
+
+   <div class="he_banner he_banner1">
+
+    <div class="he_bannigul">
+
+        <div class="he_bannigli">
+
+            <div class="he_banig">
+
+                <img src="/Public/Uploads/uploadfile/images/hangyesolution1.webp" alt="hangyesolution1.webp" class="he_banpc">
+
+                <img src="/Public/Uploads/uploadfile/images/c2-373.jpg" alt="c2-373.jpg" class="he_banph">
+
+            </div>
+
+            <div class="he_bante he_common">
+
+                <div class="he_bantepy">
+
+                    <div class="he_bantep2t">
+											<h1>
+
+                        <p>SCIOT智能制造+工业互联网平台平台行业解决方案</p>
+						
+											</h1>
+
+                    </div>
+
+                    <div class="he_bantep3v">
+
+                        <p>以PLM为底座，全面打通质量、工艺、MES、ERP等系统，构造从研发设计、到生产制造、到市场流通全过程的数字发研发和生产管理平台，达到缩短项目设计周期、降低研发、设计和生产制造成本之目的进而提升竞争实力。</p>
+
+                    </div>
+
+                    <div class="he_bantemo clearfix">
+
+                        <div class="he_bantemoli he_bantemoli1 fl">
+
+                             <a href="http://218.245.61.108/scplm/front/X-cache=scplm_1.0.0.1-X/scripts/mainpage.aspx#" class="clearfix">
+
+                                <div class="g_bottonfl fl">免费体验</div>
+
+                                <div class="g_bottonfr fr">
+
+                                    <img src="__TMPL__images/baneric01.png">
+
+                                </div>
+
+                            </a>
+
+                        </div>
+
+                        <!-- <div class="he_bantemoli he_bantemoli1 fl">
+
+                            <a href="http://p.qiao.baidu.com/cps/chat?siteId=7068912&amp;userId=10762368&amp;siteToken=df40424b6b4c48e528618d8d754928b8" class="clearfix">
+
+                                <div class="g_bottonfl fl">立即咨询</div>
+
+                                <div class="g_bottonfr fr">
+
+                                    <img src="__TMPL__images/baneric01.png">
+
+                                </div>
+
+                            </a>
+
+                        </div> -->
+
+                    </div>
+ 									 
+			   		
+
+
+                </div>
+
+
+
+            </div>
+            
+                   <!-- 面包屑 -->
+			            <div class="he_breul">
+							  		  <div class="he_common">
+							       		你的位置：{$nav}
+							         </div>
+									</div>  
+
+        </div>
+        
+     
+
+    </div>
+
+</div>
+        <!-- center -->
+
+        <div class="he_ny he_c2bx he_main he_pulma">
+
+            <!-- 二级导航 -->
+
+            <div class="he_plucnav">
+
+                <div class="he_plnavul he_common">
+                	
+                				 	<php>
+									//	$first_id=get_first_father($type['typeid']);
+										$fid=get_field('type','typeid='.$type[typeid],'fid');
+										
+										if($fid==0)
+										{ 
+											$pid=$type[typeid]; 
+											$pname=$type[typename];
+										}
+										else
+										{ 
+											$pid=$fid; 
+											$pname=get_field('type','typeid='.$pid,'typename');
+										}
+								  </php>
+									<category parentid="$pid" id="vo">
+										<div class="he_plnavli <php>if($type['typeid'] == $vo['typeid']){</php>  yxnav_active2 <php>}</php> ">
+											
+										
+										<h2>	<a href='{$vo.typeid|url=lists,###}'>{$vo.typename}</a></h2>
+												<!--判定是否有子类-->
+												<php>{</php>
+													<ul>
+														<category parentid="$vo[typeid]" id="voo">
+														
+															
+														<li><span class="file <php>if($type['typeid'] == $voo['typeid']){</php>  active <php>}</php>"><a href='{$voo.typeid|url=lists,###}' >{$voo.typename}(<?php echo $countofcurrenttypeid  ?>)</a></span></li> 
+														</category>
+													</ul>
+												<php>}</php>
+										</div>
+									</category>
+									
+                    <div class="he_plnavli ">
+													<h2>
+
+                        <a href="javascript:;" id="ids1">咨询热线：13661068044,微信同号</a>
+												</h2>
+
+                    </div>          
+                    
+         
+                    
+                                 </div>
+
+            </div>
+
+    
+         
+
+        </div>
+        
+             
+               <div class="he_ny he_e1bx he_main">
+
+        
+            
+			            <div class="he_e1p1 wow g_fadein1">
+
+			                <div class="he_common">
+
+			                    <div class="he_e1p1bx">
+
+			                        <div class="he_e1p1ul">
+
+												
+																					<volist name="list" id="vo">
+																	  				<php>$idnumber= $idnumber+1;</php>
+																				
+																						
+																							<div class="he_e1p1li">
+																								
+																									<a class="clearfix" href='{$vo.aid|url=articles,###}' target='_blank'>
+																										   <div class="he_e1p1bxle fl">
+
+															                                            <img src="__TMPL__images/e1flo1.png" class="he_img">
+
+															                                            <img src=" __ROOT__{$vo.imgurl}" alt="" class="he_img1">
+
+															                                        </div>
+
+															                                        <div class="he_e1p1bxri fl">
+
+															                                            <div class="he_e1p1bti">
+
+															                                                <h4> {$vo.title}</h4>
+
+															                                            </div>
+
+															                                            <div class="he_e1p1btp">
+
+															                                                <p> {$vo.note}</p>
+
+															                                            </div>
+
+															                                            <div class="he_e1p1bmo">
+
+															                                                <p> {$vo.addtime|msubstr=###,0,10}</p>
+
+															                                            </div>
+
+															                                            <div class="he_e1p1bbmo">
+
+															                                                <div class="g_botton">
+
+															                                                    <div class="clearfix he_bott">
+
+															                                                        <div class="g_bottonfl fl">了解更多</div>
+
+															                                                        <div class="g_bottonfr fr"></div>
+
+															                                                    </div>
+
+															                                                </div>
+
+															                                            </div>
+
+															                                        </div>
+																										
+																										
+																										
+																										
+																										
+															                    
+																										
+																										
+																										
+																										</a>
+																									
+																								
+																							</div>
+																					
+																						
+																					</volist>
+
+			                          
+			                        </div>
+
+
+			                        
+			                        <div class="he_e1p1qh clearfix">
+
+			                            <div class="he_e1p1qhl he_e1p1qhle fl on">
+
+			                                <img src="__TMPL__images/e1arrle1.png" class="he_img">
+
+			                                <img src="__TMPL__images/e1arrle.png" class="he_img1">
+
+			                            </div>
+
+			                            <div class="he_e1p1qhl he_e1p1qhri fl">
+
+			                                <img src="__TMPL__images/e1arri.png" class="he_img">
+
+			                                <img src="__TMPL__images/e1arri1.png" class="he_img1">
+
+			                            </div>
+
+			                        </div>
+			                        
+			                    </div>
+
+			                </div>
+
+			            </div>        
+
+			           <div class="he_e1p2">
+
+			                <div class="he_common">
+
+			                    <div class="he_e1p2bx">
+
+			                        <div class="he_e1p2ul">
+
+			                            <!-- on控制没有图的样式 -->
+			                            	<volist name="list" id="vo">
+																	  		
+																							<div class="he_e1p2li  wow g_fadeup1">
+																								
+																									<a class="clearfix" href='{$vo.aid|url=articles,###}' target='_blank'>
+																										   <div class="he_e1p1bxle fl">
+
+															                                            <img src="__TMPL__images/e1flo1.png" class="he_img">
+
+															                                            <img src=" __ROOT__{$vo.imgurl}" alt="" class="he_img1">
+
+															                                        </div>
+
+			 																																			<div class="he_e1p1bxri fl">
+
+			                                            <div class="he_e1p1bti">
+
+			                                                <h4>{$vo.title}</h4>
+
+			                                            </div>
+
+			                                            <div class="he_e1p1btp">
+
+			                                                <p>{$vo.note}
+			                                            </div>
+
+			                                            <div class="he_e1p1bmo">
+
+			                                                <p>{$vo.addtime|msubstr=###,0,10}</p>
+
+			                                            </div>
+
+			                                            <div class="he_e1p1bbmo">
+
+			                                                <div class="g_botton">
+
+			                                                    <div class="clearfix he_bott">
+
+			                                                        <div class="g_bottonfl fl">了解更多</div>
+
+			                                                        <div class="g_bottonfr fr"></div>
+
+			                                                    </div>
+
+			                                                </div>
+
+			                                            </div>
+
+			                                        </div>
+
+															                                 
+																										
+																										
+																										
+																										
+															                    
+																										
+																										
+																										
+																										</a>
+																									
+																								
+																							</div>
+																					
+																						
+																					</volist>
+
+			                    
+			                             
+			                            
+
+			                        </div>
+
+			                    </div>
+
+			                </div>
+
+			            </div>
+
+			            <div class="he_e1p3 wow g_fadein1">
+
+			                <div class="he_common">
+
+			                    <div class="he_e1p3bx">
+
+			                        <div class="mc_fybox">
+
+			                            <!-- pc分页 -->
+
+			                            <div class="mc_pcfy">
+
+			                               
+			                                	 {$page}
+			                               
+
+			                            </div> 
+
+			                        </div>
+
+			                    </div>
+
+			                </div>
+
+			            </div>
+
+   				     </div>
+              
+
+      <include file="./footer_ps"/>

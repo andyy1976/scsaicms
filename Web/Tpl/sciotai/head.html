@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <meta name="author" content="SCSAI ContentOS" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <meta name="format-detection" content="telephone=no, email=no" />
+
+    <meta name="renderer" content="webkit">
+		<title><neq name="title" value="">{$title}-</neq>{$config.sitetitle}-{$config.sitetitle2}</title>
+		<meta name="keywords" content="{$keywords},AI数字员工,内容生成,AI评分,智能制造,具身智能,工业软件"/>
+		<meta name="description" content="{$description} - SCSAI AI数字内容生成发布管理与获客系统"/>
+
+    <link href="__TMPL__css/bootstrap.min-v3.3.5.css" type="text/css" rel="stylesheet" />
+
+    <link href="__TMPL__css/base-v1.4.css" type="text/css" rel="stylesheet" />
+
+    <link href="__TMPL__css/slick.css" type="text/css" rel="stylesheet" />
+
+    <link href="__TMPL__css/slick-theme.css" type="text/css" rel="stylesheet" />
+
+    <link href="__TMPL__css/jquery.mCustomScrollbar.min.css" rel="stylesheet" />
+
+    <link href="__TMPL__css/animate.min.css" type="text/css" rel="stylesheet" />
+    <link href="__TMPL__css/main.css" type="text/css" rel="stylesheet" />
+    <link href="__TMPL__css/media.css" type="text/css" rel="stylesheet" />
+    <link href="__TMPL__css/style.css" type="text/css" rel="stylesheet" />
+
+    <link href="__TMPL__css/ifplayer.css" type="text/css" rel="stylesheet" />
+ 
+
+    <link href="__TMPL__css/style1.css" type="text/css" rel="stylesheet" />
+
+    <link href="__TMPL__css/iconfont.css" type="text/css" rel="stylesheet">
+
+    <link href="__TMPL__css/iframe.css" type="text/css" rel="stylesheet" />
+
+</head>
+
+<body>
+
+ <div class="he_sytr he_xinzin">
+
+       <!-- pc head -->
+        <header class="g_syhead">
+            <div class="he_syhead clearfix">
+                <div class="he_sylogo fl">
+         				   <a href="/">
+                        <img src="__PUBLIC__/Uploads/logo/{$config.sitelogo}" alt="超云智能智能智造软件研发商" class="he_img">
+                        <img src="__PUBLIC__/Uploads/logo/{$config.sitelogo}" alt="超云智能智能智造软件研发商" class="he_img1">
+                    </a>
+                </div>
+                <div class="he_synav fr clearfix">
+           
+     
+      
+               <div class="he_synavul fl">
+                	
+                      <div class="he_synavli fl  one">
+	                      
+	                                <a class=" g_phnav1" href="/" target="_self">首页</a>
+	                                                       
+	                  </div>
+	                  
+	               			<volist name="menu" id="vo" offset="0" length='7' key="k"> 
+                     		  <div class="he_synavli fl ">
+															<a  data-n="{$vo.drank}"  href="<eq name="vo.url" value="">{$vo.typeid|url=lists,###}<else/>__ROOT__{$vo.url}</eq>" target="<eq name="vo.target" value="1">_self<else/>_blank</eq>">{$vo.typename}</a> 
+														   
+														    
+																<php>if($vo[submenu]){</php>
+			                           <div class="he_sypcuna he_xzdwm">
+                                        <div class="he_comto">
+                                            <div class="he_sypcuul clearfix">
+                                                <div class="he_sypcuule fl clearfix">
+
+																			<volist name="vo[submenu]" id="sub" key="m">
+																				 <div class="he_sypculi fl  ">
+                                                            <div class="he_sypcuto">
+			                                            <a class=" he_sypcp" href="{$sub.typeid|url=lists,###}" target="_self">{$sub.typename}</a>
+		                                            </div>
+                                                        </div>   
+																					
+																			</volist>
+																			 </div>
+                                            </div>
+                                        </div>
+                                        <div class="he_sypubt">
+                                            <img src="__TMPL__images/h1pdxa.jpg">
+                                        </div>
+                                    </div>
+												
+																			
+																<php>}</php>
+										
+                      
+	                        </div>
+	              		   
+												</volist>		
+        	 	
+        	 	
+       				  </div>
+                    <div class="he_ipho clearfix fl">
+                        <div class="he_iphoim fl">
+                            <img src="__TMPL__images/heaph1.png" class="he_img">
+                            <img src="__TMPL__images/heaph.png" class="he_img1">
+                        </div>
+                        <div class="he_iphote fl">
+                            <p>136-6106-8044</p>
+                        </div>
+                    </div>
+                    <div class="he_sear fl">
+                        <div class="he_searig">
+                            <img src="__TMPL__images/heaser.png" class="he_img">
+                            <img src="__TMPL__images/heaser1.png" class="he_img1">
+                        </div>
+                        <div class="mc_search_xl">
+                            <div class="mc_scm_container mc_pos_center">
+                                
+                                    <div class="mc_msc_box">
+                                        <input type="text" placeholder="请输入..." id="keywords" class="mc_msc_input"
+                                            autocomplete="off">
+                                        <div class="mc_msc_submit" onclick="search()">
+                                            <img src="__TMPL__images/heaser1.png">
+                                        </div>
+                                    </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                  
+                </div>
+            </div>
+        </header>
+  
+  <!-- banner -->
+
+        <div class="he_banner">
+
+            <div class="he_bannigul">
+            	
+
+	     
+							<arclist model="flash" where="status=1" order="rank asc" id="vo">
+
+					    <div class="he_bannigli">
+
+			               <div class="he_banig">
+			                    	     
+										   <a href="{$vo.url}"  rel="nofollow" target="_blank" >	
+										   <img src="__PUBLIC__/Uploads/hd/{$vo.pic}" alt="{$vo.title}" width="100%"  />		
+										   </a>
+				            </div>  
+				         
+				          
+				             
+						
+			            </div>
+				        
+				 		  <!--banner1-->
+							</arclist>
+
+						</div>
+				 <div class="he_imgshubvx wow g_fadein1">
+
+                <div class="he_imgshub">
+
+                    <img src="__TMPL__images/bannshub.png">
+
+                </div>
+
+                <div class="he_imgshubte">
+
+                    <p>SCROLL</p>
+
+                </div>
+
+         </div>
+
+
+				</div>
+
+
+
