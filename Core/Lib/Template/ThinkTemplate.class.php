@@ -257,6 +257,7 @@ class  ThinkTemplate {
         if($find) {
             for($i=0;$i<$find;$i++) {
                 $include    =   $matches[1][$i];
+                $include    =   preg_replace('/\/\s*$/s', '', $include);
                 $array      =   $this->parseXmlAttrs($include);
                 $file       =   $array['file'];
                 unset($array['file']);

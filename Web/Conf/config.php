@@ -6,12 +6,16 @@ return array(
 
     // 模板设置
 
-    'DEFAULT_THEME' => 'arena',
+    'DEFAULT_THEME' => 'huatian',
+    'TMPL_ENGINE_TYPE' => 'Think',
     'TMPL_TEMPLATE_SUFFIX' => '.html',
     'TMPL_L_DELIM' => '{',
     'TMPL_R_DELIM' => '}',
-    'TAGLIB_BEGIN' => '{',
-    'TAGLIB_END' => '}',
+    'TAGLIB_BEGIN' => '<',
+    'TAGLIB_END' => '>',
+    'TMPL_PARSE_STRING' => array(
+        '__TMPL__' => '/Web/Tpl/huatian/',
+    ),
 
     // 语言设置
 
@@ -19,7 +23,11 @@ return array(
 
     // URL模式
 
-    'URL_MODEL' => 2,
+    'URL_MODEL' => 3,
+    'URL_PATHINFO_DEPR' => '/',
+    'URL_ROUTER_ON' => true,
+    'URL_ROUTE_RULES' => require APP_PATH.'Conf/routes.php',
+    'URL_HTML_SUFFIX' => 'html',
 
     // 数据库配置
 
@@ -35,7 +43,7 @@ return array(
 
     'DB_PORT' => '3306',
 
-    'DB_PREFIX' => 'sc_',
+    'DB_PREFIX' => 'lvbo_',
 
     // 网站信息
 

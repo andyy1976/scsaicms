@@ -5,8 +5,7 @@
 
 
 <head>
-
-    <meta charset="UTF-8">
+ <meta charset="UTF-8">
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
@@ -21,37 +20,39 @@
 		<meta name="keywords" content="{$keywords}"/>
 		<meta name="description" content="{$description}"/>
 
-    <link href="__TMPL__css/bootstrap.min-v3.3.5.css" type="text/css" rel="stylesheet" />
+    
 
-    <link href="__TMPL__css/base-v1.4.css" type="text/css" rel="stylesheet" />
+    <link href="__TMPL__/css/bootstrap.min-v3.3.5.css" type="text/css" rel="stylesheet" />
 
-    <link href="__TMPL__css/slick.css" type="text/css" rel="stylesheet" />
+    <link href="__TMPL__/css/base-v1.4.css" type="text/css" rel="stylesheet" />
 
-    <link href="__TMPL__css/slick-theme.css" type="text/css" rel="stylesheet" />
+    <link href="__TMPL__/css/slick.css" type="text/css" rel="stylesheet" />
 
-    <link href="__TMPL__css/jquery.mCustomScrollbar.min.css" rel="stylesheet" />
+    <link href="__TMPL__/css/slick-theme.css" type="text/css" rel="stylesheet" />
 
-    <link href="__TMPL__css/animate.min.css" type="text/css" rel="stylesheet" />
-    <link href="__TMPL__css/main.css" type="text/css" rel="stylesheet" />
-    <link href="__TMPL__css/media.css" type="text/css" rel="stylesheet" />
-    <link href="__TMPL__css/style.css" type="text/css" rel="stylesheet" />
+    <link href="__TMPL__/css/jquery.mCustomScrollbar.min.css" rel="stylesheet" />
 
-    <link href="__TMPL__css/ifplayer.css" type="text/css" rel="stylesheet" />
+    <link href="__TMPL__/css/animate.min.css" type="text/css" rel="stylesheet" />
+    <link href="__TMPL__/css/main.css" type="text/css" rel="stylesheet" />
+    <link href="__TMPL__/css/media.css" type="text/css" rel="stylesheet" />
+    <link href="__TMPL__/css/style.css" type="text/css" rel="stylesheet" />
+
+    <link href="__TMPL__/css/ifplayer.css" type="text/css" rel="stylesheet" />
  
 
-    <link href="__TMPL__css/style1.css" type="text/css" rel="stylesheet" />
+    <link href="__TMPL__/css/style1.css" type="text/css" rel="stylesheet" />
 
-    <link href="__TMPL__css/iconfont.css" type="text/css" rel="stylesheet">
+    <link href="__TMPL__/css/iconfont.css" type="text/css" rel="stylesheet">
 
-    <link href="__TMPL__css/iframe.css" type="text/css" rel="stylesheet" />
+    <link href="__TMPL__/css/iframe.css" type="text/css" rel="stylesheet" />
 
 </head>
 
+
 <body>
 
- <div class="he_sytr he_xinzin">
-
-       <!-- pc head -->
+    <div class="he_b2tr">
+         <!-- pc head -->
         <header class="g_syhead">
             <div class="he_syhead clearfix">
                 <div class="he_sylogo fl">
@@ -125,14 +126,18 @@
                         </div>
                         <div class="mc_search_xl">
                             <div class="mc_scm_container mc_pos_center">
-                                
+                                 <form class="form" id="search" method="post" action="{:U('Search/Index');}" role="search">
                                     <div class="mc_msc_box">
-                                        <input type="text" placeholder="请输入..." id="keywords" class="mc_msc_input"
-                                            autocomplete="off">
-                                        <div class="mc_msc_submit" onclick="search()">
-                                            <img src="__TMPL__images/heaser1.png">
+                                    		<input type="text" id="search"  name="k"  placeholder="请输入搜索关键字" onBlur="if(this.value=='') this.value='';" value="{$keyword}" class="mc_msc_input"
+                                            autocomplete="off"/>
+					
+                                    
+                                        <div class="mc_msc_submit" >
+                                        	<button id="search_btn" type="submit"> <img src="__TMPL__images/heaser1.png"></button>
+                                           
                                         </div>
                                     </div>
+                                  </form>
                                 
                             </div>
                         </div>
@@ -141,53 +146,5 @@
                 </div>
             </div>
         </header>
-  
-  <!-- banner -->
-
-        <div class="he_banner">
-
-            <div class="he_bannigul">
-            	
-
-	     
-							<arclist model="flash" where="status=1" order="rank asc" id="vo">
-
-					    <div class="he_bannigli">
-
-			               <div class="he_banig">
-			                    	     
-										   <a href="{$vo.url}"  rel="nofollow" target="_blank" >	
-										   <img src="__PUBLIC__/Uploads/hd/{$vo.pic}" alt="{$vo.title}" width="100%"  />		
-										   </a>
-				            </div>  
-				         
-				          
-				             
-						
-			            </div>
-				        
-				 		  <!--banner1-->
-							</arclist>
-
-						</div>
-				 <div class="he_imgshubvx wow g_fadein1">
-
-                <div class="he_imgshub">
-
-                    <img src="__TMPL__images/bannshub.png">
-
-                </div>
-
-                <div class="he_imgshubte">
-
-                    <p>SCROLL</p>
-
-                </div>
-
-         </div>
-
-
-				</div>
-
 
 

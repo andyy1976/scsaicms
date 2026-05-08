@@ -1,6 +1,198 @@
-<include file="$head"/>
+﻿<!DOCTYPE html>
 
- <!-- center -->
+<html lang="zh-CN">
+
+
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <meta name="author" content="超云智能（SCIOT)" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <meta name="format-detection" content="telephone=no, email=no" />
+
+    <meta name="renderer" content="webkit">
+		<title><neq name="title" value="">{$title}-</neq>{$config.sitetitle}-{$config.sitetitle2}</title>
+		<meta name="keywords" content="{$keywords}"/>
+		<meta name="description" content="{$description}"/>
+
+    <link href="__TMPL__/css/bootstrap.min-v3.3.5.css" type="text/css" rel="stylesheet" />
+
+    <link href="__TMPL__/css/base-v1.4.css" type="text/css" rel="stylesheet" />
+
+    <link href="__TMPL__/css/slick.css" type="text/css" rel="stylesheet" />
+
+    <link href="__TMPL__/css/slick-theme.css" type="text/css" rel="stylesheet" />
+
+    <link href="__TMPL__/css/jquery.mCustomScrollbar.min.css" rel="stylesheet" />
+
+    <link href="__TMPL__/css/animate.min.css" type="text/css" rel="stylesheet" />
+    <link href="__TMPL__/css/main.css" type="text/css" rel="stylesheet" />
+    <link href="__TMPL__/css/media.css" type="text/css" rel="stylesheet" />
+    <link href="__TMPL__/css/stylehuatian.css" type="text/css" rel="stylesheet" />
+
+    <link href="__TMPL__/css/ifplayer.css" type="text/css" rel="stylesheet" />
+ 
+
+    <link href="__TMPL__/css/style1.css" type="text/css" rel="stylesheet" />
+
+    <link href="__TMPL__/css/iconfont.css" type="text/css" rel="stylesheet">
+
+    <link href="__TMPL__/css/iframe.css" type="text/css" rel="stylesheet" />
+
+</head>
+
+<body>
+
+ <div class="he_sytr he_xinzin">
+
+       <!-- pc head -->
+        <header class="g_syhead">
+            <div class="he_syhead clearfix">
+                <div class="he_sylogo fl">
+         				   <a href="/">
+                        <img src="__PUBLIC__/Uploads/logo/{$config.sitelogo}" alt="超云智能智能智造软件研发商" class="he_img">
+                        <img src="__PUBLIC__/Uploads/logo/{$config.sitelogo}" alt="超云智能智能智造软件研发商" class="he_img1">
+                    </a>
+                </div>
+                <div class="he_synav fr clearfix">
+           
+     
+      
+               <div class="he_synavul fl">
+                	
+                      <div class="he_synavli fl  one">
+	                      
+	                                <a class=" g_phnav1" href="/" target="_self">首页</a>
+	                                                       
+	                  </div>
+	                  
+	               			<volist name="menu" id="vo" offset="0" length='7' key="k"> 
+                     		  <div class="he_synavli fl ">
+															<a  data-n="{$vo.drank}"  href="<eq name="vo.url" value="">{$vo.typeid|url=lists,###}<else/>__ROOT__{$vo.url}</eq>" target="<eq name="vo.target" value="1">_self<else/>_blank</eq>">{$vo.typename}</a> 
+														   
+														    
+																<php>if($vo[submenu]){</php>
+			                           <div class="he_sypcuna he_xzdwm">
+                                        <div class="he_comto">
+                                            <div class="he_sypcuul clearfix">
+                                                <div class="he_sypcuule fl clearfix">
+
+																			<volist name="vo[submenu]" id="sub" key="m">
+																				 <div class="he_sypculi fl  ">
+                                                            <div class="he_sypcuto">
+			                                            <a class=" he_sypcp" href="{$sub.typeid|url=lists,###}" target="_self">{$sub.typename}</a>
+		                                            </div>
+                                                        </div>   
+																					
+																			</volist>
+																			 </div>
+                                            </div>
+                                        </div>
+                                        <div class="he_sypubt">
+                                            <img src="__TMPL__/images/h1pdxa.jpg">
+                                        </div>
+                                    </div>
+												
+																			
+																<php>}</php>
+										
+                      
+	                        </div>
+	              		   
+												</volist>		
+        	 	
+        	 	
+       				  </div>
+                    <div class="he_ipho clearfix fl">
+                        <div class="he_iphoim fl">
+                            <img src="__TMPL__/images/heaph1.png" class="he_img">
+                            <img src="__TMPL__/images/heaph.png" class="he_img1">
+                        </div>
+                        <div class="he_iphote fl">
+                            <p>136-6106-8044</p>
+                        </div>
+                    </div>
+                    <div class="he_sear fl">
+                        <div class="he_searig">
+                            <img src="__TMPL__/images/heaser.png" class="he_img">
+                            <img src="__TMPL__/images/heaser1.png" class="he_img1">
+                        </div>
+                        <div class="mc_search_xl">
+                            <div class="mc_scm_container mc_pos_center">
+                                
+                                    <div class="mc_msc_box">
+                                        <input type="text" placeholder="请输入..." id="keywords" class="mc_msc_input"
+                                            autocomplete="off">
+                                        <div class="mc_msc_submit" onclick="search()">
+                                            <img src="__TMPL__/images/heaser1.png">
+                                        </div>
+                                    </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                  
+                </div>
+            </div>
+        </header>
+  
+  <!-- banner -->
+
+        <div class="he_banner">
+
+            <div class="he_bannigul">
+            	
+
+	     
+							<arclist model="flash" where="status=1" order="rank asc" id="vo">
+
+					    <div class="he_bannigli">
+
+			               <div class="he_banig">
+			                    	     
+										   <a href="{$vo.url}"  rel="nofollow" target="_blank" >	
+										   <img src="__PUBLIC__/Uploads/hd/{$vo.pic}" alt="{$vo.title}" width="100%"  />		
+										   </a>
+				            </div>  
+				         
+				          
+				             
+						
+			            </div>
+				        
+				 		  <!--banner1-->
+							</arclist>
+
+						</div>
+				 <div class="he_imgshubvx wow g_fadein1">
+
+                <div class="he_imgshub">
+
+                    <img src="__TMPL__/images/bannshub.png">
+
+                </div>
+
+                <div class="he_imgshubte">
+
+                    <p>SCROLL</p>
+
+                </div>
+
+         </div>
+
+
+				</div>
+
+
+
+
+<!-- center -->
 
         <div class="g_sy he_main">
 
@@ -25,7 +217,7 @@
 
 	                                <a href="index.php?s=/lists/2260.html">
 
-	                                    <div class="g_sect1tu"><img src="__TMPL__images/hwicon.png" alt="hwicon" alt=""></div>
+	                                    <div class="g_sect1tu"><img src="__TMPL__/images/hwicon.png" alt="hwicon" alt=""></div>
 
 	                                    <span>平板产品</span>
 
@@ -43,7 +235,7 @@
 
 	                                <a href="index.php?s=/lists/54.html">
 
-	                                    <div class="g_sect1tu"><img src="__TMPL__images/syicon1.png" alt="PLM，PLM软件" alt=""></div>
+	                                    <div class="g_sect1tu"><img src="__TMPL__/images/syicon1.png" alt="PLM，PLM软件" alt=""></div>
 
 	                                    <span>SCPLM</span>
 
@@ -61,7 +253,7 @@
 
 	                                <a href="index.php?s=/lists/52.html">
 
-	                                    <div class="g_sect1tu"><img src="__TMPL__images/syicon3.png" alt="三维工艺设计与管理，工艺设计与管理PPS" alt=""></div>
+	                                    <div class="g_sect1tu"><img src="__TMPL__/images/syicon3.png" alt="三维工艺设计与管理，工艺设计与管理PPS" alt=""></div>
 
 	                                    <span>SCPPS</span>
 
@@ -77,7 +269,7 @@
 
 	                                <a href="index.php?s=/lists/55.html">
 
-	                                    <div class="g_sect1tu"><img src="__TMPL__images/syicon4.png" alt="MES,生产执行管理系统MES" alt=""></div>
+	                                    <div class="g_sect1tu"><img src="__TMPL__/images/syicon4.png" alt="MES,生产执行管理系统MES" alt=""></div>
 
 	                                    <span>SCMES</span>
 
@@ -98,7 +290,7 @@
 
 	                                <a href="index.php?s=/lists/51.html">
 
-	                                    <div class="g_sect1tu"><img src="__TMPL__images/cc.png" alt="QMS,QPMS,质量管理，质量过程管理" alt=""></div>
+	                                    <div class="g_sect1tu"><img src="__TMPL__/images/cc.png" alt="QMS,QPMS,质量管理，质量过程管理" alt=""></div>
 
 	                                    <span>SCQMS</span>
 
@@ -114,7 +306,7 @@
 
 	                                <a href="index.php?s=/lists/2242.html">
 
-	                                    <div class="g_sect1tu"><img src="__TMPL__images/syicon5.png" alt="数据资产管理" alt=""></div>
+	                                    <div class="g_sect1tu"><img src="__TMPL__/images/syicon5.png" alt="数据资产管理" alt=""></div>
 
 	                                    <span>SCSZZCPT</span>
 
@@ -131,7 +323,7 @@
 
 	                                <a href="index.php?s=/lists/2243.html">
 
-	                                    <div class="g_sect1tu"><img src="__TMPL__images/syicon6.png" alt="项目管理，项目成本管理，建筑项目管理" alt=""></div>
+	                                    <div class="g_sect1tu"><img src="__TMPL__/images/syicon6.png" alt="项目管理，项目成本管理，建筑项目管理" alt=""></div>
 
 	                                    <span>SCPM</span>
 
@@ -148,7 +340,7 @@
 
 	                                <a href="index.php?s=/lists/22.html">
 
-	                                    <div class="g_sect1tu"><img src="__TMPL__images/syicon7.png" alt="微信公众平台，物业管理，移动办公，公众号制作，小程序" alt=""></div>
+	                                    <div class="g_sect1tu"><img src="__TMPL__/images/syicon7.png" alt="微信公众平台，物业管理，移动办公，公众号制作，小程序" alt=""></div>
 
 	                                    <span>SCWP</span>
 
@@ -191,35 +383,35 @@
                 <div class="g_sect2nr wow g_fadein1">
 
                     <div class="g_sect2bjsk he_sepc">
-																<div class="g_sect2bj on " data-num="0" style="background:url(__TMPL__images/pcb2.jpg) no-repeat;"></div>
-                  		  <div class="g_sect2bj" data-num="1" style="background:url(__TMPL__images/sybk2_02.jpg) no-repeat;">
+																<div class="g_sect2bj on " data-num="0" style="background:url(__TMPL__/images/pcb2.jpg) no-repeat;"></div>
+                  		  <div class="g_sect2bj" data-num="1" style="background:url(__TMPL__/images/sybk2_02.jpg) no-repeat;">
 
-                        </div><div class="g_sect2bj  " data-num="2" style="background:url(__TMPL__images/sybk1_02.jpg) no-repeat;">
+                        </div><div class="g_sect2bj  " data-num="2" style="background:url(__TMPL__/images/sybk1_02.jpg) no-repeat;">
 
-                        </div><div class="g_sect2bj  " data-num="3" style="background:url(__TMPL__images/jiejuefangan-gaokeji.jpg) no-repeat;">
+                        </div><div class="g_sect2bj  " data-num="3" style="background:url(__TMPL__/images/jiejuefangan-gaokeji.jpg) no-repeat;">
 
-                        </div><div class="g_sect2bj  " data-num="4" style="background:url(__TMPL__images/project.png) no-repeat;">
+                        </div><div class="g_sect2bj  " data-num="4" style="background:url(__TMPL__/images/project.png) no-repeat;">
 
-                        </div><div class="g_sect2bj  " data-num="5" style="background:url(__TMPL__images/sybk5_02.jpg) no-repeat;">
+                        </div><div class="g_sect2bj  " data-num="5" style="background:url(__TMPL__/images/sybk5_02.jpg) no-repeat;">
 
-                        </div><div class="g_sect2bj  " data-num="6" style="background:url(__TMPL__images/sybk7_02.jpg) no-repeat;">
+                        </div><div class="g_sect2bj  " data-num="6" style="background:url(__TMPL__/images/sybk7_02.jpg) no-repeat;">
 
                         </div>
                     </div>
 
                     <div class="g_sect2bjsk he_seph">
-																			<div class="g_sect2bj on " data-num="0" style="background:url(__TMPL__images/pcb2.jpg) no-repeat;"></div>
-                        <div class="g_sect2bj" data-num="1" style="background:url(__TMPL__images/hangtian2.jpg) no-repeat;">
+																			<div class="g_sect2bj on " data-num="0" style="background:url(__TMPL__/images/pcb2.jpg) no-repeat;"></div>
+                        <div class="g_sect2bj" data-num="1" style="background:url(__TMPL__/images/hangtian2.jpg) no-repeat;">
     
-                            </div><div class="g_sect2bj  " data-num="2" style="background:url(__TMPL__images/qiche2.jpg) no-repeat;">
+                            </div><div class="g_sect2bj  " data-num="2" style="background:url(__TMPL__/images/qiche2.jpg) no-repeat;">
     
-                            </div><div class="g_sect2bj  " data-num="3" style="background:url(__TMPL__images/jixie2.jpg) no-repeat;">
+                            </div><div class="g_sect2bj  " data-num="3" style="background:url(__TMPL__/images/jixie2.jpg) no-repeat;">
     
-                            </div><div class="g_sect2bj  " data-num="4" style="background:url(__TMPL__images/nengyuan2.jpg) no-repeat;">
+                            </div><div class="g_sect2bj  " data-num="4" style="background:url(__TMPL__/images/nengyuan2.jpg) no-repeat;">
     
-                            </div><div class="g_sect2bj  " data-num="5" style="background:url(__TMPL__images/moju2.jpg) no-repeat;">
+                            </div><div class="g_sect2bj  " data-num="5" style="background:url(__TMPL__/images/moju2.jpg) no-repeat;">
     
-                            </div><div class="g_sect2bj  " data-num="6" style="background:url(__TMPL__images/gaokeji2.jpg) no-repeat;">
+                            </div><div class="g_sect2bj  " data-num="6" style="background:url(__TMPL__/images/gaokeji2.jpg) no-repeat;">
     
                             </div>   
                         </div>
@@ -541,9 +733,9 @@
 
                                         <div class="g_sect3toptu g_comimg">
 
-                                            <img class="g_comimg1" src="__TMPL__images/syimg0.png" alt="">
+                                            <img class="g_comimg1" src="__TMPL__/images/syimg0.png" alt="">
 
-                                            <img class="g_comimg2" src="__TMPL__images/dw.jpg" alt="dw" alt="">
+                                            <img class="g_comimg2" src="__TMPL__/images/dw.jpg" alt="dw" alt="">
 
                                         </div>
 
@@ -603,9 +795,9 @@
 
                                         <div class="g_sect3toptu g_comimg">
 
-                                            <img class="g_comimg1" src="__TMPL__images/syimg0.png" alt="">
+                                            <img class="g_comimg1" src="__TMPL__/images/syimg0.png" alt="">
 
-                                            <img class="g_comimg2" src="__TMPL__images/jjh.png" alt="jjh.png" alt="">
+                                            <img class="g_comimg2" src="__TMPL__/images/jjh.png" alt="jjh.png" alt="">
 
                                         </div>
 
@@ -665,9 +857,9 @@
 
                                         <div class="g_sect3toptu g_comimg">
 
-                                            <img class="g_comimg1" src="__TMPL__images/syimg0.png" alt="">
+                                            <img class="g_comimg1" src="__TMPL__/images/syimg0.png" alt="">
 
-                                            <img class="g_comimg2" src="__TMPL__images/zhongguohangtian-330.png" alt="zhongguohangtian-330.png" alt="">
+                                            <img class="g_comimg2" src="__TMPL__/images/zhongguohangtian-330.png" alt="zhongguohangtian-330.png" alt="">
 
                                         </div>
 
@@ -736,7 +928,7 @@
 
                 <div class="g_sect3bot">
 
-                    <div class="g_backgd"><img src="__TMPL__images/sybj1_02.jpg" alt=""></div>
+                    <div class="g_backgd"><img src="__TMPL__/images/sybj1_02.jpg" alt=""></div>
 
                     <div class="g_sect3botnr g_common clearfix">
 
@@ -776,13 +968,13 @@
 
                                 <div class="g_sect4nr_all clearfix">
 
-                                    <div class="g_sect4nrtu fl"><img src="__TMPL__images/jjh.png" alt="将军红MES"></div>
+                                    <div class="g_sect4nrtu fl"><img src="__TMPL__/images/jjh.png" alt="将军红MES"></div>
 
                                     <h4 class="fl">湖北将军红酒业股份有限公司</h4>
 
                                 </div>
 
-                                <div class="g_yin"><img src="__TMPL__images/yinhao.png" alt=""></div>
+                                <div class="g_yin"><img src="__TMPL__/images/yinhao.png" alt=""></div>
 
                             </a>
 
@@ -803,13 +995,13 @@
 
                                 <div class="g_sect4nr_all clearfix">
 
-                                    <div class="g_sect4nrtu fl"><img src="__TMPL__images/syicon10-704.png" alt="工艺设计与管理"></div>
+                                    <div class="g_sect4nrtu fl"><img src="__TMPL__/images/syicon10-704.png" alt="工艺设计与管理"></div>
 
                                     <h4 class="fl">航天某所</h4>
 
                                 </div>
 
-                                <div class="g_yin"><img src="__TMPL__images/yinhao.png" alt=""></div>
+                                <div class="g_yin"><img src="__TMPL__/images/yinhao.png" alt=""></div>
 
                             </a>
 
@@ -829,13 +1021,13 @@
 
                                 <div class="g_sect4nr_all clearfix">
 
-                                    <div class="g_sect4nrtu fl"><img src="__TMPL__images/asd.jpg" alt="爱思达航天PLM案例"></div>
+                                    <div class="g_sect4nrtu fl"><img src="__TMPL__/images/asd.jpg" alt="爱思达航天PLM案例"></div>
 
                                     <h4 class="fl">爱思达航天</h4>
 
                                 </div>
 
-                                <div class="g_yin"><img src="__TMPL__images/yinhao.png" alt=""></div>
+                                <div class="g_yin"><img src="__TMPL__/images/yinhao.png" alt=""></div>
 
                             </a>
 
@@ -857,13 +1049,13 @@
 
                                 <div class="g_sect4nr_all clearfix">
 
-                                    <div class="g_sect4nrtu fl"><img src="__TMPL__images/dx.jpg" alt="电信5G消息案例"></div>
+                                    <div class="g_sect4nrtu fl"><img src="__TMPL__/images/dx.jpg" alt="电信5G消息案例"></div>
 
                                     <h4 class="fl">电信某所</h4>
 
                                 </div>
 
-                                <div class="g_yin"><img src="__TMPL__images/yinhao.png" alt=""></div>
+                                <div class="g_yin"><img src="__TMPL__/images/yinhao.png" alt=""></div>
 
                             </a>
 
@@ -884,13 +1076,13 @@
 
                                 <div class="g_sect4nr_all clearfix">
 
-                                    <div class="g_sect4nrtu fl"><img src="__TMPL__images/20210323/jianghuaifuzhen-760.png" alt="江淮福臻CAD案例"></div>
+                                    <div class="g_sect4nrtu fl"><img src="__TMPL__/images/20210323/jianghuaifuzhen-760.png" alt="江淮福臻CAD案例"></div>
 
                                     <h4 class="fl">江淮福臻</h4>
 
                                 </div>
 
-                                <div class="g_yin"><img src="__TMPL__images/yinhao.png" alt=""></div>
+                                <div class="g_yin"><img src="__TMPL__/images/yinhao.png" alt=""></div>
 
                             </a>
 
@@ -910,13 +1102,13 @@
 
                                 <div class="g_sect4nr_all clearfix">
 
-                                    <div class="g_sect4nrtu fl"><img src="__TMPL__images/20210322/dongfengmoju-290.png" alt="东风模具CAD案例"></div>
+                                    <div class="g_sect4nrtu fl"><img src="__TMPL__/images/20210322/dongfengmoju-290.png" alt="东风模具CAD案例"></div>
 
                                     <h4 class="fl">东风模具</h4>
 
                                 </div>
 
-                                <div class="g_yin"><img src="__TMPL__images/yinhao.png" alt=""></div>
+                                <div class="g_yin"><img src="__TMPL__/images/yinhao.png" alt=""></div>
 
                             </a>
 
@@ -944,7 +1136,7 @@
 
                 <div class="g_backgd wow g_fadein1">
 
-                    <!-- <img src="__TMPL__images/sybj3_02.jpg" alt=""> -->
+                    <!-- <img src="__TMPL__/images/sybj3_02.jpg" alt=""> -->
 
                     <div class="waves"></div>
 
@@ -996,9 +1188,9 @@
 
                                 <div class="g_sect6tu g_comimg">
 
-                                    <img class="g_comimg1" src="__TMPL__images/sytu0.png" alt="">
+                                    <img class="g_comimg1" src="__TMPL__/images/sytu0.png" alt="">
 
-                                    <img class="g_comimg2" src="__TMPL__images/xianshiyouhui.jpg" alt="20240409-134931_fuben.jpg">
+                                    <img class="g_comimg2" src="__TMPL__/images/xianshiyouhui.jpg" alt="20240409-134931_fuben.jpg">
 
                                 </div>
 
@@ -1021,9 +1213,9 @@
 
                                 <div class="g_sect6tu g_comimg">
 
-                                    <img class="g_comimg1" src="__TMPL__images/sytu0.png" alt="">
+                                    <img class="g_comimg1" src="__TMPL__/images/sytu0.png" alt="">
 
-                                    <img class="g_comimg2" src="__TMPL__images/gyhlw.jpg" alt="gyhlw.jpg">
+                                    <img class="g_comimg2" src="__TMPL__/images/gyhlw.jpg" alt="gyhlw.jpg">
 
                                 </div>
 
@@ -1075,7 +1267,1432 @@
             </section>
 
         </div>
-	
+<!-- foot -->
+
+        <footer class="he_ft">
+
+            <div class="g_foot clearfix">
+
+                <div class="g_foottop clearfix">
+
+                    <div class="g_foottopfl fl">
+
+                        <div class="g_foottp clearfix fl">
+                        	
+                        	   	<volist name="menu" id="vo" offset="0" length='7' key="k"> 
+											           			  <div class="g_ftnav clearfix fl">
+						                            	<div class="g_fttitle he_dttpc">   <a href="<eq name="vo.url" value="">{$vo.typeid|url=lists,###}<else/>__ROOT__{$vo.url}</eq>" target="<eq name="vo.target" value="1">_self<else/>_blank</eq>"">{$vo.typename}</a></div>
+											                       	<!--第二级-->
+																									<php>if($vo[submenu]){</php>
+																									<div class="he_navfu">
+														                        	<volist name="vo[submenu]" id="sub" key="m">
+														                              <div class="g_ftnavh2"><a href="{$sub.typeid|url=lists,###}">{$sub.typename}
+														                               		<!--第三级-->
+																																			<php>if(have_child($sub[typeid])){</php>
+																																		
+																																			<ul>
+																																			<arclist model="type" where="fid=$sub[typeid]" order="drank asc" id="tree">
+																																			<li><a href='{$tree.typeid|url=lists,###}'>{$tree.typename}</a></li>
+																																			</arclist>
+																																			</ul>
+																																			
+																																			<php>}</php>
+														                               	
+														                               	</div>
+																					                                
+																					 					 	</volist>
+											                  		      </div>
+											                        			<php>}</php>
+											                    </div>
+											             
+																				</volist>		
+                    
+											 					 
+                         
+                          
+ 																	
+                            				
+                            </div>
+
+                        <div class="g_ftadd fl">
+
+                           <div class="he_conttit">
+                           	<h6 class="g_fttitle">联系我们</h6>
+                           	<div class="g_fttitle he_dttph"><a href="/contact-us">联系我们</a></div>
+                           	</div>
+                           		<div class="g_ftaddnr clearfix"><div class="g_ftaddfl fl"><img src="__TMPL__/images/fticon1.png" alt=""/></div>
+                           			<div class="g_ftaddfr fl"><p>136-6106-8044</p></div></div><div class="g_ftaddnr clearfix">
+                           				<div class="g_ftaddfl fl"><img src="__TMPL__/images/fticon2.png" alt=""/></div>
+                           				<div class="g_ftaddfr fl"><p>tuan_zhang@sina.com</p></div>
+                           				</div>
+                           				<div class="g_ftaddnr clearfix"><div class="g_ftaddfl fl"><img src="__TMPL__/images/fticon3.png" alt=""/></div>
+                           					<div class="g_ftaddfr fl"><p>北京市怀柔区开放路113号南四层409室</p></div></div>
+                        </div>
+
+                    </div>
+
+                    <div class="g_foottopfr fl">
+
+                        <h6 class="g_fttitle">关注我们</h6>
+
+                        <div class="g_ftewm clearfix">
+
+                            <div class="g_ftewmfl fl">
+
+                                <div class="g_ftewmtu">
+
+                                    <img src="__TMPL__/images/we_chat.jpg" alt="">
+
+                                </div>
+
+                                <p>添加微信</p>
+
+                            </div>
+
+                            <div class="g_ftewmfl fl">
+
+                                <div class="g_ftewmtu">
+
+                                    <img src="__TMPL__/images/wb.png" alt="">
+
+                                </div>
+
+                                <p>关注微博账号</p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="g_footfriend clearfix">
+
+                    <h6 class="g_fttitle fl">友情链接</h6>
+
+                    <ul class="clearfix fl">
+														 <arclist model='link' where="status=1" order='rank asc' id='vo'>
+   
+									            	<li class="fl" ><a href="{$vo.url}" target="_blank">{$vo.title}</a></li>
+									        </arclist>
+           			 </ul>
+
+                </div>
+
+                <div class="g_footbot">
+
+                    <p> 天津天孚物业北京分公司超云智能 版权所有 © 2015-2023 Supercloud Inteligence. All Rights Reserved<a href="http://www.beian.miit.gov.cn/" target="_blank" rel="”nofollow”">京ICP备20027159号</a>  <a target="_blank" href="https://www.yongsy.com">Powered by Yongsy</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <a href="/category170"> 隐私政策</a> | <a href="/sitemap.html" target="_blank"> SiteMap</a></p>
+                   
+            </div>
+
+        </footer>
+    </div>
+
+   
+
+    <!-- 资讯弹窗 -->
+
+    <!-- 侧边导航 -->
+
+ 
+
+    <div class="he_cenav">
 
 
-<include file="$footer"/> 
+
+        <div class="he_cenavli he_cenavli1">
+
+
+
+            <div class="he_cenavjl">
+
+
+
+            <a href="javascript:;" onclick="zixunchuang()">
+
+
+
+                <div class="he_cenavig">
+
+
+
+                    <img src="__TMPL__/images/ceic01.png">
+
+
+
+                </div>
+
+
+
+                <div class="he_cenavte">
+
+
+
+                    <p>在线客服</p>
+
+
+
+                </div>
+
+
+
+            </a>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+        <div class="he_cenavli he_cenavli2">
+
+
+
+            <div class="he_cenavjl">
+
+
+
+                <div class="he_cenavig">
+
+
+
+                    <img src="__TMPL__/images/ceic02.png">
+
+
+
+                </div>
+
+
+
+                <div class="he_cenavte">
+
+
+
+                    <p>联系电话</p>
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+            <div class="mc_aside_zk">
+
+
+
+                <span class="mc_icon mc_icon_tel"></span>
+
+
+
+                <span>1366-1068-044</span>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+        <div class="he_cenavli he_cenavli3">
+
+
+
+        <a href="javascript:;" class="tans">
+
+
+
+            <div class="he_cenavjl">
+
+
+
+                <div class="he_cenavig">
+
+
+
+                    <img src="__TMPL__/images/ceic03.png">
+
+
+
+                </div>
+
+
+
+                <div class="he_cenavte">
+
+
+
+                    <p>在线留言</p>
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+        </a>
+
+
+
+        </div>
+
+
+
+        <div class="he_cenavli he_cenavli3">
+
+
+
+            <div class="he_cenavjl">
+
+
+
+                <div class="he_cenavig">
+
+
+
+                    <img src="__TMPL__/images/ceic04.png">
+
+
+
+                </div>
+
+
+
+                <div class="he_cenavte">
+
+
+
+                    <p>关注我们</p>
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+            <div class="mc_aside_zk1">
+
+
+
+                <div class="mc_aside_qrbox">
+
+
+
+                    <div class="mc_aside_qrimgbox">
+
+
+
+                        <img src="/Public/Uploads/uploadfile/images/20210421/fttu1_03-655.jpg" alt="">
+
+
+
+                    </div>
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+        <div class="he_cenavli he_cenavli4">
+
+
+
+            <div class="he_cenavjl">
+
+
+
+                <div class="he_cenavig">
+
+
+
+                    <img src="__TMPL__/images/ceic05.png">
+
+
+
+                </div>
+
+
+
+                <div class="he_cenavte">
+
+
+
+                    <p>TOP</p>
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+    </div>
+
+<div class="he_zixun">
+
+    <div class="he_zixunkl">
+
+        <div class="he_zixunig">
+
+            <img src="/Public/Uploads/uploadfile/images/20210304/zixun.jpg">
+
+        </div>
+
+        <div class="he_zixute">
+
+            <div class="he_zixuh4">
+
+                <p>您好，欢迎访问华天软件</p>
+
+            </div>
+
+            <div class="he_zixuhp">
+
+                <p>想要进一步了解我们的产品和方案？</p><p>我们<span>7*24</span>小时为您服务！</p>
+            </div>
+
+            <div class="he_zixuhip">
+
+                <p>电话咨询：<span>400-005-2123</span></p>
+
+            </div>
+
+            <div class="he_zixumo clearfix">
+
+                <div class="he_zixumole fl clearfix">
+
+                <a href="javascript:;" onclick="zixunchuang()">
+
+                    <div class="he_zixujle fl">
+
+                        <img src="__TMPL__/images/tanzi.png">
+
+                    </div>
+
+                    <div class="he_zixujri fl">
+
+                        <p>在线咨询</p>
+
+                    </div>
+
+                </a>
+
+                </div>
+
+                <div class="he_zixshri fr">
+
+                    <div class="he_zixshrle fl">
+
+                        <p>稍后联系</p>
+
+                    </div>
+
+                    <div class="he_zixshrri fl">
+
+                        <img src="__TMPL__/images/tansrr.png">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="he_ganb">
+
+            <img src="__TMPL__/images/tangb.png">
+
+        </div>
+
+    </div>
+
+</div>
+
+ <!-- 获取报价弹窗 -->
+
+<div class="he_obtain">
+
+<form id="myforms" onsubmit="return false">
+
+<input type="hidden" name="catid" value="1">
+
+<input type="hidden" name="modelid" value="69">
+
+<input type="hidden" name="prov">
+
+<input type="hidden" name="city">
+
+<input type="hidden" name="type" value="获取产品报价">
+
+<div class="he_obtabx">
+
+    <div class="he_obtatb">
+
+        <div class="he_obtati">
+
+            <p>提交您的需求，我们将尽快与您联系</p>
+
+        </div>
+
+        <div class="he_obtatp">
+
+            <p>完善您的信息，华天软件专业团队为您提供服务！</p>
+
+        </div>
+
+        <div class="he_obtasel clearfix">
+
+            <div class="he_obtasle fl">
+
+                <div class="he_h3p2le fl">
+
+                    <p class="he_h3p2lep1">请选择您要填写的表单类型 <span>*</span></p>
+
+                </div>
+
+            </div>
+
+            <div class="he_obtasri fl clearfix">
+
+                <div class="he_obtasli fl on" data-val="获取产品报价">
+
+                    <div class="he_obtaple fl">
+
+
+
+                    </div>
+
+                    <div class="he_obtapri fl">
+
+                        <p>获取产品报价</p>
+
+                    </div>
+
+                </div>
+
+                <div class="he_obtasli fl  " data-val="获取方案详情">
+
+                    <div class="he_obtaple fl">
+
+
+
+                    </div>
+
+                    <div class="he_obtapri fl">
+
+                        <p>获取方案详情</p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="he_f1p5de">
+
+            <div class="he_h3p3ul clearfix">
+
+                <div class="he_h3pjur fl clearfix">
+
+                    <div class="he_h3p3li fl">
+
+                        <div class="he_h3p3ub clearfix">
+
+                            <div class="he_h3p3ubte fl">
+
+                                <p class="he_h3p2lep1">公司名称 <span>*</span></p>
+
+                            </div>
+
+                            <div class="he_h3p3ubin fl">
+
+                                <input type="text" name="company" placeholder="请输入您的公司名称">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="he_h3p3li fl">
+
+                        <div class="he_h3p3ub clearfix">
+
+                            <div class="he_h3p3ubte fl">
+
+                                <p class="he_h3p2lep1">姓名 <span>*</span></p>
+
+                            </div>
+
+                            <div class="he_h3p3ubin fl">
+
+                                <input type="text" name="name" placeholder="请输入您的姓名">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="he_h3p3li fl">
+
+                        <div class="he_h3p3ub clearfix">
+
+                            <div class="he_h3p3ubte fl">
+
+                                <p class="he_h3p2lep1">手机号 <span>*</span></p>
+
+                            </div>
+
+                            <div class="he_h3p3ubin fl">
+
+                                <input type="text" name="phone" placeholder="请输入您的手机号码">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="he_h3p3li fl">
+
+                        <div class="he_h3p3ub clearfix">
+
+                            <div class="he_h3p3ubte fl">
+
+                                <p class="he_h3p2lep1">邮箱 <span>*</span></p>
+
+                            </div>
+
+                            <div class="he_h3p3ubin fl">
+
+                                <input type="text" name="email" placeholder="请输入您的邮箱">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="he_h3p3li fl">
+
+                        <div class="he_h3p3ub clearfix">
+
+                            <div class="he_h3p3ubte fl">
+
+                                <p class="he_h3p2lep1">省份 <span>*</span></p>
+
+                            </div>
+
+                            <div class="he_h3p3xiala fl">
+
+                                <div class="he_h3p3ubin">
+
+                                    <input type="text" readonly="" value="">
+
+                                    <div class="he_h3nar">
+
+                                        <img src="__TMPL__/images/h3arr.png">
+
+                                    </div>
+
+                                </div>
+
+                                <div class="he_h3p3xl">
+
+                                    <div class="he_h3p3xhy">
+
+                                       <p onclick="get_shi(2,'北京')">北京</p><p onclick="get_shi(21,'广东')">广东</p><p onclick="get_shi(22,'广西')">广西</p><p onclick="get_shi(23,'海南')">海南</p><p onclick="get_shi(24,'四川')">四川</p><p onclick="get_shi(25,'贵州')">贵州</p><p onclick="get_shi(26,'云南')">云南</p><p onclick="get_shi(27,'西藏')">西藏</p><p onclick="get_shi(28,'陕西')">陕西</p><p onclick="get_shi(29,'甘肃')">甘肃</p><p onclick="get_shi(30,'青海')">青海</p><p onclick="get_shi(31,'宁夏')">宁夏</p><p onclick="get_shi(32,'新疆')">新疆</p><p onclick="get_shi(33,'台湾')">台湾</p><p onclick="get_shi(34,'香港')">香港</p><p onclick="get_shi(35,'澳门')">澳门</p><p onclick="get_shi(20,'湖南')">湖南</p><p onclick="get_shi(19,'湖北')">湖北</p><p onclick="get_shi(18,'河南')">河南</p><p onclick="get_shi(3,'上海')">上海</p><p onclick="get_shi(4,'天津')">天津</p><p onclick="get_shi(5,'重庆')">重庆</p><p onclick="get_shi(6,'河北')">河北</p><p onclick="get_shi(7,'山西')">山西</p><p onclick="get_shi(8,'内蒙古')">内蒙古</p><p onclick="get_shi(9,'辽宁')">辽宁</p><p onclick="get_shi(10,'吉林')">吉林</p><p onclick="get_shi(11,'黑龙江')">黑龙江</p><p onclick="get_shi(12,'江苏')">江苏</p><p onclick="get_shi(13,'浙江')">浙江</p><p onclick="get_shi(14,'安徽')">安徽</p><p onclick="get_shi(15,'福建')">福建</p><p onclick="get_shi(16,'江西')">江西</p><p onclick="get_shi(17,'山东')">山东</p><p onclick="get_shi(36,'钓鱼岛')">钓鱼岛</p>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="he_h3p3li fl">
+
+                        <div class="he_h3p3ub clearfix">
+
+                            <div class="he_h3p3ubte fl">
+
+                                <p class="he_h3p2lep1">城市 <span>*</span></p>
+
+                            </div>
+
+                            <div class="he_h3p3xiala fl">
+
+                                <div class="he_h3p3ubin">
+
+                                    <input type="text" readonly="" value="">
+
+                                    <div class="he_h3nar">
+
+                                        <img src="__TMPL__/images/h3arr.png">
+
+                                    </div>
+
+                                </div>
+
+                                <div class="he_h3p3xl">
+
+                                    <div class="he_h3p3xhy" id="citys">
+
+                                        
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="he_h3p3li he_h3p3li1 fl">
+
+                        <div class="he_h3p3ub clearfix">
+
+                            <div class="he_h3p3ubte fl">
+
+                                <p class="he_h3p2lep1">需求描述 <span>*</span></p>
+
+                            </div>
+
+                            <div class="he_h3p3ubin fl">
+
+                                <textarea name="msg" placeholder="请描述您的合作需求"></textarea>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="he_f1p5dfle fl">
+
+                        <div class="he_h3p5 clearfix">
+
+                            <div class="he_h3p5le fl">
+
+                                <div class="he_h3p3ub clearfix">
+
+                                    <div class="he_h3p3ubte fl">
+
+                                        <p class="he_h3p2lep1">验证码 <span>*</span></p>
+
+                                    </div>
+
+                                    <div class="he_h3p3ubin fl">
+
+                                        <input type="text" name="verify_code">
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="he_h3p5ri fl clearfix">
+
+                                <div class="he_cod fl">
+
+                                    <img class="asd" onclick="checkForm.changeVerifyImg(this)" name="verifyImg" src="/Cn/Index/getVerifyImg/sid/494791.html" />
+
+                                </div>
+
+                                <div class="he_h3p5z clearfix fl" onclick="checkForm.changeVerifyImg($('.asd'))">
+
+                                    <div class="he_h3p5zle fl">
+
+                                        <img src="__TMPL__/images/h3pzhu.png">
+
+                                    </div>
+
+                                    <div class="he_h3p5zri fl">
+
+                                        <p>换一换</p>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="he_f1p5dft fl clearfix">
+
+                   
+
+                    <div class="he_f1p5dfri fl" onclick="submitForm('myforms')">
+
+                        <div class="he_h3p6bt">
+
+                            <button>提 交</button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="he_obtagb">
+
+        <img src="__TMPL__/images/tcgb.png">
+
+    </div>
+
+</div>
+
+</form>
+
+</div>
+
+
+
+<script>
+
+    function get_shi(id,name){
+
+        $("input[name='prov']").val(name);
+
+        $.ajax({
+
+            type:"GET",
+
+            data:{'id':id},
+
+            url:"/Cn/Index/get_shi",
+
+            success:function(data){
+
+                if(data.length > 0){
+
+                    var str = '';
+
+                    $.each(data,function(i,v){
+
+                        str += '<p class="set_city">'+v.name+'</p>';
+
+                    })
+
+                    $('#citys .mCSB_container').empty();
+
+                    $('#citys .mCSB_container').append(str);
+
+                    $('.set_city').click(function(){
+
+                        $("input[name='city']").val($(this).text());
+
+                    })
+                    $('.he_h3p3xl p').click(function () {
+                    var val = $(this).text();
+                    $(this).parents('.he_h3p3xiala').find(".he_h3p3ubin input").attr('value', val);
+                    })
+
+                }
+
+            }
+
+        })
+
+    }
+
+
+
+    function injectChk(oField){
+
+        re= /select|update|delete|exec|count|'|"|=|;|>|<|%/i;
+
+        if ( re.test(oField) ){
+
+            return false;
+
+        }else{
+
+            return true;
+
+        }
+
+    }
+
+    checkForm={
+
+        changeVerifyImg:function(obj){
+
+            $(obj).attr("src","/Cn/Index/getVerifyImg.html?sid="+Math.random());
+
+        },
+
+        isEmpty:function(name,field,formid){
+
+            if($('#'+formid).find('input[name="'+name+'"],textarea[name="'+name+'"]').val().length==0 || injectChk($('input[name="'+name+'"],textarea[name="'+name+'"]').val()) == false){
+
+                layerHandel=layer.alert(
+
+                        field+"不能为空！",
+
+                        {
+
+                            'title':'消息',
+
+                            'btn':['好的']
+
+                        },function(){
+
+                            layer.close(layerHandel);
+
+                            $('input[name="'+name+'"]').focus();
+
+                        }
+
+                );
+
+                return true;
+
+            }else{
+
+                return false;
+
+            }
+
+        },
+
+        notEmail:function(name,field,formid){
+
+            if(!/^[\w\-\.]+@[\w\-\.]+(\.\w+)+$/.test($('#'+formid).find('input[name="'+name+'"]').val())){
+
+                layerHandel=layer.alert(
+
+                        field+"格式不正确！",
+
+                        {
+
+                            'title':'消息',
+
+                            'btn':['好的']
+
+                        },function(){
+
+                            layer.close(layerHandel);
+
+                            $('input[name="'+name+'"]').focus();
+
+                        }
+
+                );
+
+                return true;
+
+            }else{
+
+                return false;
+
+            }
+
+        },
+
+        notPhone:function(name,field,formid){
+
+            if(!/^1[\d]{10}$/.test($('#'+formid).find('input[name="'+name+'"]').val())){
+
+                layerHandel=layer.alert(
+
+                        field+"格式不正确！",
+
+                        {
+
+                            'title':'消息',
+
+                            'btn':['好的']
+
+                        },function(){
+
+                            layer.close(layerHandel);
+
+                            $('input[name="'+name+'"]').focus();
+
+                        }
+
+                );
+
+                return true;
+
+            }else{
+
+                return false;
+
+            }
+
+        }
+
+    };
+
+    function submitForm(formId){
+    
+        $('.he_obtasli').each(function(){
+
+            if($(this).hasClass('on')){
+
+                $("input[name='type']").val($(this).attr('data-val'));
+
+            }
+
+        })
+
+        if(checkForm.isEmpty("company","公司名称",formId)){
+
+            return false;
+
+        }
+
+        if(checkForm.isEmpty("name","姓名",formId)){
+
+            return false;
+
+        }
+
+        if(checkForm.notPhone("phone","电话",formId)){
+
+            return false;
+
+        }
+
+        if(checkForm.notEmail("email","邮箱",formId)){
+
+            return false;
+
+        }
+
+        if(checkForm.isEmpty("prov","省份",formId)){
+
+            return false;
+
+        }
+
+        if(checkForm.isEmpty("city","城市",formId)){
+
+            return false;
+
+        }
+
+        if(checkForm.isEmpty("msg","需求描述",formId)){
+
+            return false;
+
+        }
+
+        $.ajax({
+
+            url:"/Cn/Index/formView.html",
+
+            data:$("#"+formId).serialize(),
+
+            dataType:"json",
+
+            type:"POST",
+
+            success:function(data){
+
+                checkForm.changeVerifyImg($("#"+formId+" img[name='verifyImg']"));
+
+                layer.alert(
+
+                        data.info,
+
+                        {
+
+                            'title':'消息',
+
+                            'btn':['好的']
+
+                        }
+
+                );
+
+                if(data.status=="success"){
+
+                    setTimeout('location.reload()',1500);
+
+                }
+
+            },
+
+            error:function(data){
+
+                layer.open({
+
+                    title:"调试模式",
+
+                    content:data.responseText
+
+                })
+
+            }
+
+        });
+
+    }
+
+</script>
+<div class="he_phtancgt" onclick="zixunchuang()">
+ <div class="he_cenavig">
+                    <img src="__TMPL__/images/ceic01.png">
+                </div>
+</div>
+<script src="__TMPL__/js/jquery-3.3.1.min.js"></script>
+
+<script src="__TMPL__/js/slick.min.js"></script>
+
+<script src="__TMPL__/js/jquery.mCustomScrollbar.concat.min.js"></script>
+
+<script src="__TMPL__/js/appear.js"></script>
+
+<script src="__TMPL__/js/common.js" charset="utf-8"></script>
+<script src="__TMPL__/js/jquery.gifplayer.js"></script>
+<script src="__TMPL__/js/wow.min.js"></script>
+
+
+<script src="__TMPL__/js/Yongsy.js"></script>
+<script type="text/javascript" src="__TMPL__/js/layer.js"></script>
+
+  
+<script src="__TMPL__/js/li.js"></script>
+
+    <script>
+
+        new WOW().init();
+
+    </script>
+
+    <script>
+
+        // banner
+
+        $(function () {
+
+            bannerInit();
+
+        });
+
+
+
+        function bannerInit() {
+
+            $('.he_bannigul').slick({
+
+                dots: true,
+
+                arrows: true,
+
+                speed: 1000,
+
+                // fade: true,
+
+            });
+
+            // 视频播完轮播
+
+            (function ($obj) {
+
+                if ($(window).width() > 1200 && $obj.find("video").length > 0) {
+
+                    // autoplay自动播放
+
+                    $(window).on('load', function () {
+
+                        setTimeout(function () {
+
+                            $obj.find("video").get(0).play();
+
+                        }, 100)
+
+                    })
+
+                    $obj.find("video").each(function () {
+
+                        var video = $(this).get(0); //获取视频js对象
+
+                        var videoIndex = $(video).parents(".slick-slide").attr(
+
+                            "data-slick-index") //获取视频对象所在的页数;
+
+                        // 播放结束切换到下一张
+
+                        video.onended = function () {
+
+                            $obj.slick("next");
+
+                            $obj.slick('slickPlay');
+
+                        }
+
+                        // 切换后转为自动轮播
+
+                        $obj.on('afterChange', function (event, slick, currentSlide) {
+
+                            if (currentSlide == videoIndex) {
+
+                                $obj.slick('slickPause');
+
+                                video.currentTime = 0;
+
+                                video.play();
+
+                            }
+
+                        });
+
+                    })
+
+                } else {
+
+                    $obj.slick('slickPlay');
+
+                }
+
+            })($(".he_bannigul"));
+
+        }
+
+
+
+        // 数字滚动
+
+        $(".g_count").appear(function () {
+
+            var count = $(this).text();
+
+            var counts = parseInt(count.replace(/,/, ""));
+
+            $(this).countTo({
+
+                form: 1,
+
+                to: counts,
+
+                speed: 1500,
+
+                refreshInterval: 90,
+
+                onComplete: function () {
+
+                    $(this).text(count);
+
+                }
+
+            });
+
+        });
+
+        // 客户
+
+        $('.g_sect4nr').slick({
+
+            dots: false,
+
+            arrows: true,
+
+            speed: 500,
+
+            slidesToShow: 2,
+
+            slidesToScroll: 1,
+
+            autoplay: true,
+
+            responsive: [{
+
+                breakpoint: 460,
+
+                settings: {
+
+                    slidesToShow: 1,
+                    dots:true,
+
+                }
+
+            }, ]
+
+        });
+
+        // 解决方案
+
+        $('.g_sect2all').hover(function () {
+
+            var pag = $(this).attr("data-num");
+
+            console.log(pag)
+
+            $(this).stop().addClass('active');
+
+            $(this).siblings().stop().removeClass('active');
+
+            $('.g_sect2bj').siblings().stop().removeClass('on');
+
+            $('.g_sect2bj[data-num="' + pag + '"]').stop().addClass('on');
+
+            // $('.g_sect2bj').eq(pag).stop().show().siblings('.g_sect2bj').stop().hide();
+
+        })
+
+
+
+        //下一屏 
+
+        $('.he_imgshubvx').click(function () {
+
+            $("html,body").animate({
+
+                scrollTop: $('.g_sy').offset().top - 0
+
+            }, 700);
+
+        })
+
+
+
+        if ($(window).width() < 768) {
+
+            $('.g_sect3top_all').slick({
+
+                slidesToShow: 1,
+
+                slidesToScroll: 1,
+
+                arrows: true,
+
+                autoplay: true,
+                dots:true,
+
+            });
+            $('.g_sect1nr').slick({
+
+                slidesToShow: 1,
+
+                slidesToScroll: 1,
+
+                arrows: true,
+
+                autoplay: true,
+                dots:true,
+
+                });
+                
+                
+                $('.g_sect6nrfl').slick({
+
+                    slidesToShow: 1,
+
+                    slidesToScroll: 1,
+
+                    arrows: true,
+
+                    autoplay: true,
+                    dots:true,
+                    adaptiveHeight: true,
+                    });
+
+        }
+
+      
+
+        
+        
+
+        $(function () {
+            var i = 0;
+            var classes = ['rotate90', 'rotate180', 'rotate270', 'rotate360'];
+
+            $('.he_h3p5z').on('click', function () {
+                var $this = $(this).find('.he_h3p5zle img');
+
+                $this.addClass(classes[i++ % 4])
+                    .removeClass(function (idx, cls) {
+                        var classes = cls.split(' ');
+                        return classes.length > 1 ? classes[0] : '';
+                    });
+            });
+        })
+
+        // 滚动条
+        $(function () {
+            var scrollInertiaNum;
+            if (/firefox/.test(navigator.userAgent.toLowerCase())) {
+                scrollInertiaNum = 350;
+            } else {
+                scrollInertiaNum = 350;
+            }
+            $(".he_h3pjur").mCustomScrollbar({
+                theme: 'dark',
+                scrollInertia: scrollInertiaNum,
+                horizontalScroll: false,
+                axis: "y",
+            });
+        });
+
+        $('.g_botton1').click(function () {
+            $('.he_obtain').fadeIn();
+        })
+        $('.he_obtagb').click(function () {
+            $('.he_obtain').fadeOut();
+        })
+    </script>
+
+</body>
+
+
+
+</html>

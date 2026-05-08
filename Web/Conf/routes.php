@@ -11,5 +11,9 @@
 	'product' => 'List/index?typeid=22',
 	'project' => 'List/index?typeid=27',
 	'zhaopin' => 'List/index?typeid=25',
+	'source-market' => 'List/index?typeid=5',
+	'systems' => 'List/index?typeid=2',
+	'digital-employee' => 'List/index?typeid=4',
+	'enablement' => 'List/index?typeid=7',
 	);
 ?>

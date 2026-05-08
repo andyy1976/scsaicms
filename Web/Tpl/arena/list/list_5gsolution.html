@@ -1,0 +1,181 @@
+<include file="./head_ps"/>
+
+<!-- 新增解决方案矩阵 -->
+<div class="he_b2p3" yxdatop-pags="3">
+    <div class="he_common">
+        <div class="he_b2p3p1">
+            <div class="he_b2p3ti">
+                <h2 class="he_puclti">数字化转型痛点解决方案矩阵</h2>
+            </div>
+            <div class="solution-matrix">
+                <table class="he_mtable">
+                    <thead>
+                        <tr>
+                            <th>痛点分类</th>
+                            <th>具体问题描述</th>
+                            <th>SCSAI解决方案</th>
+                            <th>技术实现路径</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>数据管理之困</td>
+                            <td>数据孤岛与整合困难</td>
+                            <td>数据资产管理系统</td>
+                            <td>分布式存储+API网关</td>
+                        </tr>
+                        <!-- 更多数据行 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 技术架构全景图 -->
+<div class="he_b2p2" yxdatop-pags="2">
+    <div class="he_common">
+        <div class="he_b2p2bx">
+            <div class="he_b2p2ti">
+                <h2 class="he_puclti">核心技术架构全景图</h2>
+            </div>
+            <div class="tech-architecture">
+                <div class="he_b2p3ul clearfix">
+                    <div class="he_b2p3li fl">
+                        <div class="he_b2p3lin">
+                            <div class="he_b2p3lig">
+                                <img src="__TMPL__images/layer-icon1.svg" class="he_img1">
+                            </div>
+                            <div class="he_b2p3te">
+                                <div class="he_b2p3tep1 clearfix">
+                                    <div class="he_b2p3p1le fl">
+                                        <img src="__TMPL__images/arch-icon.png">
+                                    </div>
+                                    <div class="he_b2p3p1ri fl">
+                                        <p>基础设施层</p>
+                                    </div>
+                                </div>
+                                <div class="he_b2p3tep2">
+                                    <p>华为5G MEC边缘云<br>阿里云IoT平台<br>浪潮分布式存储</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 更多架构层卡片 -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 价值指标体系 -->
+<div class="he_b2p8" yxdatop-pags="6">
+    <div class="he_common">
+        <div class="he_b2p8bx">
+            <div class="he_b2p8ti">
+                <h2 class="he_puclti">价值量化指标</h2>
+            </div>
+            <div class="kpi-panel">
+                <div class="data-panel">
+                    <div class="metric-item">
+                        <span>生产效率提升</span>
+                        <span class="metric-value">+35%</span>
+                        <p>通过5G+AI实时工艺优化</p>
+                    </div>
+                    <div class="metric-item">
+                        <span>不良品率降低</span>
+                        <span class="metric-value">-62%</span>
+                        <p>机器视觉在线检测</p>
+                    </div>
+                    <!-- 更多指标 -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 实施路线选择器 -->
+<div class="he_b2p4" yxdatop-pags="4">
+    <div class="he_common">
+        <div class="he_b2p4bx">
+            <div class="he_b2p4ti">
+                <h2 class="he_puclti">智能方案推荐</h2>
+            </div>
+            <div class="solution-selector">
+                <select class="he_select" id="enterpriseSize">
+                    <option value="small">200人以下</option>
+                    <option value="medium">200-1000人</option>
+                </select>
+                <div class="he_xjbtn">
+                    <div class="g_botton">
+                        <a href="javascript:;" onclick="showSolution()" class="clearfix">
+                            <div class="g_bottonfl fl">获取推荐方案</div>
+                            <div class="g_bottonfr fr"></div>
+                        </a>
+                    </div>
+                </div>
+                <div id="solutionResult" class="he_result"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// 保持原有交互风格扩展
+function showSolution() {
+    const sizeMap = {small:150, medium:500};
+    const size = document.getElementById('enterpriseSize').value;
+    const result = {
+        small: "轻量化SaaS版（年费18万起）",
+        medium: "混合云专业版（含5G CPE设备）"
+    }[size];
+    document.getElementById('solutionResult').innerHTML = `
+        <div class="he_b2p3tep1">
+            <div class="he_b2p3p1le">
+                <img src="__TMPL__images/ok.png">
+            </div>
+            <div class="he_b2p3p1ri">
+                ${result}
+            </div>
+        </div>
+    `;
+}
+</script>
+
+<style>
+/* 保持原有样式体系扩展 */
+.he_mtable {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+}
+.he_mtable th {
+    background: #2A5D84;
+    color: #fff;
+    padding: 1.2rem;
+    text-align: left;
+}
+.he_mtable td {
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+.tech-architecture .he_b2p3li {
+    width: 32%;
+    margin-right: 1%;
+    margin-bottom: 20px;
+}
+
+.kpi-panel .data-panel {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+}
+</style>
+
+<!-- 原有其他模块保持不动 -->
+<div class="he_ny he_main he_pulma">
+    <!-- 原有内容结构 -->
+</div>
+
+<include file="../footer_unified"/>
