@@ -15,6 +15,7 @@ return array(
     'TAGLIB_END' => '>',
     'TMPL_PARSE_STRING' => array(
         '__TMPL__' => '/Web/Tpl/huatian/',
+        '__PUBLIC__' => '/Public/',
     ),
 
     // 语言设置
