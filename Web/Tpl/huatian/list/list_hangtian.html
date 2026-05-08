@@ -1,0 +1,25 @@
+<include file="./head_ps"/>
+
+<div class="container mt-80">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="text-center mb-40">航天工业</h1>
+            <div class="row">
+                <volist name="list" id="vo">
+                    <div class="col-md-4 mb-30">
+                        <div class="article-card">
+                            <h3><a href="{:url('content/index',array('id'=>$vo['id']))}">{$vo.title}</a></h3>
+                            <p>{$vo.description}</p>
+                            <span class="article-date">{$vo.addtime}</span>
+                        </div>
+                    </div>
+                </volist>
+            </div>
+            <div class="text-center mt-40">
+                {$page}
+            </div>
+        </div>
+    </div>
+</div>
+
+<include file="$footer"/>
