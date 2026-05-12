@@ -1,461 +1,506 @@
-<include file="./head_ps"/>
+<include file="./head"/>
 
- <!-- banner -->
-
-   <div class="he_banner he_banner1">
-
-    <div class="he_bannigul">
-
-        <div class="he_bannigli">
-
-            <div class="he_banig">
-
-                <img src="/Public/Uploads/uploadfile/images/H1guanyuwomen.jpg" alt="hangyesolution1.webp" class="he_banpc">
-
-                <img src="/Public/Uploads/uploadfile/images/H1guanyuwomenph.jpg" alt="c2-373.jpg" class="he_banph">
-
-            </div>
-
-            <div class="he_bante he_common">
-
-                <div class="he_bantepy">
-
-                    <div class="he_bantep2t">
-											<h1>
-
-                        <p>SCIOT智能制造+工业互联网平台</p>
-						
-											</h1>
-
-                    </div>
-
-                    <div class="he_bantep3v">
-
-                        <p>坚持自主创新，研发国产自主可控的智能制造+工业互联网平台软件，赋能中国工业创新发展。</p>
-
-                    </div>
-
-                    <div class="he_bantemo clearfix">
-
-                        <div class="he_bantemoli he_bantemoli1 fl">
-
-                             <a href="http://218.245.61.108/scplm/front/X-cache=scplm_1.0.0.1-X/scripts/mainpage.aspx#" class="clearfix">
-
-                                <div class="g_bottonfl fl">免费体验</div>
-
-                                <div class="g_bottonfr fr">
-
-                                    <img src="__TMPL__images/baneric01.png">
-
-                                </div>
-
-                            </a>
-
-                        </div>
-
-                        <!-- <div class="he_bantemoli he_bantemoli1 fl">
-
-                            <a href="http://p.qiao.baidu.com/cps/chat?siteId=7068912&amp;userId=10762368&amp;siteToken=df40424b6b4c48e528618d8d754928b8" class="clearfix">
-
-                                <div class="g_bottonfl fl">立即咨询</div>
-
-                                <div class="g_bottonfr fr">
-
-                                    <img src="__TMPL__images/baneric01.png">
-
-                                </div>
-
-                            </a>
-
-                        </div> -->
-
-                    </div>
- 									 
-			   		
-
-
-                </div>
-
-
-
-            </div>
-            
-                   <!-- 面包屑 -->
-			            <div class="he_breul">
-							  		  <div class="he_common">
-							       		你的位置：{$nav}
-							         </div>
-									</div>  
-
-        </div>
-        
-     
-
+<!-- Modern Banner -->
+<div class="list-banner">
+    <div class="list-banner-bg">
+        <img src="__TMPL__images/c2banner.jpg" alt="{$type.typename|default='SCSAI ContentOS'}">
+        <div class="list-banner-overlay"></div>
     </div>
-
-	</div>
-        <!-- center -->
-
-        <div class="he_ny he_c2bx he_main he_pulma">
-
-            <!-- 二级导航 -->
-
-            <div class="he_plucnav">
-
-                <div class="he_plnavul he_common">
-                	
-                				 	<php>
-									//	$first_id=get_first_father($type['typeid']);
-										$fid=get_field('type','typeid='.$type[typeid],'fid');
-										
-										if($fid==0)
-										{ 
-											$pid=$type[typeid]; 
-											$pname=$type[typename];
-										}
-										else
-										{ 
-											$pid=$fid; 
-											$pname=get_field('type','typeid='.$pid,'typename');
-										}
-								  </php>
-									<category parentid="$pid" id="vo">
-										<div class="he_plnavli <php>if($type['typeid'] == $vo['typeid']){</php>  yxnav_active2 <php>}</php> ">
-											
-										
-										<h2>	<a href='{$vo.typeid|url=lists,###}'>{$vo.typename}</a></h2>
-												<!--判定是否有子类-->
-												<php>{</php>
-												<div class="he_plnavli">
-													<ul>
-														<category parentid="$vo[typeid]" id="voo">
-														
-															
-														<li><span class="file <php>if($type['typeid'] == $voo['typeid']){</php>  active <php>}</php>"><a href='{$voo.typeid|url=lists,###}' >{$voo.typename}(<?php echo $countofcurrenttypeid  ?>)</a></span></li> 
-														</category>
-													</ul>
-												</div>
-												<php>}</php>
-										</div>
-									</category>
-									
-                    <div class="he_plnavli ">
-													<h2>
-
-                        <a href="javascript:;" id="ids1">咨询热线：13661068044,微信同号</a>
-												</h2>
-
-                    </div>          
-                    
-         
-                    
-                                 </div>
-
-            </div>
-
-
+    <div class="list-banner-content">
+        <div class="container">
+            <nav class="breadcrumb">
+                <a href="/">首页</a>
+                <span class="sep">/</span>
+                <span class="current">{$type.typename}</span>
+            </nav>
+            <h1 class="page-title">{$type.typename}</h1>
+            <p class="page-desc">{$type.description|default='AI驱动的数字员工平台，重新定义内容生成与获客'}</p>
         </div>
-        
-             		&nbsp;
-        	<php>if(count($list)==1){</php>
-						 	<div class="he_common">
+    </div>
+</div>
 
-                <div class="he_d2bxny">
-
-                    <div class="he_d2bxp1">
-
-                        <div class="he_d2bxp1ti">
-						
-																<h1>
-
-                 			           <p>{$list[0]['title']}</p>
-							
-																</h1>
-
+<!-- Main Content -->
+<div class="list-main">
+    <div class="container">
+        <div class="list-layout">
+            <!-- Sidebar -->
+            <aside class="list-sidebar">
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">分类导航</h3>
+                    <nav class="sidebar-nav">
+                        <php>
+                            $fid = get_field('type','typeid='.$type['typeid'],'fid');
+                            if($fid == 0) {
+                                $pid = $type['typeid'];
+                            } else {
+                                $pid = $fid;
+                            }
+                        </php>
+                        <category parentid="$pid" id="vo">
+                            <a href='{$vo.typeid|url=lists,###}' class="nav-item <php>if($type['typeid'] == $vo['typeid']){</php>active<php>}</php>">
+                                {$vo.typename}
+                            </a>
+                        </category>
+                    </nav>
+                </div>
+                
+                <div class="sidebar-section contact-section">
+                    <h3 class="sidebar-title">联系我们</h3>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <span class="icon">📞</span>
+                            <span>186-0192-1816</span>
                         </div>
- 										     <div class="he_d2bxnx clearfix">
-
-                            <div class="he_d2bxnxle fl clearfix">
-
-                                <div class="he_d2bxnkle fl">
-
-                                    <img src="__TMPL__images/d2ic01.png">
-
-                                </div>
-
-                                <div class="he_d2bxnkri fl">
-
-                                    <p>{$list[0]['addtime']|msubstr=###,0,10}</p>
-
-                                </div>
-
-                            </div>
-
-                            <div class="he_d2bxnxri fl clearfix">
-
-                                <div class="he_d2bxnxgle fl">
-
-                                    <p>分享到</p>
-
-                                </div>
-
-                                <div class="he_d2bxnxgri bshare-custom fl clearfix">
-
-                                    <div class="he_d2bxnili fl">
-
-                                        <img src="__TMPL__images/d2pi02.jpg">
-
-                                        <a title="分享到新浪微博" class="bshare-sinaminiblog" href="javascript:;"></a>
-
-                                    </div>
-
-                                    <div class="he_d2bxnili fl">
-
-                                        <img src="__TMPL__images/d2pi03.jpg">
-
-                                        <a title="分享到微信" class="bshare-weixin" href="javascript:;"></a>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
+                        <div class="contact-item">
+                            <span class="icon">📧</span>
+                            <span>contact@scsaiclaw.com</span>
                         </div>
-
                     </div>
-
-                    <div class="he_d2bxp2">
-
-                        <div class="he_d2bxp2ln yxedr_active">
-
-                            <div class="he_d2bxp2bj">
-					
-           
-        							  	   	{$list[0]['content']}
-												
-             	
-          								  </div>
-          							</div>
-          					</div>
-          					
-          			</div>
-          		</div>
-						
-							<php>}else{</php>
-						
-               <div class="he_ny he_e1bx he_main">
-
-        
+                </div>
+            </aside>
             
-			            <div class="he_e1p1 wow g_fadein1">
-
-			                <div class="he_common">
-
-			                    <div class="he_e1p1bx">
-
-			                        <div class="he_e1p1ul">
-
-												
-																					<volist name="list" id="vo">
-																	  				<php>$idnumber= $idnumber+1;</php>
-																				
-																						
-																							<div class="he_e1p1li">
-																								
-																									<a class="clearfix" href='{$vo.aid|url=articles,###}' target='_blank'>
-																										   <div class="he_e1p1bxle fl">
-
-															                                            <img src="__TMPL__images/e1flo1.png" class="he_img">
-
-															                                            <img src=" __ROOT__{$vo.imgurl}" alt="" class="he_img1">
-
-															                                        </div>
-
-															                                        <div class="he_e1p1bxri fl">
-
-															                                            <div class="he_e1p1bti">
-
-															                                                <h4> {$vo.title}</h4>
-
-															                                            </div>
-
-															                                            <div class="he_e1p1btp">
-
-															                                                <p> {$vo.description}</p>
-
-															                                            </div>
-
-															                                            <div class="he_e1p1bmo">
-
-															                                                <p> {$vo.addtime|msubstr=###,0,10}</p>
-
-															                                            </div>
-
-															                                            <div class="he_e1p1bbmo">
-
-															                                                <div class="g_botton">
-
-															                                                    <div class="clearfix he_bott">
-
-															                                                        <div class="g_bottonfl fl">了解更多</div>
-
-															                                                        <div class="g_bottonfr fr"></div>
-
-															                                                    </div>
-
-															                                                </div>
-
-															                                            </div>
-
-															                                        </div>
-																										
-																										
-																										
-																										
-																										
-															                    
-																										
-																										
-																										
-																										</a>
-																									
-																								
-																							</div>
-																					
-																						
-																					</volist>
-
-			                          
-			                        </div>
-
-
-			                        
-			                        <div class="he_e1p1qh clearfix">
-
-			                            <div class="he_e1p1qhl he_e1p1qhle fl on">
-
-			                                <img src="__TMPL__images/e1arrle1.png" class="he_img">
-
-			                                <img src="__TMPL__images/e1arrle.png" class="he_img1">
-
-			                            </div>
-
-			                            <div class="he_e1p1qhl he_e1p1qhri fl">
-
-			                                <img src="__TMPL__images/e1arri.png" class="he_img">
-
-			                                <img src="__TMPL__images/e1arri1.png" class="he_img1">
-
-			                            </div>
-
-			                        </div>
-			                        
-			                    </div>
-
-			                </div>
-
-			            </div>        
-
-			       		    <div class="he_e1p2">
-
-			                <div class="he_common">
-
-			                    <div class="he_e1p2bx">
-
-			                        <div class="he_e1p2ul">
-
-			                          
-			                            	<volist name="list" id="vo">
-																	  		
-																							<div class="he_e1p2li  wow g_fadeup1">
-																								
-																									<a class="clearfix" href='{$vo.aid|url=articles,###}' target='_blank'>
-																										   <div class="he_e1p1bxle fl">
-
-															                              <img src="__TMPL__images/e1flo1.png" class="he_img"/>
-
-															                               <img src=" __ROOT__{$vo.imgurl}" alt="" class="he_img1"/>
-
-															                          </div>
-
-					 																						<div class="he_e1p1bxri fl">
-
-						                                            <div class="he_e1p1bti">
-
-						                                                <h4>{$vo.title}</h4>
-
-						                                            </div>
-
-						                                            <div class="he_e1p1btp">
-
-						                                                <p>{$vo.note}
-						                                            </div>
-
-						                                            <div class="he_e1p1bmo">
-
-						                                                <p>{$vo.addtime|msubstr=###,0,10}</p>
-
-						                                            </div>
-
-						                                            <div class="he_e1p1bbmo">
-
-						                                                <div class="g_botton">
-
-						                                                    <div class="clearfix he_bott">
-
-						                                                        <div class="g_bottonfl fl">了解更多</div>
-
-						                                                        <div class="g_bottonfr fr"></div>
-
-						                                                    </div>
-
-						                                                </div>
-
-						                                            </div>
-
-					                                    		    </div>																								
-																										
-																										</a>
-																									
-																								
-																							</div>
-																		</volist>
-			                        </div>
-
-			                    </div>
-
-			                </div>
-
-			   	         </div>
-
-			            <div class="he_e1p3 wow g_fadein1">
-
-			                <div class="he_common">
-
-			                    <div class="he_e1p3bx">
-
-			                        <div class="mc_fybox">
-
-			                            <!-- pc分页 -->
-
-			                            <div class="mc_pcfy">
-
-			                               
-			                                	 {$page}
-			                               
-
-			                            </div> 
-
-			                        </div>
-
-			                    </div>
-
-			                </div>
-
-			            </div>
-
-   				     </div>
-               	<php>}</php>
-
-      <include file="./footer_ps"/>
+            <!-- Content Area -->
+            <main class="list-content">
+                <php>if(count($list) == 0){</php>
+                    <!-- Empty State -->
+                    <div class="empty-state">
+                        <div class="empty-icon">📝</div>
+                        <h3>暂无文章</h3>
+                        <p>该分类下暂时没有文章，请查看其他分类或稍后回来。</p>
+                    </div>
+                <php>}elseif(count($list) == 1){</php>
+                    <!-- Single Article Display -->
+                    <article class="single-article">
+                        <header class="article-header">
+                            <h1>{$list[0]['title']}</h1>
+                            <div class="article-meta">
+                                <span class="date">📅 {$list[0]['addtime']|msubstr=###,0,10}</span>
+                                <span class="author">👤 {$list[0]['author']|default='SCSAI'}</span>
+                            </div>
+                        </header>
+                        <div class="article-body">
+                            {$list[0]['content']}
+                        </div>
+                    </article>
+                <php>}else{</php>
+                    <!-- Article List -->
+                    <div class="article-list">
+                        <volist name="list" id="vo">
+                            <article class="article-card">
+                                <a href='{$vo.aid|url=articles,###}' class="card-link">
+                                    <div class="card-image">
+                                        <php>
+                                            $img = $vo['imgurl'] ? '__ROOT__'.$vo['imgurl'] : '__TMPL__images/c2banner.jpg';
+                                        </php>
+                                        <img src="{$img}" alt="{$vo.title}" onerror="this.src='__TMPL__images/c2banner.jpg'">
+                                    </div>
+                                    <div class="card-content">
+                                        <h3 class="card-title">{$vo.title}</h3>
+                                        <p class="card-desc">{$vo.description|msubstr=###,0,120,'utf-8'}</p>
+                                        <div class="card-footer">
+                                            <span class="card-date">{$vo.addtime|msubstr=###,0,10}</span>
+                                            <span class="card-more">阅读全文 →</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </article>
+                        </volist>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="pagination-wrapper">
+                        {$page}
+                    </div>
+                <php>}</php>
+            </main>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Modern List Page Styles */
+.list-banner {
+    position: relative;
+    height: 320px;
+    overflow: hidden;
+}
+
+.list-banner-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.list-banner-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.list-banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(26, 31, 78, 0.85) 0%, rgba(45, 27, 105, 0.75) 100%);
+}
+
+.list-banner-content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 100%;
+}
+
+.breadcrumb {
+    font-size: 14px;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 15px;
+}
+
+.breadcrumb a {
+    color: rgba(255,255,255,0.9);
+    text-decoration: none;
+}
+
+.breadcrumb a:hover {
+    color: #6c5ce7;
+}
+
+.breadcrumb .sep {
+    margin: 0 8px;
+}
+
+.breadcrumb .current {
+    color: #fff;
+}
+
+.page-title {
+    font-size: 42px;
+    color: #fff;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.page-desc {
+    font-size: 16px;
+    color: rgba(255,255,255,0.8);
+    max-width: 600px;
+}
+
+/* Main Content */
+.list-main {
+    padding: 50px 0 80px;
+    background: #f8f9fa;
+    min-height: 500px;
+}
+
+.list-layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 40px;
+}
+
+/* Sidebar */
+.list-sidebar {
+    position: sticky;
+    top: 20px;
+    height: fit-content;
+}
+
+.sidebar-section {
+    background: #fff;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+.sidebar-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a1f4e;
+    margin-bottom: 15px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #6c5ce7;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.nav-item {
+    display: block;
+    padding: 12px 15px;
+    color: #555;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.2s;
+    font-size: 14px;
+}
+
+.nav-item:hover {
+    background: #f0f0ff;
+    color: #6c5ce7;
+}
+
+.nav-item.active {
+    background: #6c5ce7;
+    color: #fff;
+}
+
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #555;
+}
+
+.contact-item .icon {
+    font-size: 16px;
+}
+
+/* Content Area */
+.list-content {
+    background: #fff;
+    border-radius: 12px;
+    padding: 35px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    min-height: 400px;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 80px 20px;
+}
+
+.empty-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+}
+
+.empty-state h3 {
+    font-size: 24px;
+    color: #1a1f4e;
+    margin-bottom: 10px;
+}
+
+.empty-state p {
+    color: #888;
+    font-size: 14px;
+}
+
+/* Single Article */
+.single-article .article-header {
+    margin-bottom: 30px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #eee;
+}
+
+.single-article h1 {
+    font-size: 28px;
+    color: #1a1f4e;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.article-meta {
+    display: flex;
+    gap: 20px;
+    font-size: 14px;
+    color: #888;
+}
+
+.article-body {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #444;
+}
+
+.article-body p {
+    margin-bottom: 16px;
+}
+
+/* Article List */
+.article-list {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.article-card {
+    border: 1px solid #eee;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s;
+}
+
+.article-card:hover {
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
+.card-link {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    text-decoration: none;
+    color: inherit;
+}
+
+.card-image {
+    height: 160px;
+    overflow: hidden;
+}
+
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.article-card:hover .card-image img {
+    transform: scale(1.05);
+}
+
+.card-content {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-title {
+    font-size: 18px;
+    color: #1a1f4e;
+    margin-bottom: 10px;
+    line-height: 1.4;
+    font-weight: 600;
+}
+
+.card-desc {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.7;
+    margin-bottom: 15px;
+    flex: 1;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+}
+
+.card-date {
+    font-size: 13px;
+    color: #999;
+}
+
+.card-more {
+    font-size: 13px;
+    color: #6c5ce7;
+    font-weight: 500;
+}
+
+/* Pagination */
+.pagination-wrapper {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+.pagination-wrapper ul {
+    display: flex;
+    gap: 8px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pagination-wrapper li {
+    display: inline-flex;
+}
+
+.pagination-wrapper a,
+.pagination-wrapper span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 15px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.pagination-wrapper a {
+    background: #f0f0ff;
+    color: #6c5ce7;
+}
+
+.pagination-wrapper a:hover {
+    background: #6c5ce7;
+    color: #fff;
+}
+
+.pagination-wrapper .current {
+    background: #6c5ce7;
+    color: #fff;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .list-layout {
+        grid-template-columns: 1fr;
+    }
+    
+    .list-sidebar {
+        position: static;
+        order: 2;
+    }
+    
+    .card-link {
+        grid-template-columns: 1fr;
+    }
+    
+    .card-image {
+        height: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    .page-title {
+        font-size: 28px;
+    }
+    
+    .list-banner {
+        height: 260px;
+    }
+}
+</style>
+
+<include file="./footer"/>

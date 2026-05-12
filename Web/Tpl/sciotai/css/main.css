@@ -901,6 +901,10 @@
     padding-top: 55px;
     padding-bottom: 46px;
 }
+/* 导航下拉菜单悬停显示 */
+.he_synavli:hover .he_sypcuna {
+    display: block;
+}
 .he_xzdwm .he_sypculi:last-child:after {
     display: none;
 }

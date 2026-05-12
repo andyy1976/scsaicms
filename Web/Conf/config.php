@@ -6,7 +6,7 @@ return array(
 
     // 模板设置
 
-    'DEFAULT_THEME' => 'huatian',
+    'DEFAULT_THEME' => 'sciotai',
     'TMPL_ENGINE_TYPE' => 'Think',
     'TMPL_TEMPLATE_SUFFIX' => '.html',
     'TMPL_L_DELIM' => '{',
@@ -14,7 +14,7 @@ return array(
     'TAGLIB_BEGIN' => '<',
     'TAGLIB_END' => '>',
     'TMPL_PARSE_STRING' => array(
-        '__TMPL__' => '/Web/Tpl/huatian/',
+        '__TMPL__' => '/Web/Tpl/sciotai/',
     ),
 
     // 语言设置
@@ -33,13 +33,13 @@ return array(
 
     'DB_TYPE' => 'mysqli',
 
-    'DB_HOST' => 'localhost',
+    'DB_HOST' => '82.156.40.94',
 
     'DB_NAME' => 'eastaiai',
 
-    'DB_USER' => 'root',
+    'DB_USER' => 'eastaiai',
 
-    'DB_PWD' => 'gyc1234567',
+    'DB_PWD' => 'alibaba',
 
     'DB_PORT' => '3306',
 
