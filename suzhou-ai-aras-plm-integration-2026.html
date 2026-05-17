@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>数字员工平台 · ARAS PLM全链路追溯集成方案</title>
+<style>
+:root{--bg:#0a0f1c;--bg2:#111a2e;--card:#18213a;--card2:#1f2d4a;--border:#2a3f63;--text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;--accent:#3b82f6;--accent2:#06b6d4;--accent3:#8b5cf6;--green:#10b981;--orange:#f59e0b;--red:#ef4444;--pink:#ec4899;--teal:#14b8a6;--plm:#6366f1}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+.hero{position:relative;background:linear-gradient(135deg,#080d1a 0%,#121e3a 35%,#0f1f3d 65%,#0a1528 100%);padding:46px 20px 38px;text-align:center;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 20% 30%,rgba(99,102,241,.08) 0%,transparent 50%),radial-gradient(circle at 80% 70%,rgba(6,182,212,.06) 0%,transparent 50%),radial-gradient(circle at 50% 50%,rgba(59,130,246,.04) 0%,transparent 40%);animation:drift 22s ease-in-out infinite}
+@keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(-1%,1%)}}
+.hero h1{font-size:1.95em;font-weight:800;background:linear-gradient(135deg,#818cf8,#06b6d4,#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent;position:relative;z-index:1}
+.hero .subtitle{color:var(--text2);margin-top:8px;font-size:.95em;position:relative;z-index:1}
+.hero .highlight{color:var(--plm);font-weight:700}
+.stats-row{display:flex;justify-content:center;gap:16px;margin-top:24px;flex-wrap:wrap;position:relative;z-index:1}
+.stat-box{background:rgba(24,33,58,.85);border:1px solid var(--border);border-radius:12px;padding:14px 22px;text-align:center;min-width:120px;backdrop-filter:blur(10px)}
+.stat-box .val{font-size:1.6em;font-weight:800;color:var(--plm)}
+.stat-box .lbl{font-size:.78em;color:var(--text2);margin-top:2px}
+.nav-bar{position:sticky;top:0;z-index:100;background:rgba(10,15,28,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 16px;display:flex;justify-content:center;gap:0;overflow-x:auto}
+.nav-btn{padding:13px 18px;background:none;border:none;color:var(--text2);font-size:.84em;cursor:pointer;white-space:nowrap;position:relative;transition:color .2s}
+.nav-btn:hover{color:var(--text)}
+.nav-btn.active{color:var(--plm)}
+.nav-btn.active::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--plm)}
+.container{max-width:1360px;margin:0 auto;padding:24px 20px}
+.section{display:none}.section.active{display:block}
+.section-title{font-size:1.35em;font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:18px}
+.card h3{font-size:1.05em;margin-bottom:10px;color:var(--plm);display:flex;align-items:center;gap:8px}
+.card p{color:var(--text2);font-size:.88em;line-height:1.7}
+.cmp-table{width:100%;border-collapse:collapse;font-size:.84em;margin:12px 0}
+.cmp-table th{padding:12px 14px;text-align:left;font-weight:600;white-space:nowrap}
+.cmp-table th:nth-child(1){background:#475569;color:#fff}
+.cmp-table th:nth-child(2){background:var(--red);color:#fff}
+.cmp-table th:nth-child(3){background:var(--plm);color:#fff}
+.cmp-table th:nth-child(4){background:var(--green);color:#fff}
+.cmp-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.cmp-table tr:hover td{background:rgba(99,102,241,.04)}
+.cmp-table td:nth-child(2){color:var(--text3)}
+.cmp-table td:nth-child(3){color:var(--accent2)}
+.cmp-table td:nth-child(4){color:var(--green)}
+.itemtype-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px}
+.it-card{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:18px;transition:transform .2s,border-color .2s}
+.it-card:hover{transform:translateY(-2px);border-color:var(--plm)}
+.it-card .it-icon{font-size:1.4em;margin-bottom:6px}
+.it-card .it-name{font-weight:700;font-size:.95em;margin-bottom:4px;color:var(--plm)}
+.it-card .it-map{font-size:.78em;color:var(--accent2);margin-bottom:8px;font-family:'Cascadia Code','Consolas',monospace}
+.it-card .it-props{font-size:.82em;color:var(--text2);line-height:1.55}
+.it-card .it-props span{display:inline-block;background:rgba(99,102,241,.12);border:1px solid rgba(99,102,241,.2);border-radius:4px;padding:1px 6px;margin:2px 2px;font-size:.78em;color:var(--accent2)}
+.wf-flow{background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:20px;margin:14px 0;display:flex;align-items:center;flex-wrap:wrap;gap:6px;justify-content:center}
+.wf-node{background:var(--card);border:2px solid var(--plm);border-radius:10px;padding:8px 14px;text-align:center;font-size:.82em;min-width:80px;transition:transform .2s}
+.wf-node:hover{transform:scale(1.05)}
+.wf-node .wn-label{color:var(--text3);font-size:.7em;margin-bottom:2px}
+.wf-node .wn-value{font-weight:700;color:var(--plm)}
+.wf-arrow{color:var(--plm);font-size:1em}
+.auto-action{background:rgba(99,102,241,.06);border:1px solid rgba(99,102,241,.15);border-radius:10px;padding:14px;margin:8px 0}
+.auto-action .aa-trigger{font-weight:700;font-size:.88em;color:var(--orange);margin-bottom:4px}
+.auto-action .aa-action{font-size:.84em;color:var(--text2)}
+.bi-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:14px 0}
+.bi-card{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:18px}
+.bi-card h4{font-size:.95em;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.bi-card h4.bi-aras{color:var(--plm)}
+.bi-card h4.bi-de{color:var(--teal)}
+.bi-card ul{list-style:none;padding:0}
+.bi-card li{padding:6px 0 6px 18px;position:relative;font-size:.84em;color:var(--text2);border-bottom:1px solid rgba(42,63,99,.3)}
+.bi-card li:last-child{border-bottom:none}
+.bi-card li::before{content:"▸";position:absolute;left:0;color:var(--plm)}
+.bi-card li strong{color:var(--text)}
+.code-block{background:#0d1117;border:1px solid var(--border);border-radius:10px;padding:16px;font-family:'Cascadia Code','Consolas','Courier New',monospace;font-size:.78em;color:#c9d1d9;line-height:1.55;overflow-x:auto;margin:12px 0;white-space:pre}
+.code-block .kw{color:#ff7b72}.code-block .str{color:#a5d6ff}.code-block .cm{color:#8b949e}.code-block .fn{color:#d2a8ff}.code-block .var{color:#79c0ff}
+.stage-card{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:14px;position:relative}
+.stage-card::before{content:attr(data-stage);position:absolute;top:-10px;left:20px;background:var(--plm);color:#fff;padding:2px 12px;border-radius:10px;font-size:.78em;font-weight:700}
+.stage-card h4{margin-top:6px;margin-bottom:8px;font-size:.98em}
+.stage-card ol{padding-left:18px;font-size:.86em;color:var(--text2)}
+.stage-card li{margin-bottom:4px;line-height:1.6}
+.vis-section{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:18px;margin:14px 0}
+.vis-section h4{font-size:.95em;margin-bottom:10px;color:var(--accent2)}
+.vis-chain{display:flex;align-items:center;flex-wrap:wrap;gap:6px;justify-content:center;margin:10px 0}
+.vis-node{background:var(--card);border:2px solid var(--plm);border-radius:10px;padding:8px 14px;text-align:center;font-size:.82em;min-width:100px}
+.vis-node .vn-label{color:var(--text3);font-size:.7em;margin-bottom:2px}
+.vis-node .vn-value{font-weight:700;color:var(--accent2)}
+.vis-arrow{color:var(--plm);font-size:1em}
+.advantage-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.adv-card{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;transition:transform .2s}
+.adv-card:hover{transform:translateY(-2px)}
+.adv-card .ac-icon{font-size:1.6em;margin-bottom:6px}
+.adv-card .ac-title{font-weight:700;font-size:.92em;margin-bottom:4px}
+.adv-card .ac-desc{font-size:.8em;color:var(--text2);line-height:1.5}
+.impl-timeline{position:relative;padding-left:40px}
+.impl-timeline::before{content:'';position:absolute;left:16px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--plm),var(--accent),var(--green))}
+.impl-item{position:relative;margin-bottom:24px}
+.impl-item::before{content:'';position:absolute;left:-28px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--plm);border:3px solid var(--bg)}
+.impl-item:nth-child(2)::before{background:var(--accent)}
+.impl-item:nth-child(3)::before{background:var(--orange)}
+.impl-item:nth-child(4)::before{background:var(--green)}
+.impl-phase{font-size:.78em;color:var(--plm);font-weight:600;text-transform:uppercase;margin-bottom:4px}
+.impl-title{font-weight:700;font-size:1.02em;margin-bottom:8px}
+.impl-tasks{list-style:none;font-size:.86em;color:var(--text2)}
+.impl-tasks li{padding:4px 0 4px 18px;position:relative}
+.impl-tasks li::before{content:"▸";position:absolute;left:0;color:var(--plm)}
+.footer{text-align:center;padding:28px;color:var(--text3);font-size:.78em;border-top:1px solid var(--border);margin-top:36px}
+@media(max-width:768px){.hero h1{font-size:1.3em}.stats-row{gap:8px}.stat-box{min-width:80px;padding:10px 14px}.nav-btn{padding:10px 12px;font-size:.78em}.itemtype-grid,.advantage-grid{grid-template-columns:1fr}.bi-grid{grid-template-columns:1fr}.wf-flow,.vis-chain{flex-direction:column}.wf-arrow,.vis-arrow{transform:rotate(90deg)}}
+</style>
+</head>
+<body>
+<div class="hero">
+<h1>🏗️ ARAS PLM × 数字员工平台 · 全链路追溯集成</h1>
+<div class="subtitle">以 <span class="highlight">ARAS Innovator</span> 为唯一数据源，实现"工业需求→数字员工技能→代码实现→部署运行→PLM归档"的端到端闭环</div>
+<div class="stats-row">
+<div class="stat-box"><div class="val">6</div><div class="lbl">ARAS ItemType</div></div>
+<div class="stat-box"><div class="val">13</div><div class="lbl">工作流节点</div></div>
+<div class="stat-box"><div class="val">6</div><div class="lbl">核心优势</div></div>
+<div class="stat-box"><div class="val">6</div><div class="lbl">实施周</div></div>
+<div class="stat-box"><div class="val">0</div><div class="lbl">额外工具成本</div></div>
+</div>
+</div>
+
+<div class="nav-bar" id="navBar">
+<button class="nav-btn active" onclick="showSection('why')">⚡ 为什么ARAS</button>
+<button class="nav-btn" onclick="showSection('model')">📊 数据模型</button>
+<button class="nav-btn" onclick="showSection('workflow')">🔄 工作流</button>
+<button class="nav-btn" onclick="showSection('pipeline')">🔧 自动化流水线</button>
+<button class="nav-btn" onclick="showSection('visual')">👁️ 追溯可视化</button>
+<button class="nav-btn" onclick="showSection('impl')">📅 落地实施</button>
+<button class="nav-btn" onclick="showSection('value')">💎 核心优势</button>
+</div>
+
+<div class="container">
+
+<!-- 为什么ARAS -->
+<div id="sec-why" class="section active">
+<div class="section-title">⚡ 为什么ARAS PLM比Jira更适合</div>
+<div class="card">
+<p>ARAS Innovator是<span style="color:var(--plm);font-weight:700">全生命周期的企业级平台</span>，其内置的项目管理、变更管理、配置管理能力远强于通用的Jira，且与SCSAI PLM天然一体。无需引入任何第三方工具，直接将全链路追溯深度集成到ARAS PLM中。</p>
+</div>
+<table class="cmp-table">
+<thead><tr><th>能力维度</th><th>❌ Jira（通用项目管理）</th><th>✅ ARAS Innovator（企业级PLM）</th><th>🎯 对本项目的价值</th></tr></thead>
+<tbody>
+<tr><td><strong>数据模型</strong></td><td>固定的Issue模型，扩展复杂</td><td>完全可定制的ItemType模型</td><td>直接创建"数字员工技能"、"原子技术组件"等专属ItemType，与追溯表1:1映射</td></tr>
+<tr><td><strong>版本管理</strong></td><td>仅支持简单的版本记录</td><td>完整的配置管理和版本基线</td><td>管理技能、代码、测试用例的完整版本历史，支持基线对比和回滚</td></tr>
+<tr><td><strong>工作流引擎</strong></td><td>基础的状态流转</td><td>强大的图形化工作流，支持复杂审批和分支</td><td>精确配置"需求→技能开发→测试→部署→验收"全流程</td></tr>
+<tr><td><strong>数据关联</strong></td><td>简单的链接关系</td><td>强大的关系网络，任意Item间关联</td><td>直接建立"需求→技能→组件→代码→用例"完整关联</td></tr>
+<tr><td><strong>系统集成</strong></td><td>需要大量API开发</td><td>原生支持与CAD/CAE/ERP/MES集成</td><td>数字员工技能直接调用PLM中的BOM、工艺、设备数据</td></tr>
+<tr><td><strong>企业合规</strong></td><td>通用合规</td><td>专为制造业设计，支持ISO/FDA合规</td><td>数字员工开发过程完全符合企业质量和合规体系</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- 数据模型 -->
+<div id="sec-model" class="section">
+<div class="section-title">📊 ARAS全链路追溯数据模型</div>
+<div class="card">
+<p>将 <span style="color:var(--plm);font-weight:700">ARAS PLM作为唯一数据源和管理中心</span>，所有开发和管理工作都在ARAS中完成，数字员工平台和自动化流水线只作为执行层，通过ARAS REST API与PLM交互。</p>
+</div>
+<div class="itemtype-grid">
+<div class="it-card"><div class="it-icon">📋</div><div class="it-name">Digital Employee Requirement</div><div class="it-map">→ 追溯表"需求"字段</div><div class="it-props"><span>需求ID</span><span>需求名称</span><span>描述</span><span>优先级</span><span>计划上线时间</span><span>负责人</span><span>状态</span></div></div>
+<div class="it-card"><div class="it-icon">🧩</div><div class="it-name">Digital Employee Skill</div><div class="it-map">→ 追溯表"技能"字段</div><div class="it-props"><span>技能ID</span><span>技能名称</span><span>所属智能体</span><span>优先级</span><span>状态</span><span>版本号</span><span>准确率</span><span>代码模块路径</span></div></div>
+<div class="it-card"><div class="it-icon">⚙️</div><div class="it-name">Atomic Technology Component</div><div class="it-map">→ 追溯表"技术组件"字段</div><div class="it-props"><span>组件ID</span><span>组件名称</span><span>描述</span><span>技术选型</span><span>负责人</span><span>状态</span></div></div>
+<div class="it-card"><div class="it-icon">🧪</div><div class="it-name">Test Case</div><div class="it-map">→ 追溯表"测试用例"字段</div><div class="it-props"><span>用例ID</span><span>测试场景</span><span>前置条件</span><span>测试步骤</span><span>预期结果</span><span>验收标准</span></div></div>
+<div class="it-card"><div class="it-icon">🚀</div><div class="it-name">Deployment Record</div><div class="it-map">→ 追溯表"部署记录"字段</div><div class="it-props"><span>部署ID</span><span>技能ID</span><span>版本号</span><span>部署环境</span><span>部署时间</span><span>部署状态</span><span>运行日志</span></div></div>
+<div class="it-card"><div class="it-icon">🔗</div><div class="it-name">Traceability Link</div><div class="it-map">→ 追溯表"追溯链路"字段</div><div class="it-props"><span>源Item类型</span><span>源Item ID</span><span>目标Item类型</span><span>目标Item ID</span><span>关系类型</span></div></div>
+</div>
+
+<div class="card" style="margin-top:18px">
+<h3>🔄 双向集成架构</h3>
+<div class="bi-grid">
+<div class="bi-card">
+<h4 class="bi-aras">📤 ARAS → 数字员工平台</h4>
+<ul>
+<li>创建新需求时，自动同步到平台需求管理模块</li>
+<li>完成技能拆解时，自动创建对应的技能模板</li>
+<li>批准部署时，自动通知平台执行部署</li>
+</ul>
+</div>
+<div class="bi-card">
+<h4 class="bi-de">📥 数字员工平台 → ARAS</h4>
+<ul>
+<li>运行数据（准确率、调用次数、异常）自动同步到ARAS技能Item</li>
+<li>测试结果自动同步到ARAS测试用例Item</li>
+<li>部署记录自动创建ARAS Deployment Record Item</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+<!-- 工作流 -->
+<div id="sec-workflow" class="section">
+<div class="section-title">🔄 ARAS工作流配置</div>
+<div class="card">
+<p>在ARAS中配置与6个月路线图完全一致的工作流，每个状态转换都可以配置自动动作。</p>
+</div>
+
+<div class="wf-flow">
+<div class="wf-node"><div class="wn-label">阶段1</div><div class="wn-value">需求创建</div></div><div class="wf-arrow">→</div>
+<div class="wf-node"><div class="wn-label">阶段2</div><div class="wn-value">需求评审</div></div><div class="wf-arrow">→</div>
+<div class="wf-node"><div class="wn-label">阶段3</div><div class="wn-value">技能拆解</div></div><div class="wf-arrow">→</div>
+<div class="wf-node"><div class="wn-label">阶段4</div><div class="wn-value">技能开发</div></div><div class="wf-arrow">→</div>
+<div class="wf-node"><div class="wn-label">阶段5</div><div class="wn-value">代码提交</div></div><div class="wf-arrow">→</div>
+<div class="wf-node"><div class="wn-label">阶段6</div><div class="wn-value">自动测试</div></div><div class="wf-arrow">→</div>
+<div class="wf-node"><div class="wn-label">阶段7</div><div class="wn-value">测试评审</div></div><div class="wf-arrow">→</div>
+<div class="wf-node"><div class="wn-label">阶段8</div><div class="wn-value">部署申请</div></div><div class="wf-arrow">→</div>
+<div class="wf-node"><div class="wn-label">阶段9</div><div class="wn-value">部署审批</div></div><div class="wf-arrow">→</div>
+<div class="wf-node"><div class="wn-label">阶段10</div><div class="wn-value">自动部署</div></div><div class="wf-arrow">→</div>
+<div class="wf-node"><div class="wn-label">阶段11</div><div class="wn-value">运行验证</div></div><div class="wf-arrow">→</div>
+<div class="wf-node"><div class="wn-label">阶段12</div><div class="wn-value">验收通过</div></div><div class="wf-arrow">→</div>
+<div class="wf-node" style="border-color:var(--green)"><div class="wn-label">阶段13</div><div class="wn-value" style="color:var(--green)">基线归档</div></div>
+</div>
+
+<div class="card" style="margin-top:18px">
+<h3>⚡ 状态转换自动动作</h3>
+<div class="auto-action">
+<div class="aa-trigger">当技能状态 → "代码提交"</div>
+<div class="aa-action">🔄 自动触发GitLab CI流水线</div>
+</div>
+<div class="auto-action">
+<div class="aa-trigger">当自动测试通过</div>
+<div class="aa-action">✅ 自动将技能状态更新为"待部署"</div>
+</div>
+<div class="auto-action">
+<div class="aa-trigger">当部署审批通过</div>
+<div class="aa-action">🚀 自动触发部署到生产环境</div>
+</div>
+</div>
+</div>
+
+<!-- 自动化流水线 -->
+<div id="sec-pipeline" class="section">
+<div class="section-title">🔧 ARAS API版自动化流水线</div>
+<div class="card">
+<p>将Jenkinsfile和GitLab CI脚本中的Jira API调用替换为 <span style="color:var(--plm);font-weight:700">ARAS REST API</span> 调用，其他流水线逻辑完全不变。</p>
+</div>
+
+<div class="card">
+<h3>🔑 ARAS API认证配置</h3>
+<div class="code-block"><span class="kw">environment</span> {
+  <span class="cm">// ARAS PLM配置</span>
+  ARAS_URL     = <span class="str">'https://scsai-plm.yourcompany.com/innovator'</span>
+  ARAS_DATABASE = <span class="str">'SCSAI'</span>
+  ARAS_USERNAME = <span class="str">'automation-bot'</span>
+  ARAS_PASSWORD = <span class="fn">credentials</span>(<span class="str">'aras-automation-password'</span>)
+
+  <span class="cm">// 平台配置</span>
+  PLATFORM_API_URL = <span class="str">'https://digital-employee.yourcompany.com/api/v1'</span>
+  DOCKER_REGISTRY  = <span class="str">'registry.yourcompany.com'</span>
+  DOCKER_NAMESPACE = <span class="str">'digital-employee'</span>
+}</div>
+</div>
+
+<div class="card">
+<h3>📡 初始化阶段 — 从ARAS获取技能信息</h3>
+<div class="code-block"><span class="kw">stage</span>(<span class="str">'初始化与参数校验'</span>) {
+  <span class="kw">script</span> {
+    <span class="cm">// 从ARAS获取技能信息</span>
+    <span class="kw">def</span> <span class="var">arasAuth</span> = <span class="str">"${ARAS_USERNAME}:${ARAS_PASSWORD}"</span>
+      .bytes.encodeBase64().toString()
+    <span class="kw">def</span> <span class="var">response</span> = <span class="fn">httpRequest</span>(
+      url: <span class="str">"${ARAS_URL}/server/odata/DigitalEmployeeSkill('${params.SKILL_ID}')"</span>,
+      headers: [[name: <span class="str">'Authorization'</span>, value: <span class="str">"Basic ${arasAuth}"</span>],
+                [name: <span class="str">'Accept'</span>, value: <span class="str">'application/json'</span>]]
+    )
+    <span class="kw">def</span> <span class="var">skillInfo</span> = <span class="fn">readJSON</span> text: response.content
+    env.SKILL_NAME = skillInfo.value[0].name
+    env.CODE_MODULE_PATH = skillInfo.value[0].code_module_path
+    env.CURRENT_VERSION = skillInfo.value[0].version
+    env.ARAS_ITEM_ID = skillInfo.value[0].id
+
+    <span class="cm">// 更新ARAS中技能状态为"构建中"</span>
+    <span class="fn">httpRequest</span>(
+      url: <span class="str">"${ARAS_URL}/server/odata/DigitalEmployeeSkill('${env.ARAS_ITEM_ID}')"</span>,
+      method: <span class="str">'PATCH'</span>,
+      requestBody: <span class="str">'{"status":"构建中","build_url":"${BUILD_URL}"}'</span>
+    )
+  }
+}</div>
+</div>
+
+<div class="card">
+<h3>✅ 完成阶段 — 更新ARAS与创建基线</h3>
+<div class="code-block"><span class="kw">stage</span>(<span class="str">'更新ARAS与完成'</span>) {
+  <span class="kw">script</span> {
+    <span class="cm">// 1. 更新技能版本号和状态</span>
+    <span class="fn">httpRequest</span>(method: <span class="str">'PATCH'</span>,
+      url: <span class="str">"...DigitalEmployeeSkill('${ARAS_ITEM_ID}')"</span>,
+      requestBody: <span class="str">'{"version":"${NEW_VERSION}","status":"已上线"}'</span>)
+
+    <span class="cm">// 2. 创建部署记录Item</span>
+    <span class="fn">httpRequest</span>(method: <span class="str">'POST'</span>,
+      url: <span class="str">"...DeploymentRecord"</span>,
+      requestBody: <span class="str">'{"skill_id":"...","version":"...","status":"成功"}'</span>)
+
+    <span class="cm">// 3. 添加完成评论</span>
+    <span class="fn">httpRequest</span>(method: <span class="str">'POST'</span>,
+      url: <span class="str">"...Comments"</span>,
+      requestBody: <span class="str">'🎉 技能全流程自动化完成'</span>)
+
+    <span class="cm">// 4. 自动创建版本基线</span>
+    <span class="fn">httpRequest</span>(method: <span class="str">'POST'</span>,
+      url: <span class="str">"...CreateBaseline"</span>,
+      requestBody: <span class="str">'技能v${NEW_VERSION}发布基线'</span>)
+  }
+}</div>
+</div>
+</div>
+
+<!-- 追溯可视化 -->
+<div id="sec-visual" class="section">
+<div class="section-title">👁️ ARAS全链路追溯可视化</div>
+<div class="card">
+<p>利用ARAS强大的关系网络和图形化能力，在ARAS中直接实现全链路追溯的可视化。</p>
+</div>
+
+<div class="vis-section">
+<h4>🔭 需求追溯视图</h4>
+<p style="font-size:.86em;color:var(--text2);margin-bottom:10px">在ARAS需求详情页面添加"全链路追溯"标签页：</p>
+<div class="vis-chain">
+<div class="vis-node" style="border-color:var(--orange)"><div class="vn-label">需求</div><div class="vn-value">REQ-007</div></div><div class="vis-arrow">→</div>
+<div class="vis-node" style="border-color:var(--plm)"><div class="vn-label">技能</div><div class="vn-value">SKILL-QC-001</div></div><div class="vis-arrow">→</div>
+<div class="vis-node"><div class="vn-label">技术组件</div><div class="vn-value">目标检测/尺寸测量</div></div><div class="vis-arrow">→</div>
+<div class="vis-node" style="border-color:var(--teal)"><div class="vn-label">代码模块</div><div class="vn-value">/vision/defect-detection</div></div><div class="vis-arrow">→</div>
+<div class="vis-node" style="border-color:var(--accent3)"><div class="vn-label">测试用例</div><div class="vn-value">TC-QC-001-001~005</div></div><div class="vis-arrow">→</div>
+<div class="vis-node" style="border-color:var(--pink)"><div class="vn-label">部署记录</div><div class="vn-value">v1.0.0 / 202X-XX-10</div></div><div class="vis-arrow">→</div>
+<div class="vis-node" style="border-color:var(--green)"><div class="vn-label">运行数据</div><div class="vn-value" style="color:var(--green)">99.2% / 12500次</div></div>
+</div>
+</div>
+
+<div class="vis-section">
+<h4>💥 影响分析功能</h4>
+<p style="font-size:.86em;color:var(--text2);margin-bottom:10px">修改一个原子技术组件时，一键分析影响范围：</p>
+<div class="bi-grid">
+<div class="bi-card" style="border-color:var(--red)">
+<h4 style="color:var(--red)">⚡ 触发修改</h4>
+<ul><li>修改原子技术组件（如"目标检测"升级模型版本）</li></ul>
+</div>
+<div class="bi-card" style="border-color:var(--orange)">
+<h4 style="color:var(--orange)">🔍 影响范围</h4>
+<ul>
+<li>哪些技能依赖于这个组件</li>
+<li>哪些需求会受到影响</li>
+<li>哪些数字员工需要重新测试和部署</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="vis-section">
+<h4>📋 合规审计报告</h4>
+<p style="font-size:.86em;color:var(--text2)">利用ARAS报表功能，自动生成数字员工开发过程的合规审计报告：</p>
+<div class="advantage-grid" style="margin-top:12px">
+<div class="adv-card"><div class="ac-icon">📋</div><div class="ac-title">评审记录</div><div class="ac-desc">所有需求的评审记录</div></div>
+<div class="adv-card"><div class="ac-icon">🧩</div><div class="ac-title">开发记录</div><div class="ac-desc">所有技能的开发和测试记录</div></div>
+<div class="adv-card"><div class="ac-icon">🚀</div><div class="ac-title">部署审批</div><div class="ac-desc">所有部署的审批记录</div></div>
+<div class="adv-card"><div class="ac-icon">📝</div><div class="ac-title">变更历史</div><div class="ac-desc">所有变更的历史记录</div></div>
+</div>
+</div>
+</div>
+
+<!-- 落地实施 -->
+<div id="sec-impl" class="section">
+<div class="section-title">📅 集成实施步骤</div>
+<div class="impl-timeline">
+<div class="impl-item">
+<div class="impl-phase">第一步 · 1周</div>
+<div class="impl-title">ARAS数据模型配置</div>
+<ul class="impl-tasks">
+<li>在ARAS中创建6个专属ItemType</li>
+<li>配置ItemType之间的关联关系</li>
+<li>导入63项需求、30项技能和22项技术组件数据</li>
+<li>建立初始的追溯链路关系</li>
+</ul>
+</div>
+<div class="impl-item">
+<div class="impl-phase">第二步 · 1周</div>
+<div class="impl-title">工作流配置</div>
+<ul class="impl-tasks">
+<li>在ARAS中配置数字员工技能开发工作流</li>
+<li>配置每个状态转换的自动动作和通知</li>
+<li>配置审批流程和权限控制</li>
+<li>测试工作流的正确性</li>
+</ul>
+</div>
+<div class="impl-item">
+<div class="impl-phase">第三步 · 2周</div>
+<div class="impl-title">API集成开发</div>
+<ul class="impl-tasks">
+<li>开发数字员工平台与ARAS的双向集成接口</li>
+<li>修改自动化流水线脚本，替换为ARAS API调用</li>
+<li>测试流水线与ARAS的集成</li>
+<li>实现全链路追溯可视化视图</li>
+</ul>
+</div>
+<div class="impl-item">
+<div class="impl-phase">第四步 · 2周</div>
+<div class="impl-title">试运行与优化</div>
+<ul class="impl-tasks">
+<li>选择第一批10项技能进行试运行</li>
+<li>收集反馈，优化工作流和集成</li>
+<li>培训团队使用ARAS进行数字员工开发管理</li>
+<li>全面上线</li>
+</ul>
+</div>
+</div>
+</div>
+
+<!-- 核心优势 -->
+<div id="sec-value" class="section">
+<div class="section-title">💎 方案核心优势</div>
+<div class="advantage-grid">
+<div class="adv-card"><div class="ac-icon">🔗</div><div class="ac-title">端到端闭环</div><div class="ac-desc">从工业需求到数字员工上线，所有过程都在ARAS中完成，无断点</div></div>
+<div class="adv-card"><div class="ac-icon">🗄️</div><div class="ac-title">数据完全统一</div><div class="ac-desc">所有数据存储在ARAS中，没有数据孤岛，保证一致性</div></div>
+<div class="adv-card"><div class="ac-icon">🏢</div><div class="ac-title">融入企业IT体系</div><div class="ac-desc">不需要引入新工具，完全融入现有PLM体系</div></div>
+<div class="adv-card"><div class="ac-icon">💰</div><div class="ac-title">零额外成本</div><div class="ac-desc">利用现有ARAS许可证，无需购买额外软件</div></div>
+<div class="adv-card"><div class="ac-icon">📈</div><div class="ac-title">强大可扩展性</div><div class="ac-desc">基于ARAS灵活架构，轻松扩展变更管理、配置管理、生命周期管理</div></div>
+<div class="adv-card"><div class="ac-icon">✅</div><div class="ac-title">天然合规性</div><div class="ac-desc">所有开发过程符合ARAS合规体系，自动满足制造业质量合规</div></div>
+</div>
+</div>
+
+</div>
+
+<div class="footer">
+苏州"AI+制造"数字员工平台 · ARAS PLM全链路追溯集成方案 · 2026-05-13<br>
+ARAS Innovator × SCSAI PLM × 数字员工平台
+</div>
+
+<script>
+function showSection(id){
+document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+document.getElementById('sec-'+id).classList.add('active');
+event.target.classList.add('active');
+window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>

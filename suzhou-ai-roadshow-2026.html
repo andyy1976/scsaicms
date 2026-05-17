@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCSAI苏州OPC大赛路演演示脚本与操作指南</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0d1117;
+            color: #c9d1d9;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            padding-top: 60px;
+        }
+
+        /* 顶部导航栏 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #161b22;
+            border-bottom: 1px solid #30363d;
+            padding: 12px 24px;
+            z-index: 1000;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .navbar a {
+            color: #58a6ff;
+            text-decoration: none;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .navbar a:hover {
+            background-color: #1f2937;
+        }
+
+        .navbar a.active {
+            background-color: #1f2937;
+            font-weight: 600;
+        }
+
+        /* 主容器 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* 标题区域 */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #1f2937 0%, #0d1117 100%);
+            border-radius: 12px;
+            border: 1px solid #30363d;
+        }
+
+        .header h1 {
+            color: #58a6ff;
+            font-size: 36px;
+            margin-bottom: 12px;
+        }
+
+        .header p {
+            color: #8b949e;
+            font-size: 18px;
+        }
+
+        /* 章节标题 */
+        .section-title {
+            color: #58a6ff;
+            font-size: 28px;
+            margin: 40px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #30363d;
+        }
+
+        /* 演示整体规划卡片 */
+        .plan-card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .plan-card h3 {
+            color: #58a6ff;
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+
+        .plan-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .plan-item {
+            background-color: #0d1117;
+            padding: 16px;
+            border-radius: 8px;
+            border-left: 4px solid #58a6ff;
+        }
+
+        .plan-item .label {
+            color: #8b949e;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .plan-item .value {
+            color: #c9d1d9;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* 脚本框 */
+        .script-box {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .script-box.highlight {
+            border-color: #58a6ff;
+            box-shadow: 0 0 20px rgba(88, 166, 255, 0.2);
+        }
+
+        .time-label {
+            display: inline-block;
+            background-color: #58a6ff;
+            color: #0d1117;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .script-title {
+            color: #c9d1d9;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .speech-text {
+            background-color: #0d1117;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            font-size: 24px;
+            line-height: 1.8;
+            color: #e6edf3;
+            border-left: 4px solid #58a6ff;
+        }
+
+        .notes {
+            background-color: #1f2937;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #8b949e;
+            border-left: 4px solid #8b949e;
+        }
+
+        .notes strong {
+            color: #c9d1d9;
+        }
+
+        /* 准备清单 */
+        .checklist {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background-color: #0d1117;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .checklist-item input[type="checkbox"] {
+            margin-right: 12px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .checklist-item label {
+            color: #c9d1d9;
+            font-size: 16px;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .checklist-item .tag {
+            background-color: #1f2937;
+            color: #58a6ff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-left: 8px;
+        }
+
+        /* 应急方案卡片 */
+        .emergency-card {
+            background-color: #161b22;
+            border: 2px solid #f85149;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .emergency-card h3 {
+            color: #f85149;
+            font-size: 20px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .emergency-card h3::before {
+            content: "⚠️";
+        }
+
+        .emergency-content {
+            color: #c9d1d9;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        .emergency-content ul {
+            margin-left: 20px;
+            margin-top: 8px;
+        }
+
+        .emergency-content li {
+            margin-bottom: 8px;
+        }
+
+        /* 底部信息 */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 60px;
+            border-top: 1px solid #30363d;
+            color: #8b949e;
+            font-size: 14px;
+        }
+
+        .footer span {
+            margin: 0 12px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 8px 12px;
+                gap: 10px;
+            }
+            
+            .navbar a {
+                font-size: 12px;
+                padding: 4px 8px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .speech-text {
+                font-size: 18px;
+            }
+
+            .section-title {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <a href="suzhou-ai-digital-employee-topic.html">专题首页</a>
+        <a href="#">白皮书</a>
+        <a href="#">追溯表</a>
+        <a href="#">ARAS方案</a>
+        <a href="#">操作手册</a>
+        <a href="#">流水线</a>
+        <a href="#">异常处理</a>
+        <a href="#">苏州落地</a>
+        <a href="#" class="active">路演脚本</a>
+    </nav>
+
+    <div class="container">
+        <!-- 标题区域 -->
+        <div class="header">
+            <h1>SCSAI苏州OPC大赛路演演示脚本</h1>
+            <p>全链路追溯体系的自动化能力展示</p>
+        </div>
+
+        <!-- 演示整体规划 -->
+        <h2 class="section-title">一、演示整体规划</h2>
+        
+        <div class="plan-card">
+            <h3>⏱️ 时间分配</h3>
+            <div class="plan-grid">
+                <div class="plan-item">
+                    <div class="label">路演演示</div>
+                    <div class="value">8分钟</div>
+                </div>
+                <div class="plan-item">
+                    <div class="label">评委问答</div>
+                    <div class="value">5分钟</div>
+                </div>
+                <div class="plan-item">
+                    <div class="label">演示重点</div>
+                    <div class="value">全链路追溯体系自动化</div>
+                </div>
+                <div class="plan-item">
+                    <div class="label">核心展示</div>
+                    <div class="value">BOM优化与追溯</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="plan-card">
+            <h3>🎯 演示目标</h3>
+            <ul style="color: #c9d1d9; margin-left: 20px; margin-top: 12px; line-height: 2;">
+                <li>展示SCSAI数字员工在制造场景的实战能力</li>
+                <li>突出全链路追溯体系的自动化优势</li>
+                <li>体现苏州本地化落地服务能力</li>
+                <li>建立技术壁垒与商业模式清晰度</li>
+            </ul>
+        </div>
+
+        <!-- 演示流程与逐字稿 -->
+        <h2 class="section-title">二、演示流程与逐字稿</h2>
+
+        <!-- 开场 -->
+        <div class="script-box highlight">
+            <span class="time-label">00:00 - 01:00 | 开场</span>
+            <div class="script-title">开场白与自我介绍</div>
+            <div class="speech-text">
+                各位评委老师好，我是SCSAI的方云超。今天非常荣幸向各位展示我们的"制造业全链路数字员工解决方案"。我们用AI重构了制造企业的数字化工作方式，让每个工程师都拥有7×24小时在线的AI同事。
+            </div>
+            <div class="notes">
+                <strong>💡 演示备注：</strong><br>
+                • 保持微笑，自信眼神交流<br>
+                • 语速适中，重音在"SCSAI"和"数字员工"<br>
+                • 准备飞书机器人界面投屏
+            </div>
+        </div>
+
+        <!-- 痛点与机会 -->
+        <div class="script-box">
+            <span class="time-label">01:00 - 02:00 | 痛点与机会</span>
+            <div class="script-title">制造企业数字化三大顽疾</div>
+            <div class="speech-text">
+                当前制造企业面临三大数字化顽疾：第一，BOM表错误导致30%的返工；第二，质量问题追溯需要3-5天；第三，工程师60%时间消耗在重复查询。SCSAI数字员工通过全链路追溯体系，将这三大痛点彻底解决。
+            </div>
+            <div class="notes">
+                <strong>💡 演示备注：</strong><br>
+                • 配合PPT展示三大痛点数据<br>
+                • 语气加重"30%返工"、"3-5天"、"60%时间"<br>
+                • 过渡到产品演示
+            </div>
+        </div>
+
+        <!-- 产品演示 -->
+        <div class="script-box">
+            <span class="time-label">02:00 - 06:00 | 产品演示（核心）</span>
+            <div class="script-title">飞书机器人@数字员工助手现场演示BOM优化</div>
+            <div class="speech-text">
+                现在，让我现场演示。我在飞书群里@数字员工助手，输入"检查 recent BOM 版本差异"。大家看，系统在3秒内完成了全链路追溯，标识出3处潜在冲突，并自动生成优化建议。这就是SCSAI的核心能力——让AI理解制造语义，自动化执行复杂任务。
+            </div>
+            <div class="notes">
+                <strong>💡 演示备注：</strong><br>
+                • 确保网络畅通，飞书机器人响应<br>
+                • 提前准备测试BOM数据<br>
+                • 重点展示"3秒"、"全链路追溯"关键词<br>
+                • 如演示失败，立即切换备用视频
+            </div>
+        </div>
+
+        <!-- 技术优势与商业模式 -->
+        <div class="script-box">
+            <span class="time-label">06:00 - 07:00 | 技术优势与商业模式</span>
+            <div class="script-title">全链路追溯体系核心优势</div>
+            <div class="speech-text">
+                SCSAI的技术壁垒在于"制造语义理解引擎"，我们不只是ChatBot，而是真正理解BOM、工艺路线、质量标准的AI同事。商业模式上，我们采用订阅制，基础版9800元/年，企业版按模块计费。苏州某客户上线3个月，BOM错误率下降85%，质量问题追溯缩短至2小时。
+            </div>
+            <div class="notes">
+                <strong>💡 演示备注：</strong><br>
+                • 展示客户案例数据<br>
+                • 明确订阅定价，体现商业可行性<br>
+                • 准备应对"如何保证准确率"的提问
+            </div>
+        </div>
+
+        <!-- 苏州落地计划 -->
+        <div class="script-box">
+            <span class="time-label">07:00 - 08:00 | 苏州落地计划</span>
+            <div class="script-title">工业园区落地与标杆项目</div>
+            <div class="speech-text">
+                苏州是SCSAI全国布局的首站。我们已在工业园区设立运营中心，计划年内完成3个标杆项目：博世汽车部件、汇川技术、东山精密。同时，我们与西交利物浦大学共建"智能制造AI实验室"，培养本地化实施团队。我们预计2026年在苏州实现500万营收，服务20家制造企业。
+            </div>
+            <div class="notes">
+                <strong>💡 演示备注：</strong><br>
+                • 提及具体企业名称，体现本地化资源<br>
+                • 数据要准确：500万营收、20家客户<br>
+                • 强调"首站"和"本地化团队"
+            </div>
+        </div>
+
+        <!-- 结尾 -->
+        <div class="script-box highlight">
+            <span class="time-label">08:00 - 08:30 | 结尾</span>
+            <div class="script-title">总结与致谢</div>
+            <div class="speech-text">
+                SCSAI数字员工，就是7×24小时在线、越用越聪明的AI同事。我们不只提供工具，更是制造企业数字化转型的长期伙伴。期待与苏州共同成长，谢谢各位评委！
+            </div>
+            <div class="notes">
+                <strong>💡 演示备注：</strong><br>
+                • 结尾有力，目光扫视全体评委<br>
+                • 准备迎接5分钟问答<br>
+                • 微笑致谢，手势开放
+            </div>
+        </div>
+
+        <!-- 演示准备清单 -->
+        <h2 class="section-title">三、演示准备清单</h2>
+
+        <div class="checklist">
+            <div class="checklist-item">
+                <input type="checkbox" id="item1">
+                <label for="item1">测试BOM数据准备完毕（至少3个版本对比）</label>
+                <span class="tag">关键</span>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="item2">
+                <label for="item2">网络畅通测试（飞书机器人响应 < 3秒）</label>
+                <span class="tag">关键</span>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="item3">
+                <label for="item3">备用演示视频（5分钟完整演示录制）</label>
+                <span class="tag">重要</span>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="item4">
+                <label for="item4">飞书机器人@数字员工助手账号正常</label>
+                <span class="tag">关键</span>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="item5">
+                <label for="item5">投屏设备测试（HDMI/无线投屏备用）</label>
+                <span class="tag">重要</span>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="item6">
+                <label for="item6">PPT/演示文稿备份（U盘 + 云端双备份）</label>
+                <span class="tag">重要</span>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="item7">
+                <label for="item7">评委可能的提问准备（至少10个Q&A）</label>
+                <span class="tag">关键</span>
+            </div>
+        </div>
+
+        <!-- 应急方案 -->
+        <h2 class="section-title">四、应急方案</h2>
+
+        <div class="emergency-card">
+            <h3>网络中断应急预案</h3>
+            <div class="emergency-content">
+                <strong>触发条件：</strong>演示过程中网络断开，飞书机器人无法响应<br><br>
+                <strong>应对步骤：</strong>
+                <ul>
+                    <li>1. 立即切换手机热点（提前准备，测试网速）</li>
+                    <li>2. 如切换失败，播放备用演示视频（5分钟完整录制）</li>
+                    <li>3. 口述补充："正如视频中展示的，我们的系统在实际生产中..."</li>
+                    <li>4. 强调"系统已在实际客户环境稳定运行"</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="emergency-card">
+            <h3>演示失败应急预案</h3>
+            <div class="emergency-content">
+                <strong>触发条件：</strong>飞书机器人报错、BOM数据异常、系统卡顿<br><br>
+                <strong>应对步骤：</strong>
+                <ul>
+                    <li>1. 保持冷静，微笑说"让我重新操作一下"</li>
+                    <li>2. 使用备用测试数据（提前准备3套不同场景）</li>
+                    <li>3. 如仍失败，立即切换备用视频</li>
+                    <li>4. 口述核心亮点："虽然演示受限，但我们的技术优势在于..."</li>
+                    <li>5. 引导评委关注商业价值而非技术细节</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="emergency-card">
+            <h3>评委提问超预期应急预案</h3>
+            <div class="emergency-content">
+                <strong>触发条件：</strong>评委提问技术细节/竞争对手/定价策略等难题<br><br>
+                <strong>应对步骤：</strong>
+                <ul>
+                    <li>1. 重复问题，争取思考时间："您的问题是..."</li>
+                    <li>2. 分层次回答：先结论，再支撑数据，最后案例</li>
+                    <li>3. 如不确定，诚实回答："这个问题很专业，我们的数据是..."</li>
+                    <li>4. 引导回核心优势："这正是我们的差异化所在..."</li>
+                    <li>5. 准备万能回答："我们可以会后详细沟通，提供技术白皮书"</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 常见问题Q&A -->
+        <h2 class="section-title">五、常见问题Q&A（赛前准备）</h2>
+
+        <div class="plan-card">
+            <h3>技术问题</h3>
+            <div style="color: #c9d1d9; line-height: 2; margin-top: 12px;">
+                <p><strong>Q1: 如何保证BOM优化的准确率？</strong></p>
+                <p style="color: #8b949e; margin-bottom: 16px;">A: 我们采用多模型交叉验证，准确率98.5%，并支持人工审核环节。</p>
+                
+                <p><strong>Q2: 与传统MES系统的区别？</strong></p>
+                <p style="color: #8b949e; margin-bottom: 16px;">A: MES是记录系统，SCSAI是主动优化系统；我们理解制造语义，而非简单数据存储。</p>
+                
+                <p><strong>Q3: 实施周期多长？</strong></p>
+                <p style="color: #8b949e; margin-bottom: 16px;">A: 标准实施2-4周，包含需求调研、系统配置、人员培训。</p>
+            </div>
+        </div>
+
+        <div class="plan-card">
+            <h3>商业问题</h3>
+            <div style="color: #c9d1d9; line-height: 2; margin-top: 12px;">
+                <p><strong>Q4: 定价策略是否可持续？</strong></p>
+                <p style="color: #8b949e; margin-bottom: 16px;">A: 订阅制保证持续现金流，客户续约率85%以上，LTV/CAC > 3。</p>
+                
+                <p><strong>Q5: 竞争对手有哪些？</strong></p>
+                <p style="color: #8b949e; margin-bottom: 16px;">A: 传统MES厂商（西门子、用友）是我们的替代对象，而非直接竞争对手。我们的优势是AI原生。</p>
+                
+                <p><strong>Q6: 苏州市场容量？</strong></p>
+                <p style="color: #8b949e;">A: 苏州工业园区有制造企业3000+，潜在客户500+，市场容量超2亿。</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 底部信息 -->
+    <div class="footer">
+        <span>版本 V2.0</span>
+        <span>|</span>
+        <span>更新日期 2026-05-10</span>
+        <span>|</span>
+        <span>SCSAI © 2026</span>
+    </div>
+
+</body>
+</html>

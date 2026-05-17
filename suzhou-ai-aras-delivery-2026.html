@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARAS PLM · 数字员工全链路追溯完整交付包</title>
+<style>
+:root{--bg:#090e1a;--bg2:#0f1629;--card:#151d34;--card2:#1c2847;--border:#273555;--text:#e2e8f0;--text2:#94a3b8;--text3:#5a6b8a;--accent:#6366f1;--accent2:#818cf8;--accent3:#a78bfa;--blue:#3b82f6;--cyan:#06b6d4;--green:#10b981;--orange:#f59e0b;--red:#ef4444;--pink:#ec4899;--teal:#14b8a6}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+.hero{position:relative;background:linear-gradient(135deg,#060a14 0%,#0e1630 35%,#131f42 65%,#0a1225 100%);padding:44px 20px 36px;text-align:center;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 25%,rgba(99,102,241,.1) 0%,transparent 50%),radial-gradient(circle at 70% 75%,rgba(129,140,248,.07) 0%,transparent 50%);animation:drift 20s ease-in-out infinite}
+@keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(-1.2%,.8%)}}
+.hero h1{font-size:1.85em;font-weight:800;background:linear-gradient(135deg,#a78bfa,#818cf8,#06b6d4,#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent;position:relative;z-index:1}
+.hero .sub{color:var(--text2);margin-top:8px;font-size:.92em;position:relative;z-index:1}
+.hero .badge{display:inline-block;background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.3);color:var(--accent2);padding:4px 14px;border-radius:20px;font-size:.78em;margin-top:14px;position:relative;z-index:1}
+.sr{display:flex;justify-content:center;gap:14px;margin-top:22px;flex-wrap:wrap;position:relative;z-index:1}
+.sb{background:rgba(21,29,52,.85);border:1px solid var(--border);border-radius:12px;padding:12px 20px;text-align:center;min-width:110px}
+.sb .v{font-size:1.5em;font-weight:800;color:var(--accent)}.sb .l{font-size:.75em;color:var(--text2);margin-top:2px}
+.nb{position:sticky;top:0;z-index:100;background:rgba(9,14,26,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 16px;display:flex;justify-content:center;gap:0;overflow-x:auto}
+.nb button{padding:12px 16px;background:none;border:none;color:var(--text2);font-size:.82em;cursor:pointer;white-space:nowrap;position:relative;transition:color .2s}
+.nb button:hover{color:var(--text)}.nb button.on{color:var(--accent2)}
+.nb button.on::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--cyan))}
+.ct{max-width:1400px;margin:0 auto;padding:22px 20px}
+.sec{display:none}.sec.on{display:block}
+.st{font-size:1.3em;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.cd{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:18px}
+.cd h3{font-size:1.02em;margin-bottom:10px;color:var(--accent2);display:flex;align-items:center;gap:8px}
+.cd p{color:var(--text2);font-size:.87em;line-height:1.7}
+.tb{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.tb button{padding:8px 16px;background:var(--card2);border:1px solid var(--border);border-radius:20px;color:var(--text2);font-size:.8em;cursor:pointer;transition:all .2s}
+.tb button:hover{border-color:var(--accent);color:var(--text)}
+.tb button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tc{display:none}.tc.on{display:block}
+.ic{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:14px}
+.ic h4{font-size:.98em;margin-bottom:8px;color:var(--accent2)}
+.ic .mt{display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.ic .tg{font-size:.72em;padding:2px 8px;border-radius:4px}
+.tg.g{background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.2);color:var(--green)}
+.tg.o{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.2);color:var(--orange)}
+.tg.p{background:rgba(236,72,153,.12);border:1px solid rgba(236,72,153,.2);color:var(--pink)}
+.pg{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px;margin-top:8px}
+.pp{background:rgba(99,102,241,.06);border:1px solid rgba(99,102,241,.1);border-radius:6px;padding:6px 10px;font-size:.8em}
+.pp .pn{color:var(--accent3);font-family:'Cascadia Code','Consolas',monospace;font-size:.78em}
+.pp .pd{color:var(--text3);font-size:.72em;margin-top:2px}
+.rls{margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.rls h5{font-size:.85em;color:var(--cyan);margin-bottom:6px}
+.rl{font-size:.82em;color:var(--text2);padding:3px 0 3px 14px;position:relative}
+.rl::before{content:"→";position:absolute;left:0;color:var(--accent)}
+.cw{background:#0d1117;border:1px solid var(--border);border-radius:12px;overflow:hidden;margin:12px 0}
+.ch{background:#161b22;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}
+.ch .cl{font-size:.78em;font-weight:600;padding:3px 10px;border-radius:4px}
+.ch .cf{font-size:.78em;color:var(--text3);font-family:'Cascadia Code','Consolas',monospace}
+.cb{padding:14px 16px;font-family:'Cascadia Code','Consolas','Courier New',monospace;font-size:.73em;color:#c9d1d9;line-height:1.55;overflow-x:auto;max-height:480px;overflow-y:auto;white-space:pre}
+.pf{display:flex;flex-direction:column;gap:8px;margin:14px 0}
+.ps{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:14px;display:flex;gap:14px;align-items:flex-start;transition:border-color .2s}
+.ps:hover{border-color:var(--accent)}
+.pn2{font-size:1.3em;font-weight:800;color:var(--accent);min-width:28px;text-align:center;line-height:1}
+.pi h4{font-size:.9em;margin-bottom:4px}
+.pi p{font-size:.78em;color:var(--text2);line-height:1.5}
+.pi .pa{font-size:.72em;color:var(--cyan);font-family:'Cascadia Code','Consolas',monospace;margin-top:4px;background:rgba(6,182,212,.06);padding:4px 8px;border-radius:4px}
+.eg{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.ec{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:16px}
+.ec h4{font-size:.9em;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.ec ul{list-style:none;padding:0}
+.ec li{padding:5px 0 5px 16px;position:relative;font-size:.82em;color:var(--text2);border-bottom:1px solid rgba(39,53,85,.3)}
+.ec li:last-child{border-bottom:none}
+.ec li::before{content:"▸";position:absolute;left:0;color:var(--accent)}
+.ec li code{color:var(--cyan);font-family:'Cascadia Code','Consolas',monospace;font-size:.85em}
+.sl{list-style:none;counter-reset:step;padding-left:36px}
+.sl li{counter-increment:step;position:relative;padding:8px 0;font-size:.86em;color:var(--text2);border-left:2px solid var(--accent)}
+.sl li::before{content:counter(step);position:absolute;left:-36px;top:6px;width:24px;height:24px;background:var(--accent);color:#fff;border-radius:50%;text-align:center;line-height:24px;font-size:.76em;font-weight:700}
+.sl li strong{color:var(--text)}
+.ag{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.ac{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;transition:transform .2s}
+.ac:hover{transform:translateY(-2px)}
+.ac .ai{font-size:1.5em;margin-bottom:6px}
+.ac .at{font-weight:700;font-size:.9em;margin-bottom:4px}
+.ac .ad{font-size:.78em;color:var(--text2);line-height:1.5}
+.ft{text-align:center;padding:28px;color:var(--text3);font-size:.78em;border-top:1px solid var(--border);margin-top:36px}
+@media(max-width:768px){.hero h1{font-size:1.2em}.sr{gap:6px}.sb{min-width:70px;padding:8px 10px}.nb button{padding:10px 12px;font-size:.76em}.pg{grid-template-columns:1fr}.eg,.ag{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="hero">
+<h1>📦 ARAS PLM · 数字员工全链路追溯完整交付包</h1>
+<div class="sub">6个ItemType定义XML + 完整ARAS API版GitLab CI流水线 + 部署配置指南</div>
+<div class="badge">100%对齐需求-技能-代码全链路追溯体系 · 可直接导入ARAS Innovator</div>
+<div class="sr">
+<div class="sb"><div class="v">6</div><div class="l">ItemType</div></div>
+<div class="sb"><div class="v">9</div><div class="l">流水线阶段</div></div>
+<div class="sb"><div class="v">5</div><div class="l">环境变量</div></div>
+<div class="sb"><div class="v">100%</div><div class="l">ARAS原生</div></div>
+<div class="sb"><div class="v">0</div><div class="l">第三方依赖</div></div>
+</div>
+</div>
+
+<div class="nb" id="navBar">
+<button class="on" onclick="show('xml')">📄 ItemType XML</button>
+<button onclick="show('pipe')">🔄 CI流水线</button>
+<button onclick="show('dep')">🚀 部署配置</button>
+<button onclick="show('val')">💎 优势总结</button>
+</div>
+
+<div class="ct">
+
+<!-- XML -->
+<div id="s-xml" class="sec on">
+<div class="st">📄 ARAS ItemType 完整定义</div>
+<div class="cd"><p>保存为 <code style="color:var(--cyan)">DigitalEmployeeTraceability.xml</code>，通过ARAS Import Tool直接导入。</p></div>
+<div class="tb">
+<button class="on" onclick="tab('i','req')">📋 需求</button>
+<button onclick="tab('i','skill')">🧩 技能</button>
+<button onclick="tab('i','comp')">⚙️ 组件</button>
+<button onclick="tab('i','tc')">🧪 测试</button>
+<button onclick="tab('i','dr')">🚀 部署</button>
+<button onclick="tab('i','tl')">🔗 追溯</button>
+</div>
+
+<div id="i-req" class="tc on">
+<div class="ic"><h4>📋 Digital Employee Requirement · 数字员工需求</h4>
+<div class="mt"><span class="tg g">✅ 可版本化</span><span class="tg o">✅ 可工作流</span><span class="tg p">公开</span></div>
+<div class="pg">
+<div class="pp"><div class="pn">requirement_id</div><div class="pd">String(20) · 必填 · 索引</div></div>
+<div class="pp"><div class="pn">name</div><div class="pd">String(100) · 必填</div></div>
+<div class="pp"><div class="pn">description</div><div class="pd">Text · 需求描述</div></div>
+<div class="pp"><div class="pn">industry</div><div class="pd">String(50) · 装备制造/新能源/电子信息/生物医药/冶金/其他</div></div>
+<div class="pp"><div class="pn">priority</div><div class="pd">String(10) · 必填 · P0/P1/P2</div></div>
+<div class="pp"><div class="pn">planned_online_date</div><div class="pd">Date · 计划上线时间</div></div>
+<div class="pp"><div class="pn">status</div><div class="pd">String(20) · 默认"待评审" · 8状态流转</div></div>
+<div class="pp"><div class="pn">accuracy</div><div class="pd">Float · 运行准确率</div></div>
+<div class="pp"><div class="pn">call_count</div><div class="pd">Integer · 默认0 · 累计调用次数</div></div>
+<div class="pp"><div class="pn">git_commit</div><div class="pd">String(40) · Git提交ID</div></div>
+<div class="pp"><div class="pn">build_url</div><div class="pd">String(255) · 流水线地址</div></div>
+</div>
+<div class="rls"><h5>关联关系</h5><div class="rl"><strong>Requirement Skill</strong> → Digital Employee Skill（关联技能）</div></div>
+</div></div>
+
+<div id="i-skill" class="tc">
+<div class="ic"><h4>🧩 Digital Employee Skill · 数字员工技能</h4>
+<div class="mt"><span class="tg g">✅ 可版本化</span><span class="tg o">✅ 可工作流</span><span class="tg p">公开</span></div>
+<div class="pg">
+<div class="pp"><div class="pn">skill_id</div><div class="pd">String(20) · 必填 · 索引</div></div>
+<div class="pp"><div class="pn">name</div><div class="pd">String(100) · 必填</div></div>
+<div class="pp"><div class="pn">agent_id / agent_name</div><div class="pd">所属智能体ID/名称</div></div>
+<div class="pp"><div class="pn">priority</div><div class="pd">P0/P1/P2 · 必填</div></div>
+<div class="pp"><div class="pn">version</div><div class="pd">String(20) · 默认1.0.0</div></div>
+<div class="pp"><div class="pn">code_module_path</div><div class="pd">String(255) · 必填</div></div>
+<div class="pp"><div class="pn">docker_image</div><div class="pd">String(255) · Docker镜像</div></div>
+<div class="pp"><div class="pn">status</div><div class="pd">9状态：待开发→开发中→构建中→测试中→待部署→部署中→运行中→异常→已下线</div></div>
+<div class="pp"><div class="pn">accuracy</div><div class="pd">Float · 运行准确率</div></div>
+<div class="pp"><div class="pn">call_count</div><div class="pd">Integer · 累计调用次数</div></div>
+<div class="pp"><div class="pn">average_response_time</div><div class="pd">Integer · 平均响应时间(ms)</div></div>
+<div class="pp"><div class="pn">planned/actual_online_date</div><div class="pd">Date · 计划/实际上线</div></div>
+</div>
+<div class="rls"><h5>关联关系（3个）</h5>
+<div class="rl"><strong>Skill Component</strong> → Atomic Technology Component（依赖技术组件）</div>
+<div class="rl"><strong>Skill Test Case</strong> → Test Case（关联测试用例）</div>
+<div class="rl"><strong>Skill Deployment</strong> → Deployment Record（部署记录）</div>
+</div></div></div>
+
+<div id="i-comp" class="tc">
+<div class="ic"><h4>⚙️ Atomic Technology Component · 原子技术组件</h4>
+<div class="mt"><span class="tg g">✅ 可版本化</span><span class="tg p">公开</span></div>
+<div class="pg">
+<div class="pp"><div class="pn">component_id</div><div class="pd">String(20) · 必填 · 索引</div></div>
+<div class="pp"><div class="pn">name</div><div class="pd">String(100) · 必填</div></div>
+<div class="pp"><div class="pn">category</div><div class="pd">8类：CV/LLM/时序预测/运筹优化/多智能体/具身智能/数字孪生/数据处理</div></div>
+<div class="pp"><div class="pn">technology_stack</div><div class="pd">String(255) · 技术选型</div></div>
+<div class="pp"><div class="pn">version</div><div class="pd">String(20) · 默认1.0.0</div></div>
+<div class="pp"><div class="pn">status</div><div class="pd">5状态：预研中→开发中→测试中→已发布→已废弃</div></div>
+<div class="pp"><div class="pn">code_module_path</div><div class="pd">String(255)</div></div>
+<div class="pp"><div class="pn">responsible_person</div><div class="pd">String(50) · 负责人</div></div>
+</div></div></div>
+
+<div id="i-tc" class="tc">
+<div class="ic"><h4>🧪 Test Case · 测试用例</h4>
+<div class="mt"><span class="tg g">✅ 可版本化</span><span class="tg p">公开</span></div>
+<div class="pg">
+<div class="pp"><div class="pn">test_case_id</div><div class="pd">String(20) · 必填 · 索引</div></div>
+<div class="pp"><div class="pn">name</div><div class="pd">String(255) · 必填 · 测试场景</div></div>
+<div class="pp"><div class="pn">preconditions</div><div class="pd">Text · 前置条件</div></div>
+<div class="pp"><div class="pn">test_steps</div><div class="pd">Text · 测试步骤</div></div>
+<div class="pp"><div class="pn">expected_results</div><div class="pd">Text · 预期结果</div></div>
+<div class="pp"><div class="pn">acceptance_criteria</div><div class="pd">Text · 验收标准</div></div>
+<div class="pp"><div class="pn">priority</div><div class="pd">P0/P1/P2</div></div>
+<div class="pp"><div class="pn">test_type</div><div class="pd">功能/性能/异常/边界/兼容性</div></div>
+<div class="pp"><div class="pn">last_execution_result</div><div class="pd">未执行/通过/失败/阻塞</div></div>
+<div class="pp"><div class="pn">execution_count</div><div class="pd">Integer · 默认0 · 执行次数</div></div>
+</div></div></div>
+
+<div id="i-dr" class="tc">
+<div class="ic"><h4>🚀 Deployment Record · 部署记录</h4>
+<div class="mt"><span class="tg p">公开 · 不可版本化</span></div>
+<div class="pg">
+<div class="pp"><div class="pn">deployment_id</div><div class="pd">String(36) · 必填 · 索引</div></div>
+<div class="pp"><div class="pn">skill_id</div><div class="pd">String(20) · 必填</div></div>
+<div class="pp"><div class="pn">version</div><div class="pd">String(20) · 必填</div></div>
+<div class="pp"><div class="pn">environment</div><div class="pd">开发/测试/预生产/生产环境</div></div>
+<div class="pp"><div class="pn">docker_image</div><div class="pd">String(255) · Docker镜像</div></div>
+<div class="pp"><div class="pn">deploy_time</div><div class="pd">Date · 必填 · 部署时间</div></div>
+<div class="pp"><div class="pn">deploy_status</div><div class="pd">进行中/成功/失败/已回滚</div></div>
+<div class="pp"><div class="pn">gray_percentage</div><div class="pd">Integer · 默认100 · 灰度比例(%)</div></div>
+<div class="pp"><div class="pn">deployed_by</div><div class="pd">String(50) · 部署人</div></div>
+<div class="pp"><div class="pn">deployment_log</div><div class="pd">Text · 部署日志</div></div>
+<div class="pp"><div class="pn">rollback_reason</div><div class="pd">Text · 回滚原因</div></div>
+</div></div></div>
+
+<div id="i-tl" class="tc">
+<div class="ic"><h4>🔗 Traceability Link · 追溯链路（系统内部）</h4>
+<div class="mt"><span class="tg p">私有 · 不可版本化</span></div>
+<div class="pg">
+<div class="pp"><div class="pn">source_item_type</div><div class="pd">String(50) · 必填 · 源Item类型</div></div>
+<div class="pp"><div class="pn">source_item_id</div><div class="pd">String(36) · 必填 · 源Item ID</div></div>
+<div class="pp"><div class="pn">target_item_type</div><div class="pd">String(50) · 必填 · 目标Item类型</div></div>
+<div class="pp"><div class="pn">target_item_id</div><div class="pd">String(36) · 必填 · 目标Item ID</div></div>
+<div class="pp"><div class="pn">relationship_type</div><div class="pd">String(50) · 必填 · 关系类型</div></div>
+<div class="pp"><div class="pn">created_on</div><div class="pd">Date · 默认当前日期</div></div>
+</div></div>
+<div class="cd" style="margin-top:14px">
+<h3>🔐 权限配置</h3>
+<p><strong>Administrators</strong>：对6个ItemType的完全访问权限（读/写/删/创建）</p>
+<p style="margin-top:6px"><strong>automation-bot</strong>：对Skill/TestCase/DeploymentRecord的自动化访问权限（读/写/创建，无删除）</p>
+</div></div>
+</div>
+
+<!-- Pipeline -->
+<div id="s-pipe" class="sec">
+<div class="st">🔄 ARAS API版GitLab CI自动化流水线</div>
+<div class="cd"><p>保存为 <code style="color:var(--cyan)">.gitlab-ci.yml</code> 放在代码仓库根目录，配置好环境变量后即可实现全流程自动化。</p></div>
+
+<div class="pf">
+<div class="ps"><div class="pn2">1</div><div class="pi"><h4>🚀 初始化 (init)</h4><p>从ARAS获取技能信息，计算新版本号，更新状态为"构建中"，添加评论</p><div class="pa">GET /server/odata/DigitalEmployeeSkill?$filter=skill_id eq '...'</div></div></div>
+<div class="ps"><div class="pn2">2</div><div class="pi"><h4>🔍 代码检查 (code-check)</h4><p>pylint + flake8质量检查，上传报告到数字员工平台</p><div class="pa">POST /skills/$SKILL_ID/code-quality</div></div></div>
+<div class="ps"><div class="pn2">3</div><div class="pi"><h4>🧪 单元测试 (unit-test)</h4><p>pytest执行，生成覆盖率报告和JUnit XML，上传到平台</p><div class="pa">POST /skills/$SKILL_ID/unit-test</div></div></div>
+<div class="ps"><div class="pn2">4</div><div class="pi"><h4>🐳 构建镜像 (build)</h4><p>构建Docker镜像并推送到仓库，更新ARAS中镜像信息</p><div class="pa">PATCH /DigitalEmployeeSkill('$ID') → docker_image</div></div></div>
+<div class="ps"><div class="pn2">5</div><div class="pi"><h4>🧪 部署测试环境 (deploy-test)</h4><p>调用平台API部署到测试环境，健康检查，失败则更新ARAS状态为"异常"</p><div class="pa">POST /skills/$SKILL_ID/deploy → environment: test</div></div></div>
+<div class="ps"><div class="pn2">6</div><div class="pi"><h4>🔗 集成测试 (integration-test)</h4><p>调用平台API执行集成测试，通过率≥95%才能继续</p><div class="pa">POST /skills/$SKILL_ID/integration-test</div></div></div>
+<div class="ps"><div class="pn2">7</div><div class="pi"><h4>✅ 验收测试 (acceptance-test)</h4><p>自动化验收测试，通过后更新ARAS状态为"待部署"</p><div class="pa">PATCH /DigitalEmployeeSkill → status: 待部署</div></div></div>
+<div class="ps"><div class="pn2">8</div><div class="pi"><h4>🚀 部署生产 (deploy-prod)</h4><p>灰度10%部署→健康检查→创建Deployment Record→更新状态"运行中"</p><div class="pa">POST /DeploymentRecord → gray_percentage: 10</div></div></div>
+<div class="ps"><div class="pn2">9</div><div class="pi"><h4>🎉 完成 (finish)</h4><p>创建版本基线，添加完成评论，所有信息同步到ARAS PLM</p><div class="pa">POST /CreateBaseline → 技能发布基线</div></div></div>
+</div>
+
+<div class="cd">
+<h3>📋 核心ARAS API交互点</h3>
+<div class="cw"><div class="ch"><span class="cl" style="background:rgba(52,211,153,.15);color:var(--green)">YAML</span><span class="cf">.gitlab-ci.yml · init阶段核心逻辑</span></div><div class="cb"># 生成ARAS Basic Auth头
+ARAS_AUTH=$(echo -n "$ARAS_USERNAME:$ARAS_PASSWORD" | base64 -w 0)
+
+# 从ARAS获取技能信息
+response=$(curl -s -H "Authorization: Basic $ARAS_AUTH" \
+  -H "Accept: application/json" \
+  "$ARAS_URL/server/odata/DigitalEmployeeSkill?\$filter=skill_id eq '$SKILL_ID'")
+
+# 解析返回
+SKILL_NAME=$(echo $response | jq -r '.value[0].name')
+CODE_MODULE_PATH=$(echo $response | jq -r '.value[0].code_module_path')
+CURRENT_VERSION=$(echo $response | jq -r '.value[0].version')
+
+# 计算新版本号
+NEW_VERSION=$(echo $CURRENT_VERSION | awk -F. '{print $1"."$2"."($3+1)}')
+
+# 更新ARAS状态为"构建中"
+curl -s -X PATCH -H "Authorization: Basic $ARAS_AUTH" \
+  -H "Content-Type: application/json" \
+  "$ARAS_URL/server/odata/DigitalEmployeeSkill('$ARAS_ITEM_ID')" \
+  -d '{"status":"构建中","build_url":"$CI_JOB_URL"}'
+
+# 在ARAS中添加评论
+curl -s -X POST -H "Authorization: Basic $ARAS_AUTH" \
+  -H "Content-Type: application/json" \
+  "$ARAS_URL/server/odata/Comments" \
+  -d '{"source_id":"$ARAS_ITEM_ID","comments":"🤖 流水线已启动 v$NEW_VERSION"}'</div></div>
+</div>
+
+<div class="cd">
+<h3>🚀 生产部署灰度策略</h3>
+<div class="cw"><div class="ch"><span class="cl" style="background:rgba(52,211,153,.15);color:var(--green)">YAML</span><span class="cf">.gitlab-ci.yml · deploy-prod阶段</span></div><div class="cb"># 调用平台API部署（默认灰度10%）
+response=$(curl -s -X POST -H "Authorization: Bearer $PLATFORM_API_TOKEN" \
+  "$PLATFORM_API_URL/skills/$SKILL_ID/deploy" \
+  -d '{"version":"$NEW_VERSION","environment":"prod",
+       "gray_release":true,"gray_percentage":10}')
+
+# 健康检查
+response=$(curl -s "$PLATFORM_API_URL/skills/$SKILL_ID/health?environment=prod")
+if [ "$(echo $response | jq -r '.status')" != "healthy" ]; then
+  # 更新ARAS状态为异常
+  curl -s -X PATCH ... -d '{"status":"异常"}'
+  exit 1
+fi
+
+# 在ARAS中创建部署记录
+curl -s -X POST ... "$ARAS_URL/server/odata/DeploymentRecord" \
+  -d '{"deployment_id":"$UUID","skill_id":"$SKILL_ID",
+       "version":"$NEW_VERSION","environment":"生产环境",
+       "deploy_status":"成功","gray_percentage":10}'
+
+# 更新ARAS状态为"运行中"
+curl -s -X PATCH ... -d '{"version":"$NEW_VERSION","status":"运行中"}'</div></div>
+</div>
+
+<div class="cd">
+<h3>🏁 完成阶段：版本基线与评论</h3>
+<div class="cw"><div class="ch"><span class="cl" style="background:rgba(52,211,153,.15);color:var(--green)">YAML</span><span class="cf">.gitlab-ci.yml · finish阶段</span></div><div class="cb"># 创建版本基线
+curl -s -X POST ... "$ARAS_URL/server/odata/CreateBaseline" \
+  -d '{"item_id":"$ARAS_ITEM_ID","item_type":"DigitalEmployeeSkill",
+       "baseline_name":"技能$SKILL_ID v$NEW_VERSION 发布基线",
+       "description":"自动化流水线创建的发布基线"}'
+
+# 添加完成评论
+curl -s -X POST ... "$ARAS_URL/server/odata/Comments" \
+  -d '{"source_id":"$ARAS_ITEM_ID",
+       "comments":"🎉 技能$SKILL_ID全流程自动化完成 v$NEW_VERSION"}'</div></div>
+</div>
+</div>
+
+<!-- Deploy -->
+<div id="s-dep" class="sec">
+<div class="st">🚀 部署与配置指南</div>
+
+<div class="cd">
+<h3>1️⃣ 环境变量配置</h3>
+<p>在GitLab CI/CD设置中添加以下保护变量：</p>
+<div class="eg" style="margin-top:14px">
+<div class="ec"><h4 style="color:var(--accent2)">🔐 ARAS PLM</h4><ul>
+<li><code>ARAS_USERNAME</code> = automation-bot</li>
+<li><code>ARAS_PASSWORD</code> = 自动化机器人密码</li>
+</ul></div>
+<div class="ec"><h4 style="color:var(--teal)">🌐 数字员工平台</h4><ul>
+<li><code>PLATFORM_API_TOKEN</code> = 平台API访问令牌</li>
+</ul></div>
+<div class="ec"><h4 style="color:var(--orange)">🐳 Docker仓库</h4><ul>
+<li><code>DOCKER_REGISTRY_USER</code> = 仓库用户名</li>
+<li><code>DOCKER_REGISTRY_PASSWORD</code> = 仓库密码</li>
+</ul></div>
+</div></div>
+
+<div class="cd">
+<h3>2️⃣ ARAS导入步骤</h3>
+<ol class="sl">
+<li>登录ARAS Innovator管理员界面</li>
+<li>进入 <strong>Administration → Import</strong></li>
+<li>选择 <code>DigitalEmployeeTraceability.xml</code> 文件</li>
+<li>点击 <strong>Import</strong> 按钮，等待导入完成</li>
+<li>验证6个ItemType是否都已成功创建</li>
+<li>重置 <code>automation-bot</code> 账号的密码</li>
+</ol></div>
+
+<div class="cd">
+<h3>3️⃣ 数据初始化SQL</h3>
+<div class="cw"><div class="ch"><span class="cl" style="background:rgba(251,191,36,.15);color:var(--orange)">SQL</span><span class="cf">初始化脚本 · 插入第一批10项技能</span></div><div class="cb">-- 插入第一批10项技能
+INSERT INTO [Digital Employee Skill]
+  ([id], [skill_id], [name], [code_module_path], [priority], [status], [version])
+VALUES
+  (NEWID(), 'SKILL-QC-001', '通用表面缺陷检测',
+   '/vision/defect-detection', 'P0', '待开发', '1.0.0'),
+  (NEWID(), 'SKILL-QC-002', '高精度尺寸测量',
+   '/vision/dimension-measurement', 'P0', '待开发', '1.0.0'),
+  (NEWID(), 'SKILL-QC-003', '金相组织智能评级',
+   '/vision/metallographic', 'P0', '待开发', '1.0.0'),
+  (NEWID(), 'SKILL-PHM-001', '设备健康状态评估',
+   '/prediction/health-assessment', 'P0', '待开发', '1.0.0'),
+  (NEWID(), 'SKILL-PHM-002', '剩余寿命预测',
+   '/prediction/remaining-life', 'P1', '待开发', '1.0.0'),
+  -- 继续插入其他技能...</div></div>
+</div></div>
+
+<!-- Value -->
+<div id="s-val" class="sec">
+<div class="st">💎 核心优势总结</div>
+<div class="ag">
+<div class="ac"><div class="ai">🔗</div><div class="at">完全原生集成</div><div class="ad">所有数据和流程都在ARAS PLM内部完成，没有任何第三方依赖</div></div>
+<div class="ac"><div class="ai">💰</div><div class="at">零额外成本</div><div class="ad">利用现有ARAS许可证，不需要购买任何额外项目管理工具</div></div>
+<div class="ac"><div class="ai">🔄</div><div class="at">端到端闭环</div><div class="ad">从需求提出到上线运行再到版本基线归档，全流程自动化</div></div>
+<div class="ac"><div class="ai">✅</div><div class="at">天然合规</div><div class="ad">所有开发过程符合ARAS配置管理和变更管理体系，自动满足制造业合规</div></div>
+<div class="ac"><div class="ai">📈</div><div class="at">可扩展性强</div><div class="ad">基于ARAS灵活架构，轻松扩展变更管理、生命周期管理等功能</div></div>
+</div>
+</div>
+
+</div>
+
+<div class="ft">苏州"AI+制造"数字员工平台 · ARAS PLM全链路追溯完整交付包 · 2026-05-13</div>
+
+<script>
+function show(id){document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));document.querySelectorAll('.nb button').forEach(b=>b.classList.remove('on'));document.getElementById('s-'+id).classList.add('on');event.target.classList.add('on');window.scrollTo({top:0,behavior:'smooth'})}
+function tab(p,id){var pa=event.target.closest('.sec');pa.querySelectorAll('.tb button').forEach(b=>b.classList.remove('on'));pa.querySelectorAll('.tc').forEach(t=>t.classList.remove('on'));event.target.classList.add('on');document.getElementById(p+'-'+id).classList.add('on')}
+</script>
+</body>
+</html>

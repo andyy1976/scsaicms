@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCSAI基于ARAS PLM的全链路追溯体系实现方案</title>
+    <style>
+        body {
+            background-color: #0d1117;
+            color: #c9d1d9;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            background-color: #161b22;
+            padding: 1rem;
+            border-bottom: 1px solid #30363d;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        nav a {
+            color: #58a6ff;
+            text-decoration: none;
+            margin: 0 1rem;
+            padding: 0.5rem;
+        }
+        nav a:hover {
+            color: #79c0ff;
+            border-bottom: 2px solid #58a6ff;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        h1, h2, h3 {
+            color: #58a6ff;
+            border-bottom: 1px solid #30363d;
+            padding-bottom: 0.5rem;
+        }
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 1.5rem;
+            transition: border-color 0.3s;
+        }
+        .card:hover {
+            border-color: #58a6ff;
+        }
+        .card h3 {
+            margin-top: 0;
+            color: #58a6ff;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background-color: #161b22;
+        }
+        table th, table td {
+            border: 1px solid #30363d;
+            padding: 0.75rem;
+            text-align: left;
+        }
+        table th {
+            background-color: #21262d;
+            color: #58a6ff;
+            font-weight: 600;
+        }
+        table tr:hover {
+            background-color: #1c2128;
+        }
+        .workflow {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 2rem;
+            margin: 2rem 0;
+            overflow-x: auto;
+        }
+        .workflow-node {
+            display: inline-block;
+            background-color: #21262d;
+            border: 2px solid #58a6ff;
+            border-radius: 6px;
+            padding: 1rem 1.5rem;
+            margin: 0.5rem;
+            color: #c9d1d9;
+            font-weight: 500;
+        }
+        .workflow-arrow {
+            display: inline-block;
+            color: #58a6ff;
+            font-size: 1.5rem;
+            margin: 0 0.5rem;
+        }
+        pre {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 1rem;
+            overflow-x: auto;
+        }
+        code {
+            color: #79c0ff;
+            font-family: "Courier New", Courier, monospace;
+        }
+        footer {
+            background-color: #161b22;
+            border-top: 1px solid #30363d;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+            color: #8b949e;
+        }
+        ul, ol {
+            padding-left: 2rem;
+        }
+        li {
+            margin: 0.5rem 0;
+        }
+        section {
+            margin-bottom: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="suzhou-ai-digital-employee-topic.html">专题首页</a>
+        <a href="#whitepaper">白皮书</a>
+        <a href="#traceability">追溯表</a>
+        <a href="#solution">ARAS方案</a>
+        <a href="#manual">操作手册</a>
+        <a href="#pipeline">流水线</a>
+        <a href="#exception">异常处理</a>
+        <a href="#suzhou">苏州落地</a>
+        <a href="#roadshow">路演脚本</a>
+    </nav>
+    
+    <div class="container">
+        <section id="overview">
+            <h1>SCSAI基于ARAS PLM的全链路追溯体系实现方案</h1>
+            <h2>1. 方案概述</h2>
+            <p>本方案将追溯体系深度集成到ARAS Innovator 12.0+，实现从需求到部署的全链路可追溯性。通过六个核心ItemType的数据模型配置、全流程工作流引擎、可视化表单与报表，以及REST API集成，构建完整的数字员工全生命周期管理平台。</p>
+            
+            <h3>核心目标</h3>
+            <ul>
+                <li>实现需求→技能→组件→测试→部署的完整追溯链</li>
+                <li>建立基于ARAS Innovator的标准化数据模型</li>
+                <li>提供可视化的全链路追溯视图</li>
+                <li>支持与其他系统的双向集成</li>
+            </ul>
+            
+            <h3>技术架构</h3>
+            <p>基于ARAS Innovator 12.0+平台，采用分层架构设计：</p>
+            <ul>
+                <li><strong>数据层</strong>：6个核心ItemType + 关系定义</li>
+                <li><strong>业务层</strong>：9节点需求评审工作流 + 9节点技能开发工作流</li>
+                <li><strong>展示层</strong>：全链路追溯标签页 + 4个核心报表</li>
+                <li><strong>集成层</strong>：ARAS REST API + 双向集成接口</li>
+            </ul>
+        </section>
+        
+        <section id="data-model">
+            <h2>2. ARAS数据模型配置</h2>
+            <p>定义6个核心ItemType，每个ItemType包含属性列表和关系定义，构建全链路追溯的数据基础。</p>
+            
+            <div class="card-container">
+                <div class="card">
+                    <h3>Digital Employee Requirement</h3>
+                    <p><strong>属性数量：</strong>12</p>
+                    <p><strong>关系数量：</strong>3</p>
+                    <h4>核心属性</h4>
+                    <ul>
+                        <li>requirement_id (要求ID)</li>
+                        <li>title (标题)</li>
+                        <li>description (描述)</li>
+                        <li>priority (优先级)</li>
+                        <li>status (状态)</li>
+                        <li>owner (负责人)</li>
+                        <li>created_on (创建时间)</li>
+                        <li>modified_on (修改时间)</li>
+                        <li>category (类别)</li>
+                        <li>source (来源)</li>
+                        <li>acceptance_criteria (验收标准)</li>
+                        <li>related_skill (关联技能)</li>
+                    </ul>
+                    <h4>关系定义</h4>
+                    <ul>
+                        <li>Requirement_to_Skill (需求→技能)</li>
+                        <li>Requirement_to_TestCase (需求→测试用例)</li>
+                        <li>Requirement_to_Component (需求→组件)</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h3>Digital Employee Skill</h3>
+                    <p><strong>属性数量：</strong>15</p>
+                    <p><strong>关系数量：</strong>4</p>
+                    <h4>核心属性</h4>
+                    <ul>
+                        <li>skill_id (技能ID)</li>
+                        <li>name (名称)</li>
+                        <li>version (版本)</li>
+                        <li>description (描述)</li>
+                        <li>skill_type (技能类型)</li>
+                        <li>complexity (复杂度)</li>
+                        <li>status (状态)</li>
+                        <li>developer (开发者)</li>
+                        <li>reviewer (审核人)</li>
+                        <li>created_on (创建时间)</li>
+                        <li>modified_on (修改时间)</li>
+                        <li>input_schema (输入模式)</li>
+                        <li>output_schema (输出模式)</li>
+                        <li>dependencies (依赖项)</li>
+                        <li>related_requirement (关联需求)</li>
+                    </ul>
+                    <h4>关系定义</h4>
+                    <ul>
+                        <li>Skill_to_Requirement (技能→需求)</li>
+                        <li>Skill_to_Component (技能→组件)</li>
+                        <li>Skill_to_TestCase (技能→测试用例)</li>
+                        <li>Skill_to_Deployment (技能→部署记录)</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h3>Atomic Technology Component</h3>
+                    <p><strong>属性数量：</strong>10</p>
+                    <p><strong>关系数量：</strong>3</p>
+                    <h4>核心属性</h4>
+                    <ul>
+                        <li>component_id (组件ID)</li>
+                        <li>name (名称)</li>
+                        <li>version (版本)</li>
+                        <li>description (描述)</li>
+                        <li>component_type (组件类型)</li>
+                        <li>technology_stack (技术栈)</li>
+                        <li>status (状态)</li>
+                        <li>author (作者)</li>
+                        <li>created_on (创建时间)</li>
+                        <li>modified_on (修改时间)</li>
+                    </ul>
+                    <h4>关系定义</h4>
+                    <ul>
+                        <li>Component_to_Skill (组件→技能)</li>
+                        <li>Component_to_Requirement (组件→需求)</li>
+                        <li>Component_to_TestCase (组件→测试用例)</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h3>Test Case</h3>
+                    <p><strong>属性数量：</strong>14</p>
+                    <p><strong>关系数量：</strong>4</p>
+                    <h4>核心属性</h4>
+                    <ul>
+                        <li>test_case_id (测试用例ID)</li>
+                        <li>name (名称)</li>
+                        <li>description (描述)</li>
+                        <li>test_type (测试类型)</li>
+                        <li>priority (优先级)</li>
+                        <li>status (状态)</li>
+                        <li>test_steps (测试步骤)</li>
+                        <li>expected_result (预期结果)</li>
+                        <li>actual_result (实际结果)</li>
+                        <li>executed_by (执行人)</li>
+                        <li>execution_date (执行日期)</li>
+                        <li>related_requirement (关联需求)</li>
+                        <li>related_skill (关联技能)</li>
+                        <li>related_component (关联组件)</li>
+                    </ul>
+                    <h4>关系定义</h4>
+                    <ul>
+                        <li>TestCase_to_Requirement (测试用例→需求)</li>
+                        <li>TestCase_to_Skill (测试用例→技能)</li>
+                        <li>TestCase_to_Component (测试用例→组件)</li>
+                        <li>TestCase_to_Deployment (测试用例→部署记录)</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h3>Deployment Record</h3>
+                    <p><strong>属性数量：</strong>11</p>
+                    <p><strong>关系数量：</strong>3</p>
+                    <h4>核心属性</h4>
+                    <ul>
+                        <li>deployment_id (部署ID)</li>
+                        <li>environment (环境)</li>
+                        <li>version (版本)</li>
+                        <li>deployment_date (部署日期)</li>
+                        <li>status (状态)</li>
+                        <li>deployed_by (部署人)</li>
+                        <li>deployment_notes (部署说明)</li>
+                        <li>rollback_plan (回滚计划)</li>
+                        <li>related_skill (关联技能)</li>
+                        <li>related_test_case (关联测试用例)</li>
+                        <li>deployment_log (部署日志)</li>
+                    </ul>
+                    <h4>关系定义</h4>
+                    <ul>
+                        <li>Deployment_to_Skill (部署→技能)</li>
+                        <li>Deployment_to_TestCase (部署→测试用例)</li>
+                        <li>Deployment_to_Requirement (部署→需求)</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h3>Traceability Link</h3>
+                    <p><strong>属性数量：</strong>8</p>
+                    <p><strong>关系数量：</strong>2</p>
+                    <h4>核心属性</h4>
+                    <ul>
+                        <li>link_id (链接ID)</li>
+                        <li>source_type (源类型)</li>
+                        <li>source_id (源ID)</li>
+                        <li>target_type (目标类型)</li>
+                        <li>target_id (目标ID)</li>
+                        <li>link_type (链接类型)</li>
+                        <li>created_on (创建时间)</li>
+                        <li>description (描述)</li>
+                    </ul>
+                    <h4>关系定义</h4>
+                    <ul>
+                        <li>TraceabilityLink_to_Source (追溯链接→源)</li>
+                        <li>TraceabilityLink_to_Target (追溯链接→目标)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="workflow">
+            <h2>3. 全流程工作流配置</h2>
+            <p>配置两个核心工作流：需求评审工作流（9节点）和技能开发工作流（9节点），实现全流程的自动化和标准化。</p>
+            
+            <h3>3.1 需求评审工作流（9节点）</h3>
+            <div class="workflow">
+                <div class="workflow-node">需求提交</div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-node">初步审核</div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-node">详细分析</div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-node">技术评估</div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-node">资源评估</div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-node">优先级确定</div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-node">评审会议</div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-node">决策批准</div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-node">需求发布</div>
+            </div>
+            
+            <h3>工作流节点说明</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>节点</th>
+                        <th>描述</th>
+                        <th>参与者</th>
+                        <th>输入输出</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>需求提交</td>
+                        <td>提交新需求或变更需求</td>
+                        <td>需求提出人</td>
+                        <td>输入：需求描述<br>输出：需求记录</td>
+                    </tr>
+                    <tr>
+                        <td>初步审核</td>
+                        <td>审核需求的完整性和合理性</td>
+                        <td>产品经理</td>
+                        <td>输入：需求记录<br>输出：审核意见</td>
+                    </tr>
+                    <tr>
+                        <td>详细分析</td>
+                        <td>分析需求的技术可行性和业务价值</td>
+                        <td>业务分析师</td>
+                        <td>输入：需求记录、审核意见<br>输出：需求分析报告</td>
+                    </tr>
+                    <tr>
+                        <td>技术评估</td>
+                        <td>评估技术实现方案和风险</td>
+                        <td>技术架构师</td>
+                        <td>输入：需求分析报告<br>输出：技术评估方案</td>
+                    </tr>
+                    <tr>
+                        <td>资源评估</td>
+                        <td>评估所需的人力、时间和成本</td>
+                        <td>项目经理</td>
+                        <td>输入：技术评估方案<br>输出：资源评估报告</td>
+                    </tr>
+                    <tr>
+                        <td>优先级确定</td>
+                        <td>确定需求的优先级和实施顺序</td>
+                        <td>产品委员会</td>
+                        <td>输入：资源评估报告<br>输出：优先级排序</td>
+                    </tr>
+                    <tr>
+                        <td>评审会议</td>
+                        <td>召开需求评审会议，讨论和确认需求</td>
+                        <td>所有相关人员</td>
+                        <td>输入：优先级排序<br>输出：评审会议纪要</td>
+                    </tr>
+                    <tr>
+                        <td>决策批准</td>
+                        <td>根据评审结果做出最终决策</td>
+                        <td>决策层</td>
+                        <td>输入：评审会议纪要<br>输出：批准/拒绝决定</td>
+                    </tr>
+                    <tr>
+                        <td>需求发布</td>
+                        <td>将批准的需求发布到开发管道</td>
+                        <td>产品经理</td>
+                        <td>输入：批准决定<br>输出：需求发布通知</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>3.2 技能开发工作流（9节点）</h3>
+            <div class="workflow">
+                <div class="workflow-node">技能设计</div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-node">任务分解</div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-node">代码开发</div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-node">单元测试</div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-node">代码审查</div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-node">集成测试</div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-node">用户验收测试</div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-node">部署准备</div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-node">生产部署</div>
+            </div>
+            
+            <h3>工作流节点说明</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>节点</th>
+                        <th>描述</th>
+                        <th>参与者</th>
+                        <th>输入输出</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>技能设计</td>
+                        <td>设计技能的输入输出接口和实现方案</td>
+                        <td>技能开发者</td>
+                        <td>输入：需求文档<br>输出：技能设计文档</td>
+                    </tr>
+                    <tr>
+                        <td>任务分解</td>
+                        <td>将技能开发任务分解为具体的工作项</td>
+                        <td>技能开发者</td>
+                        <td>输入：技能设计文档<br>输出：任务清单</td>
+                    </tr>
+                    <tr>
+                        <td>代码开发</td>
+                        <td>编写技能代码和实现逻辑</td>
+                        <td>技能开发者</td>
+                        <td>输入：任务清单<br>输出：技能代码</td>
+                    </tr>
+                    <tr>
+                        <td>单元测试</td>
+                        <td>编写和执行单元测试</td>
+                        <td>技能开发者</td>
+                        <td>输入：技能代码<br>输出：单元测试报告</td>
+                    </tr>
+                    <tr>
+                        <td>代码审查</td>
+                        <td>审查代码质量和规范性</td>
+                        <td>代码审查员</td>
+                        <td>输入：技能代码、单元测试报告<br>输出：代码审查意见</td>
+                    </tr>
+                    <tr>
+                        <td>集成测试</td>
+                        <td>将技能集成到系统并进行测试</td>
+                        <td>测试工程师</td>
+                        <td>输入：代码审查意见<br>输出：集成测试报告</td>
+                    </tr>
+                    <tr>
+                        <td>用户验收测试</td>
+                        <td>用户验证技能是否满足需求</td>
+                        <td>产品经理/用户</td>
+                        <td>输入：集成测试报告<br>输出：UAT测试报告</td>
+                    </tr>
+                    <tr>
+                        <td>部署准备</td>
+                        <td>准备部署所需的配置和文档</td>
+                        <td>部署工程师</td>
+                        <td>输入：UAT测试报告<br>输出：部署清单</td>
+                    </tr>
+                    <tr>
+                        <td>生产部署</td>
+                        <td>将技能部署到生产环境</td>
+                        <td>部署工程师</td>
+                        <td>输入：部署清单<br>输出：部署记录</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="visualization">
+            <h2>4. 可视化表单与报表配置</h2>
+            <p>配置全链路追溯标签页和4个核心报表，提供直观的数据展示和分析能力。</p>
+            
+            <h3>4.1 全链路追溯标签页</h3>
+            <p>在ARAS Innovator的Item表单中新增"全链路追溯"标签页，展示该Item的所有关联关系。</p>
+            
+            <h4>标签页配置</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>配置项</th>
+                        <th>说明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>标签页名称</td>
+                        <td>全链路追溯</td>
+                    </tr>
+                    <tr>
+                        <td>显示位置</td>
+                        <td>Item表单的主标签页区域</td>
+                    </tr>
+                    <tr>
+                        <td>显示内容</td>
+                        <td>上游追溯（Source）、下游追溯（Target）、关联关系图</td>
+                    </tr>
+                    <tr>
+                        <td>交互功能</td>
+                        <td>点击节点跳转到关联Item、展开/折叠关系树</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>4.2 4个核心报表</h3>
+            
+            <h4>报表1：需求覆盖率报表</h4>
+            <p>统计需求的覆盖情况，展示哪些需求已经被技能实现并测试通过。</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>列名</th>
+                        <th>说明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>需求ID</td>
+                        <td>需求的唯一标识</td>
+                    </tr>
+                    <tr>
+                        <td>需求标题</td>
+                        <td>需求的标题</td>
+                    </tr>
+                    <tr>
+                        <td>优先级</td>
+                        <td>需求的优先级</td>
+                    </tr>
+                    <tr>
+                        <td>状态</td>
+                        <td>需求的当前状态</td>
+                    </tr>
+                    <tr>
+                        <td>关联技能数</td>
+                        <td>与该需求关联的技能数量</td>
+                    </tr>
+                    <tr>
+                        <td>关联测试用例数</td>
+                        <td>与该需求关联的测试用例数量</td>
+                    </tr>
+                    <tr>
+                        <td>测试通过率</td>
+                        <td>关联测试用例的通过率</td>
+                    </tr>
+                    <tr>
+                        <td>覆盖率</td>
+                        <td>需求被技能和测试覆盖的比例</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>报表2：技能开发进度报表</h4>
+            <p>跟踪技能的开发进度，展示各个技能在当前工作流中的状态。</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>列名</th>
+                        <th>说明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>技能ID</td>
+                        <td>技能的唯一标识</td>
+                    </tr>
+                    <tr>
+                        <td>技能名称</td>
+                        <td>技能的名称</td>
+                    </tr>
+                    <tr>
+                        <td>版本</td>
+                        <td>技能的版本</td>
+                    </tr>
+                    <tr>
+                        <td>当前节点</td>
+                        <td>技能在当前工作流中的节点</td>
+                    </tr>
+                    <tr>
+                        <td>负责人</td>
+                        <td>技能的负责人</td>
+                    </tr>
+                    <tr>
+                        <td>开始时间</td>
+                        <td>技能开发的开始时间</td>
+                    </tr>
+                    <tr>
+                        <td>预计完成时间</td>
+                        <td>技能开发的预计完成时间</td>
+                    </tr>
+                    <tr>
+                        <td>进度</td>
+                        <td>技能开发的进度百分比</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>报表3：测试用例执行报表</h4>
+            <p>统计测试用例的执行情况，展示测试覆盖率和通过率。</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>列名</th>
+                        <th>说明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>测试用例ID</td>
+                        <td>测试用例的唯一标识</td>
+                    </tr>
+                    <tr>
+                        <td>测试用例名称</td>
+                        <td>测试用例的名称</td>
+                    </tr>
+                    <tr>
+                        <td>测试类型</td>
+                        <td>测试用例的类型</td>
+                    </tr>
+                    <tr>
+                        <td>优先级</td>
+                        <td>测试用例的优先级</td>
+                    </tr>
+                    <tr>
+                        <td>状态</td>
+                        <td>测试用例的当前状态</td>
+                    </tr>
+                    <tr>
+                        <td>执行人</td>
+                        <td>测试用例的执行人</td>
+                    </tr>
+                    <tr>
+                        <td>执行日期</td>
+                        <td>测试用例的执行日期</td>
+                    </tr>
+                    <tr>
+                        <td>结果</td>
+                        <td>测试用例的执行结果（通过/失败/阻塞）</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>报表4：部署记录报表</h4>
+            <p>记录所有部署活动，展示部署的历史和状态。</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>列名</th>
+                        <th>说明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>部署ID</td>
+                        <td>部署的唯一标识</td>
+                    </tr>
+                    <tr>
+                        <td>环境</td>
+                        <td>部署的环境（开发/测试/生产）</td>
+                    </tr>
+                    <tr>
+                        <td>版本</td>
+                        <td>部署的版本</td>
+                    </tr>
+                    <tr>
+                        <td>部署日期</td>
+                        <td>部署的日期和时间</td>
+                    </tr>
+                    <tr>
+                        <td>状态</td>
+                        <td>部署的当前状态</td>
+                    </tr>
+                    <tr>
+                        <td>部署人</td>
+                        <td>执行部署的人员</td>
+                    </tr>
+                    <tr>
+                        <td>关联技能</td>
+                        <td>部署的技能</td>
+                    </tr>
+                    <tr>
+                        <td>关联测试用例</td>
+                        <td>部署关联的测试用例</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="api-integration">
+            <h2>5. API集成开发</h2>
+            <p>基于ARAS REST API实现系统间的数据交换和集成，支持双向集成接口。</p>
+            
+            <h3>5.1 ARAS REST API使用指南</h3>
+            
+            <h4>认证</h4>
+            <pre><code>POST /InnovatorServer/oauth/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password&username={username}&password={password}&database={database}</code></pre>
+            
+            <h4>获取Item</h4>
+            <pre><code>GET /InnovatorServer/server/odata/{ItemType}({item_id})
+Authorization: Bearer {access_token}
+Content-Type: application/json</code></pre>
+            
+            <h4>创建Item</h4>
+            <pre><code>POST /InnovatorServer/server/odata/{ItemType}
+Authorization: Bearer {access_token}
+Content-Type: application/json
+
+{
+    "property1": "value1",
+    "property2": "value2"
+}</code></pre>
+            
+            <h4>更新Item</h4>
+            <pre><code>PATCH /InnovatorServer/server/odata/{ItemType}({item_id})
+Authorization: Bearer {access_token}
+Content-Type: application/json
+
+{
+    "property1": "new_value1"
+}</code></pre>
+            
+            <h4>删除Item</h4>
+            <pre><code>DELETE /InnovatorServer/server/odata/{ItemType}({item_id})
+Authorization: Bearer {access_token}</code></pre>
+            
+            <h4>创建关系</h4>
+            <pre><code>POST /InnovatorServer/server/odata/{RelationshipType}
+Authorization: Bearer {access_token}
+Content-Type: application/json
+
+{
+    "source_id": "source_item_id",
+    "related_id": "related_item_id",
+    "property1": "value1"
+}</code></pre>
+            
+            <h3>5.2 双向集成接口</h3>
+            
+            <h4>集成架构</h4>
+            <p>采用中间件架构，实现ARAS PLM与外部系统（如GitLab、Jenkins、Jira）的双向数据同步。</p>
+            
+            <h4>集成接口列表</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>接口名称</th>
+                        <th>方向</th>
+                        <th>说明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>需求同步接口</td>
+                        <td>Jira → ARAS</td>
+                        <td>将Jira的需求同步到ARAS</td>
+                    </tr>
+                    <tr>
+                        <td>代码提交接口</td>
+                        <td>GitLab → ARAS</td>
+                        <td>将GitLab的代码提交记录同步到ARAS</td>
+                    </tr>
+                    <tr>
+                        <td>构建状态接口</td>
+                        <td>Jenkins → ARAS</td>
+                        <td>将Jenkins的构建状态同步到ARAS</td>
+                    </tr>
+                    <tr>
+                        <td>部署状态接口</td>
+                        <td>ARAS → Jenkins</td>
+                        <td>将ARAS的部署记录同步到Jenkins</td>
+                    </tr>
+                    <tr>
+                        <td>测试报告接口</td>
+                        <td>测试工具 → ARAS</td>
+                        <td>将测试工具的报告同步到ARAS</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>接口实现示例（需求同步）</h4>
+            <pre><code>// 从Jira获取需求
+GET /rest/api/2/issue/{issue_key}
+
+// 转换为ARAS格式
+{
+    "requirement_id": "DEM-001",
+    "title": issue.fields.summary,
+    "description": issue.fields.description,
+    "priority": mapPriority(issue.fields.priority),
+    "status": mapStatus(issue.fields.status)
+}
+
+// 创建或更新ARAS中的需求
+POST /InnovatorServer/server/odata/DigitalEmployeeRequirement</code></pre>
+        </section>
+
+        <section id="deployment">
+            <h2>6. 部署与测试步骤</h2>
+            
+            <h3>6.1 部署步骤</h3>
+            <ol>
+                <li><strong>环境准备</strong>
+                    <ul>
+                        <li>安装ARAS Innovator 12.0+</li>
+                        <li>配置数据库（SQL Server）</li>
+                        <li>配置IIS和.NET Framework</li>
+                    </ul>
+                </li>
+                <li><strong>数据模型部署</strong>
+                    <ul>
+                        <li>导入6个核心ItemType的AML文件</li>
+                        <li>创建属性（Property）</li>
+                        <li>创建关系（Relationship）</li>
+                    </ul>
+                </li>
+                <li><strong>工作流部署</strong>
+                    <ul>
+                        <li>导入需求评审工作流</li>
+                        <li>导入技能开发工作流</li>
+                        <li>配置工作流路径和参与者</li>
+                    </ul>
+                </li>
+                <li><strong>表单和报表部署</strong>
+                    <ul>
+                        <li>配置全链路追溯标签页</li>
+                        <li>创建4个核心报表</li>
+                        <li>配置报表查询和显示</li>
+                    </ul>
+                </li>
+                <li><strong>API集成部署</strong>
+                    <ul>
+                        <li>配置ARAS REST API权限</li>
+                        <li>部署中间件服务</li>
+                        <li>配置双向集成接口</li>
+                    </ul>
+                </li>
+            </ol>
+            
+            <h3>6.2 测试步骤</h3>
+            
+            <h4>单元测试</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>测试项</th>
+                        <th>测试内容</th>
+                        <th>预期结果</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>数据模型</td>
+                        <td>创建、读取、更新、删除Item</td>
+                        <td>操作成功，数据正确</td>
+                    </tr>
+                    <tr>
+                        <td>关系</td>
+                        <td>创建、读取、删除关系</td>
+                        <td>操作成功，关系正确</td>
+                    </tr>
+                    <tr>
+                        <td>工作流</td>
+                        <td>启动工作流，执行节点转换</td>
+                        <td>工作流按预期执行</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>集成测试</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>测试项</th>
+                        <th>测试内容</th>
+                        <th>预期结果</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>全链路追溯</td>
+                        <td>从需求追溯到部署记录</td>
+                        <td>追溯路径正确显示</td>
+                    </tr>
+                    <tr>
+                        <td>报表</td>
+                        <td>生成和查看4个核心报表</td>
+                        <td>报表数据正确显示</td>
+                    </tr>
+                    <tr>
+                        <td>API集成</td>
+                        <td>调用ARAS REST API</td>
+                        <td>API返回正确数据</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>用户验收测试</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>测试项</th>
+                        <th>测试内容</th>
+                        <th>预期结果</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>端到端流程</td>
+                        <td>从需求提交到生产部署的完整流程</td>
+                        <td>流程顺利完成</td>
+                    </tr>
+                    <tr>
+                        <td>用户界面</td>
+                        <td>使用ARAS Innovator界面进行操作</td>
+                        <td>界面友好，操作流畅</td>
+                    </tr>
+                    <tr>
+                        <td>性能</td>
+                        <td>测试系统响应时间</td>
+                        <td>响应时间符合要求</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="faq">
+            <h2>7. 常见问题与解决方案</h2>
+            
+            <h3>7.1 数据模型相关问题</h3>
+            
+            <h4>Q1：如何创建新的ItemType？</h4>
+            <p><strong>A：</strong>在ARAS Innovator中，使用Administration → ItemType → Add ItemType，配置ItemType的名称、属性和关系。</p>
+            
+            <h4>Q2：如何添加属性到ItemType？</h4>
+            <p><strong>A：</strong>在ItemType的Property标签页，点击Add，选择属性类型（如String、Integer、Date等），配置属性名称和默认值。</p>
+            
+            <h4>Q3：如何创建关系？</h4>
+            <p><strong>A：</strong>在ItemType的Relationship标签页，点击Add，选择关系类型（如Relationship、Pick List等），配置关系的源和目标ItemType。</p>
+            
+            <h3>7.2 工作流相关问题</h3>
+            
+            <h4>Q1：如何创建工作流？</h4>
+            <p><strong>A：</strong>在ARAS Innovator中，使用Administration → Workflow → Add Workflow，配置工作流的名称、节点和路径。</p>
+            
+            <h4>Q2：如何配置工作流路径？</h4>
+            <p><strong>A：</strong>在工作流的Path标签页，点击Add，配置路径的源节点、目标节点、条件和参与者。</p>
+            
+            <h4>Q3：如何启动工作流？</h4>
+            <p><strong>A：</strong>在Item的表单中，点击Actions → Start Workflow，选择要启动的工作流，点击OK。</p>
+            
+            <h3>7.3 API集成相关问题</h3>
+            
+            <h4>Q1：如何获取访问令牌？</h4>
+            <p><strong>A：</strong>使用OAuth 2.0密码模式，向<code>/InnovatorServer/oauth/token</code>发送POST请求，提供用户名、密码和数据库名称。</p>
+            
+            <h4>Q2：如何调用ARAS REST API？</h4>
+            <p><strong>A：</strong>在HTTP请求头中添加<code>Authorization: Bearer {access_token}</code>，使用标准的RESTful API路径和方法（GET、POST、PATCH、DELETE）。</p>
+            
+            <h4>Q3：如何处理API错误？</h4>
+            <p><strong>A：</strong>检查HTTP状态码和错误响应体，常见的错误有401（未授权）、400（请求错误）、404（未找到）、500（服务器错误）。根据错误信息进行调试和修复。</p>
+            
+            <h3>7.4 性能优化建议</h3>
+            
+            <h4>Q1：如何优化查询性能？</h4>
+            <p><strong>A：</strong>使用索引、限制返回字段、使用分页、避免复杂的关联查询。</p>
+            
+            <h4>Q2：如何优化工作流性能？</h4>
+            <p><strong>A：</strong>简化工作流路径、减少自动活动、使用异步处理。</p>
+            
+            <h4>Q3：如何优化API性能？</h4>
+            <p><strong>A：</strong>使用缓存、批量操作、压缩响应、使用CDN。</p>
+        </section>
+    </div>
+    
+    <footer>
+        <p>版本 V2.0 | 更新日期 2026-05-10</p>
+        <p>© 2026 SCSAI. All rights reserved.</p>
+    </footer>
+</body>
+</html>

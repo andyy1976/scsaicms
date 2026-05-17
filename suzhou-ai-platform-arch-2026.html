@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>数字员工平台整体架构设计</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'PingFang SC','Microsoft YaHei',Arial,sans-serif;background:#0d1117;color:#e6edf3;min-height:100vh}
+.hero{background:linear-gradient(135deg,#0d1117,#161b22,#1a1f2e);padding:44px 20px 32px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 15% 40%,rgba(56,189,248,.07) 0%,transparent 50%),radial-gradient(ellipse at 85% 60%,rgba(139,92,246,.07) 0%,transparent 50%)}
+.hero h1{font-size:1.6rem;font-weight:700;position:relative;z-index:1;margin-bottom:8px;background:linear-gradient(90deg,#e6edf3,#a5d6ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{position:relative;z-index:1;color:#7d8590;font-size:.88rem}
+.hero .badges{position:relative;z-index:1;margin-top:12px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.hero .badges span{display:inline-block;padding:4px 13px;border-radius:20px;font-size:.75rem}
+.b{background:rgba(56,189,248,.12);color:#38bdf8;border:1px solid rgba(56,189,248,.25)}
+.nav{position:sticky;top:0;z-index:100;background:rgba(13,17,23,.97);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.06);padding:0 16px;display:flex;align-items:center;overflow-x:auto;gap:2px}
+.nav button{flex-shrink:0;background:none;border:none;color:#7d8590;padding:11px 13px;cursor:pointer;font-size:.83rem;transition:all .2s;border-bottom:2px solid transparent;white-space:nowrap}
+.nav button:hover{color:#e6edf3}
+.nav button.active{color:#38bdf8;border-bottom-color:#38bdf8}
+.stats-bar{display:flex;gap:10px;padding:14px 20px;flex-wrap:wrap}
+.sc{flex:1;min-width:90px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:12px;text-align:center}
+.sc .n{font-size:1.4rem;font-weight:700;background:linear-gradient(90deg,#38bdf8,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sc .l{color:#7d8590;font-size:.72rem;margin-top:2px}
+.content{padding:16px 20px;max-width:1500px;margin:0 auto}
+.tc{display:none}.tc.active{display:block}
+.l5{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;margin-bottom:20px}
+.l4{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-bottom:20px}
+.lcard{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;overflow:hidden;transition:all .25s}
+.lcard:hover{border-color:rgba(56,189,248,.25);transform:translateY(-2px)}
+.lh{font-size:.85rem;font-weight:600;padding:10px 14px;display:flex;align-items:center;gap:8px}
+.l5 .lh{border-bottom:1px solid rgba(255,255,255,.05)}
+.lb{padding:12px 14px}
+.litem{font-size:.78rem;color:#a5d6ff;margin-bottom:6px;display:flex;align-items:flex-start;gap:5px}
+.litem::before{content:'▸';color:#38bdf8;flex-shrink:0;margin-top:1px}
+.litem:last-child{margin-bottom:0}
+.sub-label{font-size:.68rem;color:#546e7a;text-transform:uppercase;letter-spacing:.4px;margin:8px 0 4px}
+.sub-item{font-size:.75rem;color:#7d8590;margin-bottom:3px;padding-left:12px}
+.l5-1 .lh{background:rgba(239,68,68,.08);border-bottom-color:rgba(239,68,68,.15);color:#f87171}
+.l5-2 .lh{background:rgba(34,197,94,.08);border-bottom-color:rgba(34,197,94,.15);color:#4ade80}
+.l5-3 .lh{background:rgba(56,189,248,.08);border-bottom-color:rgba(56,189,248,.15);color:#38bdf8}
+.l5-4 .lh{background:rgba(139,92,246,.08);border-bottom-color:rgba(139,92,246,.15);color:#a78bfa}
+.l5-5 .lh{background:rgba(245,158,11,.08);border-bottom-color:rgba(245,158,11,.15);color:#fbbf24}
+.arch-section{margin-bottom:24px}
+.arch-h{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.05)}
+.arch-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.stack-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.stack-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:12px 14px}
+.stack-card .name{font-size:.82rem;font-weight:600;color:#e6edf3;margin-bottom:4px}
+.stack-card .tech{font-size:.72rem;color:#38bdf8;margin-bottom:3px}
+.stack-card .note{font-size:.7rem;color:#7d8590}
+.tech-cat{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.tech-tag{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:7px;padding:6px 11px;font-size:.75rem;color:#a5d6ff;display:flex;align-items:center;gap:5px}
+.deploy{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:12px;padding:20px;margin-bottom:20px}
+.deploy-h3{font-size:.95rem;font-weight:600;margin-bottom:14px;color:#e6edf3}
+.deploy-flow{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
+.deploy-node{flex:1;min-width:140px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:14px;text-align:center;transition:all .2s}
+.deploy-node:hover{border-color:rgba(56,189,248,.35);transform:translateY(-2px)}
+.dn-icon{font-size:1.8rem;margin-bottom:6px}
+.dn-title{font-size:.82rem;font-weight:600;color:#e6edf3}
+.dn-sub{font-size:.7rem;color:#7d8590;margin-top:3px}
+.dn-eg{font-size:.68rem;color:#38bdf8;margin-top:2px;font-style:italic}
+.arrow{color:#38bdf8;font-size:1.2rem;flex-shrink:0}
+.deploy-details{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:16px}
+.dd-item{background:rgba(255,255,255,.02);border-radius:8px;padding:12px}
+.dd-title{font-size:.78rem;font-weight:600;color:#a5d6ff;margin-bottom:5px}
+.dd-text{font-size:.72rem;color:#7d8590;line-height:1.45}
+.fea-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:20px}
+.fea-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:14px;text-align:center;transition:all .2s}
+.fea-card:hover{border-color:rgba(56,189,248,.3)}
+.fea-emoji{font-size:1.6rem;margin-bottom:8px}
+.fea-name{font-size:.82rem;font-weight:600;color:#e6edf3}
+.fea-desc{font-size:.72rem;color:#7d8590;margin-top:4px}
+.road-timeline{display:flex;gap:12px;flex-wrap:wrap}
+.road-phase{flex:1;min-width:260px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;overflow:hidden}
+.road-hdr{font-size:.85rem;font-weight:600;padding:10px 14px}
+.road-time{font-size:.7rem;font-weight:400;opacity:.7;margin-left:6px}
+.road-body{padding:12px 14px}
+.road-items{list-style:none;padding:0;margin:0}
+.road-items li{font-size:.76rem;color:#7d8590;margin-bottom:5px;display:flex;align-items:flex-start;gap:5px}
+.road-items li::before{content:'▸';color:#38bdf8;flex-shrink:0;margin-top:1px}
+.p1 .road-hdr{background:linear-gradient(135deg,rgba(56,189,248,.12),rgba(56,189,248,.04));border-bottom:1px solid rgba(56,189,248,.15);color:#38bdf8}
+.p2 .road-hdr{background:linear-gradient(135deg,rgba(34,197,94,.12),rgba(34,197,94,.04));border-bottom:1px solid rgba(34,197,94,.15);color:#4ade80}
+.p3 .road-hdr{background:linear-gradient(135deg,rgba(139,92,246,.12),rgba(139,92,246,.04));border-bottom:1px solid rgba(139,92,246,.15);color:#a78bfa}
+.engine-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-bottom:20px}
+.eng-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;overflow:hidden}
+.eng-hdr{padding:12px 14px;font-size:.85rem;font-weight:600;display:flex;align-items:center;gap:8px}
+.eng-hdr .e{font-size:1.1rem}
+.eng-hdr .cnt{font-size:.7rem;background:rgba(255,255,255,.06);border-radius:10px;padding:2px 8px;margin-left:auto}
+.eng-body{padding:10px 14px}
+.eng-comp{font-size:.72rem;color:#7d8590;margin-bottom:6px}
+.eng-comp span{color:#38bdf8;font-family:monospace}
+.eng-tech{font-size:.72rem;color:#22c55e}
+.ft{text-align:center;padding:22px 20px;color:#2d3748;font-size:.72rem;border-top:1px solid rgba(255,255,255,.04);margin-top:20px}
+.layer-viz{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:12px;padding:16px;margin-bottom:20px;overflow-x:auto}
+.layer-stack{display:flex;flex-direction:column;gap:4px;min-width:700px}
+.ls{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px}
+.ls-l{width:80px;font-size:.7rem;font-weight:600;text-transform:uppercase;color:#7d8590;flex-shrink:0}
+.ls-items{display:flex;flex-wrap:wrap;gap:6px;flex:1}
+.ls-i{background:rgba(255,255,255,.04);border-radius:5px;padding:4px 10px;font-size:.72rem;color:#a5d6ff;white-space:nowrap}
+.ls5{background:linear-gradient(90deg,rgba(239,68,68,.08),rgba(239,68,68,.03));border:1px solid rgba(239,68,68,.12)}
+.ls4{background:linear-gradient(90deg,rgba(139,92,246,.08),rgba(139,92,246,.03));border:1px solid rgba(139,92,246,.12)}
+.ls3{background:linear-gradient(90deg,rgba(56,189,248,.08),rgba(56,189,248,.03));border:1px solid rgba(56,189,248,.12)}
+.ls2{background:linear-gradient(90deg,rgba(34,197,94,.08),rgba(34,197,94,.03));border:1px solid rgba(34,197,94,.12)}
+.ls1{background:linear-gradient(90deg,rgba(245,158,11,.08),rgba(245,158,11,.03));border:1px solid rgba(245,158,11,.12)}
+.layer-viz-h{font-size:.88rem;font-weight:600;margin-bottom:12px;color:#e6edf3}
+.next-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.next-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:16px;cursor:pointer;transition:all .2s}
+.next-card:hover{border-color:rgba(56,189,248,.3);transform:translateY(-1px)}
+.next-n{font-size:.78rem;color:#38bdf8;font-weight:600;margin-bottom:6px}
+.next-t{font-size:.88rem;font-weight:600;color:#e6edf3;margin-bottom:6px}
+.next-d{font-size:.75rem;color:#7d8590;line-height:1.45}
+@media(max-width:700px){.hero h1{font-size:1.25rem}.stats-bar{overflow-x:auto;flex-wrap:nowrap;padding-bottom:6px}.deploy-flow{flex-direction:column}.arrow{transform:rotate(90deg)}}
+</style>
+</head>
+<body>
+<div class="hero">
+<h1>数字员工平台整体架构设计</h1>
+<p>云边端协同 · 分层解耦 · 可编排微服务架构 · 100%对齐63项工业需求</p>
+<div class="badges">
+<span class="b">5层架构</span><span class="b">7大引擎</span><span class="b">22项原子能力</span><span class="b">30项技能</span><span class="b">云边端协同</span>
+</div>
+</div>
+<nav class="nav" id="mainNav">
+<button class="active" data-tab="arch">🏗️ 架构总览</button>
+<button data-tab="infra">🖥️ 基础设施层</button>
+<button data-tab="data">📊 数据中台层</button>
+<button data-tab="core">⚙️ 核心技术层</button>
+<button data-tab="skill">🎯 技能编排层</button>
+<button data-tab="app">📱 应用层</button>
+<button data-tab="deploy">☁️ 云边端部署</button>
+</nav>
+<div class="stats-bar">
+<div class="sc"><div class="n">5</div><div class="l">架构层级</div></div>
+<div class="sc"><div class="n">7</div><div class="l">核心引擎</div></div>
+<div class="sc"><div class="n">22</div><div class="l">原子能力</div></div>
+<div class="sc"><div class="n">30</div><div class="l">标准化技能</div></div>
+<div class="sc"><div class="n">100%</div><div class="l">需求覆盖</div></div>
+</div>
+<div class="content">
+<div class="tc active" id="tab-arch">
+<div class="arch-section">
+<div class="arch-h">
+<div class="arch-icon" style="background:rgba(56,189,248,.1)">🏗️</div>
+<div class="arch-title" style="font-size:1rem;font-weight:600">平台5层架构总览</div>
+</div>
+<div class="layer-viz">
+<div class="layer-viz-h">五层架构分层视图</div>
+<div class="layer-stack">
+<div class="ls ls5"><div class="ls-l">应用层</div><div class="ls-items"><span class="ls-i">装备制造方案</span><span class="ls-i">新能源方案</span><span class="ls-i">电子信息方案</span><span class="ls-i">工作台/大屏</span><span class="ls-i">移动端</span></div></div>
+<div class="ls ls4"><div class="ls-l">技能编排</div><div class="ls-items"><span class="ls-i">技能模板库</span><span class="ls-i">可视化编排器</span><span class="ls-i">技能市场</span><span class="ls-i">运行时调度器</span><span class="ls-i">测试验证工具</span></div></div>
+<div class="ls ls3"><div class="ls-l">核心能力</div><div class="ls-items"><span class="ls-i">LLM引擎</span><span class="ls-i">CV引擎</span><span class="ls-i">时序预测</span><span class="ls-i">运筹优化</span><span class="ls-i">具身智能</span><span class="ls-i">多智能体</span><span class="ls-i">数字孪生</span></div></div>
+<div class="ls ls2"><div class="ls-l">数据中台</div><div class="ls-items"><span class="ls-i">数据接入</span><span class="ls-i">数据治理</span><span class="ls-i">时序存储</span><span class="ls-i">图数据库</span><span class="ls-i">数据服务</span><span class="ls-i">知识图谱</span></div></div>
+<div class="ls ls1"><div class="ls-l">基础设施</div><div class="ls-items"><span class="ls-i">K8s云原生</span><span class="ls-i">K3s边缘节点</span><span class="ls-i">IoT物联网</span><span class="ls-i">MQTT/OPC UA</span><span class="ls-i">安全监控</span></div></div>
+</div>
+</div>
+</div>
+<div class="arch-section">
+<div class="arch-h">
+<div class="arch-icon" style="background:rgba(34,197,94,.1)">🎯</div>
+<div class="arch-title" style="font-size:1rem;font-weight:600">架构设计原则</div>
+</div>
+<div class="l5">
+<div class="lcard l5-1"><div class="lh">1. 需求驱动</div><div class="lb"><div class="litem">所有组件来自真实工业场景</div><div class="litem">无冗余设计</div><div class="litem">63项需求100%映射</div></div></div>
+<div class="lcard l5-2"><div class="lh">2. 分层解耦</div><div class="lb"><div class="litem">数据/能力/技能/应用四层分离</div><div class="litem">支持独立迭代升级</div><div class="litem">模块化可替换</div></div></div>
+<div class="lcard l5-3"><div class="lh">3. 云边协同</div><div class="lb"><div class="litem">云端训练+管理</div><div class="litem">边缘实时推理</div><div class="litem">端侧执行控制</div></div></div>
+<div class="lcard l5-4"><div class="lh">4. 可编排</div><div class="lb"><div class="litem">原子能力→标准化技能</div><div class="litem">技能→行业解决方案</div><div class="litem">拖拽式可视化编排</div></div></div>
+<div class="lcard l5-5"><div class="lh">5. 开放生态</div><div class="lb"><div class="litem">标准化API与SDK</div><div class="litem">第三方开发者接入</div><div class="litem">工业级高可靠</div></div></div>
+</div>
+</div>
+<div class="arch-section">
+<div class="arch-h">
+<div class="arch-icon" style="background:rgba(245,158,11,.1)">💡</div>
+<div class="arch-title" style="font-size:1rem;font-weight:600">平台核心特性</div>
+</div>
+<div class="fea-grid">
+<div class="fea-card"><div class="fea-emoji">🔗</div><div class="fea-name">全链路可追溯</div><div class="fea-desc">需求→技能→组件→代码完整追溯</div></div>
+<div class="fea-card"><div class="fea-emoji">♻️</div><div class="fea-name">技能可复用</div><div class="fea-desc">跨行业跨场景复用</div></div>
+<div class="fea-card"><div class="fea-emoji">🎨</div><div class="fea-name">低代码可编排</div><div class="fea-desc">拖拽式原子能力组合</div></div>
+<div class="fea-card"><div class="fea-emoji">🏢</div><div class="fea-name">多租户隔离</div><div class="fea-desc">企业级数据与资源隔离</div></div>
+<div class="fea-card"><div class="fea-emoji">🌐</div><div class="fea-name">开放生态</div><div class="fea-desc">API/SDK/技能市场上传</div></div>
+<div class="fea-card"><div class="fea-emoji">🔒</div><div class="fea-name">工业级安全</div><div class="fea-desc">端到端加密/身份认证/模型水印</div></div>
+</div>
+</div>
+</div>
+<div class="tc" id="tab-infra">
+<div class="arch-section">
+<div class="arch-h">
+<div class="arch-icon" style="background:rgba(245,158,11,.1)">🖥️</div>
+<div class="arch-title" style="font-size:1rem;font-weight:600">基础设施层 · 平台运行底座</div>
+</div>
+<div class="l4">
+<div class="lcard l5-5"><div class="lh">☸️ 云原生平台</div><div class="lb"><div class="litem">容器化部署</div><div class="litem">服务编排</div><div class="litem">弹性伸缩</div><div class="sub-label">技术选型</div><div class="sub-item">Kubernetes + Docker + Harbor</div></div></div>
+<div class="lcard l5-5"><div class="lh">🖥️ 边缘计算节点</div><div class="lb"><div class="litem">边缘推理引擎</div><div class="litem">设备控制模块</div><div class="litem">本地数据处理</div><div class="sub-label">技术选型</div><div class="sub-item">K3s + EdgeX Foundry</div></div></div>
+<div class="lcard l5-5"><div class="lh">📡 物联网接入</div><div class="lb"><div class="litem">工业设备数据采集</div><div class="litem">协议转换</div><div class="litem">传感器接入</div><div class="sub-label">技术选型</div><div class="sub-item">MQTT + Modbus + OPC UA</div></div></div>
+<div class="lcard l5-5"><div class="lh">🌐 网络通信</div><div class="lb"><div class="litem">云边数据同步</div><div class="litem">设备通信</div><div class="litem">实时安全传输</div><div class="sub-label">技术选型</div><div class="sub-item">5G + 工业以太网 + VPN</div></div></div>
+<div class="lcard l5-5"><div class="lh">🔒 安全与运维</div><div class="lb"><div class="litem">监控告警</div><div class="litem">日志管理</div><div class="litem">安全防护</div><div class="sub-label">技术选型</div><div class="sub-item">Prometheus + Grafana + ELK + Istio</div></div></div>
+</div>
+</div>
+</div>
+<div class="tc" id="tab-data">
+<div class="arch-section">
+<div class="arch-h">
+<div class="arch-icon" style="background:rgba(34,197,94,.1)">📊</div>
+<div class="arch-title" style="font-size:1rem;font-weight:600">数据中台层 · 全量数据汇聚与治理</div>
+</div>
+<div class="l4">
+<div class="lcard l5-2"><div class="lh">🔌 多源数据接入</div><div class="lb"><div class="litem">对接MES/ERP/PLM/PLC</div><div class="litem">传感器实时数据</div><div class="litem">第三方系统对接</div><div class="sub-label">技术选型</div><div class="sub-item">Flink + Canal + MQTT Broker</div></div></div>
+<div class="lcard l5-2"><div class="lh">🧹 数据治理</div><div class="lb"><div class="litem">数据清洗转换</div><div class="litem">标准化管控</div><div class="litem">质量管控</div><div class="sub-label">技术选型</div><div class="sub-item">Apache Atlas + Great Expectations</div></div></div>
+<div class="lcard l5-2"><div class="lh">💾 统一数据存储</div><div class="lb"><div class="litem">时序数据 · InfluxDB 2.0</div><div class="litem">关系数据 · PostgreSQL</div><div class="litem">图数据 · Neo4j</div><div class="litem">对象存储 · MinIO</div><div class="litem">数据仓库 · ClickHouse</div></div></div>
+<div class="lcard l5-2"><div class="lh">🔀 数据服务</div><div class="lb"><div class="litem">统一数据API</div><div class="litem">数据共享</div><div class="litem">数据订阅</div><div class="sub-label">技术选型</div><div class="sub-item">GraphQL + RESTful API</div></div></div>
+<div class="lcard l5-2"><div class="lh">🧠 工业知识图谱</div><div class="lb"><div class="litem">工艺知识建模</div><div class="litem">设备知识建模</div><div class="litem">物料知识建模</div><div class="sub-label">技术选型</div><div class="sub-item">Neo4j + LangChain</div></div></div>
+</div>
+</div>
+</div>
+<div class="tc" id="tab-core">
+<div class="arch-section">
+<div class="arch-h">
+<div class="arch-icon" style="background:rgba(56,189,248,.1)">⚙️</div>
+<div class="arch-title" style="font-size:1rem;font-weight:600">核心技术能力层 · 22项原子能力池</div>
+</div>
+<div class="engine-grid">
+<div class="eng-card"><div class="eng-hdr" style="background:rgba(56,189,248,.08);border-bottom:1px solid rgba(56,189,248,.12);color:#38bdf8"><span class="e">🧠</span> LLM大模型引擎<span class="cnt">15类员工</span></div><div class="eng-body"><div class="eng-comp">包含能力：<span>自然语言理解 · 多模态文档解析 · 知识图谱/RAG · 代码生成 · 文本生成</span></div><div class="eng-tech">Qwen2.5-3B端侧 + LangChain + LlamaIndex</div></div></div>
+<div class="eng-card"><div class="eng-hdr" style="background:rgba(245,158,11,.08);border-bottom:1px solid rgba(245,158,11,.12);color:#fbbf24"><span class="e">👁️</span> 计算机视觉引擎<span class="cnt">7类员工</span></div><div class="eng-body"><div class="eng-comp">包含能力：<span>通用目标检测 · 高精度尺寸测量 · 显微图像分析 · 3D视觉感知 · 视觉伺服控制</span></div><div class="eng-tech">YOLOv8 + RT-DETR + OpenCV + Open3D</div></div></div>
+<div class="eng-card"><div class="eng-hdr" style="background:rgba(34,197,94,.08);border-bottom:1px solid rgba(34,197,94,.12);color:#4ade80"><span class="e">📈</span> 时序预测引擎<span class="cnt">9类员工</span></div><div class="eng-body"><div class="eng-comp">包含能力：<span>时序预处理 · 设备故障预测 · 剩余寿命预测 · 负荷预测 · 电池SOH预测</span></div><div class="eng-tech">PyTorch + Prophet + AutoTS</div></div></div>
+<div class="eng-card"><div class="eng-hdr" style="background:rgba(139,92,246,.08);border-bottom:1px solid rgba(139,92,246,.12);color:#a78bfa"><span class="e">⚡</span> 运筹优化引擎<span class="cnt">10类员工</span></div><div class="eng-body"><div class="eng-comp">包含能力：<span>全局参数寻优 · 路径规划与调度 · 库存优化 · 多约束排程 · 能源调度</span></div><div class="eng-tech">OR-Tools + OptaPlanner</div></div></div>
+<div class="eng-card"><div class="eng-hdr" style="background:rgba(249,115,22,.08);border-bottom:1px solid rgba(249,115,22,.12);color:#fb923c"><span class="e">🤖</span> 具身智能引擎<span class="cnt">4类员工</span></div><div class="eng-body"><div class="eng-comp">包含能力：<span>机器人运动规划 · 力控自适应控制 · 自主导航避障 · 多设备协同调度</span></div><div class="eng-tech">ROS 2 + MoveIt 2 + OpenClaw</div></div></div>
+<div class="eng-card"><div class="eng-hdr" style="background:rgba(236,72,153,.08);border-bottom:1px solid rgba(236,72,153,.12);color:#f472b6"><span class="e">🧬</span> 多智能体引擎<span class="cnt">3类员工</span></div><div class="eng-body"><div class="eng-comp">包含能力：<span>任务拆解与分配 · 智能体间通信 · 全局协同决策 · 异常协同处理</span></div><div class="eng-tech">OpenClaw + AutoGen</div></div></div>
+<div class="eng-card"><div class="eng-hdr" style="background:rgba(249,115,22,.08);border-bottom:1px solid rgba(249,115,22,.12);color:#fb923c"><span class="e">🌐</span> 数字孪生引擎<span class="cnt">2类员工</span></div><div class="eng-body"><div class="eng-comp">包含能力：<span>数字孪生建模 · 仿真验证 · 虚实同步 · 性能预测</span></div><div class="eng-tech">Unity + NVIDIA Omniverse</div></div></div>
+</div>
+</div>
+</div>
+<div class="tc" id="tab-skill">
+<div class="arch-section">
+<div class="arch-h">
+<div class="arch-icon" style="background:rgba(139,92,246,.1)">🎯</div>
+<div class="arch-title" style="font-size:1rem;font-weight:600">技能编排层 · 30项标准化技能</div>
+</div>
+<div class="l4">
+<div class="lcard l5-4"><div class="lh">📋 标准化技能模板库</div><div class="lb"><div class="litem">存储30项预定义技能模板</div><div class="litem">输入输出定义</div><div class="litem">依赖关系配置</div><div class="litem">验收标准</div><div class="sub-label">技术实现</div><div class="sub-item">JSON Schema + 版本管理</div></div></div>
+<div class="lcard l5-4"><div class="lh">🎨 可视化技能编排器</div><div class="lb"><div class="litem">拖拽式编排原子能力</div><div class="litem">自定义技能逻辑</div><div class="litem">流程可视化设计</div><div class="sub-label">技术实现</div><div class="sub-item">React + Flowchart.js</div></div></div>
+<div class="lcard l5-4"><div class="lh">🏪 技能市场</div><div class="lb"><div class="litem">技能上传/下载</div><div class="litem">安装/升级/卸载</div><div class="litem">评分与评论</div><div class="litem">版本管理</div><div class="sub-label">技术实现</div><div class="sub-item">微服务 + 容器化部署</div></div></div>
+<div class="lcard l5-4"><div class="lh">⚙️ 技能运行时与调度器</div><div class="lb"><div class="litem">生命周期管理</div><div class="litem">资源调度</div><div class="litem">运行监控</div><div class="litem">故障恢复</div><div class="sub-label">技术实现</div><div class="sub-item">Kubernetes + 服务网格</div></div></div>
+<div class="lcard l5-4"><div class="lh">🧪 技能测试与验证工具</div><div class="lb"><div class="litem">自动化测试</div><div class="litem">性能压测</div><div class="litem">验收验证</div><div class="litem">仿真环境</div><div class="sub-label">技术实现</div><div class="sub-item">自动化测试框架 + 仿真环境</div></div></div>
+</div>
+</div>
+</div>
+<div class="tc" id="tab-app">
+<div class="arch-section">
+<div class="arch-h">
+<div class="arch-icon" style="background:rgba(239,68,68,.1)">📱</div>
+<div class="arch-title" style="font-size:1rem;font-weight:600">应用层 · 面向用户的最终交付</div>
+</div>
+<div class="l4">
+<div class="lcard l5-1"><div class="lh">🏭 行业解决方案</div><div class="lb"><div class="litem">装备制造行业方案</div><div class="litem">新能源行业方案</div><div class="litem">电子信息行业方案</div><div class="litem">生物医药/冶金/纺织</div><div class="sub-label">适用对象</div><div class="sub-item">制造业企业用户</div></div></div>
+<div class="lcard l5-1"><div class="lh">💻 通用应用</div><div class="lb"><div class="litem">数字员工工作台</div><div class="litem">运营监控大屏</div><div class="litem">开发者平台</div><div class="litem">API文档/SDK</div><div class="sub-label">适用对象</div><div class="sub-item">企业管理员/开发者</div></div></div>
+<div class="lcard l5-1"><div class="lh">📲 移动端应用</div><div class="lb"><div class="litem">移动巡检</div><div class="litem">移动审批</div><div class="litem">消息推送</div><div class="litem">生产数据实时查看</div><div class="sub-label">适用对象</div><div class="sub-item">现场工作人员/管理人员</div></div></div>
+</div>
+</div>
+</div>
+<div class="tc" id="tab-deploy">
+<div class="arch-section">
+<div class="arch-h">
+<div class="arch-icon" style="background:rgba(56,189,248,.1)">☁️</div>
+<div class="arch-title" style="font-size:1rem;font-weight:600">云边端协同部署架构</div>
+</div>
+<div class="deploy">
+<div class="deploy-h3">部署模式：云端训练 + 边缘推理 + 端侧执行</div>
+<div class="deploy-flow">
+<div class="deploy-node"><div class="dn-icon">☁️</div><div class="dn-title">云端部署</div><div class="dn-sub">数据中心</div><div class="dn-eg">数据分析/模型训练/技能管理</div></div>
+<div class="arrow">→</div>
+<div class="deploy-node"><div class="dn-icon">🖥️</div><div class="dn-title">边缘部署</div><div class="dn-sub">工厂现场</div><div class="dn-eg">实时推理/设备控制/低延迟</div></div>
+<div class="arrow">→</div>
+<div class="deploy-node"><div class="dn-icon">🔧</div><div class="dn-title">端侧部署</div><div class="dn-sub">设备终端</div><div class="dn-eg">机器人/AGV/PLC/传感器</div></div>
+</div>
+<div class="deploy-details">
+<div class="dd-item"><div class="dd-title" style="color:#38bdf8">☁️ 云端职责</div><div class="dd-text">数据中台、训练平台、技能编排、应用层；大数据分析、模型训练、全局调度、用户交互</div></div>
+<div class="dd-item"><div class="dd-title" style="color:#4ade80">🖥️ 边缘职责</div><div class="dd-text">边缘计算节点、轻量化推理引擎、设备控制；实时处理、低延迟推理、本地缓存</div></div>
+<div class="dd-item"><div class="dd-title" style="color:#a78bfa">🔧 端侧职责</div><div class="dd-text">工业机器人、AGV、传感器、PLC；数据采集、执行控制指令、反馈上传</div></div>
+</div>
+</div>
+<div class="arch-section">
+<div class="arch-h">
+<div class="arch-icon" style="background:rgba(245,158,11,.1)">🗺️</div>
+<div class="arch-title" style="font-size:1rem;font-weight:600">架构演进路线</div>
+</div>
+<div class="road-timeline">
+<div class="road-phase p1"><div class="road-hdr">第一阶段 <span class="road-time">1-3个月</span></div><div class="road-body"><ul class="road-items"><li>基础设施+数据中台</li><li>LLM/CV/时序预测三大引擎</li><li>上线第一批10项基础技能</li></ul></div></div>
+<div class="road-phase p2"><div class="road-hdr">第二阶段 <span class="road-time">4-5个月</span></div><div class="road-body"><ul class="road-items"><li>运筹优化+具身智能引擎</li><li>第二批15项业务增值技能</li><li>完善技能编排+应用层</li></ul></div></div>
+<div class="road-phase p3"><div class="road-hdr">第三阶段 <span class="road-time">第6个月</span></div><div class="road-body"><ul class="road-items"><li>多智能体+数字孪生引擎</li><li>第三批5项高阶技能原型</li><li>形成完整平台生态</li></ul></div></div>
+</div>
+</div>
+</div>
+</div>
+<footer class="ft">数字员工平台整体架构设计 · 五层分层 · 云边端协同 · 2026年5月</footer>
+<script>
+document.querySelectorAll('.nav button').forEach(function(btn){
+btn.addEventListener('click',function(){
+document.querySelectorAll('.tc').forEach(function(t){t.classList.remove('active');});
+document.querySelectorAll('.nav button').forEach(function(b){b.classList.remove('active');});
+document.getElementById('tab-'+this.dataset.tab).classList.add('active');
+this.classList.add('active');
+});
+});
+</script>
+</body>
+</html>

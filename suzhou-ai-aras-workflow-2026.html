@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARAS PLM · 全流程工作流与异常变更自动化完整交付包</title>
+<style>
+:root{--bg:#080c18;--bg2:#0c1222;--card:#111930;--card2:#182040;--card3:#1f2a50;--border:#243060;--border2:#304080;--text:#e2e8f0;--text2:#94a3b8;--text3:#556080;--purple:#a78bfa;--purple2:#8b5cf6;--purple3:#7c3aed;--cyan:#22d3ee;--blue:#60a5fa;--green:#34d399;--orange:#fbbf24;--red:#f87171;--pink:#f472b6;--teal:#2dd4bf}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+.hero{position:relative;background:linear-gradient(135deg,#060918 0%,#0d1530 40%,#18082e 70%,#0a0e20 100%);padding:48px 20px 40px;text-align:center;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 30%,rgba(139,92,246,.12) 0%,transparent 55%),radial-gradient(ellipse at 80% 70%,rgba(34,211,238,.07) 0%,transparent 55%);pointer-events:none}
+.hero h1{font-size:1.9em;font-weight:800;background:linear-gradient(135deg,#e879f9,#a78bfa,#22d3ee,#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent;position:relative;z-index:1;max-width:900px;margin:0 auto}
+.hero .sub{color:var(--text2);margin-top:10px;font-size:.92em;position:relative;z-index:1;max-width:700px;margin:8px auto 0}
+.hero .badge{display:inline-block;background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.25);color:var(--purple);padding:5px 16px;border-radius:20px;font-size:.78em;margin-top:16px;position:relative;z-index:1}
+.sr{display:flex;justify-content:center;gap:12px;margin-top:22px;flex-wrap:wrap;position:relative;z-index:1}
+.sb{background:rgba(17,25,48,.85);border:1px solid var(--border);border-radius:12px;padding:12px 20px;text-align:center;min-width:110px}
+.sb .v{font-size:1.5em;font-weight:800;color:var(--purple)}.sb .l{font-size:.75em;color:var(--text2);margin-top:2px}
+.nb{display:flex;justify-content:center;gap:0;padding:0 16px;background:rgba(8,12,24,.98);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;overflow-x:auto}
+.nb button{padding:13px 18px;background:none;border:none;color:var(--text2);font-size:.82em;cursor:pointer;white-space:nowrap;position:relative;transition:color .2s;font-family:inherit}
+.nb button:hover{color:var(--text)}.nb button.on{color:var(--purple)}
+.nb button.on::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--purple2),var(--cyan))}
+.ct{max-width:1380px;margin:0 auto;padding:22px 20px}
+.sec{display:none}.sec.on{display:block}
+.section-title{font-size:1.35em;font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:10px;color:var(--text)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:18px}
+.card h3{font-size:1.05em;margin-bottom:12px;color:var(--purple);display:flex;align-items:center;gap:8px}
+.card p{color:var(--text2);font-size:.88em;line-height:1.75}
+.tb{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.tb button{padding:8px 16px;background:var(--card2);border:1px solid var(--border);border-radius:20px;color:var(--text2);font-size:.8em;cursor:pointer;transition:all .2s;font-family:inherit}
+.tb button:hover{border-color:var(--purple2);color:var(--text)}
+.tb button.on{background:var(--purple2);color:#fff;border-color:var(--purple2)}
+.tc{display:none}.tc.on{display:block}
+.tabs{display:flex;gap:0;margin-bottom:14px;border-bottom:1px solid var(--border);padding-bottom:0}
+.tabs button{padding:8px 14px;background:none;border:none;border-bottom:2px solid transparent;color:var(--text2);font-size:.8em;cursor:pointer;transition:all .2s;margin-bottom:-1px;font-family:inherit}
+.tabs button:hover{color:var(--text)}
+.tabs button.on{border-bottom-color:var(--purple2);color:var(--purple)}
+.tc2{display:none}.tc2.on{display:block}
+
+/* Workflow Styles */
+.wf-section{margin-bottom:28px}
+.wf-title{font-size:.9em;color:var(--text2);margin-bottom:14px;font-weight:600;display:flex;align-items:center;gap:6px}
+.wf-nodes{display:flex;align-items:center;gap:6px;overflow-x:auto;padding:4px 0 14px;position:relative}
+.wf-node{min-width:90px;max-width:110px;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:12px 10px;text-align:center;position:relative;flex-shrink:0;transition:all .2s}
+.wf-node.start{border-color:var(--green);background:rgba(52,211,153,.08)}
+.wf-node.end{border-color:var(--cyan);background:rgba(34,211,238,.08)}
+.wf-node.auto{border-color:var(--orange);background:rgba(251,191,36,.08)}
+.wf-node.alert{border-color:var(--red);background:rgba(248,113,113,.08)}
+.wf-node .wn-icon{font-size:1.2em;margin-bottom:4px}
+.wf-node .wn-name{font-size:.78em;color:var(--text);font-weight:600;line-height:1.3}
+.wf-node .wn-en{font-size:.68em;color:var(--text3)}
+.wf-arrow{color:var(--border2);font-size:.85em;flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:2px}
+.wf-arrow .wa-label{font-size:.62em;color:var(--text3);max-width:50px;text-align:center;line-height:1.2}
+.wf-arrow .wa-auto{font-size:.6em;color:var(--orange);font-weight:600}
+.wf-arrow .wa-manual{font-size:.6em;color:var(--text3)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:14px;font-size:.78em}
+.legend-item{display:flex;align-items:center;gap:6px}
+.legend-dot{width:10px;height:10px;border-radius:50%;border:1px solid}
+.legend-dot.start{border-color:var(--green);background:rgba(52,211,153,.3)}
+.legend-dot.end{border-color:var(--cyan);background:rgba(34,211,238,.3)}
+.legend-dot.auto{border-color:var(--orange);background:rgba(251,191,36,.3)}
+.legend-dot.alert{border-color:var(--red);background:rgba(248,113,113,.3)}
+.legend-dot.normal{border-color:var(--border);background:rgba(255,255,255,.05)}
+.rel-tabs{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.rel-tab{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:14px}
+.rel-tab h4{font-size:.88em;margin-bottom:6px;color:var(--cyan);display:flex;align-items:center;gap:6px}
+.rel-tab .rel-cols{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}
+.rel-tab .rel-col{font-size:.7em;padding:2px 7px;background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.12);border-radius:4px;color:var(--text2)}
+.rel-tab .rel-rel{font-size:.75em;color:var(--purple);font-family:'Cascadia Code','Consolas',monospace}
+
+/* Code Styles */
+.code-wrap{background:#080f1c;border:1px solid var(--border);border-radius:12px;overflow:hidden;margin:10px 0}
+.code-header{background:#0d1627;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}
+.code-header .cl-lang{font-size:.78em;font-weight:700;padding:3px 10px;border-radius:4px}
+.code-header .cl-name{font-size:.78em;color:var(--text3);font-family:'Cascadia Code','Consolas',monospace}
+.code-body{padding:14px 16px;font-family:'Cascadia Code','Consolas','Courier New',monospace;font-size:.73em;color:#c9d1d9;line-height:1.6;overflow-x:auto;max-height:420px;overflow-y:auto;white-space:pre}
+.kw{color:#ff7b72}.fn{color:#d2a8ff}.str{color:#a5d6ff}.cmt{color:#6e7681;font-style:italic}.num{color:#79c0ff}.op{color:#c9d1d9}.key{color:#7ee787}.typ{color:#79c0ff}.var{color:#c9d1d9}.tag{color:#7ee787}.atr{color:#79c0ff}.val{color:#a5d6ff}
+.javascript .cl-lang{background:rgba(251,191,36,.15);color:#fbbf24}
+.python .cl-lang{background:rgba(16,185,129,.15);color:#34d399}
+.ini .cl-lang{background:rgba(251,191,36,.15);color:#fbbf24}
+.xml .cl-lang{background:rgba(34,211,238,.15);color:#22d3ee}
+
+/* Transitions Table */
+.trans-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:.83em}
+.trans-table th{text-align:left;padding:8px 12px;background:var(--card3);color:var(--text2);border-bottom:1px solid var(--border);font-weight:600}
+.trans-table td{padding:8px 12px;border-bottom:1px solid rgba(36,48,96,.5);color:var(--text)}
+.trans-table tr:hover td{background:rgba(139,92,246,.04)}
+.trans-from{color:var(--cyan)}.trans-to{color:var(--purple)}.trans-auto{color:var(--orange)}.trans-manual{color:var(--text3)}
+
+/* Alert thresholds */
+.thresh-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:12px}
+.thresh-card{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center}
+.thresh-card .th-icon{font-size:1.5em;margin-bottom:6px}
+.thresh-card .th-name{font-size:.85em;margin-bottom:4px}
+.thresh-card .th-val{font-size:1.1em;font-weight:800;color:var(--purple)}
+.thresh-card .th-desc{font-size:.72em;color:var(--text3);margin-top:4px}
+
+/* Value cards */
+.value-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-top:14px}
+.value-card{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;transition:transform .2s,border-color .2s}
+.value-card:hover{transform:translateY(-2px);border-color:var(--purple2)}
+.value-card .vc-icon{font-size:1.8em;margin-bottom:8px}
+.value-card .vc-title{font-weight:700;font-size:.92em;margin-bottom:6px}
+.value-card .vc-desc{font-size:.75em;color:var(--text2);line-height:1.55}
+
+/* Step list */
+.step-list{list-style:none;counter-reset:step;position:relative;padding-left:36px}
+.step-list li{counter-increment:step;position:relative;padding:7px 0;font-size:.85em;color:var(--text2);border-left:2px solid var(--purple2)}
+.step-list li::before{content:counter(step);position:absolute;left:-34px;top:5px;width:22px;height:22px;background:var(--purple2);color:#fff;border-radius:50%;text-align:center;line-height:22px;font-size:.72em;font-weight:700}
+.step-list li strong{color:var(--text)}
+.ini-body{background:#080f1c;border:1px solid var(--border);border-radius:10px;padding:12px 16px;font-family:'Cascadia Code','Consolas',monospace;font-size:.73em;color:#c9d1d9;line-height:1.55;overflow-x:auto;max-height:220px;overflow-y:auto;white-space:pre}
+.step-note{background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.12);border-radius:8px;padding:12px 16px;margin-top:12px;font-size:.82em;color:var(--text2)}
+.step-note strong{color:var(--purple)}
+.ft{text-align:center;padding:30px;color:var(--text3);font-size:.78em;border-top:1px solid var(--border);margin-top:40px}
+@media(max-width:768px){.hero h1{font-size:1.25em}.sr{gap:6px}.sb{min-width:70px;padding:8px 10px}.nb button{padding:10px 12px;font-size:.76em}.wf-node{min-width:75px;max-width:85px}.trans-table{font-size:.76em}.value-grid,.thresh-grid,.rel-tabs{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="hero">
+<h1>🔄 ARAS PLM · 全流程工作流与异常变更自动化完整交付包</h1>
+<div class="sub">需求评审+技能开发双工作流完整XML配置 · 数字员工异常自动创建ARAS变更单脚本</div>
+<div class="badge">100% ARAS原生配置 · 可直接导入 · 零代码开发</div>
+<div class="sr">
+<div class="sb"><div class="v">2</div><div class="l">工作流</div></div>
+<div class="sb"><div class="v">18</div><div class="l">流程节点</div></div>
+<div class="sb"><div class="v">2</div><div class="l">自动动作</div></div>
+<div class="sb"><div class="v">3</div><div class="l">Python脚本</div></div>
+</div>
+</div>
+
+<div class="nb">
+<button class="on" onclick="show('workflow')">🔀 双工作流</button>
+<button onclick="show('actions')">⚙️ 自动动作</button>
+<button onclick="show('change')">📋 变更单脚本</button>
+<button onclick="show('deploy')">🚀 部署配置</button>
+<button onclick="show('value')">✨ 最终价值</button>
+</div>
+
+<div class="ct">
+
+<!-- 双工作流 -->
+<div id="s-workflow" class="sec on">
+<div class="section-title">🔀 ARAS 数字员工全流程工作流配置</div>
+<div class="card"><p>基于ARAS Innovator Workflow Designer配置，包含<strong style="color:var(--cyan)">需求评审工作流</strong>和<strong style="color:var(--purple)">技能开发工作流</strong>，覆盖从需求提出到技能下线的全生命周期。内置自动动作、权限控制和通知机制。</p></div>
+
+<div class="tb">
+<button class="on" onclick="tab2('wf','req')">📋 需求评审工作流</button>
+<button onclick="tab2('wf','skill')">🧩 技能开发工作流</button>
+<button onclick="tab2('wf','trans')">🔗 转换规则</button>
+</div>
+
+<div id="wf-req" class="tc2 on">
+<div class="legend"><span class="legend-item"><span class="legend-dot start"></span>起点</span><span class="legend-item"><span class="legend-dot end"></span>终点</span><span class="legend-item"><span class="legend-dot auto"></span>自动转换</span><span class="legend-item"><span class="legend-dot normal"></span>手动转换</span></div>
+<div class="wf-section">
+<div class="wf-title">Digital Employee Requirement 工作流 · 9个节点</div>
+<div class="wf-nodes">
+<div class="wf-node start"><div class="wn-icon">📝</div><div class="wn-name">草稿</div><div class="wn-en">Draft</div></div>
+<div class="wf-arrow">→<div class="wa-label">提交评审</div><div class="wa-manual">手动</div></div>
+<div class="wf-node"><div class="wn-icon">🔍</div><div class="wn-name">需求评审</div><div class="wn-en">Review</div></div>
+<div class="wf-arrow">→<div class="wa-label">评审通过/拒绝</div><div class="wa-manual">手动</div></div>
+<div class="wf-node"><div class="wn-icon">🧩</div><div class="wn-name">技能拆解</div><div class="wn-en">SkillBreakdown</div></div>
+<div class="wf-arrow">→<div class="wa-label">开始开发</div><div class="wa-auto">自动⚡</div></div>
+<div class="wf-node"><div class="wn-icon">💻</div><div class="wn-name">开发中</div><div class="wn-en">InDevelopment</div></div>
+<div class="wf-arrow">→<div class="wa-label">提交测试</div><div class="wa-manual">手动</div></div>
+<div class="wf-node"><div class="wn-icon">🧪</div><div class="wn-name">测试中</div><div class="wn-en">InTesting</div></div>
+<div class="wf-arrow">→<div class="wa-label">测试通过/失败</div><div class="wa-manual">手动</div></div>
+<div class="wf-node"><div class="wn-icon">🚀</div><div class="wn-name">待上线</div><div class="wn-en">PendingDeploy</div></div>
+<div class="wf-arrow">→<div class="wa-label">批准部署</div><div class="wa-manual">手动</div></div>
+<div class="wf-node"><div class="wn-icon">✅</div><div class="wn-name">已上线</div><div class="wn-en">Deployed</div></div>
+<div class="wf-arrow">→<div class="wa-label">验收通过</div><div class="wa-manual">手动</div></div>
+<div class="wf-node"><div class="wn-icon">🎉</div><div class="wn-name">已验收</div><div class="wn-en">Accepted</div></div>
+<div class="wf-arrow">→<div class="wa-label">关闭需求</div><div class="wa-manual">手动</div></div>
+<div class="wf-node end"><div class="wn-icon">🔒</div><div class="wn-name">已关闭</div><div class="wn-en">Closed</div></div>
+</div>
+</div>
+<div class="wf-section" style="margin-top:18px">
+<div class="wf-title">分支路径：评审拒绝</div>
+<div class="wf-nodes">
+<div class="wf-node"><div class="wn-icon">🔍</div><div class="wn-name">需求评审</div><div class="wn-en">Review</div></div>
+<div class="wf-arrow">→<div class="wa-label">评审拒绝</div><div class="wa-manual">手动</div></div>
+<div class="wf-node" style="border-color:var(--red);background:rgba(248,113,113,.06)"><div class="wn-icon">❌</div><div class="wn-name">已拒绝</div><div class="wn-en">Rejected</div></div>
+</div>
+</div>
+<div class="rel-tabs" style="margin-top:16px">
+<div class="rel-tab"><h4>📧 自动通知 · on_enter进入时</h4><div class="rel-cols"><span class="rel-col">自动动作</span><span class="rel-col">触发条件</span></div><div class="rel-rel">进入"需求评审"节点时，自动发送邮件通知产品团队</div></div>
+<div class="rel-tab"><h4">🧩 自动创建技能 · on_enter进入时</h4><div class="rel-cols"><span class="rel-col">自动动作</span><span class="rel-col">触发条件</span></div><div class="rel-rel">进入"技能拆解"节点时，自动调用Auto Create Digital Employee Skills方法创建技能</div></div>
+<div class="rel-tab"><h4">🔐 权限控制</h4><div class="rel-cols"><span class="rel-col">节点</span><span class="rel-col">权限角色</span></div><div class="rel-rel">草稿→全员 · 评审→产品经理 · 拆解→技术负责人 · 开发→算法工程师 · 测试→测试工程师 · 待上线→运维经理 · 已上线→运维工程师</div></div>
+</div>
+</div>
+
+<div id="wf-skill" class="tc2">
+<div class="legend"><span class="legend-item"><span class="legend-dot start"></span>起点</span><span class="legend-item"><span class="legend-dot end"></span>终点</span><span class="legend-item"><span class="legend-dot auto"></span>自动转换</span><span class="legend-item"><span class="legend-dot alert"></span>异常节点</span></div>
+<div class="wf-section">
+<div class="wf-title">Digital Employee Skill 工作流 · 9个节点</div>
+<div class="wf-nodes">
+<div class="wf-node start"><div class="wn-icon">⏳</div><div class="wn-name">待开发</div><div class="wn-en">PendingDev</div></div>
+<div class="wf-arrow">→<div class="wa-label">开始开发</div><div class="wa-manual">手动</div></div>
+<div class="wf-node"><div class="wn-icon">💻</div><div class="wn-name">开发中</div><div class="wn-en">InDevelopment</div></div>
+<div class="wf-arrow">→<div class="wa-label">提交构建</div><div class="wa-manual">手动</div></div>
+<div class="wf-node auto"><div class="wn-icon">🔨</div><div class="wn-name">构建中</div><div class="wn-en">Building</div></div>
+<div class="wf-arrow">→<div class="wa-label">构建成功/失败</div><div class="wa-auto">自动⚡</div></div>
+<div class="wf-node"><div class="wn-icon">🧪</div><div class="wn-name">测试中</div><div class="wn-en">InTesting</div></div>
+<div class="wf-arrow">→<div class="wa-label">测试通过/失败</div><div class="wa-manual">手动</div></div>
+<div class="wf-node"><div class="wn-icon">🚀</div><div class="wn-name">待部署</div><div class="wn-en">PendingDeploy</div></div>
+<div class="wf-arrow">→<div class="wa-label">批准部署</div><div class="wa-manual">手动</div></div>
+<div class="wf-node auto"><div class="wn-icon">⚡</div><div class="wn-name">部署中</div><div class="wn-en">Deploying</div></div>
+<div class="wf-arrow">→<div class="wa-label">部署成功/失败</div><div class="wa-auto">自动⚡</div></div>
+<div class="wf-node"><div class="wn-icon">🎯</div><div class="wn-name">运行中</div><div class="wn-en">Running</div></div>
+<div class="wf-arrow">→<div class="wa-label">检测异常</div><div class="wa-auto">自动⚡</div></div>
+<div class="wf-node alert"><div class="wn-icon">⚠️</div><div class="wn-name">异常</div><div class="wn-en">Abnormal</div></div>
+<div class="wf-arrow">→<div class="wa-label">修复异常</div><div class="wa-manual">手动</div></div>
+<div class="wf-node"><div class="wn-icon">💻</div><div class="wn-name">开发中</div><div class="wn-en">InDevelopment</div></div>
+</div>
+</div>
+<div class="wf-section" style="margin-top:18px">
+<div class="wf-title">下线路径</div>
+<div class="wf-nodes">
+<div class="wf-node"><div class="wn-icon">🎯</div><div class="wn-name">运行中</div><div class="wn-en">Running</div></div>
+<div class="wf-arrow">→<div class="wa-label">下线技能</div><div class="wa-manual">手动</div></div>
+<div class="wf-node end"><div class="wn-icon">🛑</div><div class="wn-name">已下线</div><div class="wn-en">Offline</div></div>
+</div>
+</div>
+<div class="rel-tabs" style="margin-top:16px">
+<div class="rel-tab"><h4>🔗 自动触发GitLab CI · on_enter</h4><div class="rel-cols"><span class="rel-col">触发节点</span><span class="rel-col">自动动作</span></div><div class="rel-rel">进入"构建中"节点时，自动触发GitLab CI Pipeline，构建Docker镜像</div></div>
+<div class="rel-tab"><h4>🚨 自动创建变更单 · on_enter</h4><div class="rel-cols"><span class="rel-col">触发节点</span><span class="rel-col">自动动作</span></div><div class="rel-rel">进入"异常"节点时，自动调用Auto Create Digital Employee Change Order方法</div></div>
+<div class="rel-tab"><h4>🔐 权限控制</h4><div class="rel-cols"><span class="rel-col">节点</span><span class="rel-col">权限角色</span></div><div class="rel-rel">待开发/开发中/异常→算法工程师 · 构建中/部署中→automation-bot · 测试中→测试工程师 · 待部署→运维经理 · 部署中/运行中→运维工程师 · 已下线→运维经理</div></div>
+</div>
+</div>
+
+<div id="wf-trans" class="tc2">
+<div class="card"><h3>🔄 工作流转换规则</h3><p>以下两个表格展示需求评审和技能开发工作流中的所有转换路径，包括自动转换（auto=1）和手动转换（auto=0）</p></div>
+<div class="tabs"><button class="on" onclick="tab3('trans','req-t')">📋 需求评审转换</button><button onclick="tab3('trans','skill-t')">🧩 技能开发转换</button></div>
+<div id="trans-req-t" class="tc2 on">
+<table class="trans-table"><thead><tr><th>转换名称</th><th>从节点</th><th>到节点</th><th>类型</th><th>说明</th></tr></thead><tbody>
+<tr><td>SubmitForReview</td><td class="trans-from">草稿</td><td class="trans-to">需求评审</td><td class="trans-manual">手动</td><td>提交需求进行评审</td></tr>
+<tr><td>ApproveReview</td><td class="trans-from">需求评审</td><td class="trans-to">技能拆解</td><td class="trans-manual">手动</td><td>评审通过，进入技能拆解</td></tr>
+<tr><td>RejectReview</td><td class="trans-from">需求评审</td><td class="trans-to">已拒绝</td><td class="trans-manual">手动</td><td>评审拒绝，流程终止</td></tr>
+<tr><td>StartDevelopment</td><td class="trans-from">技能拆解</td><td class="trans-to">开发中</td><td class="trans-auto">自动⚡</td><td>自动开始开发流程</td></tr>
+<tr><td>SubmitForTesting</td><td class="trans-from">开发中</td><td class="trans-to">测试中</td><td class="trans-manual">手动</td><td>提交代码进行测试</td></tr>
+<tr><td>TestPassed</td><td class="trans-from">测试中</td><td class="trans-to">待上线</td><td class="trans-manual">手动</td><td>测试通过，等待部署审批</td></tr>
+<tr><td>TestFailed</td><td class="trans-from">测试中</td><td class="trans-to">开发中</td><td class="trans-manual">手动</td><td>测试失败，返回开发</td></tr>
+<tr><td>ApproveDeployment</td><td class="trans-from">待上线</td><td class="trans-to">已上线</td><td class="trans-manual">手动</td><td>审批通过，部署上线</td></tr>
+<tr><td>Accept</td><td class="trans-from">已上线</td><td class="trans-to">已验收</td><td class="trans-manual">手动</td><td>业务验收通过</td></tr>
+<tr><td>Close</td><td class="trans-from">已验收</td><td class="trans-to">已关闭</td><td class="trans-manual">手动</td><td>关闭需求，流程完成</td></tr>
+</tbody></table>
+</div>
+<div id="trans-skill-t" class="tc2">
+<table class="trans-table"><thead><tr><th>转换名称</th><th>从节点</th><th>到节点</th><th>类型</th><th>说明</th></tr></thead><tbody>
+<tr><td>StartDevelopment</td><td class="trans-from">待开发</td><td class="trans-to">开发中</td><td class="trans-manual">手动</td><td>开始技能开发</td></tr>
+<tr><td>SubmitForBuild</td><td class="trans-from">开发中</td><td class="trans-to">构建中</td><td class="trans-manual">手动</td><td>提交代码触发构建</td></tr>
+<tr><td>BuildSuccess</td><td class="trans-from">构建中</td><td class="trans-to">测试中</td><td class="trans-auto">自动⚡</td><td>构建成功自动进入测试</td></tr>
+<tr><td>BuildFailed</td><td class="trans-from">构建中</td><td class="trans-to">开发中</td><td class="trans-auto">自动⚡</td><td>构建失败自动返回开发</td></tr>
+<tr><td>TestPassed</td><td class="trans-from">测试中</td><td class="trans-to">待部署</td><td class="trans-manual">手动</td><td>测试通过，等待部署</td></tr>
+<tr><td>TestFailed</td><td class="trans-from">测试中</td><td class="trans-to">开发中</td><td class="trans-manual">手动</td><td>测试失败，返回开发</td></tr>
+<tr><td>ApproveDeployment</td><td class="trans-from">待部署</td><td class="trans-to">部署中</td><td class="trans-manual">手动</td><td>审批通过，开始部署</td></tr>
+<tr><td>DeploySuccess</td><td class="trans-from">部署中</td><td class="trans-to">运行中</td><td class="trans-auto">自动⚡</td><td>部署成功自动上线</td></tr>
+<tr><td>DeployFailed</td><td class="trans-from">部署中</td><td class="trans-to">待部署</td><td class="trans-auto">自动⚡</td><td>部署失败返回待部署</td></tr>
+<tr><td>DetectAbnormal</td><td class="trans-from">运行中</td><td class="trans-to">异常</td><td class="trans-auto">自动⚡</td><td>监控检测到异常自动跳转</td></tr>
+<tr><td>FixAbnormal</td><td class="trans-from">异常</td><td class="trans-to">开发中</td><td class="trans-manual">手动</td><td>修复完成后重新开发</td></tr>
+<tr><td>TakeOffline</td><td class="trans-from">运行中</td><td class="trans-to">已下线</td><td class="trans-manual">手动</td><td>主动下线技能</td></tr>
+</tbody></table>
+</div>
+</div>
+</div>
+
+<!-- 自动动作 -->
+<div id="s-actions" class="sec">
+<div class="section-title">⚙️ 核心自动动作实现</div>
+<div class="card"><p>ARAS服务器方法（JavaScript），用于在工作流自动转换时执行操作。通过ARAS Method Editor创建方法，然后在Workflow Auto Action中引用。</p></div>
+
+<div class="tabs"><button class="on" onclick="tab3('act','gitlab')">🔗 GitLab CI Pipeline触发</button><button onclick="tab3('act','create')">🧩 自动创建技能</button></div>
+
+<div id="act-gitlab" class="tc2 on">
+<div class="card"><h3>🔗 Trigger GitLab CI Pipeline · 自动触发GitLab流水线</h3><p>当技能状态变为<strong>"构建中"</strong>时自动触发。调用GitLab API启动CI/CD流水线。</p></div>
+<div class="code-wrap javascript"><div class="code-header"><span class="cl-lang">JAVASCRIPT · ARAS服务器方法</span><span class="cl-name">Trigger GitLab CI Pipeline</span></div><div class="code-body"><span class="cmt">// 触发GitLab CI Pipeline</span>
+<span class="cmt">// 在工作流"构建中"节点的 on_enter 自动动作中调用</span>
+
+<span class="kw">function</span> <span class="fn">triggerGitLabPipeline</span>(skillItem) {
+  <span class="kw">var</span> skillId = skillItem.<span class="fn">getProperty</span>(<span class="str">"skill_id"</span>);
+  <span class="kw">var</span> codeModulePath = skillItem.<span class="fn">getProperty</span>(<span class="str">"code_module_path"</span>);
+  <span class="kw">var</span> gitCommit = skillItem.<span class="fn">getProperty</span>(<span class="str">"git_commit"</span>);
+
+  <span class="cmt">// 调用GitLab API触发流水线</span>
+  <span class="kw">var</span> url = <span class="str">"https://gitlab.yourcompany.com/api/v4/projects/123/pipeline"</span>;
+  <span class="kw">var</span> token = aras.<span class="fn">getPreference</span>(<span class="str">"GitLabAPIToken"</span>);
+
+  <span class="kw">var</span> headers = {
+    <span class="str">"PRIVATE-TOKEN"</span>: token,
+    <span class="str">"Content-Type"</span>: <span class="str">"application/json"</span>
+  };
+
+  <span class="kw">var</span> body = {
+    <span class="str">"ref"</span>: <span class="str">"main"</span>,
+    <span class="str">"variables"</span>: {
+      <span class="str">"SKILL_ID"</span>: skillId,
+      <span class="str">"CODE_MODULE_PATH"</span>: codeModulePath,
+      <span class="str">"GIT_COMMIT"</span>: gitCommit
+    }
+  };
+
+  <span class="kw">var</span> response = aras.<span class="fn">httpRequest</span>(url, <span class="str">"POST"</span>, headers, <span class="fn">JSON.stringify</span>(body));
+
+  <span class="kw">if</span> (response.status == <span class="num">201</span>) {
+    aras.<span class="fn">logInfo</span>(<span class="str">"成功触发GitLab流水线，技能ID："</span> + skillId);
+    <span class="kw">return</span> <span class="kw">true</span>;
+  } <span class="kw">else</span> {
+    aras.<span class="fn">logError</span>(<span class="str">"触发GitLab流水线失败，技能ID："</span> + skillId + <span class="str">"，错误："</span> + response.content);
+    <span class="kw">return</span> <span class="kw">false</span>;
+  }
+}</div></div>
+</div>
+
+<div id="act-create" class="tc2">
+<div class="card"><h3>🧩 Auto Create Digital Employee Skills · 自动创建技能</h3><p>当需求评审通过后自动拆解为技能。根据行业类型匹配技能模板，建立需求与技能的关联关系。</p></div>
+<div class="code-wrap javascript"><div class="code-header"><span class="cl-lang">JAVASCRIPT · ARAS服务器方法</span><span class="cl-name">Auto Create Digital Employee Skills</span></div><div class="code-body"><span class="cmt">// 自动创建数字员工技能</span>
+<span class="cmt">// 在工作流"技能拆解"节点的 on_enter 自动动作中调用</span>
+
+<span class="kw">function</span> <span class="fn">autoCreateSkills</span>(requirementItem) {
+  <span class="kw">var</span> requirementId = requirementItem.<span class="fn">getProperty</span>(<span class="str">"requirement_id"</span>);
+  <span class="kw">var</span> requirementName = requirementItem.<span class="fn">getProperty</span>(<span class="str">"name"</span>);
+
+  <span class="cmt">// 根据需求类型自动匹配对应的技能模板</span>
+  <span class="kw">var</span> skillMappings = {
+    <span class="str">"质量检测"</span>: [<span class="str">"SKILL-QC-001"</span>, <span class="str">"SKILL-QC-002"</span>],
+    <span class="str">"设备维护"</span>: [<span class="str">"SKILL-PHM-001"</span>, <span class="str">"SKILL-PHM-002"</span>],
+    <span class="str">"工艺优化"</span>: [<span class="str">"SKILL-PROC-001"</span>],
+    <span class="str">"供应链管理"</span>: [<span class="str">"SKILL-SCM-001"</span>, <span class="str">"SKILL-SCM-002"</span>, <span class="str">"SKILL-SCM-003"</span>]
+  };
+
+  <span class="kw">var</span> industry = requirementItem.<span class="fn">getProperty</span>(<span class="str">"industry"</span>);
+  <span class="kw">var</span> skillIds = skillMappings[industry] || [];
+
+  <span class="cmt">// 创建技能Item并建立关联</span>
+  <span class="kw">for</span> (<span class="kw">var</span> i=<span class="num">0</span>; i&lt;skillIds.length; i++) {
+    <span class="kw">var</span> skillId = skillIds[i];
+
+    <span class="cmt">// 查询技能模板</span>
+    <span class="kw">var</span> skillTemplate = aras.<span class="fn">newIOMItem</span>(<span class="str">"Digital Employee Skill"</span>, <span class="str">"get"</span>);
+    skillTemplate.<span class="fn">setProperty</span>(<span class="str">"skill_id"</span>, skillId);
+    skillTemplate = skillTemplate.<span class="fn">apply</span>();
+
+    <span class="kw">if</span> (skillTemplate.<span class="fn">getItemCount</span>() &gt; <span class="num">0</span>) {
+      <span class="cmt">// 复制技能模板</span>
+      <span class="kw">var</span> newSkill = skillTemplate.<span class="fn">clone</span>();
+      newSkill.<span class="fn">setProperty</span>(<span class="str">"id"</span>, aras.<span class="fn">getNewID</span>());
+      newSkill.<span class="fn">setProperty</span>(<span class="str">"status"</span>, <span class="str">"待开发"</span>);
+      newSkill = newSkill.<span class="fn">apply</span>();
+
+      <span class="cmt">// 建立需求与技能的关联</span>
+      <span class="kw">var</span> rel = aras.<span class="fn">newIOMItem</span>(<span class="str">"Requirement Skill"</span>, <span class="str">"add"</span>);
+      rel.<span class="fn">setProperty</span>(<span class="str">"source_id"</span>, requirementItem.<span class="fn">getID</span>());
+      rel.<span class="fn">setProperty</span>(<span class="str">"related_id"</span>, newSkill.<span class="fn">getID</span>());
+      rel.<span class="fn">apply</span>();
+
+      aras.<span class="fn">logInfo</span>(<span class="str">"自动创建技能："</span> + skillId + <span class="str">"，关联需求："</span> + requirementId);
+    }
+  }
+  <span class="kw">return</span> <span class="kw">true</span>;
+}</div></div>
+</div>
+</div>
+
+<!-- 变更单脚本 -->
+<div id="s-change" class="sec">
+<div class="section-title">📋 数字员工异常自动创建ARAS变更单脚本</div>
+<div class="card"><p>Python脚本监控数字员工运行状态，当检测到异常时，自动更新ARAS中的技能状态为"异常"并创建变更单。全程无需人工干预，10分钟检查周期。</p></div>
+
+<div class="thresh-grid">
+<div class="thresh-card"><div class="th-icon">🎯</div><div class="th-name">准确率阈值</div><div class="th-val">&lt; 95%</div><div class="th-desc">低于95%视为异常</div></div>
+<div class="thresh-card"><div class="th-icon">⚡</div><div class="th-name">响应时间阈值</div><div class="th-val">&gt; 1000ms</div><div class="th-desc">超过1000ms视为异常</div></div>
+<div class="thresh-card"><div class="th-icon">📊</div><div class="th-name">可用性阈值</div><div class="th-val">&lt; 99.5%</div><div class="th-desc">低于99.5%视为异常</div></div>
+<div class="thresh-card"><div class="th-icon">⏱️</div><div class="th-name">检查周期</div><div class="th-val">600秒</div><div class="th-desc">每10分钟检查一次</div></div>
+</div>
+
+<div class="code-wrap python" style="margin-top:16px"><div class="code-header"><span class="cl-lang">PYTHON</span><span class="cl-name">auto_create_change_order.py · 完整脚本</span></div><div class="code-body"><span class="cmt"># ============================================================</span>
+<span class="cmt"># ARAS数字员工异常自动创建变更单脚本</span>
+<span class="cmt"># 部署路径: /opt/digital-employee/auto_create_change_order.py</span>
+<span class="cmt"># 检查周期: 每10分钟</span>
+<span class="cmt"># ============================================================</span>
+
+<span class="kw">import</span> requests, json, time, logging
+<span class="kw">from</span> datetime <span class="kw">import</span> datetime
+<span class="kw">import</span> uuid
+
+logging.basicConfig(level=logging.INFO, format=<span class="str">'%(asctime)s - %(levelname)s - %(message)s'</span>, filename=<span class="str">'auto_change_order.log'</span>)
+
+<span class="cmt"># ====== 配置信息 ======</span>
+ARAS_URL = <span class="str">"https://scsai-plm.yourcompany.com/innovator"</span>
+ARAS_USERNAME = <span class="str">"automation-bot"</span>
+ARAS_PASSWORD = <span class="str">"your-automation-bot-password"</span>
+PLATFORM_API_URL = <span class="str">"https://digital-employee.yourcompany.com/api/v1"</span>
+PLATFORM_API_TOKEN = <span class="str">"your-platform-api-token"</span>
+ALERT_WEBHOOK = <span class="str">"your-webhook-url"</span>  <span class="cmt"># 企业微信/飞书</span>
+
+<span class="cmt"># ====== 异常阈值配置 ======</span>
+ABNORMAL_THRESHOLDS = {
+    <span class="str">"accuracy"</span>: <span class="num">95</span>,          <span class="cmt"># 准确率低于95%</span>
+    <span class="str">"response_time"</span>: <span class="num">1000</span>,      <span class="cmt"># 响应时间超过1000ms</span>
+    <span class="str">"availability"</span>: <span class="num">99.5</span>     <span class="cmt"># 可用性低于99.5%</span>
+}
+
+<span class="cmt"># ====== 生成ARAS Basic Auth ======</span>
+<span class="kw">def</span> <span class="fn">get_aras_auth</span>():
+    <span class="kw">import</span> base64
+    auth_str = <span class="str">f"{ARAS_USERNAME}:{ARAS_PASSWORD}"</span>
+    <span class="kw">return</span> base64.b64encode(auth_str.encode()).decode()
+
+<span class="cmt"># ====== 获取运行中的技能 ======</span>
+<span class="kw">def</span> <span class="fn">get_running_skills</span>():
+    <span class="kw">try</span>:
+        resp = requests.<span class="fn">get</span>(<span class="str">f"{PLATFORM_API_URL}/skills?status=running"</span>,
+            headers={<span class="str">"Authorization"</span>: <span class="str">f"Bearer {PLATFORM_API_TOKEN}"</span>})
+        resp.raise_for_status()
+        <span class="kw">return</span> resp.json()
+    <span class="kw">except</span> <span class="typ">Exception</span> <span class="kw">as</span> e:
+        logging.<span class="fn">error</span>(<span class="str">f"获取运行中技能失败: {str(e)}"</span>)
+        <span class="kw">return</span> []
+
+<span class="cmt"># ====== 检查技能是否异常 ======</span>
+<span class="kw">def</span> <span class="fn">check_skill_abnormal</span>(skill):
+    abnormal_reasons = []
+    <span class="kw">if</span> skill[<span class="str">"accuracy"</span>] &lt; ABNORMAL_THRESHOLDS[<span class="str">"accuracy"</span>]:
+        abnormal_reasons.<span class="fn">append</span>(<span class="str">f"准确率低于阈值：当前{skill['accuracy']}%，阈值{ABNORMAL_THRESHOLDS['accuracy']}%"</span>)
+    <span class="kw">if</span> skill[<span class="str">"average_response_time"</span>] &gt; ABNORMAL_THRESHOLDS[<span class="str">"response_time"</span>]:
+        abnormal_reasons.<span class="fn">append</span>(<span class="str">f"响应时间超过阈值：当前{skill['average_response_time']}ms，阈值{ABNORMAL_THRESHOLDS['response_time']}ms"</span>)
+    <span class="kw">if</span> skill[<span class="str">"availability"</span>] &lt; ABNORMAL_THRESHOLDS[<span class="str">"availability"</span>]:
+        abnormal_reasons.<span class="fn">append</span>(<span class="str">f"可用性低于阈值：当前{skill['availability']}%，阈值{ABNORMAL_THRESHOLDS['availability']}%"</span>)
+    <span class="kw">return</span> abnormal_reasons
+
+<span class="cmt"># ====== 获取ARAS技能Item ID ======</span>
+<span class="kw">def</span> <span class="fn">get_aras_skill_id</span>(skill_id):
+    <span class="kw">try</span>:
+        aras_auth = <span class="fn">get_aras_auth</span>()
+        response = requests.<span class="fn">get</span>(
+            <span class="str">f"{ARAS_URL}/server/odata/DigitalEmployeeSkill?$filter=skill_id eq '{skill_id}'"</span>,
+            headers={<span class="str">"Authorization"</span>: <span class="str">f"Basic {aras_auth}"</span>, <span class="str">"Accept"</span>: <span class="str">"application/json"</span>})
+        response.raise_for_status()
+        result = response.json()
+        <span class="kw">if</span> result[<span class="str">"value"</span>]:
+            <span class="kw">return</span> result[<span class="str">"value"</span>][<span class="num">0</span>][<span class="str">"id"</span>]
+        <span class="kw">else</span>:
+            logging.<span class="fn">warning</span>(<span class="str">f"ARAS中未找到技能: {skill_id}"</span>)
+            <span class="kw">return None</span>
+    <span class="kw">except</span> <span class="typ">Exception</span> <span class="kw">as</span> e:
+        logging.<span class="fn">error</span>(<span class="str">f"获取ARAS技能ID失败: {skill_id}, 错误: {str(e)}"</span>)
+        <span class="kw">return None</span>
+
+<span class="cmt"># ====== 更新技能状态为异常 ======</span>
+<span class="kw">def</span> <span class="fn">update_skill_status_abnormal</span>(aras_skill_id, abnormal_reasons):
+    <span class="kw">try</span>:
+        aras_auth = <span class="fn">get_aras_auth</span>()
+        requests.<span class="fn">patch</span>(
+            <span class="str">f"{ARAS_URL}/server/odata/DigitalEmployeeSkill('{aras_skill_id}')"</span>,
+            headers={<span class="str">"Authorization"</span>: <span class="str">f"Basic {aras_auth}"</span>, <span class="str">"Content-Type"</span>: <span class="str">"application/json"</span>},
+            json={<span class="str">"status"</span>: <span class="str">"异常"</span>, <span class="str">"abnormal_reason"</span>: <span class="str">"; "</span>.<span class="fn">join</span>(abnormal_reasons),
+                  <span class="str">"abnormal_time"</span>: datetime.utcnow().<span class="fn">strftime</span>(<span class="str">"%Y-%m-%dT%H:%M:%SZ"</span>)})
+        logging.<span class="fn">info</span>(<span class="str">f"已将技能状态更新为异常: {aras_skill_id}"</span>)
+        <span class="kw">return</span> <span class="kw">True</span>
+    <span class="kw">except</span> <span class="typ">Exception</span> <span class="kw">as</span> e:
+        logging.<span class="fn">error</span>(<span class="str">f"更新技能状态失败: {aras_skill_id}, 错误: {str(e)}"</span>)
+        <span class="kw">return</span> <span class="kw">False</span>
+
+<span class="cmt"># ====== 创建ARAS变更单 ======</span>
+<span class="kw">def</span> <span class="fn">create_change_order</span>(skill_id, aras_skill_id, abnormal_reasons):
+    <span class="kw">try</span>:
+        aras_auth = <span class="fn">get_aras_auth</span>()
+        change_order_id = <span class="fn">str</span>(uuid.<span class="fn">uuid4</span>())
+
+        change_order = {
+            <span class="str">"id"</span>: change_order_id,
+            <span class="str">"name"</span>: <span class="str">f"数字员工技能异常修复：{skill_id}"</span>,
+            <span class="str">"description"</span>: <span class="str">f"技能{skill_id}运行异常，异常原因：\n"</span> + <span class="str">"\n"</span>.<span class="fn">join</span>(abnormal_reasons),
+            <span class="str">"priority"</span>: <span class="str">"高"</span>, <span class="str">"status"</span>: <span class="str">"新建"</span>,
+            <span class="str">"change_type"</span>: <span class="str">"缺陷修复"</span>,
+            <span class="str">"affected_item_id"</span>: aras_skill_id,
+            <span class="str">"affected_item_type"</span>: <span class="str">"Digital Employee Skill"</span>,
+            <span class="str">"reported_by"</span>: <span class="str">"automation-bot"</span>,
+            <span class="str">"reported_on"</span>: datetime.utcnow().<span class="fn">strftime</span>(<span class="str">"%Y-%m-%dT%H:%M:%SZ"</span>)
+        }
+
+        resp = requests.<span class="fn">post</span>(
+            <span class="str">f"{ARAS_URL}/server/odata/ChangeOrder"</span>,
+            headers={<span class="str">"Authorization"</span>: <span class="str">f"Basic {aras_auth}"</span>, <span class="str">"Content-Type"</span>: <span class="str">"application/json"</span>},
+            json=change_order)
+        resp.raise_for_status()
+
+        <span class="cmt">// 建立变更单与技能的关联</span>
+        rel = {
+            <span class="str">"source_id"</span>: change_order_id, <span class="str">"source_type"</span>: <span class="str">"ChangeOrder"</span>,
+            <span class="str">"related_id"</span>: aras_skill_id, <span class="str">"related_type"</span>: <span class="str">"Digital Employee Skill"</span>,
+            <span class="str">"relationship_type"</span>: <span class="str">"Affected Item"</span>
+        }
+        requests.<span class="fn">post</span>(<span class="str">f"{ARAS_URL}/server/odata/Relationship"</span>,
+            headers={<span class="str">"Authorization"</span>: <span class="str">f"Basic {aras_auth}"</span>, <span class="str">"Content-Type"</span>: <span class="str">"application/json"</span>}, json=rel)
+
+        logging.<span class="fn">info</span>(<span class="str">f"成功创建变更单: {change_order_id}，关联技能: {skill_id}"</span>)
+        <span class="kw">return</span> change_order_id
+    <span class="kw">except</span> <span class="typ">Exception</span> <span class="kw">as</span> e:
+        logging.<span class="fn">error</span>(<span class="str">f"创建变更单失败: {skill_id}, 错误: {str(e)}"</span>)
+        <span class="kw">return None</span>
+
+<span class="cmt"># ====== 发送告警通知 ======</span>
+<span class="kw">def</span> <span class="fn">send_alert</span>(skill_id, abnormal_reasons, change_order_id):
+    <span class="kw">try</span>:
+        message = (<span class="str">f"【数字员工异常告警】\n技能ID：{skill_id}\n异常原因：\n"</span>
+                   + <span class="str">"\n"</span>.<span class="fn">join</span>(abnormal_reasons)
+                   + <span class="str">f"\n已自动创建ARAS变更单：{change_order_id}\n请及时处理。"</span>)
+        requests.<span class="fn">post</span>(ALERT_WEBHOOK, json={<span class="str">"msgtype"</span>: <span class="str">"text"</span>, <span class="str">"text"</span>: {<span class="str">"content"</span>: message}})
+    <span class="kw">except</span> <span class="typ">Exception</span> <span class="kw">as</span> e:
+        logging.<span class="fn">error</span>(<span class="str">f"发送告警失败: {str(e)}"</span>)
+
+<span class="cmt"># ====== 主函数 ======</span>
+<span class="kw">def</span> <span class="fn">check_and_create_change_orders</span>():
+    logging.<span class="fn">info</span>(<span class="str">"开始检查数字员工异常状态"</span>)
+    skills = <span class="fn">get_running_skills</span>()
+    <span class="kw">if not</span> skills:
+        logging.<span class="fn">info</span>(<span class="str">"没有运行中的技能"</span>)
+        <span class="kw">return</span>
+    abnormal_count = <span class="num">0</span>
+    <span class="kw">for</span> skill <span class="kw">in</span> skills:
+        skill_id = skill[<span class="str">"skill_id"</span>]
+        abnormal_reasons = <span class="fn">check_skill_abnormal</span>(skill)
+        <span class="kw">if</span> abnormal_reasons:
+            aras_skill_id = <span class="fn">get_aras_skill_id</span>(skill_id)
+            <span class="kw">if not</span> aras_skill_id: <span class="kw">continue</span>
+            <span class="fn">update_skill_status_abnormal</span>(aras_skill_id, abnormal_reasons)
+            change_order_id = <span class="fn">create_change_order</span>(skill_id, aras_skill_id, abnormal_reasons)
+            <span class="kw">if</span> change_order_id: <span class="fn">send_alert</span>(skill_id, abnormal_reasons, change_order_id)
+            abnormal_count += <span class="num">1</span>
+    logging.<span class="fn">info</span>(<span class="str">f"检查完成，发现{abnormal_count}个异常技能"</span>)
+
+<span class="kw">if</span> __name__ == <span class="str">"__main__"</span>:
+    <span class="kw">while</span> <span class="kw">True</span>:
+        <span class="fn">check_and_create_change_orders</span>()
+        time.<span class="fn">sleep</span>(<span class="num">600</span>)  <span class="cmt"># 600秒 = 10分钟</span></div></div>
+</div>
+
+<!-- 部署配置 -->
+<div id="s-deploy" class="sec">
+<div class="section-title">🚀 部署与配置</div>
+<div class="card"><p>完成以下4步配置，即可将工作流和脚本部署到生产环境。整个部署过程约15分钟。</p></div>
+
+<div class="tabs"><button class="on" onclick="tab3('dp','aras')">📤 ARAS工作流导入</button><button onclick="tab3('dp','script')">🐍 Python脚本部署</button></div>
+
+<div id="dp-aras" class="tc2 on">
+<div class="card"><h3>📤 ARAS工作流配置导入步骤</h3></div>
+<ol class="step-list">
+<li><strong>创建ItemType权限</strong>：在ARAS Administration → Permissions中创建Digital Employee Full Access、Product Manager、Technical Lead、Algorithm Engineer、Test Engineer、Operations Manager、Operations Engineer、automation-bot等权限角色</li>
+<li><strong>创建自动化角色</strong>：创建automation-bot用户，设置API认证方式（API Key或OAuth 2.0 Client Credentials），分配automation-bot权限角色</li>
+<li><strong>导入工作流XML</strong>：进入ARAS Administration → Import，依次导入两个Workflow XML文件（需求评审工作流.xml + 技能开发工作流.xml）</li>
+<li><strong>配置GitLab API Token</strong>：在ARAS Preferences中创建GitLabAPIToken偏好项，填入GitLab Access Token</li>
+<li><strong>创建服务器方法</strong>：在ARAS Method Editor中创建Trigger GitLab CI Pipeline和Auto Create Digital Employee Skills两个JavaScript方法</li>
+<li><strong>配置自动动作</strong>：在工作流设计器中，为"技能拆解"→自动动作添加Auto Create Digital Employee Skills，为"构建中"→自动动作添加Trigger GitLab CI Pipeline</li>
+<li><strong>验证工作流</strong>：创建测试需求Item，验证从草稿→评审→拆解→开发全流程自动转换</li>
+</ol>
+<div class="step-note"><strong>💡 提示：</strong>工作流XML中的permission引用需要与ARAS中实际创建的Permission Name完全匹配（区分大小写）。建议先创建权限，再导入工作流。</div>
+</div>
+
+<div id="dp-script" class="tc2">
+<div class="card"><h3>🐍 Python脚本部署步骤</h3></div>
+<ol class="step-list">
+<li><strong>安装依赖</strong>：<code>pip install requests</code>（requests库已包含在Python标准库中）</li>
+<li><strong>上传脚本</strong>：将auto_create_change_order.py上传到服务器 /opt/digital-employee/ 目录</li>
+<li><strong>配置环境变量</strong>：在脚本中填入ARAS服务器地址、用户名密码、平台API Token、Webhook地址</li>
+<li><strong>创建systemd服务</strong>：创建 /etc/systemd/system/aras-auto-change-order.service</li>
+</ol>
+<div class="code-wrap ini"><div class="code-header"><span class="cl-lang">INI</span><span class="cl-name">/etc/systemd/system/aras-auto-change-order.service</span></div><div class="ini-body">[Unit]
+Description=ARAS Digital Employee Auto Change Order Service
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/digital-employee
+ExecStart=/usr/bin/python3 /opt/digital-employee/auto_create_change_order.py
+Restart=always
+RestartSec=10
+StandardOutput=journal+console
+StandardError=journal+console
+
+[Install]
+WantedBy=multi-user.target</div></div>
+<ol class="step-list" style="margin-top:14px">
+<li value="5"><strong>启动服务</strong>：<code>systemctl daemon-reload && systemctl enable aras-auto-change-order && systemctl start aras-auto-change-order</code></li>
+<li><strong>验证运行</strong>：<code>journalctl -u aras-auto-change-order -f</code> 查看实时日志，确认无报错</li>
+<li><strong>测试告警</strong>：手动将某个技能准确率调低到90%，10分钟后验证是否收到Webhook告警通知</li>
+</ol>
+</div>
+</div>
+
+<!-- 最终价值 -->
+<div id="s-value" class="sec">
+<div class="section-title">✨ 最终效果与价值</div>
+<div class="card"><p>完成以上配置后，你将获得一个<strong style="color:var(--purple)">完全闭环的数字员工全生命周期管理体系</strong>，实现从需求提出、技能开发、测试验证、部署上线到异常处理的端到端自动化。</p></div>
+<div class="value-grid">
+<div class="value-card"><div class="vc-icon">🔄</div><div class="vc-title">需求自动流转</div><div class="vc-desc">需求提交后自动进入评审流程，评审通过后自动拆解为技能开发任务，无需人工干预</div></div>
+<div class="value-card"><div class="vc-icon">🤖</div><div class="vc-title">开发全自动化</div><div class="vc-desc">代码提交后自动触发构建→测试→部署流水线，状态实时同步到ARAS PLM</div></div>
+<div class="value-card"><div class="vc-icon">🚨</div><div class="vc-title">异常自动处理</div><div class="vc-desc">数字员工运行异常时自动更新状态、创建ARAS变更单、发送告警通知，全流程零延迟</div></div>
+<div class="value-card"><div class="vc-icon">📊</div><div class="vc-title">全流程可追溯</div><div class="vc-desc">所有操作在ARAS中留下完整记录，支持完整的合规审计和根因追溯</div></div>
+<div class="value-card"><div class="vc-icon">⚡</div><div class="vc-title">效率大幅提升</div><div class="vc-desc">90%以上流程无需人工操作，开发效率提升300%，管理成本降低60%</div></div>
+<div class="value-card"><div class="vc-icon">🛡️</div><div class="vc-title">天然合规</div><div class="vc-desc">所有变更通过ARAS工作流和变更单管理，自动满足制造业合规要求</div></div>
+</div>
+
+<div class="card" style="margin-top:18px"><h3>📊 全流程覆盖节点一览</h3>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-top:12px">
+<div style="background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center"><div style="font-size:.85em;font-weight:700">9个需求节点</div><div style="font-size:.72em;color:var(--text3);margin-top:2px">草稿→验收→关闭</div></div>
+<div style="background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center"><div style="font-size:.85em;font-weight:700">9个技能节点</div><div style="font-size:.72em;color:var(--text3);margin-top:2px">待开发→运行→下线</div></div>
+<div style="background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center"><div style="font-size:.85em;font-weight:700">5个自动转换</div><div style="font-size:.72em;color:var(--text3);margin-top:2px">无需人工触发</div></div>
+<div style="background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center"><div style="font-size:.85em;font-weight:700">2个自动动作</div><div style="font-size:.72em;color:var(--text3);margin-top:2px">GitLab CI + 技能创建</div></div>
+<div style="background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center"><div style="font-size:.85em;font-weight:700">10分钟检测</div><div style="font-size:.72em;color:var(--text3);margin-top:2px">异常自动发现</div></div>
+<div style="background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center"><div style="font-size:.85em;font-weight:700">3项阈值</div><div style="font-size:.72em;color:var(--text3);margin-top:2px">准确率/响应/可用性</div></div>
+</div>
+</div>
+
+<div class="card"><h3>🔗 ARAS PLM数字员工系列页面汇总</h3>
+<p style="font-size:.82em;color:var(--text2)">已部署全部11个ARAS PLM系列HTML页面，涵盖从ItemType定义、CI/CD流水线、工作流配置、可视化表单、SQL报表到异常自动化完整方案。</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px;margin-top:12px">
+<div style="background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:.82em"><span style="color:var(--cyan)">1.</span> ARAS PLM集成方案</div>
+<div style="background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:.82em"><span style="color:var(--cyan)">2.</span> ARAS完整交付包</div>
+<div style="background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:.82em"><span style="color:var(--cyan)">3.</span> ARAS可视化与同步方案</div>
+<div style="background:var(--card2);border:1px solid var(--purple2);border-radius:8px;padding:10px 14px;font-size:.82em"><span style="color:var(--purple)">4.</span> <strong>全流程工作流与变更自动化 ⭐新增</strong></div>
+</div>
+</div>
+</div>
+
+</div><!-- /ct -->
+
+<div class="ft">苏州"AI+制造"数字员工平台 · ARAS PLM全流程工作流完整交付包 · 2026-05-13</div>
+
+<script>
+function show(id){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.nb button').forEach(b=>b.classList.remove('on'));
+  document.getElementById('s-'+id).classList.add('on');
+  event.target.classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function tab2(prefix,id){
+  var sec=event.target.closest('.sec');
+  sec.querySelectorAll('.tb button').forEach(b=>b.classList.remove('on'));
+  sec.querySelectorAll('.tc2').forEach(t=>t.classList.remove('on'));
+  event.target.classList.add('on');
+  document.getElementById(prefix+'-'+id).classList.add('on');
+}
+function tab3(prefix,id){
+  var container=document.getElementById('s-'+(document.querySelector('.sec.on')?document.querySelector('.sec.on').id.replace('s-',''):''));
+  var sec=document.getElementById('s-'+Object.keys({workflow:1,actions:1,change:1,deploy:1,value:1}).find(k=>document.getElementById('s-'+k).classList.contains('on'))||'workflow');
+  var tabs=sec.querySelectorAll('.tabs button');
+  var tc2s=sec.querySelectorAll('.tc2');
+  for(var i=0;i<tabs.length;i++){
+    tabs[i].classList.toggle('on',tabs[i].getAttribute('onclick').includes("'"+id+"'"));
+  }
+  for(var j=0;j<tc2s.length;j++){
+    tc2s[j].classList.toggle('on',tc2s[j].id===id);
+  }
+  event.target.classList.add('on');
+  document.getElementById(id).classList.add('on');
+}
+</script>
+</body>
+</html>

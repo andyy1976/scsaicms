@@ -1,0 +1,252 @@
+/**
+ * 推送苏州市AI+制造完整文章到CMS（含65条完整需求）
+ */
+
+const http = require('http');
+
+// CMS API配置
+const CMS_API = 'http://localhost/index.php?s=Contentapi/push';
+const CMS_API_KEY = 'sciot_content_2026';
+
+// 完整文章内容（含65条需求明细）
+const article = {
+    title: '苏州市"AI+制造"应用场景需求清单（第一批）',
+    content: `<p>本文档为苏州市首批"AI+制造"应用场景需求清单的完整规范化整理版，全量清单共计<strong>65项需求</strong>，覆盖<strong>电子信息、装备制造、新能源、生物医药、冶金业、纺织业、轻工业、其他</strong>共8大行业领域。</p>
+<p>其中序号20、21项无有效需求内容（原始素材未显示相关信息），文档内已做明确标注，其余63项均为完整有效需求，可直接用于供需对接、方案匹配、政策落地等场景。</p>
+
+<h2>一、整体行业分布统计</h2>
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse;width:100%;">
+<tr style="background:#f5f5f5;"><th>行业类别</th><th>需求数量</th><th>对应序号范围</th></tr>
+<tr><td>电子信息</td><td>14项</td><td>1-14</td></tr>
+<tr><td>装备制造</td><td>20项</td><td>15-19、22-36</td></tr>
+<tr><td>新能源</td><td>19项</td><td>37-55</td></tr>
+<tr><td>生物医药</td><td>4项</td><td>56-59</td></tr>
+<tr><td>冶金业</td><td>2项</td><td>60-61</td></tr>
+<tr><td>纺织业</td><td>1项</td><td>62</td></tr>
+<tr><td>轻工业</td><td>1项</td><td>63</td></tr>
+<tr><td>其他</td><td>2项</td><td>64-65</td></tr>
+<tr style="background:#e8f4f8;"><td><strong>合计</strong></td><td><strong>65项</strong></td><td><strong>1-65</strong></td></tr>
+</table>
+
+<h2>二、完整需求清单明细</h2>
+
+<h3 style="color:#007bff;">📱 一、电子信息行业（14项）</h3>
+
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse;width:100%;margin-bottom:20px;">
+<tr style="background:#e8f4fd;"><th width="50">序号</th><th width="80">环节</th><th>需求详述</th></tr>
+<tr><td align="center"><strong>1</strong></td><td>生产制造</td><td>公司业务以小批量多品种的包装盒为主，目前的报价流程需要涉及到结构制图、采购询价、物料计算，工序分析。工作量大，完全依赖人工经验，不能快速响应客户需求。<strong>需引入AI对物料成本、工序成本、物流成本、产品结构等进行快速分析，精准、快速的报价。</strong></td></tr>
+<tr><td align="center"><strong>2</strong></td><td>生产制造</td><td>公司连接器生产涉及冲压、注塑、自动机等多种机器设备，通过智能传感器采集设备振动、寿命、温度、良率等数据，<strong>需引入AI进行故障预测与预防性维护</strong>，并对全部作业流程中的生产数据进行分析，精准锁定良率瓶颈并输出优化方案，减少停机损失以及品质异常报废。</td></tr>
+<tr><td align="center"><strong>3</strong></td><td>生产制造</td><td>太阳能电池金属网版的制版工艺（如光刻、电铸）参数目前高度依赖工程师实操经验。新型特种网版的打样调试周期长、废版率高，且缺乏与下游电池片印刷实际效果的数据化映射。<strong>需引入AI技术融合厂内外数据，实现网版工艺的智能预测与自动寻优。</strong></td></tr>
+<tr><td align="center"><strong>4</strong></td><td>生产制造</td><td><strong>引入AI技术解决生产前工艺设计一体化</strong>，解决MI段炉前插件与炉后作业生产工艺设计一次完成，当前已经具备工艺资料如BOM、工序、图片等基础资料标准化。通过AI自动编辑工艺，解决当前工艺人员成本高的问题。</td></tr>
+<tr><td align="center"><strong>5</strong></td><td>生产制造</td><td>企业是汽车零部件电子生产企业，设备种类多、数量大，涵盖SMT、ICT、组装、测试等多类设备。目前设备维修主要依赖工程师经验，故障定位慢、排查时间长；缺少统一故障库与标准维修流程。<strong>急需一套AI设备维修助手提升维修规范化与效率。</strong></td></tr>
+<tr><td align="center"><strong>6</strong></td><td>生产制造/研发设计/运营管理</td><td>公司属于劳动密集型企业，手工作业人员较多，再加上生产工艺和工序复杂，数据的统计分析管理和品质风险管控成本较高，<strong>需引入AI技术对全流程生产数据进行分析管理，实现设计提升、产线优化，减少管理成本和人工成本。</strong></td></tr>
+<tr><td align="center"><strong>7</strong></td><td>生产制造/研发设计/产品检测</td><td>1.光伏丝印网版主要用于电池片表面图形印刷，影响电池片的发电效率，<strong>需要引进AI技术对各参数进行交叉分析，制定最合理的生产参数及制作工艺</strong>；<br>2.生产过程的搬运，设备参数的调取需要借助AI实现自动化；<br>3.<strong>网版视觉检测及尺寸检测，实现AI自动检验功能。</strong></td></tr>
+<tr><td align="center"><strong>8</strong></td><td>生产制造/研发设计</td><td>目前已经实现精密加工场景在智能制造场景的数字化升级，期望能够通过<strong>AI大模型对工艺、图纸进行AI识别和解析，自动生成图纸标注和工艺、成本分析以及G代码的生成</strong>。</td></tr>
+<tr><td align="center"><strong>9</strong></td><td>研发设计</td><td>连接器3D、2D设计出图过程中，涉及部分简单的结构修改（例如产品铁壳脚加长、间距调整等），需要人员重新修改、出图。<strong>需引入AI技术可自动对标准图模型中的部分尺寸做自动修改生成最新2D、3D模型。</strong></td></tr>
+<tr><td align="center"><strong>10</strong></td><td>运营管理</td><td>公司合作伙伴在日常经营中需快速获取产品知识、售后服务方案、订单进度等信息，传统咨询方式响应慢、专业度不一。<strong>需引入AI技术打造智能助理，实现7×24小时精准解答与决策支持</strong>，提升合作伙伴经营效率与服务一致性。</td></tr>
+<tr><td align="center"><strong>11</strong></td><td>运营管理</td><td><strong>结合历史销售、市场趋势等数据进行需求预测，并优化库存与采购策略，降低库存成本。</strong></td></tr>
+<tr><td align="center"><strong>12</strong></td><td>运营管理</td><td>公司积累了海量的订单排产、物料损耗及设备稼动率等孤岛数据。目前业务数据的提取与分析高度依赖报表专员与IT部门，传统提需求-拉数据-做图表模式响应极慢。<strong>需引入AI技术建设企业级数据湖仓并训练本地化BI大模型等。</strong></td></tr>
+<tr><td align="center"><strong>13</strong></td><td>软件开发</td><td><strong>通过VS Code扩展整合迁移工具与AI编程能力</strong>，开发者无需在多个工具间切换，实现一站式项目迁移与开发体验，实现BeX5到Spring Cloud + Vue架构的自动化迁移；构建新架构上的AI代码生成与智能补全系统；打造统一的VS Code扩展操作入口；提供端到端的开发工具链支持。</td></tr>
+<tr><td align="center"><strong>14</strong></td><td>生产制造</td><td>工厂安环：<strong>1.芯片良率智能分析与产线优化；2.工厂安全，环保；3.材料，产品运输；4.传统工厂到智能化工厂的改造。</strong></td></tr>
+</table>
+
+<h3 style="color:#007bff;">⚙️ 二、装备制造行业（20项）</h3>
+
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse;width:100%;margin-bottom:20px;">
+<tr style="background:#e8f4fd;"><th width="50">序号</th><th width="80">环节</th><th>需求详述</th></tr>
+<tr><td align="center"><strong>15</strong></td><td>生产制造</td><td>针对CNC加工行业中存在的编程效率低下、工艺参数过度依赖人工经验、刀具寿命管理粗放、设备故障缺乏预警以及质量问题根因追溯困难等一系列痛点，<strong>需引入一套集成的多智能体AI系统，以实现智能编程、工艺优化、刀具健康管理、预测性维护与质量分析等核心功能。</strong></td></tr>
+<tr><td align="center"><strong>16</strong></td><td>生产制造</td><td>针对公司多品种小批量生产模式下排程复杂度高、插单响应滞后、设备利用率不平均等痛点，<strong>需引入智能体AI系统实现生产排程自主优化、交期精准、物料齐套保障等。</strong></td></tr>
+<tr><td align="center"><strong>17</strong></td><td>生产制造</td><td>当前，高端铝合金铸件（如发动机缸体、涡轮壳体、副车架等）内部型腔、油路或水道的多余浇冒口、飞边毛刺清除作业，面临四大核心痛点：<br><strong>1.质量一致性差：</strong>完全依赖工人手感与经验，切削力度与深度难以量化控制，易造成工件过切或损伤；<br><strong>2.效率瓶颈突出：</strong>内部空间狭窄、视线受阻，操作难度大，单件作业时间长；<br><strong>3.柔性生产能力缺失：</strong>面对"多品种、小批量、快交付"的敏捷制造常态，传统示教编程的机器人调整周期长、换产响应慢；<br><strong>4.人员依赖与安全风险：</strong>高技能工人培养周期长，且作业中存在粉尘、噪音、手臂振动等职业健康危害。<br><strong>需构建一个"感知-决策-执行-优化"一体化的AI智能切削工作站。</strong></td></tr>
+<tr><td align="center"><strong>18</strong></td><td>生产制造</td><td>地板油漆生产线需对多种规格木板表面缺陷进行实时检测与自动剔除。现有产线速度25m/min，横向宽度750mm，存在1-3块板并行生产，木板尺寸多样（最小450*450mm，最大2400*305mm）。人工目检效率低、漏检率高。<strong>急需引入AI视觉技术实现高速精准检测与柔性抓取</strong>，解决产线工人短缺、小批量生产加工问题。拟采用智能制造柔性线及机械手自动上下料等创新技术或解决方案。</td></tr>
+<tr><td align="center"><strong>19</strong></td><td>生产制造</td><td>压铸件的压铸工序作为整个产品的第一道工序，受到工艺参数、模具状态、喷雾剂设定、设备工装是否齐套且在正确的位置等多因素的影响，<strong>需引入AI视觉检测技术对压铸完工的产品进行质量分析</strong>，及时发现不良并采取措施以便及时阻断不良的持续发生。同时通过分析历史数据和实时参数分析不良产生的原因，精准定位良率瓶颈并优化产线流程。</td></tr>
+<tr><td align="center" colspan="3" style="color:#999;background:#fafafa;text-align:center;">⚠️ 序号20、21项原始素材未显示相关内容，无有效需求信息</td></tr>
+<tr><td align="center"><strong>22</strong></td><td>供应链管理</td><td>边角料形状不规则、尺寸各异，难以精准识别可用余料，<strong>需引入AI图形识别、切分与测量系统，自动识别边角料形状及尺寸等。</strong></td></tr>
+<tr><td align="center"><strong>23</strong></td><td>供应链管理</td><td>在新物料或经济性采购场景下，难以快速找到合适的供应商；同时，由于供应商数量众多、评估维度复杂，导致人工评估效率低下且主观性强，<strong>需引入AI智能寻源引擎以及AI动态评估与预警系统。</strong></td></tr>
+<tr><td align="center"><strong>24</strong></td><td>供应链管理</td><td>产品定价受到原材料、竞争、客户需求等多因素影响，<strong>需要AI辅助动态定价。</strong></td></tr>
+<tr><td align="center"><strong>25</strong></td><td>研发设计</td><td>公司产品研发设计的过程中，客户提供的2D图纸需要3D化设计以及维护物料与BOM信息到ERP系统中，耗时、耗力、容易出错，<strong>需要引入AI技术对2D图纸进行3D还原以及根据2D、3D图纸自动选择维护物料与BOM清单</strong>，辅助设计、降低研发人员重复工作、提升研发效率。</td></tr>
+<tr><td align="center"><strong>26</strong></td><td>研发设计</td><td>针对机械制造等行业工艺设计周期长（3-10天）、依赖人工经验、标准化率低（&lt;50%）、变更响应慢（2-5天）、知识传承困难等痛点，<strong>需引入多智能体AI系统实现工艺路线自动规划、参数智能推荐、工装自主设计。</strong></td></tr>
+<tr><td align="center"><strong>27</strong></td><td>研发设计</td><td><strong>实现AI驱动的自主决策</strong>（含仿真、实验室智能验证、现场数据智能采集及钻头失效智能分析等），解放工程师重复性劳动，使设计周期从数天缩短至数小时，将资深专家经验固化为AI模型，彻底解决"人走技失"难题。通过标准化最优设计推荐，减少人为失误，确保设计加工质量一致性。</td></tr>
+<tr><td align="center"><strong>28</strong></td><td>质量控制</td><td>对于用户产线来说，提高生产效率是制造收益的最直接手段。但是如今的工业产品（如航空航天、新能源汽车）对零件复杂度和交付周期要求越来越高，传统手工编程和试错使得生产效率低下。<strong>需要引入AI技术，构建一个工艺知识图谱与强化学习模型</strong>，当面对新零件时，AI能根据零件几何特征、材料，自动推理并推荐全局最优或近似最优的加工策略与参数，大幅缩短编程时间并提升首件成功率。</td></tr>
+<tr><td align="center"><strong>29</strong></td><td>质量控制</td><td>在产线的生产过程中，报废与返工会产生大量的人力物力损失，<strong>拟通过AI技术实现在线质量预测与补偿控制</strong>，在生产过程中实时调整参数，在问题发生前干预，从根源上保证每件产品质量合格。</td></tr>
+<tr><td align="center"><strong>30</strong></td><td>质量控制</td><td>传统加工中，刀具崩刃、材料硬点、工件装夹微松动等突发异常工况，严重依赖操作员经验识别与干预，响应滞后易导致工件报废甚至设备损伤。<strong>需引入AI技术，使机床能实时感知加工状态，对异常工况进行智能识别、决策与自适应调整</strong>，保障加工过程连续性与稳定性。</td></tr>
+<tr><td align="center"><strong>31</strong></td><td>运营管理</td><td>招聘过程中，简历筛选工作量大，难以精准匹配岗位技能要求，<strong>需要AI辅助筛选和评估候选人</strong>/核心技术人员流失影响生产稳定，提前识别离职风险并干预。</td></tr>
+<tr><td align="center"><strong>32</strong></td><td>运营管理</td><td><strong>基于深度学习的管道焊缝及防腐层质量AI视觉诊断与评估。</strong>传统管道焊接与防腐层检测依赖人工目视和抽样探伤，存在主观性强、效率低、微小缺陷易漏检等问题，且无法建立外部表象与内部质量的关联，导致质量控制滞后。</td></tr>
+<tr><td align="center"><strong>33</strong></td><td>后期维护</td><td>本公司研发的产品是数控机床，对于公司的广大客户（产品的使用者）来说，非计划停机是其制造车间最直接的损失来源，为了从根本上解决这一问题，<strong>需引入AI技术，通过配置在机床端的传感器，收集机床数据，接入模型预警，提供设备预测性维护服务</strong>，直击产线痛点，为客户提供稳定且高效的产线基础设施。</td></tr>
+<tr><td align="center"><strong>34</strong></td><td>设计协同</td><td><strong>1.自动做前期网格处理；2.自动寻找最优进浇口；3.自动调整优化变形；4.生成优化后的3D产品；5.自动生成模流报告。</strong></td></tr>
+<tr><td align="center"><strong>35</strong></td><td>标准化文件编制</td><td>目前编写"管理规定"文档（用于解释流程图和Excel套表如何使用）耗时耗力，且需符合公司特定规范。现有约100+个流程，仅完成20%标准文档，剩余80%急需高效产出。<strong>拟通过AI实现：</strong><br>1.多模态输入解析：能够精准读取并理解流程图的逻辑节点，以及配套Excel套表的字段定义与校验规则；<br>2.风格化生成：基于公司已批准的标准样本进行微调或提示词工程，确保生成的文档符合公司特定的行文规范；<br>3.一致性校验：自动检查生成的文档内容与流程图逻辑、Excel字段是否一致；<br>4.版本联动：当流程图或Excel变更时，能自动识别差异并建议修改对应章节。</td></tr>
+<tr><td align="center"><strong>36</strong></td><td>数据资产AI应用</td><td>生产数据分散，临时性报表开发周期长（2-3天），管理层无法快速获取多维度数据洞察；异常响应滞后。<strong>整体规划智能体阶段：1.数据高效应用（问答）；2.数据分析与执行；3.业务场景AI自动化。</strong></td></tr>
+</table>
+
+<h3 style="color:#007bff;">🔋 三、新能源行业（19项）</h3>
+
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse;width:100%;margin-bottom:20px;">
+<tr style="background:#e8f4fd;"><th width="50">序号</th><th width="100">环节</th><th>需求详述</th></tr>
+<tr><td align="center"><strong>37</strong></td><td>生产制造</td><td><strong>需通过AI技术实现：</strong><br>1.针对不同工序、不同产线搭建智能自动数据收集系统；<br>2.搭建IAS边缘数据监控系统，实时收集处理数据；<br>3.实现AI智能体根据数据实时监控设备健康状态；<br>4.实现健康状态智能预警功能；<br>5.实现备品备件智能管理与采购功能。</td></tr>
+<tr><td align="center"><strong>38</strong></td><td>生产制造</td><td><strong>需通过AI技术实现：</strong><br>1.搭建快插插口柔性插拔系统，包含具身智能机械手臂，力控算法，视觉引导等技术；<br>2.实现在线兼容不同PACK包体的快速切换或混线生产。</td></tr>
+<tr><td align="center"><strong>39</strong></td><td>生产制造</td><td><strong>需通过AI技术搭建具身智能机器人搬运实验平台</strong>，包含具身智能机械手臂，力控算法，视觉引导、AGV调度等技术。</td></tr>
+<tr><td align="center"><strong>40</strong></td><td>生产制造</td><td><strong>需基于具身智能和AI视觉技术降低人工巡检/抽检成本。</strong></td></tr>
+<tr><td align="center"><strong>41</strong></td><td>生产制造/运营管理</td><td><strong>1.巡检机器人项目：</strong>完成适配企业作业场景的巡检机器人选型、部署与调试应用，实现现场关键区域无人化、自动化智能巡检；<br><strong>2.工业智慧巡检系统应用：</strong>实现实时视频监测、风险提示、视频互联、信息共享、远程专家诊断等功能；<br><strong>3.企业数字化采购管理平台建设项目：</strong>覆盖采购需求提报、寻源、下单、履约、结算全流程；<br><strong>4.智慧物流一体化管理系统建设项目：</strong>整合物流资源与数据，实现物流计划、调度、跟踪、核算全链路可视化、智能化管理；<br><strong>5.设备智能管理系统：</strong>整合设备台账、维保、故障、能耗等全生命周期数据，实现设备状态监控、智能预警、预测性维护；<br><strong>6.全厂5G无线网络覆盖项目：</strong>采用"全光网+Wi-Fi"融合架构，为后续引入AI、数字孪生、边缘计算等技术提供有力支撑。</td></tr>
+<tr><td align="center"><strong>42</strong></td><td>生产管理</td><td><strong>需应用AI技术实现：</strong><br>1.能源智能管控：建立能源管理平台，通过负荷预测、能源平衡调度算法，实现电、气、热等多能源介质的协同调度与优化；<br>2.推动能源数据与生产系统数据互联互通，支撑基于生产计划的能效分析与动态优化，降低单位产值能耗。</td></tr>
+<tr><td align="center"><strong>43</strong></td><td>生产管理</td><td><strong>需应用AI技术实现：</strong><br>1.碳资产全生命周期管理：将碳排放数据与生产流程、供应链管理等业务数据深度融合，形成完整碳排放核算链条；<br>2.系统自动核算各生产环节碳排放量，追踪产品从原材料采购、生产制造、物流销售到回收处置的全生命周期碳足迹。</td></tr>
+<tr><td align="center"><strong>44</strong></td><td>生产管理</td><td><strong>需应用AI技术实现：</strong><br>1.生产物料精准配送：搭建物料智能配送管理平台，依托物料需求预测、智能路径规划算法，实现AGV/AMR等设备的协同调度与精准配送；<br>2.推动物料配送数据与生产计划、仓储管理数据互通互联，降低物料库存积压率，提升配送准时率。</td></tr>
+<tr><td align="center"><strong>45</strong></td><td>设备研发</td><td>软件开发（PC、PLC、视觉算法）效率提升。<strong>需：</strong><br>1.搭建AI编程智能体系统，收集测试各场景智能体编程效果；<br>2.搭建智能体软件开发数据库，搭建标准化编程框架，标准化程序模块，历史编程库。</td></tr>
+<tr><td align="center"><strong>46</strong></td><td>设备研发</td><td><strong>需：</strong><br>1.搭建AI智能视觉平台，用AI根据场景需求自动完成最优算法编程；<br>2.建立公司级图片数据库，用于产品开发前期算法训练与测试；<br>3.实现编程经验自复盘功能，实现所有产线同工序优化自动模展。</td></tr>
+<tr><td align="center"><strong>47</strong></td><td>生产作业</td><td><strong>需应用AI技术实现生产作业在线智能检测：</strong><br>1.搭建作业在线智能检测平台，依托机器视觉、多模态感知技术，实现生产过程中产品外观、尺寸、装配精度等缺陷的实时识别与判定；<br>2.推动检测数据与生产工艺数据、质量管控数据深度融合，降低产品不良品率，提升检测效率。</td></tr>
+<tr><td align="center"><strong>48</strong></td><td>产品运维/检测</td><td>针对储能电池管理系统（BMS），<strong>需通过AI技术实现电池健康状态（SOH）精准预测</strong>，实时监测电池电芯、模组的运行数据，提前识别电池衰减、故障风险，量化电池健康程度，为储能电池的运维、梯次利用及更换提供数据支撑，提升储能系统整体运行安全性和使用寿命。</td></tr>
+<tr><td align="center"><strong>49</strong></td><td>储能系统运营/调度</td><td>结合峰谷平价政策、区域用电需求、储能系统容量及运行状态，<strong>需通过AI技术实现储能系统充放电运行方案的智能推荐与动态调整</strong>，在保障电网稳定及用户用电需求的前提下，最大化利用电价差实现储能项目收益提升，同时支持多区域、多项目的统一智能调度。</td></tr>
+<tr><td align="center"><strong>50</strong></td><td>研发/采购/供应链</td><td><strong>通过AI技术深度分析产品物料属性</strong>（规格、材质、性能参数等）、BOM结构层级及关联关系，实现物料相似度精准计算，自动推荐高匹配替代料、优化选型方案，辅助采购端快速寻源与供应链风险预警，同时减少新物料种类、降低物料管理成本与采购成本。</td></tr>
+<tr><td align="center"><strong>51</strong></td><td>生产检测</td><td>针对储能电芯、逆变器等核心产品生产环节，<strong>需通过AI技术实现焊接缺陷、产品外观等质量问题的高精度智能检测</strong>，提升缺陷检出率和检测效率；同时实现生产工艺参数的AI实时优化，减少工艺波动带来的产品质量问题。</td></tr>
+<tr><td align="center"><strong>52</strong></td><td>内部运营</td><td><strong>需通过AI技术升级现有知识库</strong>，实现企业内部质量文档、系统操作手册、产品技术资料的智能检索、问答和推送；同时将AI知识库能力延伸至客户服务环节，为客户提供产品售前咨询、售后问题解答的智能助手服务。</td></tr>
+<tr><td align="center"><strong>53</strong></td><td>研发测试</td><td><strong>需通过AI+数字孪生技术</strong>，构建储能产品全生命周期的数字模型，实现产品研发阶段的仿真测试、性能预测；同时利用AI技术分析全球储能产品运营数据，优化产品设计方案，提升产品可靠性和适配性。</td></tr>
+<tr><td align="center"><strong>54</strong></td><td>工厂运营</td><td><strong>需通过AI技术实现生产厂区的能源消耗智能监控、碳排放精准核算和优化</strong>；同时实现生产设备的AI预测性维护，提前识别设备故障风险，减少非计划停机时间。</td></tr>
+<tr><td align="center"><strong>55</strong></td><td>供应链运营</td><td><strong>需通过AI技术实现供应链的智能调度和风险预警</strong>，基于市场需求、原材料库存、生产计划等数据，动态调整采购和物流计划；同时实现供应商的AI智能评估，提升供应链稳定性。</td></tr>
+</table>
+
+<h3 style="color:#007bff;">💊 四、生物医药行业（4项）</h3>
+
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse;width:100%;margin-bottom:20px;">
+<tr style="background:#e8f4fd;"><th width="50">序号</th><th width="80">环节</th><th>需求详述</th></tr>
+<tr><td align="center"><strong>56</strong></td><td>生产制造</td><td>1.针对支架导管类医疗器械在显微镜下的质量检测工作，<strong>需引入AI技术实现自动检测</strong>，要求该技术升级需兼顾技术可行性与成本敏感性；<br>2.针对目前显微镜下全部由人工完成的自动化操作，<strong>需引入专用自动化设备，实现降本增效。</strong></td></tr>
+<tr><td align="center"><strong>57</strong></td><td>生产制造</td><td><strong>基于深度学习算法的染色体核型分析软件应用场景</strong>，面向医学遗传学与临床检验领域中染色体核型分析自动化、智能化水平不足的问题，依托人工智能与医学影像处理技术，构建高效、精准的染色体核型分析智能应用场景；该场景需要通过AI人工智能，以深度学习算法为核心，围绕染色体中期相图像的自动预处理、实例分割、核型自动配对与异常辅助诊断等关键环节，<strong>构建端到端智能分析流程，实现染色体核型分析由"人工主导"向"智能辅助决策"的转变。</strong></td></tr>
+<tr><td align="center"><strong>58</strong></td><td>研发设计</td><td><strong>拟通过AI技术：</strong><br>1.实现内部文档、技术资料、设计图纸、项目文献等多源数据的统一接入与知识抽取，形成结构化、可检索的企业内部知识库；<br>2.支持基于自然语言的智能问答，快速响应研发过程中的技术疑问、规范查询、数据统计等问题；<br>3.提供高效文献检索、资料定位、历史方案对比与复用能力；<br>4.借助知识推荐、相似案例匹配等能力辅助产品外观设计、结构设计与方案创新；<br>5.实现内部知识的系统化沉淀、更新与共享。</td></tr>
+<tr><td align="center"><strong>59</strong></td><td>研发设计</td><td><strong>利用AI技术对RNA序列进行分析与设计</strong>，提升RNA药物的研发效率，针对特定疾病靶点进行AI辅助的序列生成与筛选，优化RNA稳定性与靶向效率。</td></tr>
+</table>
+
+<h3 style="color:#007bff;">🏭 五、冶金业（2项）</h3>
+
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse;width:100%;margin-bottom:20px;">
+<tr style="background:#e8f4fd;"><th width="50">序号</th><th width="80">环节</th><th>需求详述</th></tr>
+<tr><td align="center"><strong>60</strong></td><td>研发设计</td><td>针对钢铁材料设计依赖专家经验、研发周期长、试错成本高的问题，<strong>需利用AI技术实现从目标性能到成分、工艺的逆向智能设计</strong>，提升新钢种研发效率与可靠性。</td></tr>
+<tr><td align="center"><strong>61</strong></td><td>生产制造</td><td><strong>需通过AI技术实现：</strong><br>1.开发金相高倍智能检测系统，实现从金相样品→显微镜自动上下样，夹杂物、晶粒度、脱碳层三个项目能够自动评级，并将数据上报检化验系统；<br>2.样品重复性检测偏差±0.5级以内的比例达99%以上；<br>3.与人工比较，评级偏差±0.5级以内的比例达95%以上。</td></tr>
+</table>
+
+<h3 style="color:#007bff;">🧵 六、纺织业、轻工业及其他（4项）</h3>
+
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse;width:100%;margin-bottom:20px;">
+<tr style="background:#e8f4fd;"><th width="50">序号</th><th width="80">环节</th><th>需求详述</th></tr>
+<tr><td align="center"><strong>62</strong></td><td>客户沟通与需求管理</td><td>企业长期与外国客户开展业务往来，合同/文件翻译依赖人工，外方需求理解不准确、响应周期长。<strong>需搭建AI翻译智能体</strong>，实现多语言合同文件翻译、客服沟通实时对话翻译，结合制造业专业术语库，自动提炼外方核心需求，辅助业务人员快速响应。</td></tr>
+<tr><td align="center"><strong>63</strong></td><td>生产制造</td><td>注塑生产机械臂上下料环节，传统作业依赖人工上下料、简单机械重复作业，人机协同性差、生产等待浪费多、多品种小批量订单适配性弱，<strong>需借助AI技术优化机械臂调度、实现人机高效协同</strong>，破解生产节拍不连贯、柔性不足的痛点，提升上下料作业智能化水平。</td></tr>
+<tr><td align="center"><strong>64</strong></td><td>生产制造</td><td><strong>需通过AI技术实现：</strong><br>1.设备运维改善：通过整合设备运行数据、维修历史、备件信息，解决传统维修"被动、经验化、高成本"的痛点；<br>2.质量改善：从经验驱动转向算法驱动，通过全流程数据贯通、实时智能决策和持续优化迭代，最终实现质量、效率、成本的三重跃升。</td></tr>
+<tr><td align="center"><strong>65</strong></td><td>生产制造</td><td><strong>需通过AI技术实现：</strong>生产进度、产品良率、设备效率监控，用"实时数据感知"替代"人工经验判断"，用"预测性干预"替代"被动响应"，用"全链路协同"替代"局部优化"，最终实现"交付准、质量稳、效率高"的生产目标，在激烈的市场竞争中构建核心竞争力。</td></tr>
+</table>
+
+<h2>三、分行业需求核心特征汇总</h2>
+
+<div style="display:flex;flex-wrap:wrap;gap:15px;margin-top:10px;">
+<div style="flex:1;min-width:280px;border:1px solid #ddd;padding:15px;border-radius:8px;">
+<h4 style="color:#007bff;margin-top:0;">📱 电子信息（14项）</h4>
+<p><b>核心诉求：</b>解决多品种小批量生产模式下的人工依赖度高、客户响应慢、技术经验难沉淀问题。</p>
+<p><b>方向：</b>AI快速报价、设备预测性维护、工艺参数智能寻优、图纸AI识别建模、敏捷BI、代码自动化开发。</p>
+</div>
+<div style="flex:1;min-width:280px;border:1px solid #ddd;padding:15px;border-radius:8px;">
+<h4 style="color:#007bff;margin-top:0;">⚙️ 装备制造（20项）</h4>
+<p><b>核心诉求：</b>破解高端装备制造多品种小批量、工艺复杂、人工经验依赖强、换产效率低的痛点。</p>
+<p><b>方向：</b>多智能体AI加工全流程管控、柔性生产智能排程、AI视觉质检、2D图纸3D还原、预测性维护。</p>
+</div>
+<div style="flex:1;min-width:280px;border:1px solid #ddd;padding:15px;border-radius:8px;">
+<h4 style="color:#007bff;margin-top:0;">🔋 新能源（19项）</h4>
+<p><b>核心诉求：</b>围绕储能、光伏等核心产品，实现全生命周期AI赋能，兼顾提质降本、收益最大化、双碳合规。</p>
+<p><b>方向：</b>产线设备智能监控、具身智能柔性生产、多能源协同管控、碳资产管理、SOH预测调度。</p>
+</div>
+<div style="flex:1;min-width:280px;border:1px solid #ddd;padding:15px;border-radius:8px;">
+<h4 style="color:#007bff;margin-top:0;">💊 生物医药（4项）</h4>
+<p><b>核心诉求：</b>解决医疗器械检测人工依赖高、医药研发周期长成本高的核心痛点。</p>
+<p><b>方向：</b>医疗器械AI自动质检、染色体核型AI分析、研发知识库、RNA药物序列设计。</p>
+</div>
+<div style="flex:1;min-width:280px;border:1px solid #ddd;padding:15px;border-radius:8px;">
+<h4 style="color:#007bff;margin-top:0;">🏭 冶金业（2项）</h4>
+<p><b>核心诉求：</b>破解钢铁材料研发专家经验依赖、检测人工效率低的痛点。</p>
+<p><b>方向：</b>AI驱动成分与工艺逆向设计、金相高倍智能检测与自动评级。</p>
+</div>
+<div style="flex:1;min-width:280px;border:1px solid #ddd;padding:15px;border-radius:8px;">
+<h4 style="color:#007bff;margin-top:0;">🧵 纺织/轻工/其他（4项）</h4>
+<p><b>核心诉求：</b>解决细分行业的特定人工依赖痛点，实现单点智能化突破。</p>
+<p><b>方向：</b>多语言AI翻译智能体、注塑机械臂AI调度、通用设备运维与全流程AI管控。</p>
+</div>
+</div>
+
+<h2>四、联系我们</h2>
+<p>如需获取完整的65项需求清单Excel/Word版本，或希望参与供需对接、方案匹配、政策落地咨询，请联系我们的业务团队：</p>
+<ul>
+<li>✅ 完整的需求清单Excel/Word版本下载</li>
+<li>✅ 分行业解决方案匹配建议</li>
+<li>✅ 供需对接资源引荐</li>
+<li>✅ 政策落地咨询服务</li>
+</ul>
+
+<p style="text-align:center;margin-top:30px;">
+<a href="/index.php?s=Lists/index/typeid/112" style="display:inline-block;padding:14px 35px;background:linear-gradient(135deg,#007bff,#0056b3);color:#fff;text-decoration:none;border-radius:6px;font-size:16px;font-weight:bold;">了解更多AI+制造解决方案 →</a>
+</p>`,
+    source: '苏州市工业和信息化局',
+    platform: 'gov',
+    category_id: 113,
+    status: 1
+};
+
+// 推送函数
+function pushToCMS(article) {
+    return new Promise((resolve, reject) => {
+        const postData = JSON.stringify({
+            title: article.title,
+            content: article.content,
+            source: article.source,
+            platform: article.platform,
+            category_id: article.category_id,
+            status: article.status
+        });
+
+        const url = new URL(CMS_API);
+        const options = {
+            hostname: url.hostname,
+            port: url.port || 80,
+            path: url.pathname + url.search,
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Content-Length': Buffer.byteLength(postData),
+                'X-API-Key': CMS_API_KEY
+            }
+        };
+
+        console.log('[PUSH] 推送到 CMS...');
+        console.log('  Title:', article.title);
+
+        const req = http.request(options, (res) => {
+            let data = '';
+            res.on('data', (chunk) => { data += chunk; });
+            res.on('end', () => {
+                try {
+                    const result = JSON.parse(data);
+                    if (result.code === 0 || result.success) {
+                        console.log('[SUCCESS] 推送成功！');
+                        console.log('  文章ID:', result.data?.aid || result.aid || 'N/A');
+                        resolve(result);
+                    } else {
+                        console.log('[FAILED] 推送失败:', result.message || result.msg || data);
+                        reject(new Error(result.message || 'Push failed'));
+                    }
+                } catch (e) {
+                    console.log('[ERROR] 解析响应失败:', data);
+                    reject(e);
+                }
+            });
+        });
+
+        req.on('error', (err) => {
+            console.log('[ERROR] 请求失败:', err.message);
+            reject(err);
+        });
+
+        req.write(postData);
+        req.end();
+    });
+}
+
+// 先删除旧文章再插入新的
+async function main() {
+    // 推送新版本（会创建新文章）
+    const result = await pushToCMS(article);
+    console.log('\n✅ 完成！请刷新页面查看完整内容');
+}
+
+main().catch(e => console.log('❌ 错误:', e.message));

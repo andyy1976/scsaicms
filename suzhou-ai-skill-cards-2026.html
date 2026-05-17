@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>数字员工标准化技能卡（全量30项）</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'PingFang SC','Microsoft YaHei',Arial,sans-serif;background:#0a0e27;color:#e8eaf6;min-height:100vh}
+.hero{background:linear-gradient(135deg,#1a237e 0%,#283593 50%,#4a148c 100%);padding:50px 20px 36px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 25% 50%,rgba(79,195,247,.12) 0%,transparent 60%),radial-gradient(ellipse at 75% 50%,rgba(206,147,216,.12) 0%,transparent 60%)}
+.hero h1{font-size:2rem;font-weight:700;position:relative;z-index:1;margin-bottom:10px;background:linear-gradient(90deg,#fff,#e3f2fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{position:relative;z-index:1;color:#90caf9;font-size:.95rem}
+.hero .badges{position:relative;z-index:1;margin-top:14px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.hero .badges span{display:inline-block;padding:5px 16px;border-radius:16px;font-size:.8rem;color:#fff}
+.b1{background:linear-gradient(135deg,#42a5f5,#1e88e5)}.b2{background:linear-gradient(135deg,#66bb6a,#43a047)}.b3{background:linear-gradient(135deg,#ab47bc,#8e24aa)}.bt{background:linear-gradient(135deg,#ef5350,#c62828)}
+.nav{position:sticky;top:0;z-index:100;background:rgba(10,14,39,.96);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);padding:0 16px;display:flex;align-items:center;overflow-x:auto;gap:2px}
+.nav button{flex-shrink:0;background:none;border:none;color:#78909c;padding:12px 14px;cursor:pointer;font-size:.85rem;transition:all .2s;border-bottom:2px solid transparent;white-space:nowrap}
+.nav button:hover{color:#4fc3f7}
+.nav button.active{color:#4fc3f7;border-bottom-color:#4fc3f7}
+.nav .bc{background:#1a237e;color:#4fc3f7;border-radius:8px;padding:2px 7px;font-size:.72rem;margin-left:4px}
+.stats-bar{display:flex;gap:10px;padding:16px 20px;flex-wrap:wrap}
+.stat-card{flex:1;min-width:100px;background:linear-gradient(135deg,rgba(255,255,255,.07),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:14px;text-align:center}
+.stat-card .num{font-size:1.6rem;font-weight:700;background:linear-gradient(90deg,#4fc3f7,#ce93d8);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-card .label{color:#78909c;font-size:.75rem;margin-top:3px}
+.filters{padding:12px 20px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;background:rgba(255,255,255,.02);border-bottom:1px solid rgba(255,255,255,.04)}
+.filters input{flex:1;min-width:180px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:8px 12px;color:#e8eaf6;font-size:.85rem}
+.filters input::placeholder{color:#546e7a}
+.filters input:focus{outline:none;border-color:#4fc3f7}
+.fs{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:8px 10px;color:#e8eaf6;font-size:.85rem;cursor:pointer}
+.fs option{background:#1a1f3c}
+.content{padding:16px 20px;max-width:1440px;margin:0 auto}
+.tc{display:none}.tc.active{display:block}
+.sh{display:flex;align-items:center;gap:10px;margin:20px 0 14px}
+.si{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.si.qc{background:linear-gradient(135deg,#ef5350,#ff8a65)}.si.proc{background:linear-gradient(135deg,#42a5f5,#26c6da)}.si.phm{background:linear-gradient(135deg,#66bb6a,#9ccc65)}
+.si.scm{background:linear-gradient(135deg,#ff9800,#ffb74d)}.si.des{background:linear-gradient(135deg,#7e57c2,#b388ff)}.si.rob{background:linear-gradient(135deg,#26a69a,#4db6ac)}.si.ec{background:linear-gradient(135deg,#ffc107,#ffca28)}
+.si.ma{background:linear-gradient(135deg,#ec407a,#f48fb1)}.si.dt{background:linear-gradient(135deg,#5c6bc0,#9fa8da)}
+.st h2{font-size:1.1rem;font-weight:600}.st p{color:#78909c;font-size:.8rem;margin-top:1px}.sc{background:#1a237e;color:#4fc3f7;border-radius:7px;padding:3px 10px;font-size:.75rem}
+.sg{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:14px}
+.sk{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:14px;overflow:hidden;transition:all .3s}
+.sk:hover{border-color:rgba(79,195,247,.35);transform:translateY(-1px);box-shadow:0 6px 24px rgba(0,0,0,.25)}
+.sk-h{display:flex;align-items:center;gap:10px;padding:14px 16px;cursor:pointer}
+.sk-h:hover{background:rgba(255,255,255,.02)}
+.sk-i{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.sk-i.qc{background:linear-gradient(135deg,rgba(239,83,80,.25),rgba(255,138,101,.15));border:1px solid rgba(239,83,80,.35)}
+.sk-i.proc{background:linear-gradient(135deg,rgba(66,165,245,.25),rgba(38,198,218,.15));border:1px solid rgba(66,165,245,.35)}
+.sk-i.phm{background:linear-gradient(135deg,rgba(102,187,106,.25),rgba(156,204,101,.15));border:1px solid rgba(102,187,106,.35)}
+.sk-i.scm{background:linear-gradient(135deg,rgba(255,152,0,.25),rgba(255,183,77,.15));border:1px solid rgba(255,152,0,.35)}
+.sk-i.des{background:linear-gradient(135deg,rgba(126,87,194,.25),rgba(179,136,255,.15));border:1px solid rgba(126,87,194,.35)}
+.sk-i.rob{background:linear-gradient(135deg,rgba(38,166,154,.25),rgba(77,182,172,.15));border:1px solid rgba(38,166,154,.35)}
+.sk-i.ec{background:linear-gradient(135deg,rgba(255,193,7,.25),rgba(255,202,40,.15));border:1px solid rgba(255,193,7,.35)}
+.sk-i.ma{background:linear-gradient(135deg,rgba(236,64,122,.25),rgba(244,143,177,.15));border:1px solid rgba(236,64,122,.35)}
+.sk-i.dt{background:linear-gradient(135deg,rgba(92,107,192,.25),rgba(159,168,218,.15));border:1px solid rgba(92,107,192,.35)}
+.sk-m{flex:1;min-width:0}
+.sk-id{font-size:.7rem;color:#546e7a;font-family:monospace}
+.sk-n{font-size:.92rem;font-weight:600;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sk-r{font-size:.75rem;color:#455a64;margin-top:1px}
+.sk-req{display:flex;align-items:center;gap:5px;flex-shrink:0}
+.rc{background:#1a237e;color:#4fc3f7;border-radius:7px;padding:3px 8px;font-size:.7rem;white-space:nowrap}
+.ei{color:#455a64;transition:transform .3s;font-size:.8rem;flex-shrink:0}
+.sk.open .ei{transform:rotate(180deg)}
+.sk-b{display:none;padding:0 16px 16px}
+.sk.open .sk-b{display:block}
+.sk-d{height:1px;background:rgba(255,255,255,.05);margin-bottom:14px}
+.f{margin-bottom:10px}
+.fl{font-size:.7rem;color:#455a60;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px}
+.fv{font-size:.82rem;color:#90a4ae;line-height:1.55}
+.fv code{background:rgba(79,195,247,.08);color:#4fc3f7;padding:1px 5px;border-radius:3px;font-size:.78rem;font-family:'Courier New',monospace}
+.tt{display:inline-block;background:rgba(255,255,255,.06);border-radius:4px;padding:2px 7px;margin:2px;font-size:.75rem}
+.rts{display:flex;flex-wrap:wrap;gap:3px;margin-top:3px}
+.rt{background:rgba(79,195,247,.08);color:#4fc3f7;border:1px solid rgba(79,195,247,.15);border-radius:5px;padding:2px 6px;font-size:.7rem;font-family:monospace}
+.je{background:rgba(0,0,0,.25);border-radius:7px;padding:10px;margin-top:6px;overflow-x:auto}
+.je pre{margin:0;font-size:.72rem;color:#a5d6a7;font-family:'Courier New',monospace;white-space:pre-wrap;word-break:break-all}
+.mt{width:100%;border-collapse:collapse;font-size:.8rem}
+.mt th{background:rgba(255,255,255,.04);color:#78909c;text-align:left;padding:8px 10px;font-weight:500;border-bottom:1px solid rgba(255,255,255,.08);position:sticky;top:0}
+.mt td{padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.03);color:#90a4ae;vertical-align:top}
+.mt tr:hover td{background:rgba(255,255,255,.015)}
+.mt .snc{color:#4fc3f7;font-weight:500}
+.mt .rcs .rt{display:inline-block;margin:1px}
+.ov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:20px}
+.ov-item{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:14px;text-align:center;cursor:pointer;transition:all .2s}
+.ov-item:hover{border-color:rgba(79,195,247,.3);background:rgba(255,255,255,.06)}
+.ov-item .ov-emoji{font-size:1.8rem;margin-bottom:6px}
+.ov-item .ov-name{font-size:.82rem;font-weight:600;color:#e8eaf6}
+.ov-item .ov-count{font-size:.7rem;color:#546e7a;margin-top:3px}
+.site-footer{text-align:center;padding:28px 20px;color:#2a3550;font-size:.75rem;border-top:1px solid rgba(255,255,255,.04);margin-top:30px}
+@media(max-width:700px){.hero h1{font-size:1.4rem}.sg{grid-template-columns:1fr}.stats-bar{overflow-x:auto;flex-wrap:nowrap;padding-bottom:6px}.ov-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}}
+</style>
+</head>
+<body>
+<div class="hero">
+<h1>数字员工标准化技能卡</h1>
+<p>苏州市"AI+制造"63项真实工业需求 · 全量30项技能 · 100%覆盖</p>
+<div class="badges">
+<span class="b1">第一批·基础必备 10项</span>
+<span class="b2">第二批·业务增值 15项</span>
+<span class="b3">第三批·高阶协同 5项</span>
+</div>
+</div>
+<nav class="nav" id="mainNav">
+<button class="active" data-tab="overview">📊 总览</button>
+<button data-tab="b1">🔵 第一批<span class="bc">10</span></button>
+<button data-tab="b2">🟢 第二批<span class="bc">15</span></button>
+<button data-tab="b3">🟣 第三批<span class="bc">5</span></button>
+<button data-tab="matrix">🔗 追溯矩阵</button>
+</nav>
+<div class="stats-bar">
+<div class="stat-card"><div class="num">30</div><div class="label">核心技能</div></div>
+<div class="stat-card"><div class="num">63</div><div class="label">覆盖需求</div></div>
+<div class="stat-card"><div class="num">8</div><div class="label">角色类型</div></div>
+<div class="stat-card"><div class="num">20+</div><div class="label">原子能力</div></div>
+<div class="stat-card"><div class="num">100%</div><div class="label">需求覆盖</div></div>
+</div>
+<div class="filters" id="filters">
+<input type="text" id="si" placeholder="🔍 搜索技能名称、ID或需求编号..." oninput="filt()">
+<select class="fs" id="rf" onchange="filt()"><option value="">全部角色</option><option value="qc">质检员</option><option value="proc">工艺优化师</option><option value="phm">设备医生</option><option value="scm">供应链智能体</option><option value="des">设计辅助</option><option value="rob">具身智能</option><option value="ec">能源/碳管理</option><option value="ma">多智能体协同</option><option value="dt">数字孪生</option></select>
+<select class="fs" id="bf" onchange="filt()"><option value="">全部批次</option><option value="1">第一批·基础必备</option><option value="2">第二批·业务增值</option><option value="3">第三批·高阶协同</option></select>
+</div>
+<div class="content">
+<div class="tc active" id="tab-overview">
+<div class="ov-grid" id="roleGrid"></div>
+<div class="sh"><div class="si" style="background:linear-gradient(135deg,#4fc3f7,#7c4dbf)">📋</div><div class="st"><h2>全量技能速览</h2><p>30项技能卡 · 点击卡片展开详情</p></div></div>
+<div class="sg" id="ov-grid"></div>
+</div>
+<div class="tc" id="tab-b1"></div>
+<div class="tc" id="tab-b2"></div>
+<div class="tc" id="tab-b3"></div>
+<div class="tc" id="tab-matrix">
+<div class="sh"><div class="si" style="background:linear-gradient(135deg,#ffb74d,#f06292)">🔗</div><div class="st"><h2>技能-需求追溯矩阵</h2><p>30项技能 × 63项需求 · 完整追溯</p></div></div>
+<table class="mt"><thead><tr><th>技能ID</th><th>技能名称</th><th>角色</th><th>批次</th><th>覆盖数</th><th>对应需求ID</th></tr></thead><tbody id="mb"></tbody></table>
+</div>
+</div>
+<footer class="site-footer">苏州市"AI+制造"数字员工标准化技能卡 · 全量30项 · 2026年5月</footer>
+<script>
+const S=[
+// === Batch 1: QC ===
+{id:"SKILL-QC-001",name:"通用表面缺陷检测",role:"qc",rn:"质检员",batch:1,desc:"基于深度学习，自动识别划痕/凹陷/气泡/裂纹/色差/异物，完成分类、定位与评级",reqs:["REQ-007","REQ-018","REQ-019","REQ-047","REQ-051","REQ-056","REQ-064"],
+ins:[{n:"image",t:"base64",r:"必填",d:"产品表面高清图像"},{n:"product_type",t:"string",r:"必填",d:'产品类型，如"地板"、"压铸件"'},{n:"defect_types",t:"array",r:"选填",d:"指定检测缺陷类型，默认全类型"},{n:"threshold",t:"float",r:"选填",d:"置信度阈值，默认0.8"}],
+outs:["detection_result (has_defect/defects/bbox/severity)","quality_level (合格/不合格/待复核)","detection_time (ms)","可视化标注图像(base64)"],
+deps:["图像预处理","目标检测模型推理","缺陷分类与评级","结果可视化"],
+reuse:"全行业通用，电子/装备/新能源/生物医药/冶金",
+kpi:"缺陷检出率≥99%，漏检率≤0.2%，单图<100ms(GPU)",
+ex:'{"skill_id":"SKILL-QC-001","params":{"image":"iVBOR...","product_type":"储能电芯","defect_types":["焊接漏焊","焊接虚焊"],"threshold":0.85}}'},
+{id:"SKILL-QC-002",name:"高精度尺寸测量",role:"qc",rn:"质检员",batch:1,desc:"基于机器视觉与标定技术，自动测量几何尺寸，与标准值对比判断合格",reqs:["REQ-007","REQ-018","REQ-047","REQ-056"],
+ins:[{n:"image",t:"base64",r:"必填",d:"带标定板的产品图像"},{n:"standard_dimensions",t:"object",r:"必填",d:"标准尺寸与公差"},{n:"calibration_params",t:"object",r:"必填",d:"相机标定参数"}],
+outs:["measurement_result (measured/standard/tolerance/is_qualified)","overall_qualified","measurement_report"],
+deps:["图像标定与校正","边缘检测与特征提取","几何尺寸计算","公差校验"],
+reuse:"全行业通用，精密加工",
+kpi:"测量精度±0.01mm，重复性≤0.005mm，<200ms",
+ex:'{"skill_id":"SKILL-QC-002","params":{"image":"...","standard_dimensions":{"length":{"std":100,"tol":0.05}},"calibration_params":{"fx":1500,"fy":1500}}}'},
+
+{id:"SKILL-QC-003",name:"金相组织智能评级",role:"qc",rn:"质检员",batch:1,desc:"针对冶金金相样品，自动识别夹杂物/晶粒度/脱碳层，按国标自动评级",reqs:["REQ-061"],
+ins:[{n:"image",t:"base64",r:"必填",d:"金相显微图像"},{n:"test_item",t:"string",r:"必填",d:"检测项目：夹杂物/晶粒度/脱碳层"},{n:"standard",t:"string",r:"必填",d:'执行标准，如"GB/T 10561-2005"'}],
+outs:["rating_result (test_item/rating_level/confidence)","特征区域标注图像","标准化检测报告"],
+deps:["显微图像预处理","金相特征分割","标准评级规则推理","报告生成"],
+reuse:"冶金、机械制造金相检测",
+kpi:"与人工偏差±0.5级以内≥95%，重复性≥99%",
+ex:'{"skill_id":"SKILL-QC-003","params":{"image":"...","test_item":"晶粒度","standard":"GB/T 10561-2005"}}'},
+
+{id:"SKILL-QC-004",name:"染色体核型智能分析",role:"qc",rn:"质检员",batch:1,desc:"针对生物医药染色体中期相图像，完成预处理/分割/核型配对/异常辅助诊断",reqs:["REQ-057"],
+ins:[{n:"image",t:"base64",r:"必填",d:"染色体中期相显微图像"},{n:"patient_info",t:"object",r:"选填",d:"患者基本信息"}],
+outs:["karyotype_result (chromosome_pairs/abnormal_types)","核型排列图","临床辅助诊断报告"],
+deps:["医学图像分割","染色体特征提取与匹配","异常模式识别","医学报告生成"],
+reuse:"生物医药、临床检验",
+kpi:"核型分析准确率≥98%，<5分钟/例，复核工作量降80%",
+ex:'{"skill_id":"SKILL-QC-004","params":{"image":"...","patient_info":{"id":"P001","age":35}}}'},
+
+// === Batch 1: PROC ===
+{id:"SKILL-PROC-001",name:"工艺参数智能寻优",role:"proc",rn:"工艺优化师",batch:1,desc:"构建工艺参数与产品质量映射模型，自动寻优全局最优参数组合",reqs:["REQ-003","REQ-007","REQ-015","REQ-028","REQ-047","REQ-051"],
+ins:[{n:"process_data",t:"array",r:"必填",d:"历史工艺参数与质量数据"},{n:"target_quality",t:"object",r:"必填",d:"目标质量指标"},{n:"constraints",t:"object",r:"必填",d:"工艺参数约束范围"},{n:"optimization_objective",t:"string",r:"选填",d:"优化目标：质量最优/效率最高/成本最低"}],
+outs:["optimal_parameters","quality_prediction","optimization_report","灵敏度分析结果"],
+deps:["多变量数据建模","全局优化算法","质量预测","灵敏度分析"],
+reuse:"全行业通用，参数优化场景",
+kpi:"推荐命中率≥85%，<5秒，良率提升≥5%",
+ex:'{"skill_id":"SKILL-PROC-001","params":{"process_data":[{"temp":120,"pressure":2.5}],"target_quality":{"pass_rate":0.99},"constraints":{"temp":[100,150]}}}'},
+
+{id:"SKILL-PROC-002",name:"工艺路线自动规划",role:"proc",rn:"工艺优化师",batch:1,desc:"解析产品图纸/材料/设备，自动规划完整加工工艺路线",reqs:["REQ-004","REQ-026","REQ-028"],
+ins:[{n:"product_drawing",t:"base64",r:"必填",d:"产品2D/3D图纸"},{n:"material",t:"string",r:"必填",d:"产品材料"},{n:"equipment_list",t:"array",r:"必填",d:"可用设备列表"},{n:"process_rules",t:"object",r:"必填",d:"工艺设计规则"}],
+outs:["process_route (工序/设备/工装/工时)","process_document","bom_list"],
+deps:["工程图纸解析","工艺知识图谱推理","工艺路线规划","标准化文档生成"],
+reuse:"装备制造、电子信息，离散制造",
+kpi:"设计周期3-10天→1天内，标准化率≥90%，错误率降90%",
+ex:'{"skill_id":"SKILL-PROC-002","params":{"product_drawing":"...","material":"铝合金6061","equipment_list":[{"name":"CNC-3轴"}]}}'},
+
+{id:"SKILL-PROC-003",name:"模流分析全流程自动化",role:"proc",rn:"工艺优化师",batch:1,desc:"自动完成注塑产品模流分析：网格处理/进浇口优化/变形预测/报告生成",reqs:["REQ-034"],
+ins:[{n:"3d_model",t:"file",r:"必填",d:"注塑产品STL模型"},{n:"material_params",t:"object",r:"必填",d:"材料参数"},{n:"process_params",t:"object",r:"必填",d:"初始工艺参数"}],
+outs:["optimized_gate_position","deformation_optimization","optimized_process_params","模流分析报告(PDF)"],
+deps:["3D模型处理","CAE软件自动化","模流结果分析","报告自动生成"],
+reuse:"注塑/压铸/冲压成型",
+kpi:"分析周期2-3天→小时级，合格率提升25%",
+ex:'{"skill_id":"SKILL-PROC-003","params":{"3d_model":"file://model.stl","material_params":{"type":"PP","melt_temp":220}}}'},
+
+// === Batch 1: PHM ===
+{id:"SKILL-PHM-001",name:"设备故障预测与健康评估",role:"phm",rn:"设备医生",batch:1,desc:"基于振动/温度/电流时序数据，实时评估设备健康，提前预测故障风险",reqs:["REQ-002","REQ-005","REQ-015","REQ-033","REQ-037","REQ-064"],
+ins:[{n:"sensor_data",t:"array",r:"必填",d:"设备传感器时序数据"},{n:"equipment_info",t:"object",r:"必填",d:"设备信息与历史故障"},{n:"health_standards",t:"object",r:"必填",d:"设备健康标准"}],
+outs:["health_status (健康/亚健康/故障)","health_score (0-100)","fault_prediction","健康评估报告"],
+deps:["时序数据预处理","故障特征提取","健康状态评估","故障预测模型"],
+reuse:"全行业，旋转/加工设备健康管理",
+kpi:"预测准确率≥90%，提前≥7天，非计划停机降35%",
+ex:'{"skill_id":"SKILL-PHM-001","params":{"sensor_data":[{"ts":"2026-05-01","vib_x":2.3}],"equipment_info":{"name":"主轴电机"}}}'},
+
+{id:"SKILL-PHM-002",name:"剩余寿命预测与备件管理",role:"phm",rn:"设备医生",batch:1,desc:"预测关键零部件剩余寿命，自动生成备件采购计划与库存优化",reqs:["REQ-015","REQ-037","REQ-064"],
+ins:[{n:"component_data",t:"object",r:"必填",d:"零部件运行与更换记录"},{n:"spare_parts_info",t:"object",r:"必填",d:"备件库存/采购/成本"},{n:"production_plan",t:"object",r:"选填",d:"生产计划"}],
+outs:["remaining_life (remaining_hours/confidence)","maintenance_plan","spare_parts_plan"],
+deps:["剩余寿命预测模型","维护计划编排","库存优化","采购计划生成"],
+reuse:"全行业，关键零部件寿命管理",
+kpi:"寿命预测误差≤10%，库存周转率提升30%，缺货率降80%",
+ex:'{"skill_id":"SKILL-PHM-002","params":{"component_data":{"bearing_01":{"runtime":5000}},"spare_parts_info":{}}}'},
+
+{id:"SKILL-PHM-003",name:"储能电池SOH精准预测",role:"phm",rn:"设备医生",batch:1,desc:"基于充放电数据精准预测电池健康度(SOH)，识别衰减与故障风险",reqs:["REQ-048"],
+ins:[{n:"battery_data",t:"array",r:"必填",d:"电压/电流/温度时序数据"},{n:"battery_info",t:"object",r:"必填",d:"电池设计参数与历史"},{n:"cycle_data",t:"array",r:"必填",d:"充放电循环数据"}],
+outs:["soh_value (0-1)","remaining_cycles","fault_risk","运维与梯次利用建议"],
+deps:["长时序数据建模","电池老化模型","故障风险识别","决策支持推理"],
+reuse:"新能源储能/动力电池",
+kpi:"SOH误差≤2%，提前预警≥7天，寿命延长20%",
+ex:'{"skill_id":"SKILL-PHM-003","params":{"battery_data":[{"voltage":3.7,"current":50}],"battery_info":{"capacity":100,"type":"LFP"}}}'},
+
+// === Batch 2: SCM ===
+{id:"SKILL-SCM-001",name:"物料相似度计算与替代料推荐",role:"scm",rn:"供应链智能体",batch:2,desc:"深度分析物料属性/规格/性能，精准计算相似度，推荐替代料与选型优化",reqs:["REQ-050","REQ-023"],
+ins:[{n:"target_material",t:"object",r:"必填",d:"目标物料完整属性"},{n:"material_database",t:"array",r:"必填",d:"全量物料数据库"},{n:"bom_structure",t:"object",r:"选填",d:"产品BOM结构"},{n:"substitution_rules",t:"object",r:"选填",d:"物料替代规则"}],
+outs:["similarity_results","recommended_substitutes","substitution_analysis","cost_saving_estimate"],
+deps:["物料知识图谱构建","多维度相似度计算","替代规则推理","成本效益分析"],
+reuse:"全行业，物料管理与采购",
+kpi:"推荐准确率≥95%，新物料种类减少30%，采购成本降低≥10%",
+ex:'{"skill_id":"SKILL-SCM-001","params":{"target_material":{"material_id":"MAT-00123","spec":"10kΩ ±1% 0805"},"material_database":"jdbc:mysql://xxx/material_db"}}'},
+
+{id:"SKILL-SCM-002",name:"供应商智能寻源与动态评估",role:"scm",rn:"供应链智能体",batch:2,desc:"基于采购需求自动匹配最优供应商，多维度动态评估，实时监控履约风险",reqs:["REQ-023","REQ-055"],
+ins:[{n:"procurement_requirement",t:"object",r:"必填",d:"采购需求规格/数量/交期"},{n:"supplier_database",t:"array",r:"必填",d:"供应商资质/产能/报价/履约"},{n:"evaluation_dimensions",t:"object",r:"必填",d:"评估维度与权重"},{n:"risk_rules",t:"object",r:"选填",d:"风险预警规则"}],
+outs:["matched_suppliers","supplier_evaluation_report","risk_warnings","recommended_supplier"],
+deps:["供应商知识图谱","多维度综合评估","风险识别与预警","报价对比分析"],
+reuse:"全行业，采购寻源",
+kpi:"寻源效率提升80%，评估周期周→天，断供风险降70%",
+ex:'{"skill_id":"SKILL-SCM-002","params":{"procurement_requirement":{"item":"电阻10kΩ","qty":100000},"supplier_database":[]}}'},
+
+{id:"SKILL-SCM-003",name:"需求预测与库存优化",role:"scm",rn:"供应链智能体",batch:2,desc:"整合历史销售/市场趋势/产能，精准预测需求，优化库存水平与采购策略",reqs:["REQ-011","REQ-044","REQ-055"],
+ins:[{n:"historical_sales",t:"array",r:"必填",d:"历史销售时序数据"},{n:"market_trends",t:"object",r:"选填",d:"市场趋势与行业数据"},{n:"inventory_data",t:"object",r:"必填",d:"当前库存与在途"},{n:"production_capacity",t:"object",r:"选填",d:"工厂产能数据"},{n:"lead_time",t:"object",r:"必填",d:"采购与生产提前期"}],
+outs:["demand_forecast","optimal_inventory_level","procurement_plan","inventory_turnover_forecast"],
+deps:["时序数据预测","库存运筹优化","多因素关联分析","采购计划编排"],
+reuse:"全行业，需求预测与库存管理",
+kpi:"预测准确率≥85%，库存周转率提升30%，成本降低20%",
+ex:'{"skill_id":"SKILL-SCM-003","params":{"historical_sales":[100,120,115],"inventory_data":{"raw":5000,"wip":2000},"lead_time":{"procurement":14}}}'},
+
+{id:"SKILL-SCM-004",name:"边角料余料智能识别与利用",role:"scm",rn:"供应链智能体",batch:2,desc:"识别不规则边角料形状/尺寸/材质，自动规划最优切分，匹配加工订单",reqs:["REQ-022"],
+ins:[{n:"scrap_image",t:"base64",r:"必填",d:"边角料视觉/3D点云"},{n:"material_info",t:"object",r:"必填",d:"边角料材质与规格"},{n:"order_requirements",t:"array",r:"必填",d:"待加工订单用料需求"},{n:"cutting_rules",t:"object",r:"必填",d:"切割工艺规则"}],
+outs:["scrap_dimensions","optimal_cutting_plan","matching_orders","material_utilization_rate"],
+deps:["3D视觉图形识别","板材切割运筹优化","订单需求匹配","加工路径规划"],
+reuse:"装备制造/冶金/轻工板材加工",
+kpi:"识别准确率≥98%，材料利用率提升25%，废料减少20%",
+ex:'{"skill_id":"SKILL-SCM-004","params":{"scrap_image":"...","material_info":{"type":"不锈钢304","thickness":2},"order_requirements":[]}}'},
+
+{id:"SKILL-SCM-005",name:"产品动态定价",role:"scm",rn:"供应链智能体",batch:2,desc:"整合原材料价格/竞争/需求/成本，动态调整定价策略，最大化利润",reqs:["REQ-024"],
+ins:[{n:"product_cost",t:"object",r:"必填",d:"产品BOM成本与变动成本"},{n:"raw_material_prices",t:"array",r:"必填",d:"原材料价格波动时序"},{n:"competitor_prices",t:"object",r:"选填",d:"竞品定价与市场份额"},{n:"historical_sales",t:"array",r:"必填",d:"历史价格与销量"},{n:"profit_target",t:"float",r:"必填",d:"目标利润率"}],
+outs:["optimal_price","price_strategy","profit_forecast","price_adjustment_suggestion"],
+deps:["价格弹性预测","多因素关联分析","动态定价优化","收益预测"],
+reuse:"全行业，产品与服务定价决策",
+kpi:"响应速度提升90%，毛利率提升≥5%，市场份额稳定",
+ex:'{"skill_id":"SKILL-SCM-005","params":{"product_cost":{"bom":50,"variable":10},"profit_target":0.25}}'},
+
+// === Batch 2: DES ===
+{id:"SKILL-DES-001",name:"2D图纸3D自动还原",role:"des",rn:"设计辅助智能体",batch:2,desc:"解析2D机械图纸，提取尺寸/公差/材质，自动生成参数化3D模型与BOM",reqs:["REQ-025","REQ-008"],
+ins:[{n:"2d_drawing",t:"file",r:"必填",d:"CAD格式或图片2D图纸"},{n:"standard_parts_library",t:"object",r:"必填",d:"标准件库"},{n:"material_library",t:"object",r:"必填",d:"材料属性库"},{n:"design_standards",t:"object",r:"选填",d:"企业设计规范"}],
+outs:["3d_model (STEP/IGS)","bom_list","drawing_analysis_report","erp_sync_data"],
+deps:["工程图纸多模态解析","3D参数化模型生成","物料信息结构化提取","设计规范合规校验"],
+reuse:"装备制造/电子信息机械设计",
+kpi:"3D还原准确率≥95%，BOM效率提升90%，人工出错降100%",
+ex:'{"skill_id":"SKILL-DES-001","params":{"2d_drawing":"file://drawing.dwg","standard_parts_library":{}}}'},
+
+{id:"SKILL-DES-002",name:"标准模型参数自动修改",role:"des",rn:"设计辅助智能体",batch:2,desc:"基于自然语言修改指令，自动调整标准2D/3D模型尺寸参数",reqs:["REQ-009"],
+ins:[{n:"original_model",t:"file",r:"必填",d:"原始标准2D/3D模型"},{n:"modification_instruction",t:"string",r:"必填",d:"自然语言修改指令"},{n:"design_standards",t:"object",r:"必填",d:"设计规范与公差标准"}],
+outs:["updated_model","updated_drawing","modification_log","compliance_check_report"],
+deps:["自然语言指令理解","三维模型参数化编辑","标准化图纸生成","合规性自动校验"],
+reuse:"全行业，标准件/通用件快速修改出图",
+kpi:"修改效率提升80%，合规率100%，参数修改准确率100%",
+ex:'{"skill_id":"SKILL-DES-002","params":{"original_model":"file://bracket.step","modification_instruction":"将孔径从M6改为M8"}}'},
+
+{id:"SKILL-DES-003",name:"加工G代码自动生成",role:"des",rn:"设计辅助智能体",batch:2,desc:"解析3D模型与工艺要求，自动生成机床可执行G代码，仿真验证优化",reqs:["REQ-008","REQ-015"],
+ins:[{n:"3d_model",t:"file",r:"必填",d:"零件3D模型"},{n:"machine_tool_params",t:"object",r:"必填",d:"数控机床参数"},{n:"tool_library",t:"object",r:"必填",d:"刀具参数库"},{n:"process_requirements",t:"object",r:"必填",d:"加工工艺要求与公差"}],
+outs:["g_code","machining_simulation","process_time_estimate","code_optimization_suggestion"],
+deps:["3D加工特征识别","加工路径自动规划","G代码生成与校验","加工过程仿真"],
+reuse:"装备制造/电子信息CNC加工",
+kpi:"生成效率提升90%，首件合格率≥98%，加工时间缩短15%",
+ex:'{"skill_id":"SKILL-DES-003","params":{"3d_model":"file://part.step","machine_tool_params":{"type":"5-axis"},"tool_library":{}}}'},
+
+{id:"SKILL-DES-004",name:"钢铁材料逆向智能设计",role:"des",rn:"设计辅助智能体",batch:2,desc:"基于目标性能反推钢铁材料成分与生产工艺，新钢种快速研发",reqs:["REQ-060"],
+ins:[{n:"target_properties",t:"object",r:"必填",d:"目标力学/物理性能"},{n:"application_scenario",t:"string",r:"必填",d:"材料应用场景"},{n:"process_constraints",t:"object",r:"必填",d:"生产工艺设备约束"},{n:"material_database",t:"array",r:"必填",d:"历史成分-工艺-性能数据集"}],
+outs:["recommended_composition","recommended_process","performance_prediction","simulation_report"],
+deps:["材料全链路映射模型","多目标逆向优化","材料性能预测","工艺方案生成"],
+reuse:"冶金新材料研发，可扩展至有色/高分子材料",
+kpi:"研发周期缩短60%，试错成本降70%，性能达标率≥95%",
+ex:'{"skill_id":"SKILL-DES-004","params":{"target_properties":{"tensile":800,"yield":600},"application_scenario":"汽车结构件"}}'},
+
+{id:"SKILL-DES-005",name:"RNA药物序列AI辅助设计",role:"des",rn:"设计辅助智能体",batch:2,desc:"针对疾病靶点自动生成筛选RNA候选序列，优化稳定性/靶向/免疫原性",reqs:["REQ-059"],
+ins:[{n:"target_protein",t:"object",r:"必填",d:"靶点蛋白结构与属性"},{n:"rna_database",t:"array",r:"必填",d:"已知RNA序列与功能库"},{n:"optimization_objectives",t:"object",r:"必填",d:"优化目标与权重"},{n:"design_constraints",t:"object",r:"选填",d:"序列设计约束"}],
+outs:["candidate_sequences","property_analysis","druggability_evaluation","experiment_guidance"],
+deps:["生物序列数据分析","RNA序列生成式设计","分子属性预测","成药性评估推理"],
+reuse:"生物医药RNA药物/基因治疗研发",
+kpi:"筛选效率提升100倍，研发周期缩短50%，靶向效率提升30%",
+ex:'{"skill_id":"SKILL-DES-005","params":{"target_protein":{"pdb_id":"7ABC","name":"EGFR"},"rna_database":[]}}'},
+
+// === Batch 2: ROB ===
+{id:"SKILL-ROB-001",name:"柔性插拔装配",role:"rob",rn:"具身智能操作智能体",batch:2,desc:"视觉引导+力控，实现不同规格产品自适应柔性插拔，支持混线生产",reqs:["REQ-038"],
+ins:[{n:"product_model",t:"object",r:"必填",d:"产品3D模型与装配要求"},{n:"camera_feed",t:"stream",r:"必填",d:"实时视觉流"},{n:"force_sensor_data",t:"stream",r:"必填",d:"力传感器数据"},{n:"robot_params",t:"object",r:"必填",d:"机械臂参数"}],
+outs:["robot_control_commands","assembly_status","quality_check_result","changeover_plan"],
+deps:["3D视觉定位与姿态识别","力控自适应装配","机械臂运动规划","混线生产动态调度"],
+reuse:"新能源/电子信息装配",
+kpi:"装配成功率≥99.8%，换产≤5分钟，混线适配100%",
+ex:'{"skill_id":"SKILL-ROB-001","params":{"product_model":{"id":"CELL-A01"},"camera_feed":"rtsp://...","force_sensor_data":"ws://..."}}'},
+
+{id:"SKILL-ROB-002",name:"智能物料搬运",role:"rob",rn:"具身智能操作智能体",batch:2,desc:"整合AGV/AMR与机械臂，自动识别/抓取/搬运/上下料，多设备协同",reqs:["REQ-039","REQ-044"],
+ins:[{n:"material_info",t:"object",r:"必填",d:"物料规格/重量/包装"},{n:"factory_map",t:"object",r:"必填",d:"工厂地图与路径"},{n:"production_schedule",t:"object",r:"必填",d:"生产计划与节拍"},{n:"device_status",t:"array",r:"必填",d:"AGV/AMR/机械臂状态"}],
+outs:["transport_route","device_schedule","task_status","exception_handling"],
+deps:["视觉识别与自适应抓取","多设备路径规划协同","自主避障与异常处理","生产节拍动态适配"],
+reuse:"全行业，物料搬运/仓储物流/上下料",
+kpi:"搬运准时率≥99%，协同冲突0，效率提升50%",
+ex:'{"skill_id":"SKILL-ROB-002","params":{"material_info":{"weight":25,"type":"box"},"factory_map":{}}}'},
+
+{id:"SKILL-ROB-003",name:"智能切削加工",role:"rob",rn:"具身智能操作智能体",batch:2,desc:"感知-决策-执行-优化一体化，复杂铸件飞边毛刺自适应切削",reqs:["REQ-017"],
+ins:[{n:"casting_model",t:"object",r:"必填",d:"铸件3D模型与要求"},{n:"camera_feed",t:"stream",r:"必填",d:"实时视觉流"},{n:"force_sensor_data",t:"stream",r:"必填",d:"力传感器数据"},{n:"robot_params",t:"object",r:"必填",d:"机械臂与切削工具参数"}],
+outs:["cutting_path","robot_control_commands","processing_quality","process_optimization"],
+deps:["3D视觉场景感知","力控自适应切削","加工路径自主规划","加工质量闭环优化"],
+reuse:"装备制造铸件/锻件后处理，可扩展至打磨/抛光",
+kpi:"废品率降60%，单件时间缩短50%，换产天→小时",
+ex:'{"skill_id":"SKILL-ROB-003","params":{"casting_model":{"id":"CAST-001"},"camera_feed":"rtsp://..."}}'},
+
+{id:"SKILL-ROB-004",name:"无人智能巡检",role:"rob",rn:"具身智能操作智能体",batch:2,desc:"控制巡检机器人全区域自主巡检，识别设备异常/安环违规/环境风险",reqs:["REQ-040","REQ-041"],
+ins:[{n:"inspection_route",t:"array",r:"必填",d:"巡检路线与点位"},{n:"robot_sensor_data",t:"stream",r:"必填",d:"视觉/温度/气体传感器数据"},{n:"inspection_standards",t:"object",r:"必填",d:"巡检标准与异常规则"},{n:"device_templates",t:"array",r:"必填",d:"设备正常状态模板库"}],
+outs:["inspection_report","anomaly_alerts","handling_suggestions","route_optimization"],
+deps:["多模态异常识别","机器人自主导航避障","异常推理与预案生成","巡检报告自动生成"],
+reuse:"全行业，工厂/园区/变电站/管道巡检",
+kpi:"异常识别率≥98%，人工成本降100%，覆盖率100%",
+ex:'{"skill_id":"SKILL-ROB-004","params":{"inspection_route":[{"point":"A1","type":"设备"}],"robot_sensor_data":"ws://..."}}'},
+
+// === Batch 2: EC ===
+{id:"SKILL-EC-001",name:"多能源协同智能调度",role:"ec",rn:"能源/碳管理智能体",batch:2,desc:"整合电/气/热多能源，基于负荷预测协同调度优化，降低单位产值能耗",reqs:["REQ-042","REQ-054"],
+ins:[{n:"energy_consumption",t:"array",r:"必填",d:"各能源实时消耗时序"},{n:"production_plan",t:"object",r:"必填",d:"生产计划与设备运行"},{n:"energy_prices",t:"object",r:"必填",d:"各能源分时价格"},{n:"grid_constraints",t:"object",r:"选填",d:"电网供电约束"}],
+outs:["load_forecast","energy_schedule","energy_efficiency_analysis","cost_saving_estimate"],
+deps:["能源负荷时序预测","多能源运筹优化调度","能源-生产关联分析","能效优化根因推理"],
+reuse:"全行业，工厂/园区能源管理",
+kpi:"负荷预测≥90%，单位产值能耗降≥15%，成本降10%",
+ex:'{"skill_id":"SKILL-EC-001","params":{"energy_consumption":[{"elec":500,"gas":200}],"energy_prices":{"elec_peak":1.2}}}'},
+
+{id:"SKILL-EC-002",name:"全生命周期碳资产管理",role:"ec",rn:"能源/碳管理智能体",batch:2,desc:"打通生产/供应链/物流全链路，自动核算碳排放，追踪碳足迹",reqs:["REQ-043","REQ-054"],
+ins:[{n:"production_data",t:"object",r:"必填",d:"各环节能耗/物料消耗"},{n:"supply_chain_data",t:"object",r:"必填",d:"供应链碳排放因子"},{n:"logistics_data",t:"object",r:"必填",d:"物流运输碳排放"},{n:"accounting_standards",t:"object",r:"必填",d:"碳排放核算标准"}],
+outs:["carbon_emission_report","product_carbon_footprint","compliance_materials","emission_reduction_plan"],
+deps:["全链路碳排放数据整合","碳足迹核算规则推理","合规性报告自动生成","碳减排方案优化推理"],
+reuse:"全行业，碳资产管理与双碳合规",
+kpi:"核算效率提升90%，准确率100%，合规性100%",
+ex:'{"skill_id":"SKILL-EC-002","params":{"production_data":{"scope1":1200,"scope2":800},"accounting_standards":"ISO 14064"}}'},
+
+{id:"SKILL-EC-003",name:"储能系统充放电智能调度",role:"ec",rn:"能源/碳管理智能体",batch:2,desc:"结合峰谷电价/用电需求/储能状态，智能优化充放电策略，最大化收益",reqs:["REQ-049"],
+ins:[{n:"electricity_prices",t:"array",r:"必填",d:"分时电价时序"},{n:"grid_demand",t:"object",r:"必填",d:"区域用电需求预测"},{n:"energy_storage_status",t:"object",r:"必填",d:"储能容量/健康/效率"},{n:"grid_constraints",t:"object",r:"必填",d:"电网稳定约束"}],
+outs:["charge_discharge_schedule","dynamic_adjustment_commands","revenue_forecast","multi_project_schedule"],
+deps:["电价与需求时序预测","充放电策略运筹优化","多项目协同调度","收益预测与动态调整"],
+reuse:"新能源储能电站/用户侧储能/微电网",
+kpi:"响应≤5分钟，套利收益提升≥20%，电网合规100%",
+ex:'{"skill_id":"SKILL-EC-003","params":{"electricity_prices":[{"peak":1.2,"valley":0.3}],"energy_storage_status":{"capacity":100,"soh":0.95}}}'},
+
+// === Batch 3: MA ===
+{id:"SKILL-MA-001",name:"多品种小批量智能排程",role:"ma",rn:"多智能体协同智能体",batch:3,desc:"整合订单/产能/物料/设备多约束，自主优化排程，支持插单急单快速响应",reqs:["REQ-016","REQ-065"],
+ins:[{n:"sales_orders",t:"array",r:"必填",d:"销售订单与交期"},{n:"equipment_status",t:"object",r:"必填",d:"设备产能/状态/日历"},{n:"material_status",t:"object",r:"必填",d:"物料库存与齐套"},{n:"process_routes",t:"object",r:"必填",d:"产品工艺路线与工序依赖"},{n:"exception_rules",t:"object",r:"必填",d:"异常场景处理规则"}],
+outs:["production_schedule","material_kit_warning","exception_response","delivery_forecast"],
+deps:["多约束运筹优化","动态排程与异常响应","多维度数据关联分析","排程计划智能编排"],
+reuse:"全行业离散制造，多品种小批量",
+kpi:"排程天→分钟级，交付准时率≥98%，设备利用率提升25%",
+ex:'{"skill_id":"SKILL-MA-001","params":{"sales_orders":[{"id":"SO-001","due":"2026-06-01"}],"equipment_status":{}}}'},
+
+{id:"SKILL-MA-002",name:"生产全链路综合运营",role:"ma",rn:"多智能体协同智能体",batch:3,desc:"整合生产/质量/设备/物流/能源全链路，全局监控/超前预测/协同优化",reqs:["REQ-041","REQ-064","REQ-065"],
+ins:[{n:"production_data",t:"object",r:"必填",d:"生产进度/节拍/工单"},{n:"quality_data",t:"object",r:"必填",d:"质量检测/不良品"},{n:"equipment_data",t:"object",r:"必填",d:"设备运行/维护/故障"},{n:"logistics_data",t:"object",r:"必填",d:"物料/仓储/配送"},{n:"energy_data",t:"object",r:"必填",d:"能耗/碳排放"}],
+outs:["global_operation_dashboard","anomaly_prediction","collaborative_optimization","operation_report"],
+deps:["全链路数据整合感知","生产异常超前预测","全局协同优化运筹","多智能体任务调度协同"],
+reuse:"全行业，工厂综合运营管理",
+kpi:"异常响应小时→分钟，综合效率提升30%，交付准时≥99%",
+ex:'{"skill_id":"SKILL-MA-002","params":{"production_data":{"oee":0.82},"quality_data":{"defect_rate":0.03}}}'},
+
+{id:"SKILL-MA-003",name:"CNC加工全流程多智能体管控",role:"ma",rn:"多智能体协同智能体",batch:3,desc:"调度编程/工艺/刀具/维护多智能体协同，CNC加工全流程自主管控",reqs:["REQ-015"],
+ins:[{n:"part_drawing",t:"file",r:"必填",d:"零件2D/3D图纸"},{n:"material",t:"string",r:"必填",d:"零件材料"},{n:"machine_tool",t:"object",r:"必填",d:"数控机床参数"},{n:"tool_library",t:"object",r:"必填",d:"刀具参数与状态"},{n:"quality_standards",t:"object",r:"必填",d:"加工质量标准"}],
+outs:["g_code","optimal_process_params","tool_life_prediction","equipment_maintenance_plan","quality_analysis"],
+deps:["多智能体任务拆解分配","智能体间通信协同","全流程状态监控闭环","异常事件协同处理"],
+reuse:"装备制造/电子信息CNC加工",
+kpi:"编程效率提升90%，刀具寿命延长20%，非计划停机降35%",
+ex:'{"skill_id":"SKILL-MA-003","params":{"part_drawing":"file://bracket.step","material":"45#钢","machine_tool":{"type":"5-axis"}}}'},
+
+// === Batch 3: DT ===
+{id:"SKILL-DT-001",name:"储能产品数字孪生与研发优化",role:"dt",rn:"数字孪生+AI智能体",batch:3,desc:"构建储能产品全生命周期数字孪生，仿真测试/性能预测/设计优化",reqs:["REQ-053"],
+ins:[{n:"product_design",t:"object",r:"必填",d:"产品设计图纸与参数"},{n:"digital_twin_model",t:"object",r:"必填",d:"产品数字孪生模型"},{n:"global_operation_data",t:"array",r:"必填",d:"全球运营全量数据"},{n:"application_scenarios",t:"array",r:"必填",d:"产品应用场景与环境"}],
+outs:["simulation_test_report","design_optimization","reliability_prediction","scenario_adaptation"],
+deps:["数字孪生模型构建运行","产品性能AI预测","海量运营数据挖掘","生成式设计优化"],
+reuse:"新能源储能/光伏/风电产品研发",
+kpi:"研发周期缩短40%，故障率降30%，场景适配100%",
+ex:'{"skill_id":"SKILL-DT-001","params":{"product_design":{"model":"ESS-100"},"digital_twin_model":{}}}'},
+
+{id:"SKILL-DT-002",name:"机械加工AI自主决策设计",role:"dt",rn:"数字孪生+AI智能体",batch:3,desc:"构建加工场景数字孪生，钻头失效分析/方案仿真验证/固化专家经验",reqs:["REQ-027"],
+ins:[{n:"part_design",t:"object",r:"必填",d:"零件设计与材料参数"},{n:"digital_twin_environment",t:"object",r:"必填",d:"加工场景数字孪生"},{n:"tool_data",t:"object",r:"必填",d:"钻头使用与失效数据"},{n:"expert_experience",t:"object",r:"必填",d:"资深工程师经验库"}],
+outs:["optimal_design_scheme","tool_failure_analysis","simulation_verification","expert_experience_model"],
+deps:["数字孪生仿真","加工失效预测与根因分析","设计方案自主生成优化","专家经验固化与推理"],
+reuse:"装备制造机械加工/模具制造",
+kpi:"设计周期天→小时，失误率降90%，质量一致性100%",
+ex:'{"skill_id":"SKILL-DT-002","params":{"part_design":{"material":"钛合金"},"digital_twin_environment":{}}}'}
+];
+
+// Role meta
+const RM={
+qc:{emoji:"🔍",name:"质检员",color:"qc",desc:"工业检测·漏检率低·ROI最明确"},
+proc:{emoji:"⚙️",name:"工艺优化师",color:"proc",desc:"工艺参数AI寻优·经验固化"},
+phm:{emoji:"🏭",name:"设备医生",color:"phm",desc:"预测性维护·非计划停机降35%"},
+scm:{emoji:"📦",name:"供应链智能体",color:"scm",desc:"寻源·预测·库存优化"},
+des:{emoji:"🎨",name:"设计辅助智能体",color:"des",desc:"2D→3D·G代码·材料逆向设计"},
+rob:{emoji:"🤖",name:"具身智能操作智能体",color:"rob",desc:"柔性装配·搬运·切削·巡检"},
+ec:{emoji:"⚡",name:"能源/碳管理智能体",color:"ec",desc:"多能源调度·碳足迹·充放电"},
+ma:{emoji:"🧠",name:"多智能体协同",color:"ma",desc:"排程·全链路运营·多体管控"},
+dt:{emoji:"🌐",name:"数字孪生+AI",color:"dt",desc:"虚实融合·仿真优化·经验固化"}
+};
+
+const BM={1:"第一批·基础必备",2:"第二批·业务增值",3:"第三批·高阶协同"};
+
+function mkCard(s){
+var dt=s.deps.map(d=>'<span class="tt">'+d+'</span>').join('');
+var rq=s.reqs.map(r=>'<span class="rt">'+r+'</span>').join('');
+var ir=s.ins.map(i=>'<div class="f"><div class="fl">'+i.n+' <span style="color:'+(i.r==="必填"?"#ef9a9a":"#455a60")+'">（'+i.r+'）</span><code>'+i.t+'</code></div><div class="fv">'+i.d+'</div></div>').join('');
+var or=s.outs.map(o=>'<div class="fv">• '+o+'</div>').join('');
+return '<div class="sk" data-role="'+s.role+'" data-batch="'+s.batch+'" data-name="'+s.name+'" data-id="'+s.id+'" data-reqs="'+s.reqs.join(' ')+'">'+
+'<div class="sk-h" onclick="this.parentElement.classList.toggle(\'open\')">'+
+'<div class="sk-i '+s.role+'">'+RM[s.role].emoji+'</div>'+
+'<div class="sk-m"><div class="sk-id">'+s.id+'</div><div class="sk-n">'+s.name+'</div><div class="sk-r">'+s.rn+' · '+BM[s.batch]+'</div></div>'+
+'<div class="sk-req"><span class="rc">'+s.reqs.length+'项REQ</span><span class="ei">▼</span></div></div>'+
+'<div class="sk-b"><div class="sk-d"></div>'+
+'<div class="f"><div class="fl">技能描述</div><div class="fv">'+s.desc+'</div></div>'+
+'<div class="f"><div class="fl">对应需求ID</div><div class="rts">'+rq+'</div></div>'+
+'<div class="f"><div class="fl">输入参数</div>'+ir+'</div>'+
+'<div class="f"><div class="fl">输出成果</div>'+or+'</div>'+
+'<div class="f"><div class="fl">依赖原子能力</div><div class="fv" style="margin-top:3px">'+dt+'</div></div>'+
+'<div class="f"><div class="fl">可复用范围</div><div class="fv">'+s.reuse+'</div></div>'+
+'<div class="f"><div class="fl">验收指标</div><div class="fv">'+s.kpi+'</div></div>'+
+'<div class="f"><div class="fl">典型调用示例</div><div class="je"><pre>'+s.ex.replace(/</g,'&lt;')+'</pre></div></div>'+
+'</div></div>';
+}
+
+function showTab(id){
+document.querySelectorAll('.tc').forEach(t=>t.classList.remove('active'));
+document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+document.getElementById('tab-'+id).classList.add('active');
+document.querySelector('[data-tab="'+id+'"]').classList.add('active');
+var f=document.getElementById('filters');
+f.style.display=(id!=='matrix')?'flex':'none';
+if(id!=='matrix')filt();
+}
+
+function filt(){
+var q=document.getElementById('si').value.toLowerCase();
+var r=document.getElementById('rf').value;
+var b=document.getElementById('bf').value;
+var act=document.querySelector('.tc.active');
+if(!act)return;
+act.querySelectorAll('.sk').forEach(function(c){
+var mn=!q||c.dataset.name.toLowerCase().includes(q)||c.dataset.id.toLowerCase().includes(q)||c.dataset.reqs.toLowerCase().includes(q);
+var mr=!r||c.dataset.role===r;
+var mb=!b||c.dataset.batch===b;
+c.style.display=(mn&&mr&&mb)?'':'none';
+});
+}
+
+function renderOverview(){
+// Role cards
+var rg=document.getElementById('roleGrid');
+var rh='';
+Object.keys(RM).forEach(function(k){
+var cnt=S.filter(function(s){return s.role===k}).length;
+var reqc=[...new Set(S.filter(function(s){return s.role===k}).flatMap(function(s){return s.reqs}))].length;
+rh+='<div class="ov-item" onclick="document.getElementById(\'rf\').value=\''+k+'\';filt()"><div class="ov-emoji">'+RM[k].emoji+'</div><div class="ov-name">'+RM[k].name+'</div><div class="ov-count">'+cnt+'项技能 · '+reqc+'项REQ</div></div>';
+});
+rg.innerHTML=rh;
+// All cards
+document.getElementById('ov-grid').innerHTML=S.map(mkCard).join('');
+}
+
+function renderBatches(){
+var b1h='',b2h='',b3h='';
+var lastRole1='',lastRole2='',lastRole3='';
+S.forEach(function(s){
+var card=mkCard(s);
+var sh='';
+if(s.batch===1){
+if(s.role!==lastRole1){sh='<div class="sh"><div class="si '+s.role+'">'+RM[s.role].emoji+'</div><div class="st"><h2>'+s.rn+'</h2><p>'+RM[s.role].desc+'</p></div><span class="sc">'+S.filter(function(x){return x.role===s.role&&x.batch===1}).length+'项</span></div>';lastRole1=s.role;}
+b1h+=sh+card;
+}else if(s.batch===2){
+if(s.role!==lastRole2){sh='<div class="sh"><div class="si '+s.role+'">'+RM[s.role].emoji+'</div><div class="st"><h2>'+s.rn+'</h2><p>'+RM[s.role].desc+'</p></div><span class="sc">'+S.filter(function(x){return x.role===s.role&&x.batch===2}).length+'项</span></div>';lastRole2=s.role;}
+b2h+=sh+card;
+}else{
+if(s.role!==lastRole3){sh='<div class="sh"><div class="si '+s.role+'">'+RM[s.role].emoji+'</div><div class="st"><h2>'+s.rn+'</h2><p>'+RM[s.role].desc+'</p></div><span class="sc">'+S.filter(function(x){return x.role===s.role&&x.batch===3}).length+'项</span></div>';lastRole3=s.role;}
+b3h+=sh+card;
+}
+});
+document.getElementById('tab-b1').innerHTML='<div class="sg">'+b1h+'</div>';
+document.getElementById('tab-b2').innerHTML='<div class="sg">'+b2h+'</div>';
+document.getElementById('tab-b3').innerHTML='<div class="sg">'+b3h+'</div>';
+}
+
+function renderMatrix(){
+var h='';
+S.forEach(function(s){
+var rt=s.reqs.map(function(r){return '<span class="rt">'+r+'</span>';}).join('');
+h+='<tr><td class="snc">'+s.id+'</td><td>'+s.name+'</td><td>'+s.rn+'</td><td style="font-size:.72rem">'+BM[s.batch]+'</td><td style="text-align:center">'+s.reqs.length+'</td><td class="rcs">'+rt+'</td></tr>';
+});
+// Summary rows
+var totalReqs=[...new Set(S.flatMap(function(s){return s.reqs}))].length;
+h+='<tr style="background:rgba(255,255,255,.03)"><td colspan="4" style="font-weight:600;color:#4fc3f7">合计 · 30项技能</td><td style="text-align:center;font-weight:700;color:#4fc3f7">'+S.reduce(function(a,s){return a+s.reqs.length},0)+'</td><td style="color:#4fc3f7">覆盖'+totalReqs+'项需求（100%）</td></tr>';
+document.getElementById('mb').innerHTML=h;
+}
+
+// Nav click
+document.querySelectorAll('.nav button').forEach(function(btn){
+btn.addEventListener('click',function(){showTab(this.dataset.tab);});
+});
+
+// Init
+renderOverview();
+renderBatches();
+renderMatrix();
+</script>
+</body>
+</html>

@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>苏州市"AI+制造"65项需求 · 数字员工(AI Agent)专用结构化输入手册</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #818cf8;
+            --primary-dark: #3730a3;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --border: #e2e8f0;
+            --text: #1e293b;
+            --text-secondary: #64748b;
+            --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #06b6d4 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+        .hero h1 { font-size: 36px; margin-bottom: 12px; font-weight: 800; }
+        .hero .subtitle { font-size: 18px; opacity: 0.9; margin-bottom: 20px; }
+        .hero .meta-pills { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+        .hero .pill {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        /* Navigation */
+        .nav-bar {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+        .nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            gap: 8px;
+            overflow-x: auto;
+        }
+        .nav-btn {
+            padding: 12px 16px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        .nav-btn:hover { color: var(--primary); }
+        .nav-btn.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 600; }
+
+        /* Filters */
+        .filter-bar {
+            max-width: 1400px;
+            margin: 20px auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .filter-group { display: flex; align-items: center; gap: 6px; }
+        .filter-label { font-size: 13px; color: var(--text-secondary); font-weight: 600; }
+        .filter-select, .search-input {
+            padding: 6px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 13px;
+            background: white;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .filter-select:focus, .search-input:focus { border-color: var(--primary); }
+        .search-input { width: 200px; }
+        .result-count { font-size: 13px; color: var(--text-secondary); margin-left: auto; }
+
+        /* Content */
+        .main { max-width: 1400px; margin: 0 auto; padding: 0 20px 40px; }
+
+        /* Section: Schema */
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text);
+            margin: 40px 0 20px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .schema-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+        .schema-card {
+            background: white;
+            border-radius: 10px;
+            padding: 16px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+        .schema-card h4 { color: var(--primary); font-size: 14px; margin-bottom: 8px; }
+        .schema-card .field-name { font-weight: 600; font-size: 13px; color: var(--text); }
+        .schema-card .field-desc { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+
+        /* Tags */
+        .tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            margin: 1px 2px;
+        }
+        .tag-industry { background: #dbeafe; color: #1e40af; }
+        .tag-tech { background: #ede9fe; color: #5b21b6; }
+        .tag-role { background: #d1fae5; color: #065f46; }
+        .tag-L2 { background: #fef3c7; color: #92400e; }
+        .tag-L3 { background: #fed7aa; color: #9a3412; }
+        .tag-L4 { background: #fecaca; color: #991b1b; }
+        .tag-P0 { background: #fecaca; color: #991b1b; }
+        .tag-P1 { background: #fed7aa; color: #9a3412; }
+        .tag-P2 { background: #fef3c7; color: #92400e; }
+
+        /* REQ Cards */
+        .req-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+            gap: 16px;
+        }
+        .req-card {
+            background: white;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .req-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        .req-header {
+            padding: 14px 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .req-id {
+            background: var(--primary);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+            min-width: 72px;
+            text-align: center;
+        }
+        .req-title-area { flex: 1; }
+        .req-scene { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+        .req-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+        .req-expand-icon {
+            color: var(--text-secondary);
+            font-size: 18px;
+            transition: transform 0.3s;
+            align-self: center;
+        }
+        .req-card.expanded .req-expand-icon { transform: rotate(180deg); }
+
+        .req-body {
+            display: none;
+            padding: 0 16px 16px;
+            border-top: 1px solid var(--border);
+        }
+        .req-card.expanded .req-body { display: block; }
+
+        .req-section { margin-top: 12px; }
+        .req-section-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+        .req-section ul { list-style: none; padding: 0; }
+        .req-section li {
+            font-size: 13px;
+            color: var(--text);
+            padding: 3px 0 3px 16px;
+            position: relative;
+        }
+        .req-section li::before {
+            content: "›";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+        .req-kpi {
+            background: #f0fdf4;
+            border-left: 3px solid var(--success);
+            padding: 8px 12px;
+            font-size: 12px;
+            color: #166534;
+            margin-top: 8px;
+            border-radius: 0 6px 6px 0;
+        }
+
+        /* Stats Dashboard */
+        .stats-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 16px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+        .stat-value { font-size: 28px; font-weight: 800; color: var(--primary); }
+        .stat-label { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+
+        /* Distribution Charts (CSS-based) */
+        .dist-bar-container { margin: 20px 0; }
+        .dist-row {
+            display: flex;
+            align-items: center;
+            margin: 6px 0;
+            gap: 8px;
+        }
+        .dist-label { width: 100px; font-size: 13px; text-align: right; color: var(--text); }
+        .dist-bar-bg {
+            flex: 1;
+            height: 24px;
+            background: #f1f5f9;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .dist-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 8px;
+            font-size: 11px;
+            color: white;
+            font-weight: 600;
+            transition: width 0.6s ease;
+        }
+        .dist-count { width: 30px; font-size: 13px; font-weight: 600; color: var(--text); }
+
+        /* Role Summary */
+        .role-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .role-chip {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .role-emoji { font-size: 20px; }
+        .role-count {
+            margin-left: auto;
+            background: var(--primary);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* Contact */
+        .contact-footer {
+            background: linear-gradient(135deg, #1e1b4b, #312e81);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 40px;
+        }
+        .contact-footer h2 { margin-bottom: 16px; }
+        .contact-footer p { opacity: 0.9; margin: 4px 0; }
+
+        /* Print */
+        @media print {
+            .nav-bar, .filter-bar { display: none; }
+            .req-card { break-inside: avoid; }
+            .req-body { display: block !important; }
+            body { background: white; }
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 24px; }
+            .req-grid { grid-template-columns: 1fr; }
+            .schema-grid { grid-template-columns: 1fr; }
+            .stats-dashboard { grid-template-columns: repeat(2, 1fr); }
+            .filter-bar { flex-direction: column; align-items: stretch; }
+            .search-input { width: 100%; }
+            .result-count { margin-left: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+    <h1>🤖 苏州市"AI+制造"需求清单</h1>
+    <div class="subtitle">数字员工(AI Agent)专用结构化输入手册</div>
+    <div class="meta-pills">
+        <span class="pill">📋 有效需求 63项</span>
+        <span class="pill">🏭 8大行业</span>
+        <span class="pill">🤖 15种数字员工角色</span>
+        <span class="pill">🔧 9类核心技术栈</span>
+        <span class="pill">📅 第一批 · 2026</span>
+    </div>
+</div>
+
+<!-- Nav -->
+<div class="nav-bar">
+    <div class="nav-inner">
+        <button class="nav-btn active" onclick="showSection('overview')">📊 总览</button>
+        <button class="nav-btn" onclick="showSection('schema')">📐 规范体系</button>
+        <button class="nav-btn" onclick="showSection('demands')">🔍 需求明细</button>
+        <button class="nav-btn" onclick="showSection('roles')">🤖 角色分布</button>
+        <button class="nav-btn" onclick="showSection('tech')">⚙️ 技术栈</button>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="main">
+
+<!-- Section: Overview -->
+<div id="sec-overview" class="section-panel">
+    <h2 class="section-title">📊 总览仪表盘</h2>
+
+    <div class="stats-dashboard" id="statsDashboard"></div>
+
+    <h2 class="section-title">🏭 行业分布</h2>
+    <div class="dist-bar-container" id="industryDist"></div>
+
+    <h2 class="section-title">🎯 自动化等级分布</h2>
+    <div class="dist-bar-container" id="autoLevelDist"></div>
+
+    <h2 class="section-title">🔥 优先级分布</h2>
+    <div class="dist-bar-container" id="priorityDist"></div>
+</div>
+
+<!-- Section: Schema -->
+<div id="sec-schema" class="section-panel" style="display:none">
+    <h2 class="section-title">📐 Agent核心输入字段</h2>
+    <div class="schema-grid" id="schemaFields"></div>
+
+    <h2 class="section-title">🏷️ 多维调度标签体系</h2>
+    <div class="schema-grid" id="tagDimensions"></div>
+</div>
+
+<!-- Section: Demands -->
+<div id="sec-demands" class="section-panel" style="display:none">
+    <div class="filter-bar">
+        <div class="filter-group">
+            <span class="filter-label">行业:</span>
+            <select class="filter-select" id="filterIndustry" onchange="applyFilters()">
+                <option value="">全部</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <span class="filter-label">角色:</span>
+            <select class="filter-select" id="filterRole" onchange="applyFilters()">
+                <option value="">全部</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <span class="filter-label">技术栈:</span>
+            <select class="filter-select" id="filterTech" onchange="applyFilters()">
+                <option value="">全部</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <span class="filter-label">自动化:</span>
+            <select class="filter-select" id="filterAuto" onchange="applyFilters()">
+                <option value="">全部</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <span class="filter-label">优先级:</span>
+            <select class="filter-select" id="filterPriority" onchange="applyFilters()">
+                <option value="">全部</option>
+            </select>
+        </div>
+        <input class="search-input" id="searchInput" placeholder="搜索关键词..." oninput="applyFilters()">
+        <span class="result-count" id="resultCount"></span>
+    </div>
+    <div class="req-grid" id="reqGrid"></div>
+</div>
+
+<!-- Section: Roles -->
+<div id="sec-roles" class="section-panel" style="display:none">
+    <h2 class="section-title">🤖 15种数字员工角色</h2>
+    <div class="role-grid" id="roleGrid"></div>
+
+    <h2 class="section-title">📊 角色需求量排行</h2>
+    <div class="dist-bar-container" id="roleDist"></div>
+</div>
+
+<!-- Section: Tech -->
+<div id="sec-tech" class="section-panel" style="display:none">
+    <h2 class="section-title">⚙️ 9类核心技术栈</h2>
+    <div class="dist-bar-container" id="techDist"></div>
+</div>
+
+</div><!-- /main -->
+
+<!-- Contact -->
+<div class="contact-footer">
+    <h2>📞 联系我们</h2>
+    <p>获取完整需求清单、供需对接、方案匹配、政策落地咨询</p>
+    <p>📞 186-0192-1816 &nbsp; 📧 tuan_zhang@sina.com</p>
+    <p>🏢 北京昌平区建材城西路9号金燕龙写字楼16</p>
+</div>
+
+<script>
+// ===== DATA =====
+const REQ_DATA = [
+{id:"REQ-001",scene:"电子信息-生产制造-包装盒产品报价",tasks:["解析产品结构图纸、BOM清单，提取物料规格、用量信息","匹配原材料采购价、工序工时标准、物流成本规则","自动完成物料、工序、物流全维度成本核算","生成标准化报价单与成本拆解明细"],inputs:["产品2D/3D结构图纸","BOM物料清单","原材料实时采购价目表","生产工序工时与加工费标准","物流成本核算规则","历史报价与成交案例库"],outputs:["标准化产品报价单","全维度成本拆解明细报表","报价合理性校验说明"],kpis:["报价响应时间从小时级缩短至分钟级","报价准确率≥95%"],capabilities:["多模态图纸解析能力","结构化数据提取能力","规则化成本核算推理能力","历史案例匹配与相似度计算能力"],role:"报价智能体",industry:"电子信息",valueChain:"生产制造",techStack:["LLM","运筹优化算法"],autoLevel:"L3-流程自动化",priority:"P0-核心刚需"},
+{id:"REQ-002",scene:"电子信息-设备维护-连接器产线设备健康管理",tasks:["实时采集设备振动、温度、寿命、良率等运行数据","构建设备故障预测模型，提前识别异常风险","分析全流程生产数据，定位良率瓶颈并输出优化方案","生成预防性维护计划与备件采购建议"],inputs:["设备传感器实时运行时序数据","设备历史故障与维修记录","产品良率与生产工艺数据","设备备件台账与采购周期数据"],outputs:["设备故障预警报告与风险等级","预防性维护计划与工单","良率瓶颈分析与优化方案"],kpis:["故障预测准确率≥90%","非计划停机时间降低30%","良率提升5%"],capabilities:["时序数据预测能力","设备故障根因推理能力","多维度数据关联分析能力","维护计划智能编排能力"],role:"设备维护智能体",industry:"电子信息",valueChain:"设备维护",techStack:["时序预测","预测性维护"],autoLevel:"L3-流程自动化",priority:"P0-核心刚需"},
+{id:"REQ-003",scene:"电子信息-生产制造-太阳能电池网版工艺参数寻优",tasks:["融合厂内外制版工艺、网版参数、下游电池片印刷效果数据","构建工艺参数与印刷效果的映射模型","针对新型特种网版，自动寻优光刻、电铸等核心工艺参数","输出最优工艺参数方案与打样指导"],inputs:["历史制版工艺参数数据集","网版张力、尺寸、厚度等核心参数","下游电池片印刷效果与良率数据","行业标杆工艺案例库"],outputs:["新型网版最优工艺参数组合方案","工艺参数-印刷效果映射关系报告","打样调试指导手册"],kpis:["打样调试周期缩短50%","废版率降低40%"],capabilities:["多变量优化算法能力","工艺效果预测能力","多源数据融合分析能力","专家经验固化与推理能力"],role:"工艺优化智能体",industry:"电子信息",valueChain:"生产制造",techStack:["运筹优化算法","LLM"],autoLevel:"L4-自主决策",priority:"P0-核心刚需"},
+{id:"REQ-004",scene:"电子信息-生产制造-SMT产线MI段工艺设计",tasks:["解析标准化BOM、工序、产品图片等工艺基础资料","自动完成炉前插件与炉后作业全流程工艺设计","生成标准化工艺文件与作业指导书"],inputs:["产品BOM清单","标准化工序库与工艺规则","产品结构与焊点图片","历史工艺文件案例库"],outputs:["全流程一体化工艺设计文件","产线作业指导书"],kpis:["工艺设计效率提升80%","工艺人员成本降低60%"],capabilities:["多模态工艺资料解析能力","工艺规则推理与自动编排能力","标准化文档生成能力"],role:"工艺优化智能体",industry:"电子信息",valueChain:"生产制造",techStack:["LLM","知识图谱/RAG"],autoLevel:"L3-流程自动化",priority:"P0-核心刚需"},
+{id:"REQ-005",scene:"电子信息-设备维护-汽车电子产线设备维修辅助",tasks:["构建统一的设备故障库与标准维修流程库","基于故障现象与设备数据，自动定位故障根因","输出标准化维修步骤与指导方案","实现维修经验沉淀与新人培训辅助"],inputs:["设备故障现象与运行数据","历史维修记录与解决方案库","设备手册与图纸资料","标准维修流程SOP"],outputs:["故障根因诊断报告","step-by-step标准化维修指导方案","设备故障知识库更新记录"],kpis:["故障排查时间缩短70%","同类问题重复发生率降低50%"],capabilities:["故障现象语义理解能力","根因推理与知识匹配能力","多模态维修手册解析能力","标准化流程生成能力"],role:"设备维护智能体",industry:"电子信息",valueChain:"设备维护",techStack:["LLM","知识图谱/RAG"],autoLevel:"L3-流程自动化",priority:"P0-核心刚需"},
+{id:"REQ-006",scene:"电子信息-运营管理-全流程生产数据智能分析",tasks:["整合全流程生产、设计、品质、管理数据","自动完成数据清洗、关联分析与异常识别","输出产线优化、设计提升、成本管控的可落地建议","生成实时运营分析报表"],inputs:["全流程生产执行数据","产品设计与工艺数据","品质管控与不良品数据","人工与管理成本数据"],outputs:["全流程生产数据分析报告","产线优化与设计提升可落地方案","实时运营监控仪表盘"],kpis:["数据统计分析成本降低60%","管理决策响应速度提升80%"],capabilities:["多源异构数据整合能力","异常数据识别与根因分析能力","运营优化建议生成能力","可视化报表自动生成能力"],role:"数据智能体",industry:"电子信息",valueChain:"运营管理",techStack:["LLM","数据挖掘"],autoLevel:"L3-流程自动化",priority:"P1-重要需求"},
+{id:"REQ-007",scene:"电子信息-质量检测-光伏丝印网版全流程管控",tasks:["交叉分析网版张力、图形尺寸、厚度等核心生产参数","输出最优生产参数与制作工艺方案","实现网版视觉检测与尺寸自动检验","完成生产搬运与设备参数调取的自动化调度"],inputs:["网版核心参数历史数据集","电池片印刷效果与良率数据","网版外观与尺寸标准图库","产线设备与AGV调度规则"],outputs:["最优生产参数组合方案","网版外观与尺寸检测报告","产线设备与AGV调度指令"],kpis:["参数优化后良率提升8%","视觉检测漏检率≤0.5%"],capabilities:["多参数交叉优化能力","计算机视觉缺陷检测能力","产线设备调度能力","工艺效果预测能力"],role:"质检智能体",industry:"电子信息",valueChain:"质量检测",techStack:["计算机视觉(CV)","运筹优化算法"],autoLevel:"L3-流程自动化",priority:"P0-核心刚需"},
+{id:"REQ-008",scene:"电子信息-研发设计-精密加工图纸与工艺智能处理",tasks:["识别解析精密加工图纸与工艺文件","自动生成图纸标注、工艺分析、成本分析报告","自动生成加工G代码"],inputs:["精密加工2D/3D图纸","加工工艺规则库","材料与加工成本标准","机床设备参数库"],outputs:["带标注的标准化图纸","工艺与成本分析报告","机床可执行G代码"],kpis:["图纸与代码生成效率提升90%","首件加工合格率≥98%"],capabilities:["工程图纸多模态解析能力","加工工艺推理能力","G代码自动生成与校验能力","成本核算推理能力"],role:"设计辅助智能体",industry:"电子信息",valueChain:"研发设计",techStack:["LLM","计算机视觉(CV)"],autoLevel:"L3-流程自动化",priority:"P1-重要需求"},
+{id:"REQ-009",scene:"电子信息-研发设计-连接器模型自动修改出图",tasks:["解析连接器标准2D/3D模型图纸","基于自然语言修改指令，自动调整模型尺寸参数","生成更新后的完整2D/3D模型与图纸"],inputs:["连接器标准2D/3D模型库","图纸设计规范与标准","自然语言修改指令","历史修改案例库"],outputs:["修改后的完整2D/3D模型","标准化输出图纸"],kpis:["模型修改效率提升80%","图纸合规率100%"],capabilities:["三维模型解析能力","参数化设计自动调整能力","自然语言指令理解能力","标准化图纸生成能力"],role:"设计辅助智能体",industry:"电子信息",valueChain:"研发设计",techStack:["LLM","多模态理解"],autoLevel:"L2-辅助增强",priority:"P1-重要需求"},
+{id:"REQ-010",scene:"电子信息-营销服务-合作伙伴智能服务助理",tasks:["构建产品知识、售后方案、订单进度的统一知识库","7×24小时响应合作伙伴的自然语言咨询","精准解答问题并输出决策支持建议","自动沉淀高频问题与解决方案，迭代知识库"],inputs:["产品手册、售后方案、服务SOP文档","订单管理系统实时数据","历史咨询与解决方案库","合作伙伴分级服务规则"],outputs:["咨询问题的精准解答内容","业务决策支持建议","高频问题知识库迭代记录"],kpis:["咨询响应时间≤1秒","问题解决率≥90%","服务一致性100%"],capabilities:["RAG知识库检索能力","自然语言语义理解与生成能力","多系统数据实时对接能力","知识库自主迭代优化能力"],role:"客服/知识智能体",industry:"电子信息",valueChain:"营销服务",techStack:["LLM","知识图谱/RAG"],autoLevel:"L4-自主决策",priority:"P1-重要需求"},
+{id:"REQ-011",scene:"电子信息-供应链管理-需求预测与库存优化",tasks:["整合历史销售、市场趋势、产能数据","构建产品需求预测模型，输出长短期需求预测","基于需求预测，优化库存与采购策略","生成库存补货计划与采购建议"],inputs:["历史销售时序数据","市场趋势与行业数据","库存台账与在途数据","采购周期与供应商产能数据","生产产能数据"],outputs:["产品长短期需求预测报告","最优库存策略方案","采购补货计划与订单建议"],kpis:["需求预测准确率≥85%","库存周转率提升30%","库存成本降低20%"],capabilities:["时序数据预测能力","库存运筹优化能力","多因素关联分析能力","采购计划智能编排能力"],role:"供应链智能体",industry:"电子信息",valueChain:"供应链管理",techStack:["时序预测","运筹优化算法"],autoLevel:"L3-流程自动化",priority:"P0-核心刚需"},
+{id:"REQ-012",scene:"电子信息-运营管理-企业级敏捷BI智能体",tasks:["构建企业级数据湖仓，整合孤岛数据","训练本地化BI大模型，支持自然语言数据查询与分析","自动生成多维度分析报表与可视化仪表盘","识别数据异常并主动推送预警与优化建议"],inputs:["订单排产、物料损耗、设备稼动率等全量业务数据","企业数据治理规则与指标体系","历史报表与分析案例库","管理层决策需求规则"],outputs:["企业级数据湖仓架构方案","本地化BI大模型","自然语言查询的多维度分析报表","数据异常预警与优化建议"],kpis:["报表生成周期从2-3天缩短至分钟级","决策响应速度提升90%"],capabilities:["多源异构数据整合与治理能力","自然语言转SQL/分析指令能力","数据异常识别与根因分析能力","可视化报表自动生成能力"],role:"数据智能体",industry:"电子信息",valueChain:"运营管理",techStack:["LLM","数据挖掘"],autoLevel:"L4-自主决策",priority:"P1-重要需求"},
+{id:"REQ-013",scene:"电子信息-软件开发-代码自动化迁移与AI编程",tasks:["开发VS Code扩展插件，整合迁移工具与AI编程能力","实现BeX5架构到Spring Cloud + Vue架构的自动化迁移","构建新架构下的AI代码生成、智能补全、校验系统","提供端到端的一站式开发工具链支持"],inputs:["BeX5存量代码库","Spring Cloud + Vue架构规范","代码迁移映射规则库","历史迁移案例与错误库"],outputs:["VS Code扩展插件","自动化迁移工具链","AI代码生成与智能补全系统","迁移验证报告"],kpis:["迁移效率提升80%","代码缺陷率降低60%","开发人员生产力提升50%"],capabilities:["代码语义解析与AST转换能力","架构模式匹配与重构能力","代码生成与智能补全能力","自动化测试与校验能力"],role:"编程智能体",industry:"电子信息",valueChain:"软件开发",techStack:["LLM","AutoML"],autoLevel:"L3-流程自动化",priority:"P0-核心刚需"},
+{id:"REQ-014",scene:"电子信息-生产制造-芯片良率分析与工厂安环",tasks:["芯片良率智能分析与产线优化","工厂安全、环保监控","材料与产品运输智能化","传统工厂到智能化工厂改造"],inputs:["芯片生产全流程数据","工厂安环监控数据","物流与仓储数据","工厂现状评估报告"],outputs:["良率分析与优化方案","安环智能监控仪表盘","智能物流调度方案","智能化改造路线图"],kpis:["良率提升5%","安全事故率降低50%","物流效率提升30%"],capabilities:["生产数据多维分析能力","安环风险实时识别能力","智能物流调度能力","工厂改造规划能力"],role:"生产运营智能体",industry:"电子信息",valueChain:"生产制造",techStack:["LLM","数据挖掘"],autoLevel:"L3-流程自动化",priority:"P1-重要需求"},
+{id:"REQ-015",scene:"装备制造-生产制造-CNC加工全流程多智能体管控",tasks:["智能编程：基于零件几何特征自动生成加工程序","工艺优化：自动推荐切削参数与加工策略","刀具健康管理：实时监控刀具磨损，预测刀具寿命","预测性维护：设备故障预警与维保工单自动生成","质量分析：加工质量根因追溯与闭环优化"],inputs:["零件CAD模型与工艺要求","CNC设备运行状态数据","刀具使用历史与磨损数据","加工质量检测数据","设备维修历史数据"],outputs:["自动生成的CNC加工程序","最优切削参数推荐方案","刀具寿命预测与更换建议","设备故障预警与维保工单","质量根因分析报告"],kpis:["编程效率提升60%","刀具利用率提升25%","非计划停机减少40%","首件合格率≥95%"],capabilities:["CAD模型解析与代码生成能力","工艺参数优化推荐能力","刀具磨损预测与寿命管理能力","设备故障预警与智能诊断能力","质量根因分析与闭环优化能力"],role:"工艺优化智能体",industry:"装备制造",valueChain:"生产制造",techStack:["多智能体系统(Multi-Agent)","LLM","时序预测"],autoLevel:"L4-自主决策",priority:"P0-核心刚需"},
+{id:"REQ-016",scene:"装备制造-生产制造-多品种小批量智能排程调度",tasks:["生产排程自主优化，应对插单、急单","交期精准预测与物料齐套保障","设备利用率均衡调度","动态响应生产异常与计划调整"],inputs:["订单需求与交期数据","物料库存与供应周期数据","设备产能与状态数据","工艺路线与工序依赖关系"],outputs:["最优生产排程方案","交期预测与物料齐套报告","设备负载均衡调度指令","异常响应与计划调整方案"],kpis:["排程效率提升70%","交期达成率≥95%","设备利用率提升20%"],capabilities:["运筹优化排程能力","约束满足与动态调度能力","多目标优化决策能力","异常响应与自适应调整能力"],role:"排程调度智能体",industry:"装备制造",valueChain:"生产制造",techStack:["运筹优化算法","多智能体系统(Multi-Agent)"],autoLevel:"L4-自主决策",priority:"P0-核心刚需"},
+{id:"REQ-017",scene:"装备制造-生产制造-铝合金铸件AI智能切削工作站",tasks:["感知：3D视觉识别铸件形貌与浇冒口位置","决策：AI规划最优切削路径与力度参数","执行：机器人高精度柔性切削作业","优化：基于切削反馈持续优化工艺参数"],inputs:["铸件3D扫描数据","浇冒口位置与尺寸信息","切削力/振动/温度实时传感数据","切削工艺规则与质量标准","历史切削案例库"],outputs:["铸件3D识别与定位结果","最优切削路径与工艺参数","柔性切削执行指令","工艺参数优化记录"],kpis:["切削质量一致性达99%","单件作业时间缩短40%","换产响应时间从小时级降至分钟级","人工依赖度降低80%"],capabilities:["3D视觉识别与定位能力","切削路径智能规划能力","力控柔顺操作能力","工艺参数自优化能力"],role:"巡检智能体",industry:"装备制造",valueChain:"生产制造",techStack:["计算机视觉(CV)","具身智能/机器人控制","运筹优化算法"],autoLevel:"L4-自主决策",priority:"P0-核心刚需"},
+{id:"REQ-018",scene:"装备制造-生产制造-地板油漆线AI视觉质检与柔性抓取",tasks:["高速实时检测多种规格木板表面缺陷","缺陷分类与严重程度判定","自动剔除不合格品","柔性抓取与自动上下料"],inputs:["产线高速摄像图像数据","木板规格与质量标准库","缺陷样本图库","产线速度与节拍数据"],outputs:["实时缺陷检测结果","缺陷分类与位置标注","不合格品剔除指令","AGV/机械手调度指令"],kpis:["检测速度≥25m/min","漏检率≤0.1%","误检率≤0.5%"],capabilities:["高速实时视觉检测能力","多规格适配柔性检测能力","缺陷分类与定位能力","机械手柔性抓取控制能力"],role:"质检智能体",industry:"装备制造",valueChain:"生产制造",techStack:["计算机视觉(CV)","具身智能/机器人控制"],autoLevel:"L3-流程自动化",priority:"P0-核心刚需"},
+{id:"REQ-019",scene:"装备制造-生产制造-压铸件AI视觉质量分析与良率优化",tasks:["AI视觉检测压铸完工产品缺陷","实时分析不良品与工艺参数关联","精准定位良率瓶颈","优化产线流程与工艺参数"],inputs:["压铸产品外观图像数据","压铸工艺参数实时数据","不良品记录与分类数据","设备工装状态数据"],outputs:["压铸缺陷检测结果","不良根因分析报告","良率瓶颈定位方案","工艺参数优化建议"],kpis:["缺陷检出率≥99%","良率提升5%","不良阻断响应时间≤5分钟"],capabilities:["视觉缺陷检测与分类能力","工艺参数-缺陷关联分析能力","良率瓶颈定位能力","工艺参数优化推荐能力"],role:"质检智能体",industry:"装备制造",valueChain:"质量检测",techStack:["计算机视觉(CV)","LLM","数据挖掘"],autoLevel:"L3-流程自动化",priority:"P0-核心刚需"},
+{id:"REQ-022",scene:"装备制造-供应链管理-边角料AI图形识别与切分测量",tasks:["自动识别边角料形状及尺寸","精准测量可用余料面积","推荐最优切分方案","余料库存智能管理"],inputs:["边角料图像数据","材料规格与标准库","余料库存数据","切割设备参数"],outputs:["边角料识别与尺寸测量结果","可用余料面积统计","最优切分方案推荐","余料库存更新记录"],kpis:["识别准确率≥98%","材料利用率提升15%"],capabilities:["图形识别与测量能力","切分优化规划能力","材料利用率计算能力","库存智能管理能力"],role:"供应链智能体",industry:"装备制造",valueChain:"供应链管理",techStack:["计算机视觉(CV)","运筹优化算法"],autoLevel:"L3-流程自动化",priority:"P1-重要需求"},
+{id:"REQ-023",scene:"装备制造-供应链管理-AI智能寻源与供应商动态评估",tasks:["AI智能寻源：快速匹配新物料/经济性采购供应商","AI动态评估：多维度自动评估供应商能力与风险","预警系统：供应商风险实时监控与预警"],inputs:["物料需求规格与参数","供应商数据库与资质信息","历史采购与交付数据","市场行情与价格数据"],outputs:["供应商匹配推荐清单","供应商多维评估报告","风险预警通知"],kpis:["寻源效率提升60%","供应商评估准确率≥90%","风险预警提前量≥7天"],capabilities:["供应商语义匹配能力","多维评估模型推理能力","风险信号识别与预警能力","市场动态分析能力"],role:"供应链智能体",industry:"装备制造",valueChain:"供应链管理",techStack:["LLM","知识图谱/RAG"],autoLevel:"L3-流程自动化",priority:"P1-重要需求"},
+{id:"REQ-024",scene:"装备制造-供应链管理-AI辅助动态定价",tasks:["实时分析原材料、竞争、需求等多因素","构建动态定价模型","输出最优定价策略与调整建议"],inputs:["原材料价格走势数据","竞争对手定价数据","客户需求弹性数据","历史成交价格数据"],outputs:["动态定价策略方案","定价调整建议","利润率预测报告"],kpis:["定价响应速度提升80%","利润率优化≥5%"],capabilities:["多因素关联分析能力","价格弹性建模能力","竞争态势分析能力","利润优化推理能力"],role:"报价智能体",industry:"装备制造",valueChain:"供应链管理",techStack:["时序预测","运筹优化算法"],autoLevel:"L3-流程自动化",priority:"P1-重要需求"},
+{id:"REQ-025",scene:"装备制造-研发设计-2D图纸AI还原3D与BOM自动生成",tasks:["2D图纸AI识别与3D模型自动还原","根据2D/3D图纸自动选择维护物料","自动生成BOM清单并录入ERP系统"],inputs:["客户提供的2D工程图纸","3D建模规范与标准","物料主数据库","BOM模板与ERP字段映射规则"],outputs:["还原的3D模型文件","自动匹配的物料清单","自动生成的BOM并同步ERP"],kpis:["2D转3D效率提升80%","BOM生成准确率≥95%","研发人员重复工作减少70%"],capabilities:["2D图纸多模态解析能力","3D模型自动重建能力","物料智能匹配能力","BOM自动生成与系统对接能力"],role:"设计辅助智能体",industry:"装备制造",valueChain:"研发设计",techStack:["LLM","计算机视觉(CV)","知识图谱/RAG"],autoLevel:"L3-流程自动化",priority:"P0-核心刚需"},
+{id:"REQ-026",scene:"装备制造-研发设计-多智能体AI工艺自动规划",tasks:["工艺路线自动规划与参数智能推荐","工装自主设计与标准件选型","工艺变更快速响应与知识传承"],inputs:["零件CAD模型与加工要求","工艺知识库与规则库","工装标准件库与设计规范","历史工艺方案案例库"],outputs:["自动规划的工艺路线","推荐的加工参数组合","工装设计方案与选型清单","工艺变更影响分析"],kpis:["工艺设计周期从3-10天缩短至1天","标准化率从<50%提升至≥80%","变更响应从2-5天缩短至小时级"],capabilities:["工艺路线自动推理能力","参数智能推荐与优化能力","工装设计自动生成能力","工艺知识沉淀与复用能力"],role:"工艺优化智能体",industry:"装备制造",valueChain:"研发设计",techStack:["多智能体系统(Multi-Agent)","LLM","知识图谱/RAG"],autoLevel:"L4-自主决策",priority:"P0-核心刚需"},
+{id:"REQ-027",scene:"装备制造-研发设计-AI驱动自主决策(含仿真与钻头失效分析)",tasks:["AI仿真验证与实验室智能验证","现场数据智能采集与分析","钻头失效智能分析与寿命预测","专家经验固化为AI模型"],inputs:["钻头几何参数与材料数据","钻井现场实时数据","历史失效案例库","专家经验知识库"],outputs:["仿真验证报告","钻头失效风险预警","最优设计参数推荐","经验知识模型更新"],kpis:["设计周期从数天缩短至数小时","设计加工质量一致性≥99%"],capabilities:["仿真建模与智能验证能力","现场数据智能采集分析能力","失效模式识别与寿命预测能力","专家经验知识固化能力"],role:"研发仿真智能体",industry:"装备制造",valueChain:"研发设计",techStack:["LLM","预测性维护/数字孪生","知识图谱/RAG"],autoLevel:"L4-自主决策",priority:"P0-核心刚需"},
+{id:"REQ-028",scene:"装备制造-质量控制-工艺知识图谱与强化学习加工优化",tasks:["构建工艺知识图谱与强化学习模型","新零件自动推理推荐最优加工策略与参数","大幅缩短编程时间并提升首件成功率"],inputs:["零件几何特征与材料数据","工艺知识图谱","历史加工案例与参数库","加工质量检测结果"],outputs:["新零件最优加工策略推荐","加工参数自动优化方案","首件加工程序自动生成"],kpis:["编程时间缩短80%","首件成功率≥95%"],capabilities:["零件特征自动提取能力","工艺知识图谱推理能力","强化学习参数优化能力","加工程序自动生成能力"],role:"工艺优化智能体",industry:"装备制造",valueChain:"质量检测",techStack:["知识图谱/RAG","LLM"],autoLevel:"L3-流程自动化",priority:"P0-核心刚需"},
+{id:"REQ-029",scene:"装备制造-质量控制-在线质量预测与补偿控制",tasks:["实时监控生产过程质量数据","AI预测质量趋势与潜在缺陷","自动调整工艺参数补偿偏差","问题发生前主动干预"],inputs:["生产过程实时数据","质量检测历史数据","工艺参数与质量映射模型","设备状态数据"],outputs:["质量趋势预测报告","工艺参数补偿指令","缺陷预警通知","干预效果评估报告"],kpis:["报废率降低50%","返工率降低40%"],capabilities:["质量趋势预测能力","工艺参数补偿控制能力","异常预警与主动干预能力","干预效果评估与优化能力"],role:"质检智能体",industry:"装备制造",valueChain:"质量检测",techStack:["时序预测","LLM"],autoLevel:"L3-流程自动化",priority:"P0-核心刚需"},
+{id:"REQ-030",scene:"装备制造-质量控制-机床异常工况AI智能识别与自适应",tasks:["实时感知加工状态","智能识别刀具崩刃、材料硬点、装夹松动等异常","AI决策并自适应调整加工参数","保障加工连续性与稳定性"],inputs:["机床振动/温度/电流等传感数据","加工过程监控数据","异常工况特征库","自适应调整规则库"],outputs:["异常工况识别结果","自适应调整指令","加工状态实时报告","异常处理记录"],kpis:["异常识别响应时间≤1秒","异常导致的报废降低80%"],capabilities:["加工状态实时感知能力","异常工况智能识别能力","自适应参数调整能力","加工过程稳定性保障能力"],role:"设备维护智能体",industry:"装备制造",valueChain:"质量检测",techStack:["时序预测","LLM"],autoLevel:"L4-自主决策",priority:"P0-核心刚需"},
+{id:"REQ-031",scene:"装备制造-运营管理-AI辅助HR招聘与人才流失预警",tasks:["AI辅助简历筛选与岗位技能精准匹配","核心技术人员离职风险提前识别与干预","人才画像与团队优化建议"],inputs:["候选人简历与技能数据","岗位需求与技能要求","员工绩效与行为数据","市场人才供需数据"],outputs:["候选人匹配排序与评估报告","离职风险预警名单","人才画像与团队优化建议"],kpis:["简历筛选效率提升80%","核心人才流失率降低40%"],capabilities:["简历语义理解与匹配能力","离职风险预测能力","人才画像构建能力","团队优化推荐能力"],role:"HR智能体",industry:"装备制造",valueChain:"运营管理",techStack:["LLM","知识图谱/RAG"],autoLevel:"L2-辅助增强",priority:"P1-重要需求"},
+{id:"REQ-032",scene:"装备制造-运营管理-管道焊缝及防腐层AI视觉诊断",tasks:["基于深度学习的焊缝缺陷自动检测","防腐层质量AI视觉评估","建立外部表象与内部质量关联模型"],inputs:["管道焊缝图像数据","防腐层外观图像数据","历史检测与探伤数据","焊缝与防腐层质量标准"],outputs:["焊缝缺陷检测结果","防腐层质量评估报告","外部-内部质量关联模型"],kpis:["缺陷检出率≥98%","检测效率提升5倍","微小缺陷漏检率≤0.5%"],capabilities:["焊缝缺陷深度学习检测能力","防腐层质量视觉评估能力","多维度质量关联分析能力"],role:"质检智能体",industry:"装备制造",valueChain:"运营管理",techStack:["计算机视觉(CV)","LLM"],autoLevel:"L3-流程自动化",priority:"P1-重要需求"},
+{id:"REQ-033",scene:"装备制造-设备维护-数控机床预测性维护",tasks:["通过机床端传感器收集运行数据","构建设备故障预测模型","提供预测性维护服务","减少客户非计划停机损失"],inputs:["机床传感器实时数据","设备运行历史数据","故障案例库","维护保养记录"],outputs:["设备健康状态评估报告","故障预警与维保建议","预测性维护工单","设备可靠性分析报告"],kpis:["非计划停机减少50%","维护成本降低30%"],capabilities:["设备状态实时监测能力","故障预测模型推理能力","维护计划智能编排能力","设备可靠性评估能力"],role:"设备维护智能体",industry:"装备制造",valueChain:"设备维护",techStack:["时序预测","预测性维护/数字孪生"],autoLevel:"L3-流程自动化",priority:"P0-核心刚需"},
+{id:"REQ-034",scene:"装备制造-研发设计-模流分析AI自动化",tasks:["自动做前期网格处理","自动寻找最优进浇口","自动调整优化变形","生成优化后的3D产品","自动生成模流报告"],inputs:["产品3D模型数据","模具设计方案","材料物性参数","模流分析规则库"],outputs:["网格处理结果","最优进浇口方案","变形优化调整方案","优化后3D产品","自动生成模流报告"],kpis:["模流分析效率提升80%","试模次数减少50%"],capabilities:["网格自动处理能力","进浇口智能寻优能力","变形优化调整能力","模流报告自动生成能力"],role:"研发仿真智能体",industry:"装备制造",valueChain:"研发设计",techStack:["LLM","运筹优化算法"],autoLevel:"L3-流程自动化",priority:"P1-重要需求"},
+{id:"REQ-035",scene:"装备制造-运营管理-标准化文件AI自动编制",tasks:["多模态输入解析：读取流程图逻辑与Excel套表字段","风格化生成：基于公司标准样本生成规范文档","一致性校验：自动检查文档与流程图/Excel一致性","版本联动：流程图/Excel变更时自动识别差异并建议修改"],inputs:["流程图文件","配套Excel套表","已批准的标准文档样本","公司行文规范模板"],outputs:["符合公司规范的标准化文档","文档一致性校验报告","变更差异识别与修改建议","版本联动更新记录"],kpis:["文档编制效率提升80%","剩余80%标准文档可在3个月内完成"],capabilities:["流程图与Excel多模态解析能力","风格化文档生成能力","一致性自动校验能力","变更差异识别与版本联动能力"],role:"文档智能体",industry:"装备制造",valueChain:"运营管理",techStack:["LLM","知识图谱/RAG"],autoLevel:"L3-流程自动化",priority:"P1-重要需求"},
+{id:"REQ-036",scene:"装备制造-运营管理-数据资产AI应用(智能体三阶段)",tasks:["阶段1-数据高效应用：自然语言问答式数据查询","阶段2-数据分析与执行：自动化报表与分析","阶段3-业务场景AI自动化：端到端业务流程自动化"],inputs:["分散的生产数据源","业务指标体系与规则","管理层决策需求","历史报表与分析案例"],outputs:["自然语言查询结果","自动化分析报表","业务异常预警","端到端自动化执行方案"],kpis:["报表开发周期从2-3天缩短至分钟级","异常响应速度提升90%"],capabilities:["自然语言转SQL能力","数据分析与可视化能力","异常识别与预警能力","业务流程自动化编排能力"],role:"数据智能体",industry:"装备制造",valueChain:"运营管理",techStack:["LLM","数据挖掘"],autoLevel:"L4-自主决策",priority:"P1-重要需求"},
+{id:"REQ-037",scene:"新能源-生产制造-新能源产线设备智能监控与维护",tasks:["搭建智能自动数据收集系统","搭建IAS边缘数据监控系统","AI智能体实时监控设备健康状态","健康状态智能预警","备品备件智能管理与采购"],inputs:["设备传感器数据","边缘计算节点数据","备件库存台账","设备维护历史数据"],outputs:["设备健康状态实时报告","故障预警通知","备件采购建议","设备维护工单"],kpis:["故障预警提前量≥24小时","备件库存成本降低20%"],capabilities:["多源数据自动采集能力","边缘计算与实时监控能力","设备健康状态评估能力","备件智能管理能力"],role:"设备维护智能体",industry:"新能源",valueChain:"生产制造",techStack:["时序预测","预测性维护/数字孪生"],autoLevel:"L3-流程自动化",priority:"P0-核心刚需"},
+{id:"REQ-038",scene:"新能源-生产制造-PACK包体快插柔性插拔系统",tasks:["搭建快插插口柔性插拔系统，含具身智能机械手臂","力控算法与视觉引导技术","在线兼容不同PACK包体快速切换或混线生产"],inputs:["PACK包体规格参数","快插插口设计数据","机械手臂运动参数","产线节拍数据"],outputs:["柔性插拔执行指令","PACK切换调度方案","插拔质量检测报告"],kpis:["切换时间缩短60%","插拔成功率≥99.5%"],capabilities:["具身智能操控能力","力控算法执行能力","视觉引导定位能力","多规格兼容调度能力"],role:"巡检智能体",industry:"新能源",valueChain:"生产制造",techStack:["具身智能/机器人控制","计算机视觉(CV)"],autoLevel:"L3-流程自动化",priority:"P0-核心刚需"},
+{id:"REQ-039",scene:"新能源-生产制造-具身智能机器人搬运实验平台",tasks:["搭建具身智能机械手臂搬运平台","力控算法与视觉引导","AGV调度与协同搬运"],inputs:["搬运物品规格与重量","车间布局与环境数据","AGV运行状态数据","搬运路径规划规则"],outputs:["搬运执行指令","路径规划方案","协同调度方案"],kpis:["搬运效率提升50%","人工搬运减少80%"],capabilities:["具身智能操控能力","力控与视觉引导能力","AGV调度与路径规划能力"],role:"巡检智能体",industry:"新能源",valueChain:"生产制造",techStack:["具身智能/机器人控制","计算机视觉(CV)"],autoLevel:"L3-流程自动化",priority:"P1-重要需求"},
+{id:"REQ-040",scene:"新能源-生产制造-具身智能+AI视觉降低人工巡检成本",tasks:["具身智能机器人替代人工巡检/抽检","AI视觉自动识别巡检异常","巡检报告自动生成"],inputs:["巡检区域环境数据","设备运行状态数据","巡检标准与规则","历史巡检记录"],outputs:["巡检结果报告","异常识别与告警","巡检路线优化建议"],kpis:["人工巡检成本降低70%","异常识别率≥95%"],capabilities:["具身智能巡检能力","AI视觉异常识别能力","巡检报告自动生成能力"],role:"巡检智能体",industry:"新能源",valueChain:"生产制造",techStack:["具身智能/机器人控制","计算机视觉(CV)"],autoLevel:"L3-流程自动化",priority:"P1-重要需求"},
+{id:"REQ-041",scene:"新能源-生产制造/运营管理-智慧巡检与数字化管理平台",tasks:["巡检机器人选型、部署与调试","工业智慧巡检系统(实时视频、风险提示、远程诊断)","企业数字化采购管理平台","智慧物流一体化管理系统","设备智能管理系统","全厂5G无线网络覆盖"],inputs:["企业作业场景数据","巡检设备参数","采购全流程数据","物流资源与数据","设备全生命周期数据","网络架构需求"],outputs:["巡检机器人部署方案","智慧巡检系统","数字化采购平台","智慧物流系统","设备管理系统","5G网络覆盖方案"],kpis:["无人化巡检覆盖率达80%","采购效率提升50%","物流可视化率100%"],capabilities:["机器人选型与部署能力","智慧巡检系统构建能力","数字化采购平台能力","智慧物流调度能力","设备全生命周期管理能力"],role:"巡检智能体",industry:"新能源",valueChain:"运营管理",techStack:["具身智能/机器人控制","LLM","数据挖掘"],autoLevel:"L3-流程自动化",priority:"P0-核心刚需"},
+{id:"REQ-042",scene:"新能源-生产管理-能源智能管控",tasks:["建立能源管理平台，负荷预测与能源平衡调度","电、气、热多能源介质协同调度与优化","能源数据与生产系统数据互联互通","基于生产计划的能效分析与动态优化"],inputs:["能源消耗实时数据","生产计划数据","负荷历史数据","能源价格数据"],outputs:["能源负荷预测报告","多能源协同调度方案","能效分析报告","动态优化建议"],kpis:["单位产值能耗降低15%","能源调度效率提升30%"],capabilities:["能源负荷预测能力","多能源协同调度能力","能效分析与优化能力","生产-能源数据融合能力"],role:"能源/碳管理智能体",industry:"新能源",valueChain:"运营管理",techStack:["时序预测","运筹优化算法"],autoLevel:"L3-流程自动化",priority:"P0-核心刚需"},
+{id:"REQ-043",scene:"新能源-生产管理-碳资产全生命周期管理",tasks:["碳排放数据与生产、供应链数据深度融合","自动核算各生产环节碳排放量","追踪产品全生命周期碳足迹"],inputs:["生产流程碳排放数据","供应链碳排放数据","产品生命周期数据","碳核算标准与规则"],outputs:["碳排放核算报告","产品碳足迹追踪报告","碳减排优化建议"],kpis:["碳排放核算准确率≥95%","碳足迹追踪覆盖100%"],capabilities:["碳排放自动核算能力","碳足迹全链路追踪能力","碳减排优化推荐能力"],role:"能源/碳管理智能体",industry:"新能源",valueChain:"运营管理",techStack:["LLM","数据挖掘"],autoLevel:"L3-流程自动化",priority:"P0-核心刚需"},
+{id:"REQ-044",scene:"新能源-生产管理-物料精准配送",tasks:["搭建物料智能配送管理平台","物料需求预测与智能路径规划","AGV/AMR协同调度与精准配送","物料配送数据与生产/仓储数据互通"],inputs:["物料需求数据","AGV/AMR设备状态","仓储库存数据","生产计划数据"],outputs:["物料需求预测报告","智能配送路径方案","AGV/AMR调度指令","配送准时率统计"],kpis:["库存积压率降低30%","配送准时率≥98%"],capabilities:["物料需求预测能力","路径智能规划能力","AGV/AMR协同调度能力","数据互通与联动能力"],role:"排程调度智能体",industry:"新能源",valueChain:"生产制造",techStack:["运筹优化算法","具身智能/机器人控制"],autoLevel:"L3-流程自动化",priority:"P0-核心刚需"},
+{id:"REQ-045",scene:"新能源-设备研发-软件与视觉AI编程智能体",tasks:["搭建AI编程智能体系统","搭建智能体软件开发数据库与标准化编程框架","搭建标准化程序模块与历史编程库"],inputs:["编程场景需求数据","历史代码库与编程规范","测试用例与验证标准","视觉算法需求规格"],outputs:["AI编程智能体系统","标准化编程框架与模块","代码质量评估报告"],kpis:["编程效率提升60%","代码缺陷率降低40%"],capabilities:["AI代码生成与智能补全能力","编程框架标准化能力","代码质量自动评估能力","编程经验自复盘能力"],role:"编程智能体",industry:"新能源",valueChain:"研发设计",techStack:["LLM","AutoML"],autoLevel:"L3-流程自动化",priority:"P1-重要需求"},
+{id:"REQ-046",scene:"新能源-设备研发-AI智能视觉平台",tasks:["AI根据场景需求自动完成最优算法编程","建立公司级图片数据库","实现编程经验自复盘与产线同工序优化自动模展"],inputs:["视觉应用场景需求","产品图像数据集","算法性能基准数据","产线工序参数"],outputs:["最优视觉算法方案","图片数据库","编程经验复盘报告","跨产线优化推广方案"],kpis:["算法编程效率提升70%","同工序优化自动模展率≥80%"],capabilities:["视觉算法自动编程能力","图片数据库管理能力","编程经验自复盘能力","跨产线优化推广能力"],role:"编程智能体",industry:"新能源",valueChain:"研发设计",techStack:["计算机视觉(CV)","LLM","AutoML"],autoLevel:"L3-流程自动化",priority:"P1-重要需求"},
+{id:"REQ-047",scene:"新能源-生产作业-在线智能检测",tasks:["搭建作业在线智能检测平台","实现产品外观、尺寸、装配精度缺陷实时识别","检测数据与生产工艺/质量数据深度融合"],inputs:["生产过程实时图像","产品质量标准库","缺陷样本图库","工艺参数数据"],outputs:["实时缺陷检测结果","不良品率统计","检测-工艺关联分析","质量改善建议"],kpis:["不良品率降低30%","检测效率提升5倍"],capabilities:["多模态缺陷实时识别能力","检测-工艺数据融合能力","质量趋势分析与预警能力"],role:"质检智能体",industry:"新能源",valueChain:"生产制造",techStack:["计算机视觉(CV)","LLM"],autoLevel:"L3-流程自动化",priority:"P0-核心刚需"},
+{id:"REQ-048",scene:"新能源-产品运维-储能BMS电池SOH精准预测",tasks:["AI实现电池健康状态(SOH)精准预测","实时监测电池电芯/模组运行数据","提前识别电池衰减/故障风险","为运维、梯次利用、更换提供数据支撑"],inputs:["BMS电池运行数据","电芯/模组监测数据","历史衰减与故障数据","电池规格与设计参数"],outputs:["SOH预测结果","衰减趋势报告","故障风险评估","梯次利用与更换建议"],kpis:["SOH预测准确率≥92%","故障预警提前量≥7天"],capabilities:["电池健康状态预测能力","衰减趋势分析能力","故障风险评估能力","梯次利用决策支持能力"],role:"设备维护智能体",industry:"新能源",valueChain:"设备维护",techStack:["时序预测","预测性维护/数字孪生"],autoLevel:"L3-流程自动化",priority:"P0-核心刚需"},
+{id:"REQ-049",scene:"新能源-储能运营-储能系统充放电智能调度",tasks:["结合峰谷平价政策、用电需求、储能容量智能推荐充放电方案","动态调整充放电策略最大化收益","多区域多项目统一智能调度"],inputs:["峰谷电价政策数据","区域用电需求数据","储能系统容量与运行状态","多项目运行数据"],outputs:["充放电优化方案","收益预测报告","多项目统一调度指令"],kpis:["储能收益提升15%","调度响应时间≤5分钟"],capabilities:["电价策略优化能力","充放电动态调度能力","多项目统一编排能力","收益最大化优化能力"],role:"排程调度智能体",industry:"新能源",valueChain:"运营管理",techStack:["运筹优化算法","时序预测"],autoLevel:"L4-自主决策",priority:"P0-核心刚需"},
+{id:"REQ-050",scene:"新能源-研发/采购/供应链-物料AI深度分析与替代推荐",tasks:["AI深度分析产品物料属性与BOM结构","物料相似度精准计算","自动推荐高匹配替代料与优化选型方案","辅助采购快速寻源与供应链风险预警"],inputs:["物料属性数据(规格/材质/性能)","BOM结构层级数据","供应商与价格数据","历史替代案例库"],outputs:["物料相似度分析结果","替代料推荐方案","选型优化建议","供应链风险预警"],kpis:["替代料匹配准确率≥90%","新物料种类减少20%","采购成本降低10%"],capabilities:["物料属性深度分析能力","相似度精准计算能力","替代料智能推荐能力","供应链风险预警能力"],role:"供应链智能体",industry:"新能源",valueChain:"供应链管理",techStack:["LLM","知识图谱/RAG"],autoLevel:"L3-流程自动化",priority:"P0-核心刚需"},
+{id:"REQ-051",scene:"新能源-生产检测-储能电芯/逆变器AI智能检测",tasks:["焊接缺陷与产品外观高精度智能检测","生产工艺参数AI实时优化","减少工艺波动带来的质量问题"],inputs:["电芯/逆变器产品图像","焊接工艺参数数据","质量检测标准","历史缺陷数据"],outputs:["缺陷检测结果","工艺参数优化建议","质量趋势分析"],kpis:["缺陷检出率≥99%","工艺波动降低40%"],capabilities:["高精度视觉检测能力","焊接缺陷识别能力","工艺参数实时优化能力"],role:"质检智能体",industry:"新能源",valueChain:"质量检测",techStack:["计算机视觉(CV)","LLM"],autoLevel:"L3-流程自动化",priority:"P0-核心刚需"},
+{id:"REQ-052",scene:"新能源-内部运营-AI知识库升级与客服智能助手",tasks:["升级现有知识库实现智能检索/问答/推送","延伸至客户服务：产品售前咨询/售后解答智能助手"],inputs:["企业质量文档","系统操作手册","产品技术资料","客户咨询历史数据"],outputs:["智能检索与问答结果","知识推送建议","客户咨询智能解答"],kpis:["知识检索效率提升80%","客户问题解决率≥85%"],capabilities:["知识库智能检索能力","自然语言问答能力","主动知识推送能力","客服智能解答能力"],role:"客服/知识智能体",industry:"新能源",valueChain:"运营管理",techStack:["LLM","知识图谱/RAG"],autoLevel:"L4-自主决策",priority:"P1-重要需求"},
+{id:"REQ-053",scene:"新能源-研发测试-AI+数字孪生储能产品全生命周期",tasks:["构建储能产品数字孪生模型","研发阶段仿真测试与性能预测","AI分析全球储能运营数据优化设计方案"],inputs:["储能产品设计数据","全球储能运营数据","仿真模型参数","性能基准数据"],outputs:["数字孪生模型","仿真测试报告","设计优化方案","性能预测报告"],kpis:["研发周期缩短30%","产品可靠性提升15%"],capabilities:["数字孪生建模能力","仿真测试与性能预测能力","全球数据分析能力","设计优化推荐能力"],role:"研发仿真智能体",industry:"新能源",valueChain:"研发设计",techStack:["预测性维护/数字孪生","LLM","数据挖掘"],autoLevel:"L3-流程自动化",priority:"P1-重要需求"},
+{id:"REQ-054",scene:"新能源-工厂运营-能源智能监控与设备预测性维护",tasks:["生产厂区能源消耗智能监控与碳排放精准核算优化","生产设备AI预测性维护，提前识别故障风险"],inputs:["能源消耗实时数据","碳排放核算数据","设备运行状态数据","设备维护历史数据"],outputs:["能源监控与碳排放报告","设备故障预警","维护工单","能效优化建议"],kpis:["能耗降低15%","非计划停机减少40%"],capabilities:["能源消耗智能监控能力","碳排放精准核算能力","设备故障预测能力","能效优化建议能力"],role:"能源/碳管理智能体",industry:"新能源",valueChain:"运营管理",techStack:["时序预测","预测性维护/数字孪生","数据挖掘"],autoLevel:"L3-流程自动化",priority:"P0-核心刚需"},
+{id:"REQ-055",scene:"新能源-供应链运营-供应链智能调度与风险预警",tasks:["基于市场需求/原材料库存/生产计划动态调整采购物流","供应商AI智能评估","供应链稳定性提升"],inputs:["市场需求预测数据","原材料库存数据","生产计划数据","供应商评估数据"],outputs:["动态采购与物流调整方案","供应商评估报告","供应链风险预警"],kpis:["供应链响应速度提升50%","供应中断风险降低60%"],capabilities:["供应链动态调度能力","供应商AI评估能力","风险预警与应对能力","多因素协同优化能力"],role:"供应链智能体",industry:"新能源",valueChain:"供应链管理",techStack:["运筹优化算法","时序预测","LLM"],autoLevel:"L3-流程自动化",priority:"P0-核心刚需"},
+{id:"REQ-056",scene:"生物医药-生产制造-医疗器械AI自动质检与自动化",tasks:["支架导管类医疗器械显微镜下AI自动质量检测","引入专用自动化设备实现降本增效"],inputs:["显微镜下医疗器械图像","质量检测标准","缺陷样本图库","设备运行参数"],outputs:["AI自动检测结果","缺陷分类与标注","自动化设备操作指令"],kpis:["检测效率提升5倍","漏检率≤0.1%","人工成本降低60%"],capabilities:["显微镜图像AI分析能力","医疗器械缺陷识别能力","自动化设备控制能力"],role:"质检智能体",industry:"生物医药",valueChain:"生产制造",techStack:["计算机视觉(CV)","LLM"],autoLevel:"L3-流程自动化",priority:"P0-核心刚需"},
+{id:"REQ-057",scene:"生物医药-生产制造-染色体核型AI智能分析",tasks:["染色体中期相图像自动预处理","染色体实例分割与核型自动配对","异常辅助诊断","构建端到端智能分析流程"],inputs:["染色体中期相图像数据","核型分析标准与规则","异常染色体特征库","临床检验历史数据"],outputs:["自动预处理结果","实例分割与配对结果","异常辅助诊断报告","核型分析完整报告"],kpis:["核型分析效率提升10倍","配对准确率≥98%","异常检出率≥95%"],capabilities:["染色体图像预处理能力","实例分割与配对能力","异常辅助诊断能力","端到端分析流程构建能力"],role:"质检智能体",industry:"生物医药",valueChain:"生产制造",techStack:["计算机视觉(CV)","LLM"],autoLevel:"L3-流程自动化",priority:"P0-核心刚需"},
+{id:"REQ-058",scene:"生物医药-研发设计-研发知识库与AI智能问答",tasks:["多源数据统一接入与知识抽取形成结构化知识库","自然语言智能问答快速响应技术疑问","文献检索/资料定位/历史方案对比与复用","知识推荐/相似案例匹配辅助设计创新","内部知识系统化沉淀/更新/共享"],inputs:["内部文档与技术资料","设计图纸与项目文献","知识分类与标签体系","历史研发方案库"],outputs:["结构化知识库","智能问答结果","文献检索与方案对比报告","知识推荐与案例匹配","知识更新与共享记录"],kpis:["技术问题响应时间≤1秒","知识复用率提升50%"],capabilities:["多源数据知识抽取能力","自然语言智能问答能力","文献检索与方案匹配能力","知识推荐与创新能力","知识沉淀与共享能力"],role:"客服/知识智能体",industry:"生物医药",valueChain:"研发设计",techStack:["LLM","知识图谱/RAG"],autoLevel:"L4-自主决策",priority:"P0-核心刚需"},
+{id:"REQ-059",scene:"生物医药-研发设计-RNA序列AI分析与药物设计",tasks:["AI技术对RNA序列进行分析与设计","针对特定疾病靶点AI辅助序列生成与筛选","优化RNA稳定性与靶向效率"],inputs:["RNA序列数据库","疾病靶点信息","RNA结构与功能规则","历史药物研发案例"],outputs:["AI生成的RNA序列","序列筛选与排序结果","稳定性与靶向效率优化方案"],kpis:["RNA药物研发周期缩短50%","序列设计成功率提升3倍"],capabilities:["RNA序列分析与设计能力","靶点-序列匹配能力","稳定性与靶向优化能力","药物研发辅助决策能力"],role:"研发仿真智能体",industry:"生物医药",valueChain:"研发设计",techStack:["LLM","AutoML"],autoLevel:"L3-流程自动化",priority:"P0-核心刚需"},
+{id:"REQ-060",scene:"冶金业-研发设计-钢铁材料AI逆向智能设计",tasks:["从目标性能到成分/工艺的逆向智能设计","提升新钢种研发效率与可靠性","减少试错成本"],inputs:["目标性能参数","钢铁成分与工艺数据库","材料性能预测模型","历史研发案例库"],outputs:["逆向设计成分与工艺方案","性能预测验证报告","研发效率对比分析"],kpis:["新钢种研发周期缩短60%","试错成本降低50%"],capabilities:["目标性能逆向推理能力","成分-工艺-性能映射能力","材料性能预测能力","研发方案优化能力"],role:"研发仿真智能体",industry:"冶金业",valueChain:"研发设计",techStack:["LLM","AutoML","数据挖掘"],autoLevel:"L4-自主决策",priority:"P0-核心刚需"},
+{id:"REQ-061",scene:"冶金业-生产制造-金相高倍智能检测与自动评级",tasks:["开发金相高倍智能检测系统","实现显微镜自动上下样","夹杂物/晶粒度/脱碳层三项自动评级","数据上报检化验系统"],inputs:["金相样品图像数据","评级标准与规则","显微镜设备参数","检化验系统接口"],outputs:["金相自动评级结果","三项指标评级报告","数据上报记录","检测偏差分析报告"],kpis:["重复性检测偏差±0.5级以内达99%以上","与人工比较偏差±0.5级以内达95%以上"],capabilities:["金相图像AI分析能力","自动评级推理能力","显微镜自动控制能力","系统数据对接能力"],role:"质检智能体",industry:"冶金业",valueChain:"生产制造",techStack:["计算机视觉(CV)","LLM"],autoLevel:"L3-流程自动化",priority:"P0-核心刚需"},
+{id:"REQ-062",scene:"纺织业-客户沟通-AI翻译智能体",tasks:["多语言合同文件AI翻译","客服沟通实时对话翻译","结合制造业专业术语库自动提炼外方核心需求"],inputs:["外方合同与文件","客户沟通记录","制造业专业术语库","历史翻译案例"],outputs:["翻译后的合同/文件","实时对话翻译结果","外方核心需求提炼报告"],kpis:["翻译效率提升80%","需求理解准确率≥95%"],capabilities:["多语言翻译能力","制造业术语精准翻译能力","核心需求自动提炼能力","实时对话翻译能力"],role:"客服/知识智能体",industry:"纺织业",valueChain:"客户沟通",techStack:["LLM"],autoLevel:"L2-辅助增强",priority:"P1-重要需求"},
+{id:"REQ-063",scene:"轻工业-生产制造-注塑机械臂AI调度与人机协同",tasks:["AI优化机械臂调度策略","实现人机高效协同","破解生产节拍不连贯与柔性不足痛点"],inputs:["机械臂运行状态数据","生产节拍与工序数据","订单品种与批量数据","人机协同规则"],outputs:["机械臂调度优化方案","人机协同执行指令","生产效率提升报告"],kpis:["上下料效率提升40%","多品种适配时间缩短60%"],capabilities:["机械臂智能调度能力","人机协同优化能力","柔性生产适配能力"],role:"排程调度智能体",industry:"轻工业",valueChain:"生产制造",techStack:["运筹优化算法","具身智能/机器人控制"],autoLevel:"L3-流程自动化",priority:"P1-重要需求"},
+{id:"REQ-064",scene:"其他-生产制造-AI设备运维与质量改善",tasks:["整合设备运行/维修/备件数据，解决被动维修痛点","从经验驱动转向算法驱动，全流程数据贯通","实时智能决策与持续优化迭代","实现质量/效率/成本三重跃升"],inputs:["设备运行与维修数据","备件信息数据","质量检测数据","生产工艺参数数据"],outputs:["设备运维优化方案","质量改善方案","实时决策建议","三重跃升效果评估"],kpis:["维修响应时间缩短70%","质量合格率提升5%","运营成本降低15%"],capabilities:["设备运维智能分析能力","质量根因分析能力","实时智能决策能力","持续优化迭代能力"],role:"设备维护智能体",industry:"其他",valueChain:"生产制造",techStack:["LLM","数据挖掘","时序预测"],autoLevel:"L3-流程自动化",priority:"P1-重要需求"},
+{id:"REQ-065",scene:"其他-生产制造-生产全流程AI管控",tasks:["生产进度/产品良率/设备效率实时监控","实时数据感知替代人工经验判断","预测性干预替代被动响应","全链路协同替代局部优化"],inputs:["生产进度实时数据","产品良率检测数据","设备效率运行数据","全链路业务数据"],outputs:["实时生产状态仪表盘","预测性干预建议","全链路协同优化方案","交付/质量/效率综合报告"],kpis:["交付准时率≥98%","质量稳定性提升20%","生产效率提升15%"],capabilities:["全流程实时感知能力","预测性干预决策能力","全链路协同优化能力","多目标综合优化能力"],role:"生产运营智能体",industry:"其他",valueChain:"生产制造",techStack:["LLM","数据挖掘","时序预测"],autoLevel:"L4-自主决策",priority:"P1-重要需求"}
+];
+
+// ===== RENDER FUNCTIONS =====
+function showSection(name) {
+    document.querySelectorAll('.section-panel').forEach(p => p.style.display='none');
+    document.getElementById('sec-'+name).style.display='block';
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+}
+
+function tagClass(type, val) {
+    if (type==='industry') return 'tag tag-industry';
+    if (type==='tech') return 'tag tag-tech';
+    if (type==='role') return 'tag tag-role';
+    if (type==='auto') return 'tag tag-' + val.split('-')[0];
+    if (type==='priority') return 'tag tag-' + val.split('-')[0];
+    return 'tag';
+}
+
+function renderCard(r) {
+    const tags = [
+        `<span class="${tagClass('industry',r.industry)}">${r.industry}</span>`,
+        `<span class="${tagClass('role',r.role)}">${r.role}</span>`,
+        `<span class="${tagClass('auto',r.autoLevel)}">${r.autoLevel}</span>`,
+        `<span class="${tagClass('priority',r.priority)}">${r.priority}</span>`,
+        ...r.techStack.map(t => `<span class="${tagClass('tech',t)}">${t}</span>`)
+    ].join('');
+    return `
+    <div class="req-card" data-id="${r.id}" data-industry="${r.industry}" data-role="${r.role}" data-tech="${r.techStack.join(',')}" data-auto="${r.autoLevel}" data-priority="${r.priority}">
+        <div class="req-header" onclick="toggleCard(this)">
+            <span class="req-id">${r.id}</span>
+            <div class="req-title-area">
+                <div class="req-scene">${r.scene}</div>
+                <div class="req-tags">${tags}</div>
+            </div>
+            <span class="req-expand-icon">▼</span>
+        </div>
+        <div class="req-body">
+            <div class="req-section"><div class="req-section-title">🎯 核心原子任务</div><ul>${r.tasks.map(t=>`<li>${t}</li>`).join('')}</ul></div>
+            <div class="req-section"><div class="req-section-title">📥 输入数据源</div><ul>${r.inputs.map(t=>`<li>${t}</li>`).join('')}</ul></div>
+            <div class="req-section"><div class="req-section-title">📤 输出成果物</div><ul>${r.outputs.map(t=>`<li>${t}</li>`).join('')}</ul></div>
+            <div class="req-section"><div class="req-section-title">🧠 所需核心能力</div><ul>${r.capabilities.map(t=>`<li>${t}</li>`).join('')}</ul></div>
+            ${r.kpis && r.kpis.length ? `<div class="req-kpi">📊 <strong>验收KPI：</strong>${r.kpis.join('；')}</div>` : ''}
+        </div>
+    </div>`;
+}
+
+function toggleCard(el) {
+    el.closest('.req-card').classList.toggle('expanded');
+}
+
+function applyFilters() {
+    const industry = document.getElementById('filterIndustry').value;
+    const role = document.getElementById('filterRole').value;
+    const tech = document.getElementById('filterTech').value;
+    const auto = document.getElementById('filterAuto').value;
+    const priority = document.getElementById('filterPriority').value;
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    let count = 0;
+    document.querySelectorAll('.req-card').forEach(card => {
+        let show = true;
+        if (industry && card.dataset.industry !== industry) show = false;
+        if (role && card.dataset.role !== role) show = false;
+        if (tech && !card.dataset.tech.includes(tech)) show = false;
+        if (auto && card.dataset.auto !== auto) show = false;
+        if (priority && card.dataset.priority !== priority) show = false;
+        if (search) {
+            const text = card.textContent.toLowerCase();
+            if (!text.includes(search)) show = false;
+        }
+        card.style.display = show ? '' : 'none';
+        if (show) count++;
+    });
+    document.getElementById('resultCount').textContent = `显示 ${count} / ${REQ_DATA.length} 项`;
+}
+
+function populateFilters() {
+    const industries = [...new Set(REQ_DATA.map(r=>r.industry))];
+    const roles = [...new Set(REQ_DATA.map(r=>r.role))];
+    const techs = [...new Set(REQ_DATA.flatMap(r=>r.techStack))];
+    const autos = [...new Set(REQ_DATA.map(r=>r.autoLevel))];
+    const priorities = [...new Set(REQ_DATA.map(r=>r.priority))];
+    const fill = (sel, arr) => { arr.sort(); arr.forEach(v => { const o=document.createElement('option'); o.value=v; o.textContent=v; sel.appendChild(o); }); };
+    fill(document.getElementById('filterIndustry'), industries);
+    fill(document.getElementById('filterRole'), roles);
+    fill(document.getElementById('filterTech'), techs);
+    fill(document.getElementById('filterAuto'), autos);
+    fill(document.getElementById('filterPriority'), priorities);
+}
+
+function renderDist(containerId, data, colors) {
+    const max = Math.max(...data.map(d=>d.count));
+    const el = document.getElementById(containerId);
+    el.innerHTML = data.map((d,i) => `
+        <div class="dist-row">
+            <span class="dist-label">${d.label}</span>
+            <div class="dist-bar-bg"><div class="dist-bar-fill" style="width:${(d.count/max*100).toFixed(1)}%;background:${colors[i%colors.length]}">${d.count}</div></div>
+            <span class="dist-count">${d.count}</span>
+        </div>
+    `).join('');
+}
+
+// ===== INIT =====
+(function init() {
+    // Render REQ cards
+    const grid = document.getElementById('reqGrid');
+    grid.innerHTML = REQ_DATA.map(renderCard).join('');
+    document.getElementById('resultCount').textContent = `显示 ${REQ_DATA.length} / ${REQ_DATA.length} 项`;
+
+    populateFilters();
+
+    // Stats
+    const stats = document.getElementById('statsDashboard');
+    const P0 = REQ_DATA.filter(r=>r.priority.startsWith('P0')).length;
+    const L4 = REQ_DATA.filter(r=>r.autoLevel.startsWith('L4')).length;
+    const industries = [...new Set(REQ_DATA.map(r=>r.industry))];
+    const roles = [...new Set(REQ_DATA.map(r=>r.role))];
+    const techs = [...new Set(REQ_DATA.flatMap(r=>r.techStack))];
+    stats.innerHTML = [
+        {v:63,l:'有效需求'},
+        {v:industries.length,l:'行业领域'},
+        {v:roles.length,l:'数字员工角色'},
+        {v:techs.length,l:'核心技术栈'},
+        {v:P0,l:'P0核心刚需'},
+        {v:L4,l:'L4自主决策'}
+    ].map(s=>`<div class="stat-card"><div class="stat-value">${s.v}</div><div class="stat-label">${s.l}</div></div>`).join('');
+
+    // Industry dist
+    const indColors = ['#4f46e5','#7c3aed','#06b6d4','#10b981','#f59e0b','#ec4899','#8b5cf6','#6366f1'];
+    renderDist('industryDist', industries.map(i=>({label:i,count:REQ_DATA.filter(r=>r.industry===i).length})), indColors);
+
+    // Auto level dist
+    const autoColors = ['#f59e0b','#f97316','#ef4444'];
+    renderDist('autoLevelDist', ['L2-辅助增强','L3-流程自动化','L4-自主决策'].map(a=>({label:a,count:REQ_DATA.filter(r=>r.autoLevel===a).length})), autoColors);
+
+    // Priority dist
+    const priColors = ['#ef4444','#f97316','#f59e0b'];
+    renderDist('priorityDist', ['P0-核心刚需','P1-重要需求','P2-优化需求'].map(p=>({label:p,count:REQ_DATA.filter(r=>r.priority===p).length})), priColors);
+
+    // Role grid
+    const roleEmojis = {'报价智能体':'💰','设备维护智能体':'🔧','工艺优化智能体':'⚙️','设计辅助智能体':'📐','质检智能体':'🔬','排程调度智能体':'📊','供应链智能体':'🔗','客服/知识智能体':'💬','数据智能体':'📈','编程智能体':'💻','能源/碳管理智能体':'🌱','巡检智能体':'👁️','文档智能体':'📄','HR智能体':'👥','生产运营智能体':'🏭','研发仿真智能体':'🧪'};
+    const roleGrid = document.getElementById('roleGrid');
+    const roleData = roles.map(r=>({name:r,count:REQ_DATA.filter(d=>d.role===r).length,emoji:roleEmojis[r]||'🤖'}));
+    roleData.sort((a,b)=>b.count-a.count);
+    roleGrid.innerHTML = roleData.map(r=>`<div class="role-chip"><span class="role-emoji">${r.emoji}</span><span>${r.name}</span><span class="role-count">${r.count}</span></div>`).join('');
+    renderDist('roleDist', roleData.map(r=>({label:r.name,count:r.count})), indColors);
+
+    // Tech dist
+    const techData = techs.map(t=>({label:t,count:REQ_DATA.filter(r=>r.techStack.includes(t)).length}));
+    techData.sort((a,b)=>b.count-a.count);
+    renderDist('techDist', techData, indColors);
+
+    // Schema fields
+    const fields = [
+        {name:'唯一ID',desc:'需求唯一标识，格式REQ-XXX'},
+        {name:'业务场景',desc:'[行业]-[价值链环节]-[具体业务节点]'},
+        {name:'核心原子任务',desc:'Agent可执行的最小动作单元，动词开头'},
+        {name:'输入数据源',desc:'Agent执行任务必须的全部输入素材/数据/规则'},
+        {name:'输出成果物',desc:'Agent交付的可验收成果，含量化业务指标'},
+        {name:'所需核心能力',desc:'原子化AI能力模块，可复用编排'},
+        {name:'匹配数字员工类型',desc:'标准化Agent角色，全文档无别名'}
+    ];
+    document.getElementById('schemaFields').innerHTML = fields.map(f=>`<div class="schema-card"><div class="field-name">${f.name}</div><div class="field-desc">${f.desc}</div></div>`).join('');
+
+    const tagDims = [
+        {name:'所属行业',desc:'电子信息、装备制造、新能源、生物医药、冶金业、纺织业、轻工业、其他'},
+        {name:'价值链环节',desc:'研发设计、生产制造、质量检测、供应链管理、运营管理、设备维护、营销服务、客户沟通、软件开发'},
+        {name:'核心技术栈',desc:'CV、LLM、Multi-Agent、预测性维护/数字孪生、运筹优化、具身智能、知识图谱/RAG、时序预测、AutoML'},
+        {name:'数字员工角色',desc:'15种标准化角色，全文档统一命名'},
+        {name:'自动化等级',desc:'L2-辅助增强 / L3-流程自动化 / L4-自主决策'},
+        {name:'落地优先级',desc:'P0-核心刚需 / P1-重要需求 / P2-优化需求'}
+    ];
+    document.getElementById('tagDimensions').innerHTML = tagDims.map(f=>`<div class="schema-card"><div class="field-name">${f.name}</div><div class="field-desc">${f.desc}</div></div>`).join('');
+})();
+</script>
+</body>
+</html>

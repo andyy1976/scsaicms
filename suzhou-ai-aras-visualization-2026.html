@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARAS PLM · 全链路追溯可视化与运行数据同步方案</title>
+<style>
+:root{--bg:#090e1a;--bg2:#0f1629;--card:#151d34;--card2:#1c2847;--border:#273555;--text:#e2e8f0;--text2:#94a3b8;--text3:#5a6b8a;--accent:#6366f1;--accent2:#818cf8;--accent3:#a78bfa;--blue:#3b82f6;--cyan:#06b6d4;--green:#10b981;--orange:#f59e0b;--red:#ef4444;--pink:#ec4899;--teal:#14b8a6;--purple:#8b5cf6}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+.hero{position:relative;background:linear-gradient(135deg,#060a14 0%,#0e1630 35%,#1a0f3d 65%,#0a1225 100%);padding:44px 20px 36px;text-align:center;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 25%,rgba(139,92,246,.1) 0%,transparent 50%),radial-gradient(circle at 70% 75%,rgba(99,102,241,.07) 0%,transparent 50%);animation:drift 20s ease-in-out infinite}
+@keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(-1.2%,.8%)}}
+.hero h1{font-size:1.85em;font-weight:800;background:linear-gradient(135deg,#c084fc,#818cf8,#06b6d4,#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent;position:relative;z-index:1}
+.hero .sub{color:var(--text2);margin-top:8px;font-size:.92em;position:relative;z-index:1}
+.hero .badge{display:inline-block;background:rgba(139,92,246,.15);border:1px solid rgba(139,92,246,.3);color:var(--accent3);padding:4px 14px;border-radius:20px;font-size:.78em;margin-top:14px;position:relative;z-index:1}
+.sr{display:flex;justify-content:center;gap:14px;margin-top:22px;flex-wrap:wrap;position:relative;z-index:1}
+.sb{background:rgba(21,29,52,.85);border:1px solid var(--border);border-radius:12px;padding:12px 20px;text-align:center;min-width:110px}
+.sb .v{font-size:1.5em;font-weight:800;color:var(--purple)}.sb .l{font-size:.75em;color:var(--text2);margin-top:2px}
+.nb{position:sticky;top:0;z-index:100;background:rgba(9,14,26,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 16px;display:flex;justify-content:center;gap:0;overflow-x:auto}
+.nb button{padding:12px 16px;background:none;border:none;color:var(--text2);font-size:.82em;cursor:pointer;white-space:nowrap;position:relative;transition:color .2s}
+.nb button:hover{color:var(--text)}.nb button.on{color:var(--accent3)}
+.nb button.on::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--purple),var(--cyan))}
+.ct{max-width:1400px;margin:0 auto;padding:22px 20px}
+.sec{display:none}.sec.on{display:block}
+.st{font-size:1.3em;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.cd{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:18px}
+.cd h3{font-size:1.02em;margin-bottom:10px;color:var(--accent3);display:flex;align-items:center;gap:8px}
+.cd p{color:var(--text2);font-size:.87em;line-height:1.7}
+.tb{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.tb button{padding:8px 16px;background:var(--card2);border:1px solid var(--border);border-radius:20px;color:var(--text2);font-size:.8em;cursor:pointer;transition:all .2s}
+.tb button:hover{border-color:var(--purple);color:var(--text)}
+.tb button.on{background:var(--purple);color:#fff;border-color:var(--purple)}
+.tc{display:none}.tc.on{display:block}
+.form-layout{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;margin-bottom:14px}
+.fl{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:14px}
+.fl .fl-label{font-size:.75em;color:var(--text3);margin-bottom:4px}
+.fl .fl-fields{display:flex;flex-direction:column;gap:6px}
+.fld{background:rgba(99,102,241,.06);border:1px solid rgba(99,102,241,.1);border-radius:6px;padding:8px 12px;display:flex;justify-content:space-between;align-items:center}
+.fld .fld-name{font-size:.82em;color:var(--text)}
+.fld .fld-type{font-size:.72em;color:var(--cyan);font-family:'Cascadia Code','Consolas',monospace;padding:2px 6px;background:rgba(6,182,212,.08);border-radius:4px}
+.fld .fld-readonly{font-size:.72em;color:var(--green);background:rgba(16,185,129,.08);padding:2px 6px;border-radius:4px}
+.rel-tabs{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.rel-tab{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:14px;flex:1;min-width:200px}
+.rel-tab h4{font-size:.88em;margin-bottom:8px;color:var(--accent2);display:flex;align-items:center;gap:6px}
+.rel-tab .rel-cols{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}
+.rel-tab .rel-col{font-size:.7em;padding:2px 7px;background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.12);border-radius:4px;color:var(--text2)}
+.rel-tab .rel-rel{font-size:.78em;color:var(--cyan);font-family:'Cascadia Code','Consolas',monospace}
+.graph-placeholder{background:linear-gradient(135deg,var(--card2),var(--card));border:1px solid var(--border);border-radius:10px;padding:28px;text-align:center;color:var(--text3);margin-top:12px;font-size:.85em;position:relative;overflow:hidden}
+.graph-placeholder::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:120px;height:120px;background:radial-gradient(circle,rgba(139,92,246,.1) 0%,transparent 70%)}
+.graph-placeholder::after{content:'🔗';font-size:2em;position:relative}
+.report-card{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:14px}
+.report-card h4{font-size:.95em;margin-bottom:6px;color:var(--accent2);display:flex;align-items:center;gap:6px}
+.report-card .rp-use{font-size:.8em;color:var(--text3);margin-bottom:10px;padding:6px 12px;background:rgba(99,102,241,.06);border-radius:6px;border-left:2px solid var(--accent)}
+.sql-wrap{background:#0d1117;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.sql-header{background:#161b22;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}
+.sql-header .sl-lang{font-size:.78em;font-weight:600;padding:3px 10px;border-radius:4px;background:rgba(251,191,36,.15);color:var(--orange)}
+.sql-header .sl-name{font-size:.78em;color:var(--text3);font-family:'Cascadia Code','Consolas',monospace}
+.sql-body{padding:14px 16px;font-family:'Cascadia Code','Consolas','Courier New',monospace;font-size:.73em;color:#c9d1d9;line-height:1.55;overflow-x:auto;max-height:380px;overflow-y:auto;white-space:pre}
+.code-kw{color:#ff7b72}.code-fn{color:#d2a8ff}.code-str{color:#a5d6ff}.code-cmt{color:#8b949e}.code-num{color:#79c0ff}.code-op{color:#c9d1d9}.code-key{color:#7ee787}.code-type{color:#79c0ff}
+.py-wrap{background:#0d1117;border:1px solid var(--border);border-radius:12px;overflow:hidden;margin:10px 0}
+.py-header{background:#161b22;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}
+.py-header .pl-lang{font-size:.78em;font-weight:600;padding:3px 10px;border-radius:4px;background:rgba(16,185,129,.15);color:var(--green)}
+.py-header .pl-name{font-size:.78em;color:var(--text3);font-family:'Cascadia Code','Consolas',monospace}
+.py-body{padding:14px 16px;font-family:'Cascadia Code','Consolas','Courier New',monospace;font-size:.73em;color:#c9d1d9;line-height:1.55;overflow-x:auto;max-height:400px;overflow-y:auto;white-space:pre}
+.py-kw{color:#ff7b72}.py-fn{color:#d2a8ff}.py-str{color:#a5d6ff}.py-cmt{color:#8b949e}.py-num{color:#79c0ff}.py-var{color:#79c0ff}.py-imp{color:#f0883e}.py-deco{color:#d2a8ff}
+.ini-wrap{background:#0d1117;border:1px solid var(--border);border-radius:12px;overflow:hidden;margin:8px 0}
+.ini-header{background:#161b22;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}
+.ini-header .il-lang{font-size:.78em;font-weight:600;padding:3px 10px;border-radius:4px;background:rgba(245,158,11,.15);color:var(--orange)}
+.ini-header .il-name{font-size:.78em;color:var(--text3);font-family:'Cascadia Code','Consolas',monospace}
+.ini-body{padding:12px 16px;font-family:'Cascadia Code','Consolas','Courier New',monospace;font-size:.73em;color:#c9d1d9;line-height:1.55;overflow-x:auto;max-height:200px;overflow-y:auto;white-space:pre}
+.step-list{list-style:none;counter-reset:step;position:relative;padding-left:36px}
+.step-list li{counter-increment:step;position:relative;padding:8px 0;font-size:.86em;color:var(--text2);border-left:2px solid var(--purple)}
+.step-list li::before{content:counter(step);position:absolute;left:-36px;top:6px;width:24px;height:24px;background:var(--purple);color:#fff;border-radius:50%;text-align:center;line-height:24px;font-size:.76em;font-weight:700}
+.step-list li strong{color:var(--text)}
+.eff-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.eff-card{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;transition:transform .2s}
+.eff-card:hover{transform:translateY(-2px)}
+.eff-card .ei{font-size:1.5em;margin-bottom:6px}
+.eff-card .et{font-weight:700;font-size:.9em;margin-bottom:4px}
+.eff-card .ed{font-size:.78em;color:var(--text2);line-height:1.5}
+.alert-box{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:12px 16px;margin-top:12px;font-size:.82em;color:var(--text2)}
+.alert-box strong{color:var(--red)}
+.dep-step{display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.dep-card{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:12px;flex:1;min-width:160px}
+.dep-card .dc-num{font-size:1em;font-weight:800;color:var(--purple);margin-bottom:4px}
+.dep-card .dc-title{font-size:.85em;margin-bottom:4px}
+.dep-card .dc-cmd{font-size:.72em;color:var(--text3);font-family:'Cascadia Code','Consolas',monospace}
+.cfg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:12px}
+.cfg-item{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center}
+.cfg-item .ci-key{font-size:.8em;color:var(--cyan);font-family:'Cascadia Code','Consolas',monospace;margin-bottom:4px}
+.cfg-item .ci-val{font-size:.75em;color:var(--text2)}
+.ft{text-align:center;padding:28px;color:var(--text3);font-size:.78em;border-top:1px solid var(--border);margin-top:36px}
+@media(max-width:768px){.hero h1{font-size:1.2em}.sr{gap:6px}.sb{min-width:70px;padding:8px 10px}.nb button{padding:10px 12px;font-size:.76em}.form-layout,.cfg-grid,.eff-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="hero">
+<h1>📊 ARAS PLM · 全链路追溯可视化与运行数据同步方案</h1>
+<div class="sub">4个可视化表单配置 · 4套SQL报表模板 · Python自动同步脚本 · 6个最终效果</div>
+<div class="badge">ARAS Innovator 12.0+ 原生配置 · 无需代码开发 · 实时数据同步</div>
+<div class="sr">
+<div class="sb"><div class="v">4</div><div class="l">表单配置</div></div>
+<div class="sb"><div class="v">4</div><div class="l">SQL报表</div></div>
+<div class="sb"><div class="v">300</div><div class="l">秒同步周期</div></div>
+<div class="sb"><div class="v">6</div><div class="l">最终效果</div></div>
+</div>
+</div>
+
+<div class="nb">
+<button class="on" onclick="show('form')">📋 表单配置</button>
+<button onclick="show('report')">📊 SQL报表</button>
+<button onclick="show('sync')">🔄 数据同步</button>
+<button onclick="show('result')">✨ 最终效果</button>
+</div>
+
+<div class="ct">
+
+<!-- 表单配置 -->
+<div id="s-form" class="sec on">
+<div class="st">📋 ARAS 全链路追溯可视化表单配置</div>
+<div class="cd"><p>基于ARAS Innovator 12.0+ Form Editor配置，通过Relationship Grid和Embedded View组件展示全链路追溯，无需代码开发。</p></div>
+
+<div class="tb">
+<button class="on" onclick="tab('f','req')">📋 需求表单</button>
+<button onclick="tab('f','skill')">🧩 技能表单</button>
+<button onclick="tab('f','comp')">⚙️ 组件表单</button>
+<button onclick="tab('f','graph')">🔗 关系图</button>
+</div>
+
+<div id="f-req" class="tc on">
+<div class="form-layout">
+<div class="fl"><div class="fl-label">基本信息区</div><div class="fl-fields">
+<div class="fld"><span class="fld-name">需求ID</span><span class="fld-type">string(20)</span></div>
+<div class="fld"><span class="fld-name">需求名称</span><span class="fld-type">string(100)</span></div>
+<div class="fld"><span class="fld-name">所属行业</span><span class="fld-type">select</span></div>
+<div class="fld"><span class="fld-name">优先级</span><span class="fld-type">select P0/P1/P2</span></div>
+<div class="fld"><span class="fld-name">计划上线时间</span><span class="fld-type">date</span></div>
+<div class="fld"><span class="fld-name">状态</span><span class="fld-type">select</span></div>
+</div></div>
+<div class="fl"><div class="fl-label">运行数据区（只读·自动同步）</div><div class="fl-fields">
+<div class="fld"><span class="fld-name">运行准确率</span><span class="fld-readonly">只读·自动同步</span></div>
+<div class="fld"><span class="fld-name">累计调用次数</span><span class="fld-readonly">只读·自动同步</span></div>
+</div></div>
+<div class="fl"><div class="fl-label">开发信息区（只读）</div><div class="fl-fields">
+<div class="fld"><span class="fld-name">Git提交ID</span><span class="fld-readonly">只读</span></div>
+<div class="fld"><span class="fld-name">流水线地址</span><span class="fld-readonly">只读</span></div>
+<div class="fld"><span class="fld-name">完成度</span><span class="fld-readonly">自动计算</span></div>
+</div></div>
+</div>
+<div class="rel-tabs">
+<div class="rel-tab"><h4>🔗 全链路追溯标签页</h4>
+<div class="rel-cols"><span class="rel-col">关联技能</span><span class="rel-col">追溯关系图</span></div>
+<div class="rel-col">RelationshipGrid · 展示关联技能列表（技能ID/名称/状态/版本/准确率/计划时间）</div>
+</div>
+</div>
+<div class="alert-box"><strong>完成度计算</strong>：服务器方法自动计算，根据关联技能的运行中/已验收/已关闭状态统计完成百分比。</div>
+</div>
+
+<div id="f-skill" class="tc">
+<div class="form-layout">
+<div class="fl"><div class="fl-label">基本信息区</div><div class="fl-fields">
+<div class="fld"><span class="fld-name">技能ID</span><span class="fld-type">string(20)</span></div>
+<div class="fld"><span class="fld-name">技能名称</span><span class="fld-type">string(100)</span></div>
+<div class="fld"><span class="fld-name">所属智能体</span><span class="fld-type">string</span></div>
+<div class="fld"><span class="fld-name">优先级</span><span class="fld-type">select P0/P1/P2</span></div>
+<div class="fld"><span class="fld-name">状态</span><span class="fld-type">select 9状态</span></div>
+<div class="fld"><span class="fld-name">版本号</span><span class="fld-type">string(20)</span></div>
+</div></div>
+<div class="fl"><div class="fl-label">技术信息区（只读）</div><div class="fl-fields">
+<div class="fld"><span class="fld-name">代码模块路径</span><span class="fld-readonly">只读</span></div>
+<div class="fld"><span class="fld-name">Docker镜像地址</span><span class="fld-readonly">只读</span></div>
+<div class="fld"><span class="fld-name">Git提交ID</span><span class="fld-readonly">只读</span></div>
+</div></div>
+<div class="fl"><div class="fl-label">运行数据区（只读·自动同步）</div><div class="fl-fields">
+<div class="fld"><span class="fld-name">运行准确率</span><span class="fld-readonly">只读·自动同步</span></div>
+<div class="fld"><span class="fld-name">累计调用次数</span><span class="fld-readonly">只读·自动同步</span></div>
+<div class="fld"><span class="fld-name">平均响应时间</span><span class="fld-readonly">只读·自动同步</span></div>
+</div></div>
+</div>
+<div class="rel-tabs">
+<div class="rel-tab"><h4>⚙️ 依赖技术组件</h4><div class="rel-cols"><span class="rel-col">组件ID</span><span class="rel-col">组件名称</span><span class="rel-col">技术大类</span><span class="rel-col">状态</span></div><div class="rel-rel">Relationship: Skill Component</div></div>
+<div class="rel-tab"><h4>🧪 关联测试用例</h4><div class="rel-cols"><span class="rel-col">用例ID</span><span class="rel-col">测试场景</span><span class="rel-col">测试类型</span><span class="rel-col">最后结果</span></div><div class="rel-rel">Relationship: Skill Test Case</div></div>
+<div class="rel-tab"><h4>🚀 部署历史</h4><div class="rel-cols"><span class="rel-col">部署ID</span><span class="rel-col">版本号</span><span class="rel-col">环境</span><span class="rel-col">状态</span></div><div class="rel-rel">Relationship: Skill Deployment · 按部署时间降序</div></div>
+</div>
+</div>
+
+<div id="f-comp" class="tc">
+<div class="cd"><h3>⚙️ 原子技术组件表单 · 关联技能标签页（反向追溯）</h3>
+<p>展示所有依赖该技术组件的数字员工技能，实现从组件到技能的反向追溯关系。点击技能名称自动跳转到技能详情页。</p>
+<div class="rel-tabs">
+<div class="rel-tab" style="flex:2"><h4>🔄 反向追溯：使用该组件的技能</h4>
+<div class="rel-cols"><span class="rel-col">技能ID</span><span class="rel-col">技能名称</span><span class="rel-col">状态</span><span class="rel-col">版本号</span><span class="rel-col">准确率</span></div>
+<div class="rel-rel">Relationship: Skill Component (反向·Source: related)</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="f-graph" class="tc">
+<div class="cd"><h3>🔗 交互式追溯关系图配置</h3>
+<p>使用ARAS Graph View功能，配置可拖拽、缩放的交互式追溯关系图，支持点击节点自动跳转。</p></div>
+<div class="form-layout">
+<div class="fl"><div class="fl-label">节点类型配置</div><div class="fl-fields">
+<div class="fld"><span class="fld-name">🎯 需求节点</span><span class="fld-type" style="background:rgba(99,102,241,.08);color:#818cf8">紫色</span></div>
+<div class="fld"><span class="fld-name">🧩 技能节点</span><span class="fld-type" style="background:rgba(6,182,212,.08);color:#06b6d4">青色</span></div>
+<div class="fld"><span class="fld-name">⚙️ 组件节点</span><span class="fld-type" style="background:rgba(16,185,129,.08);color:#10b981">绿色</span></div>
+<div class="fld"><span class="fld-name">🧪 测试节点</span><span class="fld-type" style="background:rgba(245,158,11,.08);color:#f59e0b">橙色</span></div>
+<div class="fld"><span class="fld-name">🚀 部署节点</span><span class="fld-type" style="background:rgba(236,72,153,.08);color:#ec4899">粉色</span></div>
+</div></div>
+<div class="fl"><div class="fl-label">边类型配置</div><div class="fl-fields">
+<div class="fld"><span class="fld-name">实现</span><span class="fld-type">需求→技能</span></div>
+<div class="fld"><span class="fld-name">依赖</span><span class="fld-type">技能→组件</span></div>
+<div class="fld"><span class="fld-name">关联</span><span class="fld-type">技能→测试</span></div>
+<div class="fld"><span class="fld-name">部署</span><span class="fld-type">技能→记录</span></div>
+</div></div>
+</div>
+<div class="graph-placeholder">Graph View 预览区域 · 在ARAS Form Editor中配置Embedded View组件，传入source_id和source_type参数，自动渲染追溯关系图</div>
+</div>
+</div>
+
+<!-- SQL报表 -->
+<div id="s-report" class="sec">
+<div class="st">📊 ARAS 全链路追溯报表配置</div>
+<div class="cd"><p>基于ARAS SQL Report引擎开发，支持导出PDF、Excel和Word格式。在ARAS Administration → Reports中创建（Report Type: SQL Report）。</p></div>
+<div class="report-card">
+<h4>📋 报表1：全链路追溯报表</h4>
+<div class="rp-use">用途：输入需求ID或技能ID，生成完整追溯报告，包含所有关联的Item信息。支持递归查询（WITH CTE）。</div>
+<div class="sql-wrap"><div class="sql-header"><span class="sl-lang">SQL</span><span class="sl-name">全链路追溯报表 · WITH CTE递归查询</span></div><div class="sql-body"><span class="code-kw">DECLARE</span> @SourceId <span class="code-type">nvarchar</span>(<span class="code-num">36</span>) = <span class="code-str">'@SourceId'</span>
+<span class="code-kw">DECLARE</span> @SourceType <span class="code-type">nvarchar</span>(<span class="code-num">50</span>) = <span class="code-str">'@SourceType'</span>
+
+<span class="code-kw">WITH</span> TraceCTE <span class="code-kw">AS</span> (
+  <span class="code-cmt">-- 根节点：查询指定Item</span>
+  <span class="code-kw">SELECT</span>
+    @SourceType <span class="code-kw">AS</span> ItemType, id <span class="code-kw">AS</span> ItemId,
+    <span class="code-kw">CASE</span> @SourceType
+      <span class="code-kw">WHEN</span> <span class="code-str">'Digital Employee Requirement'</span> <span class="code-kw">THEN</span> requirement_id
+      <span class="code-kw">WHEN</span> <span class="code-str">'Digital Employee Skill'</span> <span class="code-kw">THEN</span> skill_id <span class="code-kw">END</span> <span class="code-kw">AS</span> ItemKey,
+    name, status, version, <span class="code-kw">NULL</span> <span class="code-kw">AS</span> Relationship, <span class="code-kw">NULL</span> <span class="code-kw">AS</span> ParentId
+  <span class="code-kw">FROM</span> [@SourceType] <span class="code-kw">WHERE</span> id = @SourceId
+
+  <span class="code-kw">UNION ALL</span>
+  <span class="code-cmt">-- 关联技能：需求→技能</span>
+  <span class="code-kw">SELECT</span> <span class="code-str">'Digital Employee Skill'</span>, s.id, s.skill_id, s.name, s.status, s.version,
+    <span class="code-str">'实现'</span>, r.id
+  <span class="code-kw">FROM</span> [Digital Employee Requirement] r
+  <span class="code-kw">JOIN</span> [Requirement Skill] rs <span class="code-kw">ON</span> r.id = rs.source_id
+  <span class="code-kw">JOIN</span> [Digital Employee Skill] s <span class="code-kw">ON</span> rs.related_id = s.id
+  <span class="code-kw">JOIN</span> TraceCTE t <span class="code-kw">ON</span> r.id = t.ItemId
+
+  <span class="code-kw">UNION ALL</span>
+  <span class="code-cmt">-- 依赖技术组件：技能→组件</span>
+  <span class="code-kw">SELECT</span> <span class="code-str">'Atomic Technology Component'</span>, c.id, c.component_id, c.name, c.status, c.version,
+    <span class="code-str">'依赖'</span>, s.id
+  <span class="code-kw">FROM</span> [Digital Employee Skill] s
+  <span class="code-kw">JOIN</span> [Skill Component] sc <span class="code-kw">ON</span> s.id = sc.source_id
+  <span class="code-kw">JOIN</span> [Atomic Technology Component] c <span class="code-kw">ON</span> sc.related_id = c.id
+  <span class="code-kw">JOIN</span> TraceCTE t <span class="code-kw">ON</span> s.id = t.ItemId
+)
+<span class="code-kw">SELECT</span> * <span class="code-kw">FROM</span> TraceCTE</div></div>
+</div>
+<div class="report-card">
+<h4>📈 报表2：技能开发进度报表</h4>
+<div class="rp-use">用途：展示所有技能的开发进度，按优先级和状态分组，用于项目管理和进度跟踪</div>
+<div class="sql-wrap"><div class="sql-header"><span class="sl-lang">SQL</span><span class="sl-name">技能开发进度报表 · GROUP BY + STRING_AGG</span></div><div class="sql-body"><span class="code-kw">SELECT</span>
+  priority <span class="code-kw">AS</span> 优先级, status <span class="code-kw">AS</span> 状态,
+  <span class="code-kw">COUNT</span>(*) <span class="code-kw">AS</span> 数量,
+  <span class="code-kw">STRING_AGG</span>(skill_id + <span class="code-str">' - '</span> + name, <span class="code-str">'; '</span>) <span class="code-kw">AS</span> 技能列表
+<span class="code-kw">FROM</span> [Digital Employee Skill]
+<span class="code-kw">GROUP BY</span> priority, status
+<span class="code-kw">ORDER BY</span>
+  <span class="code-kw">CASE</span> priority <span class="code-kw">WHEN</span> <span class="code-str">'P0'</span> <span class="code-kw">THEN</span> <span class="code-num">1</span> <span class="code-kw">WHEN</span> <span class="code-str">'P1'</span> <span class="code-kw">THEN</span> <span class="code-num">2</span> <span class="code-kw">WHEN</span> <span class="code-str">'P2'</span> <span class="code-kw">THEN</span> <span class="code-num">3</span> <span class="code-kw">END</span>,
+  <span class="code-kw">CASE</span> status
+    <span class="code-kw">WHEN</span> <span class="code-str">'待开发'</span> <span class="code-kw">THEN</span> <span class="code-num">1</span>
+    <span class="code-kw">WHEN</span> <span class="code-str">'开发中'</span> <span class="code-kw">THEN</span> <span class="code-num">2</span>
+    <span class="code-kw">WHEN</span> <span class="code-str">'测试中'</span> <span class="code-kw">THEN</span> <span class="code-num">3</span>
+    <span class="code-kw">WHEN</span> <span class="code-str">'运行中'</span> <span class="code-kw">THEN</span> <span class="code-num">4</span>
+    <span class="code-kw">WHEN</span> <span class="code-str">'异常'</span> <span class="code-kw">THEN</span> <span class="code-num">5</span>
+  <span class="code-kw">END</span></div></div>
+</div>
+<div class="report-card">
+<h4>📉 报表3：数字员工运行状态报表</h4>
+<div class="rp-use">用途：展示所有已上线数字员工的运行状态，按准确率降序</div>
+<div class="sql-wrap"><div class="sql-header"><span class="sl-lang">SQL</span><span class="sl-name">运行状态报表 · WHERE status='运行中'</span></div><div class="sql-body"><span class="code-kw">SELECT</span>
+  skill_id <span class="code-kw">AS</span> 技能ID, name <span class="code-kw">AS</span> 技能名称,
+  version <span class="code-kw">AS</span> 版本号, status <span class="code-kw">AS</span> 状态,
+  accuracy <span class="code-kw">AS</span> 运行准确率(%), call_count <span class="code-kw">AS</span> 累计调用次数,
+  average_response_time <span class="code-kw">AS</span> 平均响应时间(ms), actual_online_date <span class="code-kw">AS</span> 上线时间
+<span class="code-kw">FROM</span> [Digital Employee Skill]
+<span class="code-kw">WHERE</span> status = <span class="code-str">'运行中'</span>
+<span class="code-kw">ORDER BY</span> accuracy <span class="code-kw">DESC</span></div></div>
+</div>
+<div class="report-card">
+<h4>✅ 报表4：合规审计报表</h4>
+<div class="rp-use">用途：生成开发过程合规审计报告，验证所有环节是否完整（测试通过率≥95%、部署记录完整）</div>
+<div class="sql-wrap"><div class="sql-header"><span class="sl-lang">SQL</span><span class="sl-name">合规审计报表 · JOIN多表聚合</span></div><div class="sql-body"><span class="code-kw">SELECT</span>
+  r.requirement_id <span class="code-kw">AS</span> 需求ID, r.name <span class="code-kw">AS</span> 需求名称,
+  s.skill_id <span class="code-kw">AS</span> 技能ID, s.name <span class="code-kw">AS</span> 技能名称, s.version <span class="code-kw">AS</span> 版本号,
+  s.actual_online_date <span class="code-kw">AS</span> 上线时间,
+  <span class="code-kw">COUNT</span>(tc.id) <span class="code-kw">AS</span> 测试用例总数,
+  <span class="code-kw">SUM</span>(<span class="code-kw">CASE</span> <span class="code-kw">WHEN</span> tc.last_execution_result = <span class="code-str">'通过'</span> <span class="code-kw">THEN</span> <span class="code-num">1</span> <span class="code-kw">ELSE</span> <span class="code-num">0</span> <span class="code-kw">END</span>) <span class="code-kw">AS</span> 通过用例数,
+  <span class="code-kw">COUNT</span>(d.id) <span class="code-kw">AS</span> 部署次数
+<span class="code-kw">FROM</span> [Digital Employee Requirement] r
+<span class="code-kw">JOIN</span> [Requirement Skill] rs <span class="code-kw">ON</span> r.id = rs.source_id
+<span class="code-kw">JOIN</span> [Digital Employee Skill] s <span class="code-kw">ON</span> rs.related_id = s.id
+<span class="code-kw">LEFT JOIN</span> [Skill Test Case] stc <span class="code-kw">ON</span> s.id = stc.source_id
+<span class="code-kw">LEFT JOIN</span> [Test Case] tc <span class="code-kw">ON</span> stc.related_id = tc.id
+<span class="code-kw">LEFT JOIN</span> [Skill Deployment] sd <span class="code-kw">ON</span> s.id = sd.source_id
+<span class="code-kw">LEFT JOIN</span> [Deployment Record] d <span class="code-kw">ON</span> sd.related_id = d.id
+<span class="code-kw">WHERE</span> s.status = <span class="code-str">'运行中'</span>
+<span class="code-kw">GROUP BY</span> r.requirement_id, r.name, s.skill_id, s.name, s.version, s.actual_online_date</div></div>
+</div>
+</div>
+
+<!-- 数据同步 -->
+<div id="s-sync" class="sec">
+<div class="st">🔄 数字员工运行数据自动同步脚本</div>
+<div class="cd"><p>Python脚本每5分钟自动同步运行数据到ARAS PLM，确保ARAS中的数据始终保持最新。部署在数字员工平台服务器上。</p></div>
+<div class="cfg-grid">
+<div class="cfg-item"><div class="ci-key">ARAS_URL</div><div class="ci-val">PLM服务器地址</div></div>
+<div class="cfg-item"><div class="ci-key">PLATFORM_API_URL</div><div class="ci-val">数字员工平台API</div></div>
+<div class="cfg-item"><div class="ci-key">同步周期</div><div class="ci-val">300秒 (5分钟)</div></div>
+<div class="cfg-item"><div class="ci-key">告警阈值</div><div class="ci-val">准确率 &lt; 95%</div></div>
+</div>
+<div class="cd"><h3>🐍 核心Python同步脚本（sync_runtime_data.py）</h3>
+<p>通过REST API获取平台运行数据，更新到ARAS DigitalEmployeeSkill Item，包含异常告警功能。</p>
+<div class="py-wrap"><div class="py-header"><span class="pl-lang">PY</span><span class="pl-name">sync_runtime_data.py · 主同步循环</span></div><div class="py-body"><span class="py-imp">import</span> requests, json, time, logging
+<span class="py-imp">from</span> datetime <span class="py-imp">import</span> datetime
+
+<span class="py-cmt"># 配置日志</span>
+logging.basicConfig(level=logging.INFO, format=<span class="py-str">'%(asctime)s - %(levelname)s - %(message)s'</span>)
+
+<span class="py-cmt"># 配置信息</span>
+ARAS_URL = <span class="py-str">"https://scsai-plm.yourcompany.com/innovator"</span>
+PLATFORM_API_URL = <span class="py-str">"https://digital-employee.yourcompany.com/api/v1"</span>
+WEBHOOK_URL = <span class="py-str">"your-webhook-url"</span>  <span class="py-cmt"># 企业微信/飞书</span>
+
+<span class="py-kw">def</span> <span class="py-fn">get_aras_auth</span>():
+    <span class="py-cmt"># ... 生成Basic Auth头(base64)</span>
+    auth_str = <span class="py-str">f"{ARAS_USERNAME}:{ARAS_PASSWORD}"</span>
+    <span class="py-kw">return</span> base64.b64encode(auth_str.encode()).decode()
+
+<span class="py-kw">def</span> <span class="py-fn">get_running_skills</span>():
+    resp = requests.<span class="py-fn">get</span>(<span class="py-str">f"{PLATFORM_API_URL}/skills?status=running"</span>,
+        headers={<span class="py-str">"Authorization"</span>: <span class="py-str">f"Bearer {PLATFORM_API_TOKEN}"</span>})
+    <span class="py-kw">return</span> resp.json()
+
+<span class="py-kw">def</span> <span class="py-fn">update_aras_skill</span>(skill_id, runtime_data):
+    auth = <span class="py-fn">get_aras_auth</span>()
+    <span class="py-cmt"># 1. 查询ARAS Item ID</span>
+    q = requests.<span class="py-fn">get</span>(<span class="py-str">f"{ARAS_URL}/server/odata/DigitalEmployeeSkill?$filter=skill_id eq '{skill_id}'"</span>,
+        headers={<span class="py-str">"Authorization"</span>: <span class="py-str">f"Basic {auth}"</span>, <span class="py-str">"Accept"</span>: <span class="py-str">"application/json"</span>})
+    item_id = q.json()[<span class="py-str">"value"</span>][<span class="py-num">0</span>][<span class="py-str">"id"</span>]
+    <span class="py-cmt"># 2. 更新运行数据</span>
+    requests.<span class="py-fn">patch</span>(<span class="py-str">f"{ARAS_URL}/server/odata/DigitalEmployeeSkill('{item_id}')"</span>,
+        headers={<span class="py-str">"Authorization"</span>: <span class="py-str">f"Basic {auth}"</span>, <span class="py-str">"Content-Type"</span>: <span class="py-str">"application/json"</span>},
+        json={<span class="py-str">"accuracy"</span>: runtime_data[<span class="py-str">"accuracy"</span>], <span class="py-str">"call_count"</span>: runtime_data[<span class="py-str">"call_count"</span>]})
+    logging.info(<span class="py-str">f"同步成功: {skill_id}"</span>)
+
+<span class="py-kw">def</span> <span class="py-fn">send_alert</span>(message):
+    requests.<span class="py-fn">post</span>(WEBHOOK_URL, json={
+        <span class="py-str">"msgtype"</span>: <span class="py-str">"text"</span>,
+        <span class="py-str">"text"</span>: {<span class="py-str">"content"</span>: <span class="py-str">f"【告警】{message}\n{datetime.now()}"</span>}})
+
+<span class="py-kw">if</span> __name__ == <span class="py-str">"__main__"</span>:
+    <span class="py-kw">while</span> <span class="py-py-deco">True</span>:
+        <span class="py-kw">for</span> skill <span class="py-kw">in</span> <span class="py-fn">get_running_skills</span>():
+            <span class="py-kw">if</span> skill[<span class="py-str">"accuracy"</span>] &lt; <span class="py-num">95</span>:
+                <span class="py-fn">send_alert</span>(<span class="py-str">f"准确率低于阈值: {skill['skill_id']}"</span>)
+            <span class="py-fn">update_aras_skill</span>(skill[<span class="py-str">"skill_id"</span>], skill)
+        time.<span class="py-fn">sleep</span>(<span class="py-num">300</span>)</div></div>
+</div>
+<div class="cd" style="margin-top:14px"><h3>⚙️ 部署配置（systemd服务）</h3>
+<div class="ini-wrap"><div class="ini-header"><span class="il-lang">INI</span><span class="il-name">/etc/systemd/system/aras-runtime-sync.service</span></div><div class="ini-body">[Unit]
+Description=ARAS Runtime Data Sync
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/digital-employee
+ExecStart=/usr/bin/python3 /opt/digital-employee/sync_runtime_data.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target</div></div>
+<div class="alert-box"><strong>部署步骤</strong>：1. pip install requests → 2. 创建systemd服务文件 → 3. systemctl daemon-reload → 4. systemctl enable aras-runtime-sync → 5. systemctl start aras-runtime-sync → 6. journalctl -u aras-runtime-sync -f 查看日志</div>
+</div>
+</div>
+
+<!-- 最终效果 -->
+<div id="s-result" class="sec">
+<div class="st">✨ 最终效果展示</div>
+<div class="cd"><p>完成以上配置后，在ARAS PLM中获得的一站式全链路追溯与运行监控能力：</p></div>
+<div class="eff-grid">
+<div class="eff-card"><div class="ei">🔗</div><div class="et">一站式追溯入口</div><div class="ed">在任意需求/技能详情页，一键查看完整全链路追溯关系，点击节点跳转</div></div>
+<div class="eff-card"><div class="ei">📡</div><div class="et">实时运行监控</div><div class="ed">ARAS中实时显示数字员工的准确率、调用次数和响应时间（每5分钟同步）</div></div>
+<div class="eff-card"><div class="ei">🤖</div><div class="et">自动化项目管理</div><div class="ed">技能状态自动更新（运行中/异常），无需人工维护项目进度</div></div>
+<div class="eff-card"><div class="ei">📊</div><div class="et">一键生成报表</div><div class="ed">随时导出全链路追溯报告、进度报告和合规审计报告（PDF/Excel/Word）</div></div>
+<div class="eff-card"><div class="ei">🔄</div><div class="et">端到端闭环</div><div class="ed">从工业需求提出→开发→测试→部署→运行优化，所有过程在ARAS中完成</div></div>
+<div class="eff-card"><div class="ei">✅</div><div class="et">天然合规</div><div class="ed">所有开发和部署过程符合ARAS配置管理和变更管理体系，自动满足制造业合规</div></div>
+</div>
+</div>
+
+</div><!-- /ct -->
+
+<div class="ft">苏州"AI+制造"数字员工平台 · ARAS PLM全链路追溯完整方案 · 2026-05-13</div>
+
+<script>
+function show(id){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.nb button').forEach(b=>b.classList.remove('on'));
+  document.getElementById('s-'+id).classList.add('on');
+  event.target.classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function tab(prefix,id){
+  var sec = event.target.closest('.sec');
+  sec.querySelectorAll('.tb button').forEach(b=>b.classList.remove('on'));
+  sec.querySelectorAll('.tc').forEach(t=>t.classList.remove('on'));
+  event.target.classList.add('on');
+  document.getElementById(prefix+'-'+id).classList.add('on');
+}
+</script>
+</body>
+</html>
