@@ -1,0 +1,69 @@
+<include file="./head_inner"/>
+
+<div class="second">
+	<div class="width-block">
+		<div class="second-left">
+			<div class="left-list">
+				<div class="second-treemenu">
+					<div class="title"><h3><a href="/index.php?s=/member/main.html">用户中心</a></h3></div>
+					<div class="treemenu">
+						<ul id='suckertree1'>
+							<volist name='member_menu' id='vo'>
+							<li><span class="arrow"></span><span class="file"><a href="__ROOT__{$vo.url}" target="_self">{$vo.name}</a></span>
+							<!--判定是否有子类-->
+							</li>
+							</volist>
+						</ul>
+					</div>
+				</div>
+
+			</div>
+
+</div>
+<div class="second-right">
+	<div class="joint"><span>你的位置：{$nav}修改密码</span></div>
+
+			<div class="pusl-list">
+				<div class="bule"></div>
+			
+<form class="form-horizontal" role="form" method="post" action="">
+  <div class="form-group">
+    <label for="inputEmail3" class="col-sm-2 control-label">用户名</label>
+    <div class="col-sm-10">
+     {$_SESSION.cms_username}
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">原密码</label>
+    <div class="col-sm-10">
+      <input type="password" class="form-control" id="oldpwd" name="oldpwd" value="" placeholder="您的旧密码">
+    </div>
+  </div>
+    <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">新密码</label>
+    <div class="col-sm-10">
+      <input type="password" class="form-control" id="newpwd" name="newpwd" value="{$info.tel}" placeholder="您的新密码">
+    </div>
+  </div>
+  
+  
+    <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">确认密码</label>
+    
+    <div class="col-sm-10">
+      <input type="password" class="form-control" name="newpwd2" id="newpwd2" placeholder="再次输入您的新密码">
+    </div>
+  </div>
+   
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-success">确定修改</button>
+    </div>
+  </div>
+</form>
+			
+			</div>
+		</div>
+</div>
+</div>
+<include file="$footer"/>

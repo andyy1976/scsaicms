@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCSAI数字员工平台 - 全链路追溯功能操作手册 DOC-004</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", sans-serif; background: #0d1117; color: #c9d1d9; line-height: 1.6; }
+        
+        /* 导航栏 */
+        .navbar { background: #161b22; border-bottom: 1px solid #30363d; position: sticky; top: 0; z-index: 100; }
+        .nav-content { max-width: 1400px; margin: 0 auto; padding: 12px 24px; display: flex; gap: 8px; flex-wrap: wrap; }
+        .nav-item { color: #8b949e; text-decoration: none; padding: 8px 16px; border-radius: 6px; font-size: 14px; transition: all 0.2s; }
+        .nav-item:hover { background: #21262d; color: #58a6ff; }
+        .nav-item.active { background: #21262d; color: #58a6ff; }
+        
+        /* 容器 */
+        .container { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
+        
+        /* 标题 */
+        h1 { font-size: 36px; color: #58a6ff; margin-bottom: 8px; }
+        h2 { font-size: 28px; color: #58a6ff; margin: 48px 0 24px; padding-bottom: 12px; border-bottom: 1px solid #30363d; }
+        h3 { font-size: 20px; color: #58a6ff; margin: 32px 0 16px; }
+        h4 { font-size: 16px; color: #c9d1d9; margin: 24px 0 12px; }
+        
+        /* 段落 */
+        p { margin-bottom: 16px; color: #c9d1d9; }
+        
+        /* 列表 */
+        ul, ol { margin: 16px 0 16px 24px; }
+        li { margin-bottom: 8px; color: #c9d1d9; }
+        
+        /* 代码块 */
+        code { background: #21262d; padding: 2px 8px; border-radius: 4px; font-family: "Consolas", monospace; color: #f0883e; }
+        pre { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 16px; overflow-x: auto; margin: 16px 0; }
+        pre code { background: none; padding: 0; color: #c9d1d9; }
+        
+        /* 卡片 */
+        .card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin: 24px 0; }
+        
+        /* 角色卡片 */
+        .role-card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 24px; transition: transform 0.2s, box-shadow 0.2s; }
+        .role-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(88, 166, 255, 0.15); border-color: #58a6ff; }
+        .role-icon { font-size: 48px; margin-bottom: 16px; }
+        .role-name { font-size: 20px; color: #58a6ff; margin-bottom: 12px; font-weight: 600; }
+        .role-desc { font-size: 14px; color: #8b949e; margin-bottom: 16px; }
+        .role-list { list-style: none; margin: 0; padding: 0; }
+        .role-list li { padding: 8px 0; border-bottom: 1px solid #21262d; font-size: 14px; color: #c9d1d9; display: flex; align-items: center; gap: 8px; }
+        .role-list li:last-child { border-bottom: none; }
+        .role-list li::before { content: "▸"; color: #58a6ff; }
+        
+        /* FAQ 折叠面板 */
+        .faq-item { background: #161b22; border: 1px solid #30363d; border-radius: 8px; margin-bottom: 12px; overflow: hidden; }
+        .faq-question { padding: 16px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: #c9d1d9; font-weight: 500; transition: background 0.2s; }
+        .faq-question:hover { background: #21262d; }
+        .faq-question::after { content: "▼"; font-size: 12px; color: #58a6ff; transition: transform 0.3s; }
+        .faq-item.active .faq-question::after { transform: rotate(180deg); }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+        .faq-item.active .faq-answer { max-height: 500px; }
+        .faq-content { padding: 0 20px 20px; color: #8b949e; font-size: 14px; line-height: 1.8; }
+        
+        /* 表格 */
+        .table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+        .table th, .table td { padding: 12px 16px; text-align: left; border: 1px solid #30363d; }
+        .table th { background: #21262d; color: #58a6ff; font-weight: 600; }
+        .table td { background: #161b22; }
+        
+        /* 步骤 */
+        .step { display: flex; gap: 16px; margin: 24px 0; }
+        .step-num { background: #58a6ff; color: #0d1117; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; }
+        .step-content { flex: 1; }
+        .step-title { font-weight: 600; color: #c9d1d9; margin-bottom: 8px; }
+        
+        /* 提示框 */
+        .tip { background: rgba(88, 166, 255, 0.1); border-left: 4px solid #58a6ff; padding: 16px; margin: 16px 0; border-radius: 0 8px 8px 0; }
+        .warning { background: rgba(210, 153, 34, 0.1); border-left: 4px solid #d29922; padding: 16px; margin: 16px 0; border-radius: 0 8px 8px 0; }
+        
+        /* 底部 */
+        .footer { background: #161b22; border-top: 1px solid #30363d; padding: 24px; text-align: center; color: #8b949e; font-size: 14px; margin-top: 48px; }
+        .footer span { margin: 0 12px; }
+        
+        /* 手册封面 */
+        .hero { text-align: center; padding: 48px 0; border-bottom: 1px solid #30363d; margin-bottom: 48px; }
+        .hero-badge { display: inline-block; background: #21262d; color: #58a6ff; padding: 6px 16px; border-radius: 20px; font-size: 14px; margin-bottom: 24px; }
+        .hero-subtitle { font-size: 18px; color: #8b949e; margin-top: 16px; }
+        
+        /* 目录 */
+        .toc { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 24px; margin-bottom: 32px; }
+        .toc-title { font-size: 18px; color: #58a6ff; margin-bottom: 16px; font-weight: 600; }
+        .toc-link { display: block; padding: 8px 0; color: #c9d1d9; text-decoration: none; border-bottom: 1px solid #21262d; transition: color 0.2s; }
+        .toc-link:hover { color: #58a6ff; }
+        
+        /* 功能模块 */
+        .module { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 24px; margin: 24px 0; }
+        .module-header { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+        .module-icon { width: 48px; height: 48px; background: #21262d; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+        .module-title { font-size: 20px; color: #c9d1d9; font-weight: 600; }
+        
+        /* 链接 */
+        a { color: #58a6ff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="suzhou-ai-digital-employee-topic.html" class="nav-item">专题首页</a>
+            <a href="#" class="nav-item">白皮书</a>
+            <a href="#" class="nav-item">追溯表</a>
+            <a href="#" class="nav-item">ARAS方案</a>
+            <a href="#" class="nav-item active">操作手册</a>
+            <a href="#" class="nav-item">流水线</a>
+            <a href="#" class="nav-item">异常处理</a>
+            <a href="#" class="nav-item">苏州落地</a>
+            <a href="#" class="nav-item">路演脚本</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- 封面 -->
+        <div class="hero">
+            <div class="hero-badge">DOC-004</div>
+            <h1>全链路追溯功能操作手册</h1>
+            <p class="hero-subtitle">SCSAI数字员工平台 · 全链路追踪与智能追溯中心</p>
+        </div>
+
+        <!-- 目录 -->
+        <div class="toc">
+            <div class="toc-title">📑 内容目录</div>
+            <a href="#section1" class="toc-link">1. 手册概述</a>
+            <a href="#section2" class="toc-link">2. 系统登录与主界面</a>
+            <a href="#section3" class="toc-link">3. 需求管理模块</a>
+            <a href="#section4" class="toc-link">4. 技能开发模块</a>
+            <a href="#section5" class="toc-link">5. 测试管理模块</a>
+            <a href="#section6" class="toc-link">6. 部署运维模块</a>
+            <a href="#section7" class="toc-link">7. 追溯中心模块</a>
+            <a href="#section8" class="toc-link">8. 不同角色操作指南</a>
+            <a href="#section9" class="toc-link">9. 常见问题与解决方案</a>
+        </div>
+
+        <!-- 第一章：手册概述 -->
+        <section id="section1">
+            <h2>1. 手册概述</h2>
+            <p>本手册是SCSAI数字员工平台全链路追溯功能的完整操作指南，旨在帮助用户全面掌握从需求提出到技能部署的全流程追溯能力。全链路追溯是平台的核心功能之一，它实现了需求→开发→测试→部署→运行→优化的完整闭环追踪，使每一个业务需求都可以快速定位到对应的代码实现、测试用例、部署版本和运行日志。</p>
+            
+            <h3>1.1 全链路追溯的核心价值</h3>
+            <ul>
+                <li><strong>端到端追踪</strong>：从需求提出到技能上线，全流程可追溯、可审计</li>
+                <li><strong>问题快速定位</strong>：当线上出现问题时，可快速定位到具体的代码变更、配置修改或测试遗漏</li>
+                <li><strong>知识图谱关联</strong>：自动建立需求、代码、测试、部署之间的关联关系，形成知识网络</li>
+                <li><strong>合规审计支持</strong>：满足金融级合规要求，提供完整的操作审计记录</li>
+            </ul>
+
+            <h3>1.2 追溯链条说明</h3>
+            <div class="module">
+                <div class="module-header">
+                    <div class="module-icon">🔗</div>
+                    <div class="module-title">全链路追溯链</div>
+                </div>
+                <pre>需求ID → 需求拆解 → 技能设计 → 代码实现 → 测试用例 → 部署版本 → 运行实例 → 运行日志 → 优化反馈</pre>
+                <p style="margin-top: 16px;">每一个环节都通过唯一的追溯ID进行关联，形成完整的追踪链条。任意环节出现问题，都可以通过追溯链向上下游追溯问题根因。</p>
+            </div>
+        </section>
+
+        <!-- 第二章：系统登录与主界面 -->
+        <section id="section2">
+            <h2>2. 系统登录与主界面</h2>
+            
+            <h3>2.1 登录步骤</h3>
+            <div class="step">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                    <div class="step-title">打开登录页面</div>
+                    <p>在浏览器中访问平台地址：<code>https://scsai.example.com</code></p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                    <div class="step-title">输入账号密码</div>
+                    <p>使用分配的工号和密码登录，首次登录需绑定企业微信或手机号</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                    <div class="step-title">完成认证</div>
+                    <p>根据配置的单点登录方式完成认证（企业微信扫码/短信验证码/密钥器）</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">4</div>
+                <div class="step-content">
+                    <div class="step-title">进入工作台</div>
+                    <p>认证成功后自动跳转到个人工作台</p>
+                </div>
+            </div>
+
+            <h3>2.2 主界面介绍</h3>
+            <p>登录成功后进入主界面，分为以下几个区域：</p>
+            <ul>
+                <li><strong>顶部导航栏</strong>：包含工作台、需求中心、技能市场、追溯中心、部署管理、个人中心等模块入口</li>
+                <li><strong>左侧菜单</strong>：根据用户角色动态显示可访问的功能菜单</li>
+                <li><strong>主工作区</strong>：显示当前选中模块的核心内容</li>
+                <li><strong>右侧详情面板</strong>：用于显示选中项的详细信息或操作面板</li>
+            </ul>
+
+            <h3>2.3 工作台使用指南</h3>
+            <div class="module">
+                <div class="module-header">
+                    <div class="module-icon">📊</div>
+                    <div class="module-title">个人工作台</div>
+                </div>
+                <p>工作台是个人的工作 dashboard，包含以下核心模块：</p>
+                <ul>
+                    <li><strong>我的待办</strong>：显示需要处理的需求、待审批事项、待修复缺陷</li>
+                    <li><strong>我的在进行</strong>：显示当前正在进行的工作项及进度</li>
+                    <li><strong>我的完成</strong>：显示已完成的工作项统计</li>
+                    <li><strong>团队动态</strong>：显示团队成员的最新操作</li>
+                    <li><strong>快捷操作</strong>：常用功能的一键入口</li>
+                </ul>
+            </div>
+            <div class="tip">
+                <strong>💡 提示：</strong>工作台支持自定义布局，点击右上角「定制工作台」可调整模块位置和显示内容。
+            </div>
+        </section>
+
+        <!-- 第三章：需求管理模块 -->
+        <section id="section3">
+            <h2>3. 需求管理模块</h2>
+            
+            <h3>3.1 提交需求</h3>
+            <p>点击「需求中心」→「新建需求」，填写需求表单：</p>
+            <table class="table">
+                <tr><th>字段</th><th>说明</th><th>必填</th></tr>
+                <tr><td>需求标题</td><td>简要描述需求内容</td><td>是</td></tr>
+                <tr><td>需求描述</td><td>详细说明业务背景、目标、约束条件</td><td>是</td></tr>
+                <tr><td>需求来源</td><td>客户反馈/市场调研/竞品分析/内部优化</td><td>是</td></tr>
+                <tr><td>优先级</td><td>P0/P1/P2/P3（P0最高）</td><td>是</td></tr>
+                <tr><td>期望上线时间</td><td>期望完成日期</td><td>否</td></tr>
+                <tr><td>关联需求</td><td>关联的其他需求ID</td><td>否</td></tr>
+                <tr><td>附件</td><td>需求相关文档、原型、截图</td><td>否</td></tr>
+            </table>
+            <div class="tip">
+                <strong>💡 提示：</strong>提交需求时会自动生成唯一的需求ID（如 REQ-2026-00123），该ID在整个追溯链中使用。
+            </div>
+
+            <h3>3.2 查看需求</h3>
+            <p>在需求列表页面，可以按以下方式筛选和查看需求：</p>
+            <ul>
+                <li><strong>全部需求</strong>：查看所有提交的需求</li>
+                <li><strong>我的需求</strong>：查看我提交的需求</li>
+                <li><strong>待处理</strong>：查看待产品经理确认的需求</li>
+                <li><strong>已通过</strong>：查看已通过评审的需求</li>
+                <li><strong>已驳回</strong>：查看被驳回的需求及原因</li>
+            </ul>
+
+            <h3>3.3 需求追溯</h3>
+            <div class="module">
+                <div class="module-header">
+                    <div class="module-icon">🔍</div>
+                    <div class="module-title">需求追溯功能</div>
+                </div>
+                <p>点击任意需求进入详情页，可查看「追溯」tab页，展示该需求的完整追溯链：</p>
+                <ul>
+                    <li><strong>需求信息</strong>：需求的基本信息和状态变更历史</li>
+                    <li><strong>拆解记录</strong>：产品经理拆解的子需求列表</li>
+                    <li><strong>技能关联</strong>：该需求关联的技能及其状态</li>
+                    <li><strong>测试用例</strong>：关联的测试用例及执行结果</li>
+                    <li><strong>部署记录</strong>：该需求的部署历史</li>
+                    <li><strong>运行日志</strong>：上线后的运行日志摘要</li>
+                </ul>
+            </div>
+            <div class="warning">
+                <strong>⚠️ 注意：</strong>需求一旦开始开发，请勿直接修改需求内容，应通过「需求变更」流程进行更新，以便保留变更历史。
+            </div>
+        </section>
+
+        <!-- 第四章：技能开发模块 -->
+        <section id="section4">
+            <h2>4. 技能开发模块</h2>
+            
+            <h3>4.1 创建技能</h3>
+            <p>点击「技能开发」→「新建技能」：</p>
+            <div class="step">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                    <div class="step-title">填写基本信息</div>
+                    <p>技能名称、技能描述、所属分类、技能图标</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                    <div class="step-title">关联需求</div>
+                    <p>选择该技能对应的需求ID（可多选）</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                    <div class="step-title">选择开发方式</div>
+                    <p>可视化编排 / 代码开发 / 混合模式</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">4</div>
+                <div class="step-content">
+                    <div class="step-title">配置技能参数</div>
+                    <p>输入参数、输出参数、配置项、环境变量</p>
+                </div>
+            </div>
+
+            <h3>4.2 可视化编排</h3>
+            <p>使用可视化编排器，通过拖拽节点的方式构建技能逻辑：</p>
+            <ul>
+                <li><strong>输入节点</strong>：配置技能触发方式和输入参数</li>
+                <li><strong>处理节点</strong>：LLM调用、数据处理、条件分支、循环等</li>
+                <li><strong>输出节点</strong>：配置技能返回结果</li>
+                <li><strong>工具节点</strong>：集成外部API、数据库查询、文件处理等</li>
+            </ul>
+            <div class="tip">
+                <strong>💡 提示：</strong>可视化编排支持实时预览和测试，可以在编排过程中随时点击「测试运行」验证逻辑。
+            </div>
+
+            <h3>4.3 代码管理</h3>
+            <p>点击「代码编辑」进入代码开发界面：</p>
+            <ul>
+                <li><strong>在线IDE</strong>：基于 VS Code 的在线代码编辑器</li>
+                <li><strong>代码仓库</strong>：每个技能对应一个 Git 仓库</li>
+                <li><strong>版本管理</strong>：Git 版本控制，支持分支和标签</li>
+                <li><strong>代码审查</strong>：提交 PR 后需经过 Code Review 才能合并</li>
+            </ul>
+
+            <h3>4.4 版本管理</h3>
+            <div class="module">
+                <div class="module-header">
+                    <div class="module-icon">📚</div>
+                    <div class="module-title">版本管理规范</div>
+                </div>
+                <ul>
+                    <li><strong>版本号格式</strong>：主版本.次版本.修订号（如 v1.2.3）</li>
+                    <li><strong>主版本变更</strong>：不兼容的 API 变更</li>
+                    <li><strong>次版本变更</strong>：向后兼容的功能新增</li>
+                    <li><strong>修订号变更</strong>：向后兼容的问题修复</li>
+                    <li><strong>每个版本</strong>：对应唯一的代码快照，可随时回滚</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 第五章：测试管理模块 -->
+        <section id="section5">
+            <h2>5. 测试管理模块</h2>
+            
+            <h3>5.1 测试用例设计</h3>
+            <p>点击「测试管理」→「新建测试用例」：</p>
+            <table class="table">
+                <tr><th>字段</th><th>说明</th></tr>
+                <tr><td>用例名称</td><td>描述测试用例的目的</td></tr>
+                <tr><td>关联技能</td><td>选择被测试的技能</td></tr>
+                <tr><td>前置条件</td><td>执行测试前的准备条件</td></tr>
+                <tr><td>输入数据</td><td>测试输入参数</td></tr>
+                <tr><td>预期输出</td><td>期望的返回结果</td></tr>
+                <tr><td>测试类型</td><td>单元测试/集成测试/端到端测试</td></tr>
+            </table>
+
+            <h3>5.2 自动化测试</h3>
+            <p>平台提供自动化测试能力：</p>
+            <ul>
+                <li><strong>定时执行</strong>：配置 cron 表达式，自动执行测试</li>
+                <li><strong>触发执行</strong>：代码提交时自动触发测试</li>
+                <li><strong>部署前测试</strong>：部署前自动执行核心测试用例</li>
+                <li><strong>测试报告</strong>：自动生成测试报告，统计通过率</li>
+            </ul>
+            <div class="tip">
+                <strong>💡 提示：</strong>建议将测试用例覆盖率作为技能上线的门槛指标，建议核心功能测试覆盖率≥90%。
+            </div>
+
+            <h3>5.3 缺陷管理</h3>
+            <p>在测试过程中发现的缺陷会自动记录到缺陷列表：</p>
+            <ul>
+                <li><strong>缺陷等级</strong>：P0（ blocker）/P1（critical）/P2（major）/P3（minor）</li>
+                <li><strong>缺陷状态</strong>：新建/已确认/进行中/已修复/已验证/已关闭</li>
+                <li><strong>追溯关联</strong>：缺陷可追溯到对应的需求、技能、测试用例</li>
+                <li><strong>回归测试</strong>：修复后自动关联原测试用例进行验证</li>
+            </ul>
+        </section>
+
+        <!-- 第六章：部署运维模块 -->
+        <section id="section6">
+            <h2>6. 部署运维模块</h2>
+            
+            <h3>6.1 一键部署</h3>
+            <p>当代码通过测试后，可发起部署申请：</p>
+            <div class="step">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                    <div class="step-title">选择部署版本</div>
+                    <p>从版本列表选择需要部署的版本</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                    <div class="step-title">选择环境</div>
+                    <p>测试环境 / 预发布环境 / 生产环境</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                    <div class="step-title">配置部署参数</div>
+                    <p>副本数、资源配置、流量比例</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">4</div>
+                <div class="step-content">
+                    <div class="step-title">提交部署</div>
+                    <p>审批通过后自动执行部署</p>
+                </div>
+            </div>
+
+            <h3>6.2 运行监控</h3>
+            <p>部署完成后，在「运维管理」→「运行监控」查看：</p>
+            <ul>
+                <li><strong>服务状态</strong>：运行实例数、健康状态、资源使用</li>
+                <li><strong>调用统计</strong>：QPS、响应时间、错误率</li>
+                <li><strong>资源监控</strong>：CPU、内存、磁盘、网络</li>
+                <li><strong>指标趋势</strong>：关键指标的时序图表</li>
+            </ul>
+
+            <h3>6.3 异常告警</h3>
+            <div class="module">
+                <div class="module-header">
+                    <div class="module-icon">⚡</div>
+                    <div class="module-title">告警规则配置</div>
+                </div>
+                <ul>
+                    <li><strong>告警类型</strong>：错误率阈值、响应超时、资源不足、部署失败</li>
+                    <li><strong>告警级别</strong>：P0（电话）/P1（短信）/P2（邮件）/P3（站内消息）</li>
+                    <li><strong>通知人员</strong>：可配置多个接收人</li>
+                    <li><strong>告警收敛</strong>：相同告警在设定时间内不重复发送</li>
+                </ul>
+            </div>
+
+            <h3>6.4 日志查询</h3>
+            <p>点击「运维管理」→「日志查询」：</p>
+            <ul>
+                <li><strong>按技能筛选</strong>：选择特定技能查看日志</li>
+                <li><strong>按时间筛选</strong>：自定义时间范围</li>
+                <li><strong>日志级别</strong>：DEBUG/INFO/WARN/ERROR</li>
+                <li><strong>关键字搜索</strong>：支持正则表达式搜索</li>
+                <li><strong>日志导出</strong>：支持导出到文件</li>
+            </ul>
+            <div class="warning">
+                <strong>⚠️ 注意：</strong>生产环境日志默认保留 7 天，如需更长时间保留，请提前申请日志存储扩容。
+            </div>
+        </section>
+
+        <!-- 第七章：追溯中心模块 -->
+        <section id="section7">
+            <h2>7. 追溯中心模块</h2>
+            
+            <h3>7.1 全链路追溯查询</h3>
+            <p>点击「追溯中心」进入追溯主界面：</p>
+            <ul>
+                <li><strong>按需求追溯</strong>：输入需求ID，查看完整的追溯链</li>
+                <li><strong>按技能追溯</strong>：输入技能ID，查看关联的需求、测试、部署</li>
+                <li><strong>按时间追溯</strong>：查看某时间段内的所有变更</li>
+                <li><strong>按人员追溯</strong>：查看某人员经手的所有工作项</li>
+            </ul>
+
+            <h3>7.2 问题快速定位</h3>
+            <div class="module">
+                <div class="module-header">
+                    <div class="module-icon">🎯</div>
+                    <div class="module-title">问题定位流程</div>
+                </div>
+                <ol>
+                    <li>在追溯中心输入异常现象或错误码</li>
+                    <li>系统自动搜索匹配的运行日志</li>
+                    <li>展示日志关联的技能、版本、部署记录</li>
+                    <li>一键跳转到对应的代码位置</li>
+                    <li>生成问题分析报告，可分享给相关人员</li>
+                </ol>
+            </div>
+            <div class="tip">
+                <strong>💡 提示：</strong>问题定位时，系统会自动关联相似历史问题，帮助快速找到解决方案。
+            </div>
+
+            <h3>7.3 知识图谱</h3>
+            <p>知识图谱展示了需求、技能、测试、部署之间��关��网络：</p>
+            <ul>
+                <li><strong>节点类型</strong>：需求、技能、代码、测试、部署、告警</li>
+                <li><strong>关系类型</strong>：实现、依赖、测试、触发、修复</li>
+                <li><strong>可视化展示</strong>：交互式图谱，支持缩放和点击</li>
+                <li><strong>影响分析</strong>：变更某个节点时，自动分析影响范围</li>
+            </ul>
+        </section>
+
+        <!-- 第八章：不同角色操作指南 -->
+        <section id="section8">
+            <h2>8. 不同角色操作指南</h2>
+            
+            <div class="card-grid">
+                <!-- 产品经理 -->
+                <div class="role-card">
+                    <div class="role-icon">📋</div>
+                    <div class="role-name">产品经理</div>
+                    <div class="role-desc">负责需求规划、拆解和优先级排序</div>
+                    <ul class="role-list">
+                        <li>提交新需求并描述业务背景</li>
+                        <li>拆解需求为可执行的子需求</li>
+                        <li>确定需求优先级和排期</li>
+                        <li>评审技能设计方案</li>
+                        <li>验收技能功能和业务效果</li>
+                    </ul>
+                </div>
+
+                <!-- 算法工程师 -->
+                <div class="role-card">
+                    <div class="role-icon">🧠</div>
+                    <div class="role-name">算法工程师</div>
+                    <div class="role-desc">负责AI模型设计、训练和优化</div>
+                    <ul class="role-list">
+                        <li>设计技能对应的AI模型架构</li>
+                        <li>准备训练数据和标注</li>
+                        <li>训练和调优AI模型</li>
+                        <li>评估模型准确率和性能</li>
+                        <li>持续优化模型效果</li>
+                    </ul>
+                </div>
+
+                <!-- 开发工程师 -->
+                <div class="role-card">
+                    <div class="role-icon">💻</div>
+                    <div class="role-name">开发工程师</div>
+                    <div class="role-desc">负责技能代码开发和实现</div>
+                    <ul class="role-list">
+                        <li>领取分配的需求任务</li>
+                        <li>使用可视化编排或代码开发技能</li>
+                        <li>编写单元测试和集成测试</li>
+                        <li>进行代码 Code Review</li>
+                        <li>修复测试和用户反馈的缺陷</li>
+                    </ul>
+                </div>
+
+                <!-- 测试工程师 -->
+                <div class="role-card">
+                    <div class="role-icon">🧪</div>
+                    <div class="role-name">测试工程师</div>
+                    <div class="role-desc">负责测试用例设计和执行</div>
+                    <ul class="role-list">
+                        <li>设计技能测试用例</li>
+                        <li>执行功能测试和回归测试</li>
+                        <li>进行性能测试和压力测试</li>
+                        <li>管理缺陷全生命周期</li>
+                        <li>输出测试报告和质量评估</li>
+                    </ul>
+                </div>
+
+                <!-- 运维工程师 -->
+                <div class="role-card">
+                    <div class="role-icon">🛠️</div>
+                    <div class="role-name">运维工程师</div>
+                    <div class="role-desc">负责部署、监控和故障处理</div>
+                    <ul class="role-list">
+                        <li>执行技能部署和发布</li>
+                        <li>监控服务运行状态</li>
+                        <li>配置和管理告警规则</li>
+                        <li>处理线上异常和故障</li>
+                        <li>优化系统性能和资源</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 第九章：常见问题与解决方案 -->
+        <section id="section9">
+            <h2>9. 常见问题与解决方案</h2>
+            
+            <!-- FAQ 1 -->
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">Q1: 需求拆解时需要注意什么？</div>
+                <div class="faq-answer">
+                    <div class="faq-content">
+                        <p>需求拆解是将大需求分解为可执行的小需求的过程，注意事项包括：</p>
+                        <ul>
+                            <li><strong>原子性</strong>：每个子需求应该是原子性的，不可再分</li>
+                            <li><strong>可测试</strong>：每个子需求都应该有明确的验收标准</li>
+                            <li><strong>可追溯</strong>：子需求必须能关联到具体的技能实现</li>
+                            <li><strong>时间合理</strong>：单个子需求的开发周期不宜超过2周</li>
+                        </ul>
+                        <p>如果需求拆解遇到困难，建议联系产品负责人协助分析。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ 2 -->
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">Q2: 代码生成失败怎么办？</div>
+                <div class="faq-answer">
+                    <div class="faq-content">
+                        <p>代码生成可能因多种原因失败，排查步骤如下：</p>
+                        <ol>
+                            <li><strong>检查输入描述</strong>：确认需求描述是否清晰、完整</li>
+                            <li><strong>查看错误日志</strong>：在代码编辑页面查看具体的错误信息</li>
+                            <li><strong>分步生成</strong>：尝试分段生成代码，先基础框架后具体实现</li>
+                            <li><strong>手动补充</strong>：AI 生成的基础上手动补充和修正</li>
+                            <li><strong>寻求帮助</strong>：在技术交流群咨询或提交工单</li>
+                        </ol>
+                        <p>建议在代码生成前，详细描述业务逻辑和技术要求，可提高生成质量。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ 3 -->
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">Q3: 测试用例设计有哪些最佳实践？</div>
+                <div class="faq-answer">
+                    <div class="faq-content">
+                        <p>高质量的测试用例是保障技能质量的关键：</p>
+                        <ul>
+                            <li><strong>覆盖正向流程</strong>：验证正常业务场景能正确执行</li>
+                            <li><strong>覆盖异常流程</strong>：验证异常输入能被正确处理</li>
+                            <li><strong>边界条件测试</strong>：测试输入的最大值、最小值、空值等边界</li>
+                            <li><strong>性能测试</strong>：验证响应时间符合要求</li>
+                            <li><strong>安全测试</strong>：验证敏感数据得到正确保护</li>
+                        </ul>
+                        <p>测试用例��盖��应达到 90% 以上，建议使用自动化测试提高效率。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ 4 -->
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">Q4: 部署失败常见原因有哪些？</div>
+                <div class="faq-answer">
+                    <div class="faq-content">
+                        <p>部署失败时，常见的错误原因包括：</p>
+                        <table class="table">
+                            <tr><th>错误类型</th><th>原因</th><th>解决方案</th></tr>
+                            <tr><td>构建失败</td><td>代码编译错误、依赖缺失</td><td>检查代码和依赖配置</td></tr>
+                            <tr><td>镜像拉取失败</td><td>网络问题或镜像仓库权限</td><td>检查网络和仓库权限</td></tr>
+                            <tr><td>健康检查失败</td><td>服务启动超时或配置错误</td><td>检查服务配置和日志</td></tr>
+                            <tr><td>资源不足</td><td>集群资源不足</td><td>申请扩容或等待资源释放</td></tr>
+                            <tr><td>配置校验失败</td><td>环境变量或配置项错误</td><td>检查环境变量配置</td></tr>
+                        </table>
+                        <p>遇到部署失败时，首先查看部署日志中的详细错误信息。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ 5 -->
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">Q5: 技能准确率下降如何分析和解决？</div>
+                <div class="faq-answer">
+                    <div class="faq-content">
+                        <p>技能准确率下降可能有多种原因，按以下步骤排查：</p>
+                        <ol>
+                            <li><strong>确认基准</strong>：查看是否修改过代码、模型或配置</li>
+                            <li><strong>分析日志</strong>：查看失败案例的特征和模式</li>
+                            <li><strong>检查数据</strong>：确认训练数据是否被污染或过期</li>
+                            <li><strong>模型评估</strong>：重新评估模型在测试集上的表现</li>
+                            <li><strong>输入分析</strong>，分析用户输入是否与训练集差异过大</li>
+                        </ol>
+                        <p>常用解决方案：补充训练数据、调整提示词、重新训练模型、增加拒识机���等。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <footer class="footer">
+        <span>版本 V2.0</span> |
+        <span>更新日期 2026-05-10</span> |
+        <span>SCSAI数字员工平台</span>
+    </footer>
+
+    <script>
+        function toggleFaq(element) {
+            element.parentElement.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

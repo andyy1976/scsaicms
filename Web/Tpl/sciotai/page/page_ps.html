@@ -1,0 +1,95 @@
+<include file="./head"/>
+<!--
+<div id="obtn">
+    <div class="slideBoxBg wow fadeInUp">
+        <div class="container2">
+            <div class="pz_SideLayerNews">
+		
+									<php>
+									//	$first_id=get_first_father($type['typeid']);
+										$fid=get_field('type','typeid='.$type[typeid],'fid');
+										
+										if($fid==0)
+										{ 
+											$pid=$type[typeid]; 
+											$pname=$type[typename];
+										}
+										else
+										{ 
+											$pid=$fid; 
+											$pname=get_field('type','typeid='.$pid,'typename');
+										}
+								  </php>
+								  
+								  
+									
+								
+									<category parentid="$pid" id="vo">
+										<li class="l1 <php>if($type['typeid'] == $vo['typeid']){</php>  on <php>}</php>">
+											
+										
+											<a href='{$vo.typeid|url=lists,###}'>{$vo.typename}</a>
+												
+												<php>{</php>
+													<ul>
+														<category parentid="$vo[typeid]" id="voo">
+													
+															
+														<li><span class="file <php>if($type['typeid'] == $voo['typeid']){</php>  active <php>}</php>"><a href='{$voo.typeid|url=lists,###}' >{$voo.typename}</a></span></li> 
+														</category>
+													</ul>
+												<php>}</php>
+										</li>
+									</category>
+	                      
+            </div>
+            <div class="l1 searchBox newskuang">
+							<p>咨询热线：13661068044,微信同号</p>
+          
+            </div>
+        </div>
+    </div>
+</div>
+-->
+<div id="obtn">
+    <div class="container2">
+        <div class="pageNewsList wow fadeInLeft">
+        	
+        			<div class="curLocation wow fadeInUp">你的位置：{$nav}   </div>
+		          
+										&nbsp;
+		           
+		         
+						
+             <div class="pageNewsText wow fadeInUp">		
+             	{$article.content}
+             	
+             	<!--
+		             	 <div class="pageFy wow fadeInUp">
+		                <div class="leftFy">
+		                   {$page}
+		                </div>
+		                <div class="rightFy">
+		                   {$updown}
+		                </div>
+		       	     </div>
+													
+             	-->
+            </div>
+            
+         
+        </div>
+        
+
+      
+    </div>
+</div>
+
+
+
+
+<include file="$footer"/>
+
+</body>
+
+</html>

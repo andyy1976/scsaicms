@@ -1,0 +1,194 @@
+<include file="./head"/>
+
+<!-- Banner区 -->
+<div class="page-banner">
+    <div class="banner-overlay"></div>
+    <div class="banner-content">
+        <h1 class="banner-title">{$article.typename|default='文章详情'}</h1>
+        <p class="banner-subtitle">深入了解AI驱动的内容生态</p>
+    </div>
+</div>
+
+<!-- 面包屑 -->
+<div class="breadcrumb-bar">
+    <div class="container">
+        <i class="fa fa-home"></i> {$nav}
+    </div>
+</div>
+
+<!-- 文章内容区 -->
+<div class="article-wrapper">
+    <div class="container">
+        <div class="article-layout">
+            
+            <!-- 主内容区 -->
+            <main class="article-main">
+                
+                <!-- 文章头部 -->
+                <header class="article-header">
+                    <h1 class="article-title">{$article.title}</h1>
+                    <div class="article-meta">
+                        <span class="meta-item">
+                            <i class="fa fa-calendar"></i>
+                            {$article.addtime|date='Y-m-d H:i',###}
+                        </span>
+                        <if condition="$article['author'] neq ''">
+                            <span class="meta-item">
+                                <i class="fa fa-user"></i>
+                                {$article.author}
+                            </span>
+                        </if>
+                        <span class="meta-item">
+                            <i class="fa fa-eye"></i>
+                            {$article.hits|default=0} 阅读
+                        </span>
+                        <if condition="$article['source'] neq ''">
+                            <span class="meta-item">
+                                <i class="fa fa-globe"></i>
+                                {$article.source}
+                            </span>
+                        </if>
+                    </div>
+                </header>
+
+                <!-- 封面图 -->
+                <if condition="$article['imgurl'] neq ''">
+                    <div class="article-cover">
+                        <img src="{$article.imgurl}" alt="{$article.title}" onerror="this.onerror=null;this.src='__ROOT__/uploads/images/202504/21/c2banner.jpg';">
+                    </div>
+                </if>
+
+                <!-- 文章正文 -->
+                <div class="article-content">
+                    {$article.content}
+                </div>
+
+                <!-- 文章底部 -->
+                <footer class="article-footer">
+                    
+                    <!-- 标签 -->
+                    <if condition="$article['tags'] neq ''">
+                        <div class="article-tags">
+                            <i class="fa fa-tags"></i>
+                            <volist name="article.tags_arr" id="tag">
+                                <a href="__ROOT__/index.php?s=Search/index/keyword/{$tag}" class="tag-item">{$tag}</a>
+                            </volist>
+                        </div>
+                    </if>
+
+                    <!-- 来源链接 -->
+                    <if condition="$article['source_url'] neq ''">
+                        <div class="article-source">
+                            <strong>原文链接：</strong>
+                            <a href="{$article.source_url}" target="_blank" rel="nofollow">{$article.copyfrom|default='查看原文'}</a>
+                        </div>
+                    </if>
+
+                    <!-- 上下篇导航 -->
+                    <div class="article-nav">
+                        <div class="nav-prev">
+                            <label><i class="fa fa-chevron-left"></i> 上一篇</label>
+                            <if condition="$prevtitle neq ''">
+                                <a href="{$prevurl}">{$prevtitle|msubstr=###,0,30}</a>
+                            <else/>
+                                <span class="nav-none">已是第一篇</span>
+                            </if>
+                        </div>
+                        <div class="nav-next">
+                            <label>下一篇 <i class="fa fa-chevron-right"></i></label>
+                            <if condition="$nexttitle neq ''">
+                                <a href="{$nexturl}">{$nexttitle|msubstr=###,0,30}</a>
+                            <else/>
+                                <span class="nav-none">已是最后一篇</span>
+                            </if>
+                        </div>
+                    </div>
+
+                    <!-- 返回按钮 -->
+                    <div class="article-back">
+                        <a href="__ROOT__/index.php?s=Lists/index/typeid/{$article.typeid}" class="btn-back">
+                            <i class="fa fa-arrow-left"></i> 返回列表
+                        </a>
+                    </div>
+
+                </footer>
+
+            </main>
+
+            <!-- 侧边栏 -->
+            <aside class="article-sidebar">
+                
+                <!-- 当前分类的子分类 -->
+                <div class="sidebar-widget">
+                    <h3 class="widget-title">
+                        <i class="fa fa-folder-open"></i>
+                        {$article.typename} - 子分类
+                    </h3>
+                    <ul class="widget-categories">
+                        <arclist model="type" where="fid={$article.typeid}" order="sort ASC" id="subcat">
+                            <li>
+                                <a href="__ROOT__/index.php?s=Lists/index/typeid/{$subcat.id}">
+                                    <i class="fa fa-angle-right"></i>
+                                    {$subcat.typename}
+                                    <span class="cat-count">({$subcat.article_count|default=0})</span>
+                                </a>
+                            </li>
+                        </arclist>
+                        <!-- 如果没有子分类，显示同级分类 -->
+                        <if condition="$subcat_list eq ''">
+                            <arclist model="type" where="fid={$article.fid}" order="sort ASC" id="sibcat">
+                                <li <if condition="$sibcat.id eq $article.typeid">class="active"</if>>
+                                    <a href="__ROOT__/index.php?s=Lists/index/typeid/{$sibcat.id}">
+                                        <i class="fa fa-angle-right"></i>
+                                        {$sibcat.typename}
+                                    </a>
+                                </li>
+                            </arclist>
+                        </if>
+                    </ul>
+                </div>
+
+                <!-- 推荐文章 -->
+                <div class="sidebar-widget">
+                    <h3 class="widget-title">
+                        <i class="fa fa-fire"></i>
+                        推荐阅读
+                    </h3>
+                    <ul class="widget-posts">
+                        <arclist model="article" where="status=1 AND typeid={$article.typeid}" order="hits DESC, addtime DESC" limit="8" id="rec">
+                            <li>
+                                <a href="{$rec.aid|url=articles,###}" title="{$rec.title}">
+                                    <span class="post-rank">{$i}</span>
+                                    {$rec.title|msubstr=###,0,22}
+                                </a>
+                                <span class="post-hits"><i class="fa fa-eye"></i> {$rec.hits}</span>
+                            </li>
+                        </arclist>
+                    </ul>
+                </div>
+
+                <!-- 最新文章 -->
+                <div class="sidebar-widget">
+                    <h3 class="widget-title">
+                        <i class="fa fa-clock-o"></i>
+                        最新文章
+                    </h3>
+                    <ul class="widget-posts">
+                        <arclist model="article" where="status=1" order="addtime DESC" limit="6" id="new">
+                            <li>
+                                <a href="{$new.aid|url=articles,###}" title="{$new.title}">
+                                    {$new.title|msubstr=###,0,22}
+                                </a>
+                                <span class="post-date">{$new.addtime|date='m-d',###}</span>
+                            </li>
+                        </arclist>
+                    </ul>
+                </div>
+
+            </aside>
+
+        </div>
+    </div>
+</div>
+
+<include file="./footer"/>

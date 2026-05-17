@@ -30,11 +30,11 @@ class PublicAction extends Action
             }
             $this->assign('roll', $roll);
         }
-        //网站导航
-        $menu = $type->where('ismenu=1')->order('drank asc')->select();
+        //网站导航 - 只取一级栏目(fid=0)作为导航菜单
+        $menu = $type->where('fid=0 AND ismenu=1')->order('drank asc')->select();
         foreach ($menu as $k => $v) 
         {
-            $menuson[$k] = $type->where('fid=' . $v['typeid'] . ' AND drank <> 0')->order('drank asc')->select();
+            $menuson[$k] = $type->where('fid=' . $v['typeid'] . ' AND ismenu=1')->order('drank asc')->select();
             $menu[$k]['submenu'] = $menuson[$k];
         }
         $this->assign('menuson', $menuson);

@@ -27,10 +27,11 @@ class IndexAction extends BaseAction
         //------------企业网站的东东----------------
 				
 				//最新公告
-        parent::lists(20, 0, 5, 'list_gao');
+        //最新公告 - 数字员工分类 (112=营销数字员工)
+        parent::lists(112, 0, 5, 'list_gao');
        
-        //最新新闻
-        parent::lists(18, 0, 9, 'list_new');
+        //最新新闻 - 数字员工分类 (113=客服数字员工)
+        parent::lists(113, 0, 9, 'list_new');
         
         //菜单目录
         parent::children_dir(22);

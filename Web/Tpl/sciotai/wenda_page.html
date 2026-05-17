@@ -1,0 +1,98 @@
+﻿<include file="./head_inner"/>
+
+	<div class="crumb"><span>你的位置：{$nav} > 问答查看</span></div>
+	<div class="width-block">
+	
+		<div class="answer">
+			<div class="problem">
+				<div class="title"><i>?</i>{$wenda.title}？</div>
+				<div class="info">{$wenda.content}</div>
+			</div>
+				
+					<div class="solution">
+						<div class="title"><i>A</i>专业解答</div>
+						<div class="name-time"><span>{$answer.realname}</span> 时间：{$wenda.answertime}</div>
+						<div class="info">
+							<php>if((isset($_SESSION['cms_usergroup'])&&$_SESSION['cms_usergroup'] !=1)||(isset($_SESSION['cms_bloggroup'])&& $_SESSION['cms_bloggroup'] !='visitor'&& $_SESSION['cms_bloggroup'] !='subscriber')){</php>
+							<div class="reply"><span>答案：</span>{$wenda.recontent}……</div>
+							<div class="reply"><span>法律依据：</span><a href="{$wenda.approvalid|url=articles,###}" target="_blank">{$wenda.approval}</a></div>
+							<div class="reply"><span>操作指引：</span>{$wenda.guide}……</div>
+							<div class="reply"><span>典型案例：</span><a href="{$wenda.casesid|url=articles,###}" taget="_blank">{$wenda.cases}</a></div>
+							<div class="expert-info">
+								<dl>
+									<dt><a href="javascript:"><img src="{$answer.icon}" width="160"></a></dt>
+									<dd class="name"><a href="index.php?s=memberlist/user&userid={$answer.id}">{$answer.realname}</a></dd>
+									<dd class="suggest">{$answer.description}</dd>
+								</dl>
+							</div>
+							
+							<php>}else{</php>
+										
+							<div class="tips-line">
+								<div class="login-tisp">
+									<p>很抱歉，您没有权限查看请求的内容，您可以<a href="index.php?m=member&a=vip">购买会员</a>或直接联系我们：
+									</p><p>热线电话:  400-888-6688</p>
+									<p>客服邮箱:  Support@HR.com</p>
+									<p>传    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 真:  400-088-6688</p>
+								</div>
+							</div>
+							<php>	}</php>
+							<div class="reversion">
+								<div class="title-all"><h4>其他解答</h4></div>
+								<div class="rever-pull">
+									
+									<!--其它普通解答区-->
+
+
+									<div class='clearfix'></div>
+							    <link href="__TMPL__/css/pl.css" rel="stylesheet" type="text/css"/>
+							    <div id="pinglun">
+										  <div id="pinglunt">以下是网友对问题<span class="blue">"{$wenda.title}"</span> 的解答：
+										  						<span class="count"><em>225</em>条记录<span class="sep">|</span><em>75,307</em>人参与</span>
+										  	</div>
+										  <div id="list"></div><!--其它解答的列表 -->
+										  <div id="MultiPage"></div><!--其它解答的分页 -->
+
+							    </div>
+									<script type="text/javascript" src="__TMPL__/js/ajaxwd.js"></script>
+									<script>
+									var root = '__ROOT__';
+									$(function()
+									{
+										showanswer({$wenda.id},1);
+										$('#page_hits').load('{:U('Api/qhits_js?qid='.$wenda['id'])}');
+										$('#dianzhan_num_{$wenda.id}').load('{:U('Api/qhits_js?type=1&qid='.$wenda['id'])}');
+									});
+									</script>
+									<br>    
+									
+								</div>
+								
+								<div class="report">
+									<div class="t-head" >
+										<h3>发表解答</h3>
+										<span class="count">大名<span class="sep">:</span>
+										 				 	<input name="author" type="text" value="<neq name='_SESSION.cms_username' value=''>{$_SESSION.cms_username}<else/>游客</neq>" id="Author"  maxlength="20" size="12"/></span>
+					
+									</div>
+									<div class="reply-form-wrap" >
+										 <input type="hidden" name="qid" id="qid" value="{$wenda.id}">
+										<div class="editor">
+											  <textarea placeholder="请输入内容" rows="10" name="content" cols="50"  style="width:100%; height:90px; border:1px solid #e6e6e6;" id="wendaanswercontent"></textarea>
+										</div>
+										<div class="sum-btn">
+										
+											<button type="button" id="sendGuest"  onClick="AddNewAnswer()">发表</button></div>
+									</div>
+								</div>
+								
+							</div>
+		
+						</div>
+					
+					</div>
+			
+		</div>
+	</div>
+
+	<include file="$footer"/>

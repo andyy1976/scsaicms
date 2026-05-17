@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>数字员工平台 · 全链路追溯功能操作手册</title>
+<style>
+:root{--bg:#0f1117;--bg2:#161b28;--card:#1c2333;--card2:#232d42;--border:#2d3a52;--text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;--accent:#3b82f6;--accent2:#06b6d4;--accent3:#8b5cf6;--green:#10b981;--orange:#f59e0b;--red:#ef4444;--pink:#ec4899;--teal:#14b8a6;--glow:rgba(59,130,246,.12)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+.hero{position:relative;background:linear-gradient(135deg,#0c1220 0%,#162040 40%,#0d2a4a 100%);padding:44px 20px 36px;text-align:center;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 25% 35%,rgba(59,130,246,.07) 0%,transparent 50%),radial-gradient(circle at 75% 65%,rgba(20,184,166,.05) 0%,transparent 50%);animation:drift 25s ease-in-out infinite}
+@keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(-1.5%,1%)}}
+.hero h1{font-size:2em;font-weight:800;background:linear-gradient(135deg,#60a5fa,#34d399,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;position:relative;z-index:1}
+.hero .subtitle{color:var(--text2);margin-top:8px;font-size:.95em;position:relative;z-index:1}
+.hero .meta{margin-top:12px;font-size:.82em;color:var(--text3);position:relative;z-index:1}
+.hero .meta span{margin:0 8px}
+.stats-row{display:flex;justify-content:center;gap:16px;margin-top:24px;flex-wrap:wrap;position:relative;z-index:1}
+.stat-box{background:rgba(28,35,51,.85);border:1px solid var(--border);border-radius:12px;padding:14px 24px;text-align:center;min-width:120px;backdrop-filter:blur(10px)}
+.stat-box .val{font-size:1.6em;font-weight:800;color:var(--accent)}
+.stat-box .lbl{font-size:.78em;color:var(--text2);margin-top:2px}
+.nav-bar{position:sticky;top:0;z-index:100;background:rgba(15,17,23,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 16px;display:flex;justify-content:center;gap:0;overflow-x:auto}
+.nav-btn{padding:13px 18px;background:none;border:none;color:var(--text2);font-size:.85em;cursor:pointer;white-space:nowrap;position:relative;transition:color .2s}
+.nav-btn:hover{color:var(--text)}
+.nav-btn.active{color:var(--accent)}
+.nav-btn.active::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--accent)}
+.container{max-width:1300px;margin:0 auto;padding:24px 20px}
+.section{display:none}.section.active{display:block}
+.section-title{font-size:1.35em;font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:18px}
+.card h3{font-size:1.05em;margin-bottom:10px;color:var(--accent);display:flex;align-items:center;gap:8px}
+.card p{color:var(--text2);font-size:.88em;line-height:1.7}
+.term-table{width:100%;border-collapse:collapse;font-size:.85em;margin:12px 0}
+.term-table th{background:var(--accent);color:#fff;padding:10px 14px;text-align:left;font-weight:600;white-space:nowrap}
+.term-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.term-table tr:hover td{background:rgba(59,130,246,.04)}
+.term-table td:first-child{font-weight:600;color:var(--accent2);white-space:nowrap}
+.layout-box{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:20px;font-family:'Cascadia Code','Consolas','Courier New',monospace;font-size:.78em;color:var(--text2);line-height:1.5;overflow-x:auto;white-space:pre;margin:12px 0}
+.step-list{list-style:none;counter-reset:step;position:relative;padding-left:36px}
+.step-list li{counter-increment:step;position:relative;padding:10px 0 10px 0;font-size:.88em;color:var(--text2);border-left:2px solid var(--border)}
+.step-list li::before{content:counter(step);position:absolute;left:-36px;top:8px;width:24px;height:24px;background:var(--accent);color:#fff;border-radius:50%;text-align:center;line-height:24px;font-size:.78em;font-weight:700}
+.step-list li strong{color:var(--text)}
+.step-list li:nth-child(odd){border-left-color:var(--accent)}
+.step-list li:nth-child(even){border-left-color:var(--accent3)}
+.tab-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.tab-btn{padding:8px 18px;background:var(--card2);border:1px solid var(--border);border-radius:20px;color:var(--text2);font-size:.82em;cursor:pointer;transition:all .2s}
+.tab-btn:hover{border-color:var(--accent);color:var(--text)}
+.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tab-content{display:none}.tab-content.active{display:block}
+.sub-card{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:14px}
+.sub-card h4{font-size:.98em;margin-bottom:10px;color:var(--accent2);display:flex;align-items:center;gap:6px}
+.sub-card p,.sub-card li{font-size:.86em;color:var(--text2);line-height:1.65}
+.sub-card ul,.sub-card ol{padding-left:18px;margin-top:6px}
+.sub-card li{margin-bottom:4px}
+.role-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.role-card{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:18px;transition:border-color .2s}
+.role-card:hover{border-color:var(--accent)}
+.role-card .rc-icon{font-size:1.4em;margin-bottom:6px}
+.role-card .rc-title{font-weight:700;font-size:.95em;margin-bottom:6px}
+.role-card .rc-ops{font-size:.82em;color:var(--accent2);margin-bottom:6px}
+.role-card .rc-tools{font-size:.8em;color:var(--text3)}
+.faq-item{background:var(--card2);border:1px solid var(--border);border-radius:12px;margin-bottom:12px;overflow:hidden}
+.faq-q{padding:16px 20px;cursor:pointer;font-weight:600;font-size:.9em;display:flex;justify-content:space-between;align-items:center;transition:background .2s}
+.faq-q:hover{background:rgba(59,130,246,.04)}
+.faq-q .arrow{transition:transform .2s;font-size:.8em;color:var(--text3)}
+.faq-q.open .arrow{transform:rotate(180deg)}
+.faq-a{padding:0 20px;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s ease}
+.faq-a.open{max-height:500px;padding:0 20px 16px}
+.faq-a p{font-size:.86em;color:var(--text2);line-height:1.7}
+.faq-a ol{padding-left:18px;margin-top:6px}
+.faq-a li{font-size:.86em;color:var(--text2);line-height:1.65;margin-bottom:4px}
+.kb-table{width:100%;border-collapse:collapse;font-size:.85em;margin:12px 0}
+.kb-table th{background:var(--accent3);color:#fff;padding:10px 14px;text-align:left}
+.kb-table td{padding:10px 14px;border-bottom:1px solid var(--border)}
+.kb-table tr:hover td{background:rgba(139,92,246,.04)}
+.feature-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.feature-card{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:18px;transition:transform .2s,border-color .2s}
+.feature-card:hover{transform:translateY(-2px);border-color:var(--accent)}
+.feature-card .fc-icon{font-size:1.3em;margin-bottom:6px}
+.feature-card .fc-title{font-weight:700;font-size:.92em;margin-bottom:6px}
+.feature-card .fc-desc{font-size:.82em;color:var(--text2);line-height:1.6}
+.trace-visual{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:18px;margin:14px 0;display:flex;align-items:center;flex-wrap:wrap;gap:6px;justify-content:center}
+.trace-node{background:var(--card);border:2px solid var(--accent);border-radius:10px;padding:8px 14px;text-align:center;font-size:.82em;min-width:100px}
+.trace-node .tn-label{color:var(--text3);font-size:.7em;margin-bottom:2px}
+.trace-node .tn-value{font-weight:700;color:var(--accent2)}
+.trace-arrow{color:var(--accent);font-size:1em}
+.monitor-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:12px 0}
+.monitor-item{background:rgba(59,130,246,.05);border:1px solid rgba(59,130,246,.15);border-radius:10px;padding:14px;text-align:center}
+.monitor-item .mi-label{font-size:.78em;color:var(--text3);margin-bottom:4px}
+.monitor-item .mi-value{font-size:1.1em;font-weight:700;color:var(--accent2)}
+.deploy-flow{display:flex;align-items:center;flex-wrap:wrap;gap:6px;justify-content:center;margin:12px 0}
+.deploy-step{background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:6px 14px;font-size:.8em;white-space:nowrap}
+.deploy-arrow{color:var(--accent);font-size:.85em}
+.alert-rule{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.alert-rule:last-child{border-bottom:none}
+.alert-rule .ar-icon{font-size:1.2em;flex-shrink:0}
+.alert-rule .ar-text{font-size:.86em;color:var(--text2)}
+.alert-rule .ar-text strong{color:var(--text)}
+.footer{text-align:center;padding:28px;color:var(--text3);font-size:.78em;border-top:1px solid var(--border);margin-top:36px}
+@media(max-width:768px){.hero h1{font-size:1.3em}.stats-row{gap:8px}.stat-box{min-width:80px;padding:10px 14px}.nav-btn{padding:10px 12px;font-size:.78em}.feature-grid,.role-grid{grid-template-columns:1fr}.trace-visual{flex-direction:column}.trace-arrow{transform:rotate(90deg)}.deploy-flow{flex-direction:column}.deploy-arrow{transform:rotate(90deg)}}
+</style>
+</head>
+<body>
+<div class="hero">
+<h1>📖 数字员工平台 · 全链路追溯功能操作手册</h1>
+<div class="subtitle">从需求提交到数字员工上线运行的全流程操作指南</div>
+<div class="meta"><span>版本 V1.0</span><span>|</span><span>202X-XX-XX</span><span>|</span><span>适用：产品/算法/开发/测试/运维</span></div>
+<div class="stats-row">
+<div class="stat-box"><div class="val">5</div><div class="lbl">功能模块</div></div>
+<div class="stat-box"><div class="val">5</div><div class="lbl">角色指南</div></div>
+<div class="stat-box"><div class="val">5</div><div class="lbl">FAQ</div></div>
+<div class="stat-box"><div class="val">3</div><div class="lbl">追溯核心</div></div>
+</div>
+</div>
+
+<div class="nav-bar" id="navBar">
+<button class="nav-btn active" onclick="showSection('overview')">📋 概述</button>
+<button class="nav-btn" onclick="showSection('ui')">🖥️ 系统界面</button>
+<button class="nav-btn" onclick="showSection('requirement')">📋 需求管理</button>
+<button class="nav-btn" onclick="showSection('skill')">🧩 技能开发</button>
+<button class="nav-btn" onclick="showSection('test')">🧪 测试管理</button>
+<button class="nav-btn" onclick="showSection('deploy')">🚀 部署运维</button>
+<button class="nav-btn" onclick="showSection('trace')">🔗 追溯中心</button>
+<button class="nav-btn" onclick="showSection('roles')">👥 角色指南</button>
+<button class="nav-btn" onclick="showSection('faq')">❓ FAQ</button>
+</div>
+
+<div class="container">
+
+<!-- 概述 -->
+<div id="sec-overview" class="section active">
+<div class="section-title">📋 手册概述</div>
+<div class="card">
+<h3>🎯 目的</h3>
+<p>本手册指导用户正确使用数字员工平台的全链路追溯功能，实现从需求到运行的全链路可追溯、可管理、可优化。</p>
+</div>
+<div class="feature-grid" style="margin:16px 0">
+<div class="feature-card"><div class="fc-icon">📋</div><div class="fc-title">需求标准化管理</div><div class="fc-desc">业务需求的标准化管理与自动拆解，零断点映射到技能开发任务</div></div>
+<div class="feature-card"><div class="fc-icon">🧩</div><div class="fc-title">技能可视化开发</div><div class="fc-desc">数字员工技能的可视化开发与版本管理，拖拽编排原子技术组件</div></div>
+<div class="feature-card"><div class="fc-icon">🧪</div><div class="fc-title">测试自动生成</div><div class="fc-desc">测试用例的自动生成与执行，结果实时同步追溯表</div></div>
+<div class="feature-card"><div class="fc-icon">🚀</div><div class="fc-title">一键部署监控</div><div class="fc-desc">部署上线的一键操作与运行监控，灰度发布降低风险</div></div>
+<div class="feature-card"><div class="fc-icon">🔍</div><div class="fc-title">问题快速定位</div><div class="fc-desc">问题的快速定位与根因分析，秒级定位异常根因</div></div>
+<div class="feature-card"><div class="fc-icon">📚</div><div class="fc-title">数字资产沉淀</div><div class="fc-desc">企业数字资产的自动沉淀与复用，构建知识图谱</div></div>
+</div>
+<div class="card">
+<h3>📖 术语定义</h3>
+<table class="term-table">
+<thead><tr><th>术语</th><th>定义</th></tr></thead>
+<tbody>
+<tr><td>追溯表</td><td>平台核心元数据模型，记录需求、技能、技术组件、代码模块、测试用例的对应关系</td></tr>
+<tr><td>数字员工智能体</td><td>平台中可独立执行任务的虚拟员工，由一个或多个技能组成</td></tr>
+<tr><td>技能</td><td>数字员工的最小功能单元，由原子技术组件编排而成</td></tr>
+<tr><td>原子技术组件</td><td>平台提供的可复用技术能力，如目标检测、时序预测、大语言模型等</td></tr>
+<tr><td>全链路追溯</td><td>从业务需求到代码实现、运行数据的完整追溯能力</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- 系统界面 -->
+<div id="sec-ui" class="section">
+<div class="section-title">🖥️ 系统登录与主界面</div>
+<div class="card">
+<h3>🔐 系统登录</h3>
+<ol class="step-list">
+<li>打开浏览器，输入平台地址：<code>https://digital-employee.yourcompany.com</code></li>
+<li>输入用户名和密码，点击"登录"按钮</li>
+<li>首次登录需修改初始密码，并完成手机验证</li>
+<li>登录成功后，进入平台主界面</li>
+</ol>
+</div>
+<div class="card">
+<h3>📐 主界面布局</h3>
+<p>平台采用<strong>左侧导航栏 + 右侧内容区</strong>的经典布局，核心功能入口：</p>
+<div class="layout-box">┌──────────────────────────────────────────────────────────────────┐
+│ 顶部导航栏：logo · 搜索框 · 消息中心 · 用户头像 · 帮助中心 │
+├────────┬─────────────────────────────────────────────────────────┤
+│        │ ┌───────────────────────────────────────────────────┐   │
+│  左侧  │ │ 🏠 工作台：待办任务 · 统计数据 · 快速入口       │   │
+│  导航栏 │ └───────────────────────────────────────────────────┘   │
+│        │ ┌───────────────────────────────────────────────────┐   │
+│  · 工作 │ │ 📋 需求管理：需求提交 · 需求列表 · 需求追溯     │   │
+│  · 需求 │ └───────────────────────────────────────────────────┘   │
+│  · 技能 │ ┌───────────────────────────────────────────────────┐   │
+│  · 测试 │ │ 🧩 技能开发：技能列表 · 技能编排 · 代码 · 版本  │   │
+│  · 部署 │ └───────────────────────────────────────────────────┘   │
+│  · 追溯 │ ┌───────────────────────────────────────────────────┐   │
+│  · 系统 │ │ 🧪 测试管理：用例 · 任务 · 报告 · 缺陷          │   │
+│        │ └───────────────────────────────────────────────────┘   │
+│        │ ┌───────────────────────────────────────────────────┐   │
+│        │ │ 🚀 部署运维：部署 · 监控 · 告警 · 日志          │   │
+│        │ └───────────────────────────────────────────────────┘   │
+│        │ ┌───────────────────────────────────────────────────┐   │
+│        │ │ 🔗 追溯中心：全链路追溯 · 问题定位 · 知识图谱   │   │
+│        │ └───────────────────────────────────────────────────┘   │
+│        │ ┌───────────────────────────────────────────────────┐   │
+│        │ │ ⚙️ 系统管理：用户 · 角色 · 配置 · 集成          │   │
+│        │ └───────────────────────────────────────────────────┘   │
+└────────┴─────────────────────────────────────────────────────────┘</div>
+</div>
+<div class="card">
+<h3>🏠 工作台</h3>
+<p>登录后默认页面，聚合关键信息：</p>
+<div class="feature-grid">
+<div class="feature-card"><div class="fc-icon">📝</div><div class="fc-title">待办任务</div><div class="fc-desc">待处理的需求、开发任务、测试任务、部署任务</div></div>
+<div class="feature-card"><div class="fc-icon">📊</div><div class="fc-title">统计数据</div><div class="fc-desc">数字员工数量、技能数量、运行准确率、调用次数</div></div>
+<div class="feature-card"><div class="fc-icon">⚡</div><div class="fc-title">快速入口</div><div class="fc-desc">提交需求、创建技能、查看告警等常用功能快捷按钮</div></div>
+</div>
+</div>
+</div>
+
+<!-- 需求管理 -->
+<div id="sec-requirement" class="section">
+<div class="section-title">📋 需求管理模块</div>
+<div class="tab-bar">
+<button class="tab-btn active" onclick="showTab('req','submit')">提交需求</button>
+<button class="tab-btn" onclick="showTab('req','list')">需求列表</button>
+<button class="tab-btn" onclick="showTab('req','detail')">需求详情</button>
+<button class="tab-btn" onclick="showTab('req','change')">变更与关闭</button>
+</div>
+
+<div id="req-submit" class="tab-content active">
+<div class="sub-card">
+<h4>📥 提交新需求</h4>
+<ol class="step-list">
+<li>点击左侧导航栏 <strong>"需求管理" → "提交需求"</strong></li>
+<li>填写需求信息：名称（≤20字）、描述、所属行业、优先级（P0/P1/P2）、期望上线时间、附件</li>
+<li>点击"提交"，系统自动生成唯一需求ID（如 <code>REQ-066</code>）</li>
+<li>系统自动将需求导入追溯表，并触发<strong>需求拆解智能体</strong>进行分析</li>
+</ol>
+</div>
+</div>
+
+<div id="req-list" class="tab-content">
+<div class="sub-card">
+<h4>📋 查看需求列表</h4>
+<ol class="step-list">
+<li>点击 <strong>"需求管理" → "需求列表"</strong></li>
+<li>列表展示：需求ID、名称、优先级、状态、负责人、计划上线时间</li>
+<li>支持按ID/名称/状态/优先级/时间进行筛选和搜索</li>
+<li>点击任意需求ID，进入需求详情页面</li>
+</ol>
+</div>
+</div>
+
+<div id="req-detail" class="tab-content">
+<div class="sub-card">
+<h4>🔍 需求详情与追溯</h4>
+<p>需求详情页面包含以下标签页：</p>
+<div class="feature-grid" style="margin-top:12px">
+<div class="feature-card"><div class="fc-icon">📄</div><div class="fc-title">基本信息</div><div class="fc-desc">需求基本信息、附件、创建/更新时间</div></div>
+<div class="feature-card"><div class="fc-icon">🧩</div><div class="fc-title">关联技能</div><div class="fc-desc">该需求对应的所有技能，点击可跳转技能详情</div></div>
+<div class="feature-card"><div class="fc-icon">🔗</div><div class="fc-title">追溯链路</div><div class="fc-desc">可视化展示完整追溯链路</div></div>
+<div class="feature-card"><div class="fc-icon">📊</div><div class="fc-title">任务进度</div><div class="fc-desc">开发/测试/部署任务进度追踪</div></div>
+<div class="feature-card"><div class="fc-icon">💬</div><div class="fc-title">反馈记录</div><div class="fc-desc">所有反馈和变更记录</div></div>
+</div>
+<div class="trace-visual" style="margin-top:14px">
+<div class="trace-node"><div class="tn-label">业务需求</div><div class="tn-value">REQ-XXX</div></div>
+<div class="trace-arrow">→</div>
+<div class="trace-node"><div class="tn-label">数字员工</div><div class="tn-value">AGENT-XXX</div></div>
+<div class="trace-arrow">→</div>
+<div class="trace-node"><div class="tn-label">技能</div><div class="tn-value">SKILL-XXX</div></div>
+<div class="trace-arrow">→</div>
+<div class="trace-node"><div class="tn-label">技术组件</div><div class="tn-value">原子能力</div></div>
+<div class="trace-arrow">→</div>
+<div class="trace-node"><div class="tn-label">代码模块</div><div class="tn-value">/path/module</div></div>
+<div class="trace-arrow">→</div>
+<div class="trace-node"><div class="tn-label">测试用例</div><div class="tn-value">TC-XXX</div></div>
+<div class="trace-arrow">→</div>
+<div class="trace-node"><div class="tn-label">运行数据</div><div class="tn-value" style="color:var(--green)">99%+</div></div>
+</div>
+</div>
+</div>
+
+<div id="req-change" class="tab-content">
+<div class="sub-card">
+<h4>✏️ 需求变更与关闭</h4>
+<ol class="step-list">
+<li>在需求详情页面，点击<strong>"变更需求"</strong>按钮，可修改需求信息</li>
+<li>系统自动记录变更历史，并同步更新追溯表和所有关联任务</li>
+<li>所有技能都已上线并通过验收后，点击<strong>"关闭需求"</strong>，更新状态为"已关闭"</li>
+</ol>
+</div>
+</div>
+</div>
+
+<!-- 技能开发 -->
+<div id="sec-skill" class="section">
+<div class="section-title">🧩 技能开发模块</div>
+<div class="tab-bar">
+<button class="tab-btn active" onclick="showTab('skill','slist')">技能列表</button>
+<button class="tab-btn" onclick="showTab('skill','create')">创建技能</button>
+<button class="tab-btn" onclick="showTab('skill','compose')">可视化编排</button>
+<button class="tab-btn" onclick="showTab('skill','code')">代码管理</button>
+<button class="tab-btn" onclick="showTab('skill','version')">版本管理</button>
+</div>
+
+<div id="skill-slist" class="tab-content active">
+<div class="sub-card">
+<h4>📋 查看技能列表</h4>
+<ol class="step-list">
+<li>点击 <strong>"技能开发" → "技能列表"</strong></li>
+<li>列表展示：技能ID、名称、所属智能体、优先级、状态、负责人、版本号、准确率</li>
+<li>支持按ID/名称/状态/优先级/所属智能体筛选和搜索</li>
+<li>点击任意技能ID，进入技能详情页面</li>
+</ol>
+</div>
+</div>
+
+<div id="skill-create" class="tab-content">
+<div class="sub-card">
+<h4>🤖 方式一：从需求自动生成</h4>
+<ol class="step-list">
+<li>在需求详情页面的"关联技能"标签页，点击<strong>"生成技能"</strong>按钮</li>
+<li>系统根据追溯表自动生成标准化技能模板：技能ID/名称/描述、输入输出参数、依赖技术组件、验收标准</li>
+<li>确认信息无误后，点击"创建"按钮</li>
+</ol>
+</div>
+<div class="sub-card">
+<h4>✏️ 方式二：手动创建</h4>
+<ol class="step-list">
+<li>点击 <strong>"技能开发" → "创建技能"</strong></li>
+<li>填写技能基本信息：名称、描述、所属智能体、优先级</li>
+<li>定义输入输出参数、选择依赖的原子技术组件、设置验收标准</li>
+<li>点击"创建"，自动添加到追溯表</li>
+</ol>
+</div>
+</div>
+
+<div id="skill-compose" class="tab-content">
+<div class="sub-card">
+<h4>🎯 技能可视化编排</h4>
+<ol class="step-list">
+<li>在技能详情页面，点击<strong>"技能编排"</strong>标签页</li>
+<li>左侧为原子技术组件库，右侧为编排画布</li>
+<li>从左侧<strong>拖拽</strong>原子技术组件到画布上，连接组件之间的数据流</li>
+<li>配置每个组件的参数和运行条件</li>
+<li>点击"保存"保存编排结果；点击<strong>"测试运行"</strong>在测试环境中验证功能</li>
+</ol>
+</div>
+</div>
+
+<div id="skill-code" class="tab-content">
+<div class="sub-card">
+<h4>💻 代码管理</h4>
+<ol class="step-list">
+<li>在技能详情页面，点击<strong>"代码管理"</strong>标签页</li>
+<li>系统根据编排结果自动生成基础代码框架、API接口、单元测试</li>
+<li>点击<strong>"克隆仓库"</strong>获取Git仓库地址，在本地进行开发</li>
+<li>代码提交后，系统自动同步到平台，更新追溯表中的版本号和迭代记录</li>
+<li>支持在线查看代码、对比不同版本的代码差异</li>
+</ol>
+</div>
+</div>
+
+<div id="skill-version" class="tab-content">
+<div class="sub-card">
+<h4>📌 版本管理</h4>
+<ol class="step-list">
+<li>在技能详情页面，点击<strong>"版本管理"</strong>标签页</li>
+<li>展示所有历史版本：版本号、更新时间、更新内容、负责人</li>
+<li>点击任意版本，可查看该版本的代码、编排结果、测试报告</li>
+<li>支持<strong>版本回滚</strong>，点击"回滚到此版本"恢复到指定版本</li>
+</ol>
+</div>
+</div>
+</div>
+
+<!-- 测试管理 -->
+<div id="sec-test" class="section">
+<div class="section-title">🧪 测试管理模块</div>
+<div class="tab-bar">
+<button class="tab-btn active" onclick="showTab('test','tc')">测试用例</button>
+<button class="tab-btn" onclick="showTab('test','task')">测试任务</button>
+<button class="tab-btn" onclick="showTab('test','auto')">自动执行</button>
+<button class="tab-btn" onclick="showTab('test','defect')">缺陷管理</button>
+</div>
+
+<div id="test-tc" class="tab-content active">
+<div class="sub-card">
+<h4>📋 测试用例管理</h4>
+<ol class="step-list">
+<li>点击 <strong>"测试管理" → "测试用例"</strong></li>
+<li>系统根据追溯表自动生成所有技能的测试用例：ID、场景、前置条件、步骤、预期结果、验收标准</li>
+<li>支持手动添加、编辑、删除测试用例</li>
+<li>点击任意测试用例ID，进入用例详情页面</li>
+</ol>
+</div>
+</div>
+
+<div id="test-task" class="tab-content">
+<div class="sub-card">
+<h4>📝 创建测试任务</h4>
+<ol class="step-list">
+<li>点击 <strong>"测试管理" → "创建测试任务"</strong></li>
+<li>选择需要测试的技能和测试用例</li>
+<li>设置测试环境、测试时间、测试负责人</li>
+<li>点击"创建"，系统自动分配任务并同步到Jira</li>
+</ol>
+</div>
+</div>
+
+<div id="test-auto" class="tab-content">
+<div class="sub-card">
+<h4>🤖 自动化测试执行</h4>
+<ol class="step-list">
+<li>在测试任务详情页面，点击<strong>"执行测试"</strong></li>
+<li><strong>测试智能体</strong>自动执行所有测试用例，记录测试结果</li>
+<li>测试完成后自动生成报告：通过/失败/跳过数、失败详情、性能结果</li>
+<li>测试结果自动同步到追溯表，更新技能的测试状态</li>
+</ol>
+</div>
+</div>
+
+<div id="test-defect" class="tab-content">
+<div class="sub-card">
+<h4>🐛 缺陷管理</h4>
+<ol class="step-list">
+<li>测试中发现的缺陷自动记录到缺陷管理模块</li>
+<li>每个缺陷<strong>自动关联</strong>到对应的需求、技能、代码模块和测试用例</li>
+<li>支持手动添加缺陷，填写描述、严重程度、优先级</li>
+<li>系统自动创建Jira工单，分配给对应负责人修复</li>
+<li>缺陷修复后，自动触发回归测试</li>
+</ol>
+</div>
+</div>
+</div>
+
+<!-- 部署运维 -->
+<div id="sec-deploy" class="section">
+<div class="section-title">🚀 部署运维模块</div>
+<div class="tab-bar">
+<button class="tab-btn active" onclick="showTab('dep','deploy')">部署管理</button>
+<button class="tab-btn" onclick="showTab('dep','monitor')">运行监控</button>
+<button class="tab-btn" onclick="showTab('dep','alert')">异常告警</button>
+<button class="tab-btn" onclick="showTab('dep','log')">日志查询</button>
+</div>
+
+<div id="dep-deploy" class="tab-content active">
+<div class="sub-card">
+<h4>🚀 一键部署</h4>
+<ol class="step-list">
+<li>技能通过测试验收后，在技能详情页面点击<strong>"部署"</strong>按钮</li>
+<li>选择部署环境：测试环境 / 预生产环境 / 生产环境</li>
+<li>选择部署方式：云端部署 / 边缘部署</li>
+<li>点击"确认部署"，系统自动执行部署流程</li>
+</ol>
+<div class="deploy-flow" style="margin-top:14px">
+<div class="deploy-step">🐳 构建Docker镜像</div><div class="deploy-arrow">→</div>
+<div class="deploy-step">📦 推送镜像仓库</div><div class="deploy-arrow">→</div>
+<div class="deploy-step">🏗️ 部署容器</div><div class="deploy-arrow">→</div>
+<div class="deploy-step">🌐 配置网络/LB</div><div class="deploy-arrow">→</div>
+<div class="deploy-step" style="border-color:var(--green);color:var(--green)">✅ 健康检查</div>
+</div>
+<p style="margin-top:10px;font-size:.84em;color:var(--text2)">部署完成后，系统自动更新追溯表中的运行状态为"运行中"</p>
+</div>
+</div>
+
+<div id="dep-monitor" class="tab-content">
+<div class="sub-card">
+<h4>📊 运行监控</h4>
+<p>展示所有数字员工和技能的实时运行状态：</p>
+<div class="monitor-grid">
+<div class="monitor-item"><div class="mi-label">运行状态</div><div class="mi-value">运行中/异常/停止</div></div>
+<div class="monitor-item"><div class="mi-label">准确率</div><div class="mi-value" style="color:var(--green)">实时</div></div>
+<div class="monitor-item"><div class="mi-label">调用次数</div><div class="mi-value">累计/今日</div></div>
+<div class="monitor-item"><div class="mi-label">响应时间</div><div class="mi-value">平均/P99</div></div>
+<div class="monitor-item"><div class="mi-label">资源使用率</div><div class="mi-value">CPU/Mem/GPU</div></div>
+</div>
+</div>
+</div>
+
+<div id="dep-alert" class="tab-content">
+<div class="sub-card">
+<h4>⚠️ 异常告警</h4>
+<p style="margin-bottom:12px">内置多种异常告警规则：</p>
+<div class="alert-rule"><div class="ar-icon">📉</div><div class="ar-text"><strong>准确率低于阈值</strong> — 技能运行准确率降至设定阈值以下</div></div>
+<div class="alert-rule"><div class="ar-icon">⏱️</div><div class="ar-text"><strong>响应时间超限</strong> — API响应时间超过设定阈值</div></div>
+<div class="alert-rule"><div class="ar-icon">🔴</div><div class="ar-text"><strong>服务不可用</strong> — 数字员工服务无法访问</div></div>
+<div class="alert-rule"><div class="ar-icon">💻</div><div class="ar-text"><strong>资源使用率过高</strong> — CPU/内存/GPU使用率超过阈值</div></div>
+<p style="margin-top:14px;font-size:.84em;color:var(--text2)">告警通知渠道：平台消息 · 邮件 · 企业微信/飞书/钉钉 · 短信（紧急）</p>
+</div>
+</div>
+
+<div id="dep-log" class="tab-content">
+<div class="sub-card">
+<h4>📝 日志查询</h4>
+<ol class="step-list">
+<li>点击 <strong>"部署运维" → "日志查询"</strong></li>
+<li>支持按智能体、技能、时间范围、日志级别查询日志</li>
+<li>支持关键词搜索和日志导出</li>
+<li>日志自动关联到对应的技能和调用记录，方便问题排查</li>
+</ol>
+</div>
+</div>
+</div>
+
+<!-- 追溯中心 -->
+<div id="sec-trace" class="section">
+<div class="section-title">🔗 追溯中心模块</div>
+<div class="tab-bar">
+<button class="tab-btn active" onclick="showTab('trc','query')">全链路追溯</button>
+<button class="tab-btn" onclick="showTab('trc','rca')">问题定位</button>
+<button class="tab-btn" onclick="showTab('trc','kg')">知识图谱</button>
+</div>
+
+<div id="trc-query" class="tab-content active">
+<div class="sub-card">
+<h4>🔭 全链路追溯查询</h4>
+<ol class="step-list">
+<li>点击 <strong>"追溯中心" → "全链路追溯"</strong></li>
+<li>在搜索框中输入任意信息：需求ID / 技能ID / 代码模块路径 / 测试用例ID / 智能体ID</li>
+<li>系统自动搜索并展示完整的追溯链路</li>
+<li>点击链路中的任意节点，可查看该节点的详细信息和关联数据</li>
+<li>支持导出追溯链路为PDF或图片格式</li>
+</ol>
+<div class="trace-visual" style="margin-top:16px">
+<div class="trace-node" style="border-color:var(--accent)"><div class="tn-label">搜索入口</div><div class="tn-value">任意ID/路径</div></div>
+<div class="trace-arrow">→</div>
+<div class="trace-node" style="border-color:var(--accent3)"><div class="tn-label">智能匹配</div><div class="tn-value">自动搜索</div></div>
+<div class="trace-arrow">→</div>
+<div class="trace-node" style="border-color:var(--green)"><div class="tn-label">完整链路</div><div class="tn-value" style="color:var(--green)">可视化展示</div></div>
+<div class="trace-arrow">→</div>
+<div class="trace-node" style="border-color:var(--orange)"><div class="tn-label">节点下钻</div><div class="tn-value">详情查看</div></div>
+<div class="trace-arrow">→</div>
+<div class="trace-node" style="border-color:var(--pink)"><div class="tn-label">导出报告</div><div class="tn-value">PDF/图片</div></div>
+</div>
+</div>
+</div>
+
+<div id="trc-rca" class="tab-content">
+<div class="sub-card">
+<h4>🔍 问题快速定位</h4>
+<ol class="step-list">
+<li>当数字员工出现异常时，点击告警信息中的<strong>"问题定位"</strong>按钮</li>
+<li>系统自动执行根因分析，展示四大维度：</li>
+</ol>
+<div class="feature-grid" style="margin-top:12px">
+<div class="feature-card"><div class="fc-icon">🔴</div><div class="fc-title">异常现象</div><div class="fc-desc">异常发生的时间、现象、影响范围</div></div>
+<div class="feature-card"><div class="fc-icon">🔬</div><div class="fc-title">根因分析</div><div class="fc-desc">可能的原因和概率</div></div>
+<div class="feature-card"><div class="fc-icon">🔗</div><div class="fc-title">关联信息</div><div class="fc-desc">关联的需求、技能、代码、测试、日志</div></div>
+<div class="feature-card"><div class="fc-icon">✅</div><div class="fc-title">解决方案</div><div class="fc-desc">推荐的解决方案和修复步骤</div></div>
+</div>
+<ol class="step-list" start="3">
+<li>点击<strong>"创建修复工单"</strong>，自动创建Jira工单并分配给对应负责人</li>
+<li>修复完成后，系统自动触发回归测试，验证修复效果</li>
+</ol>
+</div>
+</div>
+
+<div id="trc-kg" class="tab-content">
+<div class="sub-card">
+<h4>📚 知识图谱</h4>
+<p>平台自动沉淀所有追溯数据，形成企业数字员工知识图谱：</p>
+<div class="feature-grid" style="margin-top:12px">
+<div class="feature-card"><div class="fc-icon">📋↔🧩</div><div class="fc-title">需求↔技能关联</div><div class="fc-desc">需求与技能的映射关系</div></div>
+<div class="feature-card"><div class="fc-icon">🧩↔⚙️</div><div class="fc-title">技能↔组件关联</div><div class="fc-desc">技能与技术组件的依赖关系</div></div>
+<div class="feature-card"><div class="fc-icon">⚙️↔💻</div><div class="fc-title">组件↔代码关联</div><div class="fc-desc">技术组件与代码模块的实现关系</div></div>
+<div class="feature-card"><div class="fc-icon">🤖↔🏭</div><div class="fc-title">员工↔场景关联</div><div class="fc-desc">数字员工与业务场景的应用关系</div></div>
+</div>
+<p style="margin-top:12px;font-size:.84em;color:var(--text2)">支持搜索、筛选、导出（图片/JSON格式）</p>
+</div>
+</div>
+</div>
+
+<!-- 角色指南 -->
+<div id="sec-roles" class="section">
+<div class="section-title">👥 不同角色操作指南</div>
+<div class="role-grid">
+<div class="role-card"><div class="rc-icon">📊</div><div class="rc-title">产品经理</div><div class="rc-ops">提交需求 → 跟踪进度 → 验收需求 → 收集反馈</div><div class="rc-tools">需求管理 · 追溯查询 · 运行监控</div></div>
+<div class="role-card"><div class="rc-icon">🧠</div><div class="rc-title">算法工程师</div><div class="rc-ops">算法开发 → 模型训练 → 技能编排 → 模型优化</div><div class="rc-tools">技能开发 · 代码管理 · 版本管理 · 运行监控</div></div>
+<div class="role-card"><div class="rc-icon">💻</div><div class="rc-title">开发工程师</div><div class="rc-ops">代码开发 → 接口开发 → 系统集成 → bug修复</div><div class="rc-tools">代码管理 · 测试管理 · 部署运维 · 问题定位</div></div>
+<div class="role-card"><div class="rc-icon">🧪</div><div class="rc-title">测试工程师</div><div class="rc-ops">用例设计 → 测试执行 → 缺陷管理 → 报告生成</div><div class="rc-tools">测试管理 · 缺陷管理 · 追溯查询</div></div>
+<div class="role-card"><div class="rc-icon">🔧</div><div class="rc-title">运维工程师</div><div class="rc-ops">环境部署 → 运行监控 → 异常处理 → 系统维护</div><div class="rc-tools">部署运维 · 运行监控 · 异常告警 · 日志查询</div></div>
+</div>
+</div>
+
+<!-- FAQ -->
+<div id="sec-faq" class="section">
+<div class="section-title">❓ 常见问题与解决方案</div>
+
+<div class="faq-item">
+<div class="faq-q" onclick="toggleFaq(this)">需求拆解不准确怎么办？<span class="arrow">▼</span></div>
+<div class="faq-a"><p>在需求详情页面点击<strong>"重新拆解"</strong>按钮，手动调整拆解结果；也可以联系平台管理员，优化需求拆解智能体的训练数据。</p></div>
+</div>
+
+<div class="faq-item">
+<div class="faq-q" onclick="toggleFaq(this)">自动生成的代码不符合要求怎么办？<span class="arrow">▼</span></div>
+<div class="faq-a"><p>自动生成的代码只是基础框架，开发人员可以在本地进行修改和完善；也可以提交反馈，帮助平台优化代码生成智能体。</p></div>
+</div>
+
+<div class="faq-item">
+<div class="faq-q" onclick="toggleFaq(this)">测试用例不完整怎么办？<span class="arrow">▼</span></div>
+<div class="faq-a"><p>支持手动添加和编辑测试用例；也可以将常用的测试用例保存为模板，方便后续复用。</p></div>
+</div>
+
+<div class="faq-item">
+<div class="faq-q" onclick="toggleFaq(this)">部署失败怎么办？<span class="arrow">▼</span></div>
+<div class="faq-a"><p>查看部署日志，根据错误信息排查问题；常见问题包括：资源不足、镜像拉取失败、配置错误。</p></div>
+</div>
+
+<div class="faq-item">
+<div class="faq-q" onclick="toggleFaq(this)">数字员工准确率下降怎么办？<span class="arrow">▼</span></div>
+<div class="faq-a"><ol>
+<li>查看运行数据，分析准确率下降的原因</li>
+<li>收集新的样本数据，进行模型增量更新</li>
+<li>调整模型参数或重新训练模型</li>
+<li>更新追溯表中的版本号和准确率</li>
+</ol></div>
+</div>
+
+<div class="card" style="margin-top:20px">
+<h3>⌨️ 快捷键</h3>
+<table class="kb-table">
+<thead><tr><th>快捷键</th><th>功能</th></tr></thead>
+<tbody>
+<tr><td><kbd>Ctrl+S</kbd></td><td>保存</td></tr>
+<tr><td><kbd>Ctrl+F</kbd></td><td>搜索</td></tr>
+<tr><td><kbd>Ctrl+Z</kbd></td><td>撤销</td></tr>
+<tr><td><kbd>Ctrl+Y</kbd></td><td>重做</td></tr>
+<tr><td><kbd>F5</kbd></td><td>刷新</td></tr>
+<tr><td><kbd>Esc</kbd></td><td>关闭当前窗口</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+<div class="footer">
+数字员工平台 · 全链路追溯功能操作手册 V1.0 · 苏州"AI+制造"数字员工平台<br>
+技术支持：support@yourcompany.com | 400-XXX-XXXX
+</div>
+
+<script>
+function showSection(id){
+document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+document.getElementById('sec-'+id).classList.add('active');
+event.target.classList.add('active');
+window.scrollTo({top:0,behavior:'smooth'});
+}
+function showTab(prefix,id){
+var parent=event.target.closest('.section');
+parent.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+parent.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+event.target.classList.add('active');
+document.getElementById(prefix+'-'+id).classList.add('active');
+}
+function toggleFaq(el){
+var ans=el.nextElementSibling;
+var wasOpen=ans.classList.contains('open');
+document.querySelectorAll('.faq-a').forEach(a=>a.classList.remove('open'));
+document.querySelectorAll('.faq-q').forEach(q=>q.classList.remove('open'));
+if(!wasOpen){ans.classList.add('open');el.classList.add('open');}
+}
+</script>
+</body>
+</html>

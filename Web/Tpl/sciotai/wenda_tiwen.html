@@ -1,0 +1,118 @@
+﻿<include file="./head_inner"/>
+<script type="text/javascript" src="__TMPL__/js/ajaxwd.js"></script>
+
+<div class="second">
+	<div class="width-block">
+		<div class="second-left">
+			<div class="left-list">
+				<div class="second-treemenu">
+					<div class="title"><h3><a href="/index.php?s=/member/main.html">用户中心</a></h3></div>
+					<div class="treemenu">
+						<ul id='suckertree1'>
+							<volist name='member_menu' id='vo'>
+							<li><span class="arrow"></span><span class="file"><a href="__ROOT__{$vo.url}" target="_self">{$vo.name}</a></span>
+							<!--判定是否有子类-->
+							</li>
+							</volist>
+
+						</ul>
+					</div>
+				</div>
+				<div class="second-treemenu">
+						<div class="title"><h3><a href="#">问答分类</a></h3></div>
+						<div class="treemenu">
+							<ul id='suckertree1'>
+								
+									  	<?php
+																//查询数据库和缓存
+														$wendagroup = M('wenda_group');
+														//相关判断
+													  $map['status'] = 1;
+														$grouplist = $wendagroup->where($map)->select();
+																
+														$wenda = M('wenda');
+														
+														//封装条件
+										        $map['status'] = 1;
+
+											?>
+											<volist name="grouplist" id="vo">
+											<?php
+												
+									        $map['group_id'] = $vo['group_id'];
+									       
+									        $countofwenda= $wenda->where($map)->count();
+
+											?>
+										<li>
+													<a href='/index.php?s=wenda/mywendalist&group_id={$vo.group_id}' target='_blank'>{$vo.group_name|msubstr=###,0,38,'utf-8'}(<?php echo $countofwenda ?>)</a>
+										</li>
+									</volist>
+						</ul>
+					</div>
+				</div>
+				
+			
+			</div>
+			<div class="ranking">
+				<div class="title">问题访问排行</div>
+							<ul>
+										<php>		$number=1 </php>
+									<volist name="list" id="vo">
+
+												<li>
+												<php>if($number<4){</php>	
+												<span class="topic_flag_hot">{$number++}</span>
+												<php>}else{</php>	
+												<span class="topic_flag">{$number++}</span>
+												<php>}</php>	
+												<div>
+															<a href='/index.php?s=wendadisplay&qid={$vo.id}' target='_blank'>{$vo.content|msubstr=###,0,38,'utf-8'}</a>
+												</div>
+												</li>
+											</volist>
+						</ul>
+			</div>	
+		</div>
+		<div class="second-right">
+			<div class="tw-menu">
+				<ul>
+				    <li><a href="index.php?s=wenda">全部问题</a></li>
+					<li><a href="index.php?s=wenda/mywendalist">我的问题</a></li>
+					<li class="active"><a href="index.php?s=wenda/tiwen">我要提问<i></i></a></li>
+				</ul>
+			</div>
+				
+			<div class="pusl-list questions">
+					<div class="bule"></div>
+					<form id="form1" name="form1" method="post" action="">
+						<div class="tw-all">
+							<div class="tw-tips"><i>●</i> 欢迎使用律伯专业回答，您的问题将在2个工作日之内由专业人员回答，如果您在上述时间未收到答复，请及时拨打我们的客服电话400-111-8282（工作时间：周一至周五9:00~18:00）。对于有代表性的问题和回答，我们会以匿名方式在专家问答栏目发布。</div>
+						 	<div class="input-wor"><label>分组：</label>
+									 <select class="form-control" name="group_id" id="group_id">
+									<!--	<option value="-1">请选择</option>-->
+										<arclist model="wenda_group" id="vo">
+										<option value="{$vo.group_id}" <eq name="info.group_id" value="$vo[group_id]">selected="selected"</eq>>{$vo.group_name}</option>
+										</arclist>
+									</select>
+							</div>
+							<div class="input-wor"><label>标题：</label><input type="text" name="title"  id="title" ><span>*</span><div class="limit">(最多50个字)</div></div>
+							<div class="input-wor"><label>问题：</label><textarea rows="4" name="wendaanswercontent" id="wendaanswercontent"></textarea><span>*</span><div class="limit">(最多1000个字)</div></div>
+							<div class="tw-tips"><i>●</i> 请填写正确的邮箱信息以确保您及时收到我们的答复。</div>
+							<div class="input-wor"><label>姓名：</label><input type="text" name="author" id="Author" readonly="true" value="{$_SESSION['cms_realname']}"></div>
+							<div class="input-wor"><label>电话：</label><input type="text" name='tel' id="tel"><span>*</span></div>
+							<div class="input-wor"><label>邮箱：</label><input type="text" name="email" id="email" ><span>*</span></div>
+							<div class="tw-tips"><i>●</i> 所有答复内容无意并不构成法律意见或代替恰当的法律咨询，对于您全部或者基于此回答内容而采取的行为及其法律后果，“律伯”并不承担法律责任。</div>
+							<div class="tw-btn"><input type="button" value=" 提交问题 " id="sendWendaQuestion" onClick="AddWendaQuestion();"/></div>
+						
+						</div>
+					</form>
+				</div>
+			</div>
+				<script>
+				var root = "{$url}";
+				</script>
+	</div>
+</div>
+
+<include file="$footer"/>

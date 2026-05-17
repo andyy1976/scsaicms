@@ -1,0 +1,144 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>实务课堂</title>
+    <link href="__TMPL__css/bootstrap.min.css" rel="stylesheet">
+    <link href="__TMPL__css/main.css" rel="stylesheet">
+    <script src="__TMPL__js/jquery-1.10.2.min.js"></script>
+	<script src="__TMPL__js/bootstrap.min.js"></script>
+	<script src="__TMPL__js/main.js"></script>
+	<link href="__TMPL__css/video-js.min.css" rel="stylesheet">
+	<style>
+body {
+	background-color: #191919
+}
+.m {
+	width: 960px;
+	height: 400px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 100px;
+}
+</style>
+</head>
+
+<body>
+<div class="classroom-main">
+	<div class="classroom-left">
+		<div class="left-top-return"><a href='/index.php?s=classroom&CategoryId={$_REQUEST[CategoryId]}' >返回</a></div>
+			<?php
+		
+		$courseId=$_GET['courseId'];
+		$courseInfo = M('course');
+		$courseDetail = $courseInfo->where('id='.$courseId)->select();
+		?>
+		  <volist name="courseDetail" id="vo5">
+		<div class="left-top-title">{$vo5.course_name}</div>
+			</volist>
+		<div class="left-menu">
+	
+			<ul>
+			
+<arclist model="course_chapters" where="courseid='$_REQUEST[courseId]'" order="public_time desc" id="vo" >
+<li class="active"><div class="heats up"><b><a href='/index.php?s=chapter&courseId={$_GET['courseId']}&chapterid={$vo.id}'>{$vo.chapter_name}</a></b><i></i></div>
+</li>
+
+</arclist>
+				<li class="active"><div class="heats up"><b>课程导语</b><i></i></div>
+				
+				</li>
+				
+				<li><div class="heats"><b>第一章 高转化率卖货文案的销售公式</b><i></i></div>
+					<ul class="list">
+						<li><span class="video-icon"></span><a href="javascript:">卖货文案不为人知的核心四步骤</a></li>
+					</ul>
+				</li>
+				
+				<li><div class="heats"><b>第二章 卖掉35.8万元啤酒的案例分享</b><i></i></div>
+					<ul class="list">
+						<li><span class="video-icon"></span><a href="javascript:">案例解析：一篇推文为什么能卖货35.8万元？</a></li>
+					</ul>
+				</li>
+				
+				<li><div class="heats"><b>「福利」更多免费课程</b><i></i></div>
+					<ul class="list">
+						<li><span class="text-icon"></span><a href="javascript:">戳此还有其他好课</a></li>
+						<li><span class="text-icon"></span><a href="javascript:">未来要开的课表在这里</a></li>
+						<li><span class="text-icon"></span><a href="javascript:">版权声明</a></li>
+					</ul>
+				</li>
+				
+			</ul>
+		</div>
+	</div>
+	<div class="classroom-right">
+		<?php
+		
+		$chapterid=$_GET['chapterid'];
+		$type1 = M('course_chapters');
+		$chapterDetail = $type1->where('id='.$chapterid)->select();
+		?>
+	   <volist name="chapterDetail" id="vo2">
+		<div class="right-top">{$vo2.chapter_name}</div>
+		<div class="right-content">
+		{$vo2.content}			
+		</div>
+	
+		<div class="right-video">
+		 <video id="my-video"  class="video-js vjs-big-play-centered" controls preload="none" width="860" height="500"  poster="m.jpg" data-setup="{}">
+          <source src="__TMPL__vedio/video.mp4" type="video/mp4">
+      
+    <!--     <p class="vjs-no-js"> To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a> </p> -->
+      </video>
+      <script src="__TMPL__js/video.min.js"></script> 
+      <script src="__TMPL__js/zh-CN.js"></script>   
+      <script type="text/javascript">
+			var myPlayer = videojs('my-video');
+			videojs("my-video").ready(function(){
+				var myPlayer = this;
+				myPlayer.play();
+			});
+			  
+		</script> 
+		</div>
+		</volist>
+		
+		<!-- <div class="evaluate">
+			<div class="ce-p">觉得本章课程内容如何？{$chapterid}{$_REQUEST[chapterid]}</div>
+			<div class="ev-icon">
+				<ul>
+					<li>
+						<p class="bt-1"></p>
+						<p class="wz">较差</p>
+						<span class="active"></span>
+					</li>
+					<li>
+						<p class="bt-2"></p>
+						<p class="wz">一般</p>
+						<span></span>
+					</li>
+					<li>
+						<p class="bt-3"></p>
+						<p class="wz">很好</p>
+						<span></span>
+					</li>
+				</ul>
+			</div>
+			<div class="ce-btn"><button type="button">提交</button></div>
+			<div class="ce-txt">
+				<textarea name="" id="ce-textarea" cols="30" rows="5" placeholder="（选填）好吧，勇敢说出来，我不会打小报告的。"></textarea>
+			</div>
+		</div> -->
+		
+		<div class="page-code">
+			<a href="javascript:" class="upper">上一节</a>
+			<div class="page">1/1</div>
+			<a href="javascript:" class="lower">下一节</a>
+		</div>
+	</div>
+</div>
+</body>
+
+</html>

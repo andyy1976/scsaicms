@@ -1,0 +1,74 @@
+<include file="./head"/>
+
+ <!-- 内容区 -->
+ <div class="he_content">
+    <div class="container clearfix">
+
+        <!-- 左侧导航 -->
+        <div class="pz_SideLayerNews fl">
+            <php>
+                $fid=get_field('type','typeid='.$type[typeid],'fid');
+                if($fid==0){
+                    $pid=$type[typeid];
+                    $pname=$type[typename];
+                } else {
+                    $pid=$fid;
+                    $pname=get_field('type','typeid='.$pid,'typename');
+                }
+            </php>
+
+            <category parentid="$pid" id="vo">
+            <li class="l1 <php>if($type['typeid'] == $vo['typeid']){</php>  on <php>}</php>">
+                <a href='{$vo.typeid|url=lists,###}'>{$vo.typename}</a>
+                <php>{</php>
+                    <ul>
+                        <category parentid="$vo[typeid]" id="voo">
+                        <li><span class="file <php>if($type['typeid'] == $voo['typeid']){</php>  active <php>}</php>">
+                            <a href='{$voo.typeid|url=lists,###}'>{$voo.typename}</a>
+                        </span></li>
+                        </category>
+                    </ul>
+                <php>}</php>
+            </li>
+            </category>
+        </div>
+        <!-- 左侧导航 end -->
+
+        <!-- 右侧内容 -->
+        <div class="pz_SideLayerMain fr">
+            <div class="he_detail">
+                <h1 class="he_detail_title">{$info.title}</h1>
+                <div class="he_detail_meta">
+                    <span class="he_date">{$info.createtime|date='Y-m-d H:i'}</span>
+                    <span class="he_author">{$info.author}</span>
+                    <span class="he_views">阅读 {$info.views}</span>
+                </div>
+                <div class="he_detail_content">
+                    {$info.content}
+                </div>
+
+                <!-- 上下篇 -->
+                <div class="he_detail_nav clearfix">
+                    <div class="he_detail_prev fl">
+                        <span>上一篇：</span>
+                        <previd id="$info.id" typeid="$type.typeid">
+                            <a href="{$pre.id|url=show,###}">{$pre.title}</a>
+                        </previd>
+                        <span>没有更早的文章了</span>
+                    </div>
+                    <div class="he_detail_next fr">
+                        <span>下一篇：</span>
+                        <nextid id="$info.id" typeid="$type.typeid">
+                            <a href="{$nex.id|url=show,###}">{$nex.title}</a>
+                        </nextid>
+                        <span>没有更新的文章了</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 右侧内容 end -->
+
+    </div>
+</div>
+
+<include file="./footer"/>

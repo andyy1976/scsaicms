@@ -1,0 +1,128 @@
+﻿<include file="./head_inner"/>
+   
+
+<div class="second">
+	<div class="width-block">
+		<div class="second-left">
+			<div class="left-list">
+				
+					<div class="second-info">
+					<div class="title"><h3>专家页面</h3></div>
+						<div class="list">
+						<ul>
+							<li class="active"><a href="index.php?s=memberlist">团队展示</a></li>
+							<php>if((isset($_SESSION['cms_username'])&&$_SESSION['cms_username'] !='')){</php>
+							<li><a href="/blog/admin/">后台管理</a></li>
+							<php>	}</php>
+						</ul>
+						</div>
+					</div>
+					<div class="second-treemenu">
+					<div class="title"><h3><a href="#">主题分类</a></h3></div>
+					<div class="treemenu">
+						<ul id='suckertree1'>
+							
+								  	<?php
+															//查询数据库和缓存
+													$category = M('metas');
+													//相关判断
+												  $map['type'] = "category";
+												  $map['parent'] =0;
+													$categorylist = $category->where($map)->select();
+															
+													$content = M('relationships');
+													
+													
+
+											?>
+											<volist name="categorylist" id="vo">
+											<?php
+												
+									        $map['mid'] = $vo['mid'];
+									       
+									        $countofblogarticle= $content->where($map)->count();
+
+											?>
+										<li>
+													<a href='/blog/index.php/category/{$vo.slug}' >{$vo.name|msubstr=###,0,38,'utf-8'}(<?php echo $countofblogarticle ?>)</a>
+										</li>
+									</volist>
+						</ul>
+					</div>
+				</div>
+				
+					</div>
+		</div>
+		<div class="second-right">
+			
+			<div class="pusl-list questions">
+				<div class="joint"><a href="/blog/">专家页面</a> > <a href="index.php?s=memberlist">团队展示 </a> > 专家主页</div>
+				<div class="bule"></div>
+				
+				<div class="proficient-all">
+		
+					<div class="proficient-info">
+						<dl>
+							<dt><img src="{$user.icon}" width="160" height="160"></dt>
+							<dd class="name"><a href="#">{$user.realname}</a></dd>
+							<dd class="suggest">{$user.description}</dd>
+						</dl>
+					</div>
+
+				</div>
+	
+			
+			
+		</div>
+			
+		<div class="tw-menu">
+					<ul>
+						<li class="active"><a href="#">他的文章</a></li>
+						<li><a href="index.php?s=memberlist/user/&userid={$user.id}">他回复的问题<i></i></a></li>
+					</ul>
+				
+		</div>
+
+	<div class="pusl-list questions">
+				<div class="joint">专家{$user.realname} ， 共发表了<span>{$count}</span>篇博客文章
+					<php>if(!(isset($_SESSION['cms_username'])&&$_SESSION['cms_username'] !='')){</php>
+						,未<a href="#" class="dl-tc">登录</a>时只显示前10篇文章
+					<php>	}</php>
+			    </div>
+				<div class="bule"></div>
+				<ul>
+			
+					<volist name="list" id="vo">
+						<li>
+							<div class="number">{$startnumber++}</div>
+							<div class="rit-cont">
+								<div class="name"><i>T</i><a href='/blog/index.php/archives/{$vo.cid}' target='_blank'>{$vo.title|msubstr=###,0,60,'utf-8'}</a></div>
+								<div class="info"><i>C</i>{$vo.text|msubstr=###,0,80,'utf-8'}</div>
+								<div class="tips"><span>分类: {:get_field('metas','parent='.$vo[mid],'name')}</span> 时间:{$vo.created|msubstr=###,0,10}</div>
+						
+							
+							</div>
+								<div id="pinglunother">
+							<div id="pinglunym"></div><!--评论分页信息 -->
+						</div>
+						</li>
+					</volist>
+				</ul>
+					<php>if((isset($_SESSION['cms_username'])&&$_SESSION['cms_username'] !='')){</php>
+				<div class="page-al">
+					<div class="dataTables_paginate pagination">
+					    <nav>
+					        <ul class="pagination">
+					        	
+					        	 {$page}
+					        </ul>
+					    </nav>
+					</div>
+				</div>
+				<php>	}</php>
+			</div>
+			</div>
+	</div>
+</div>
+
+<include file="$footer"/>

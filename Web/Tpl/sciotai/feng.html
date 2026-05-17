@@ -1,0 +1,1416 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+<meta name="renderer" content="webkit|ie-comp|ie-stand" />
+<meta name="format-detection" content="telephone=no" />
+<title>蜂鸟视图-室内地图制作_室内定位导航_3D可视化室内地图开发</title>
+<meta name="keywords" content="室内地图,室内地图制作,室内定位,室内导航,室内定位导航,室内地图导航,室内三维地图,室内地图开发,室内地图编辑器,蜂鸟云,蜂鸟视图官网,fengmap,可视化室内地图" />
+<meta name="description" content="蜂鸟视图（FengMap）提供室内地图制作、室内三维3D地图开发、室内定位导航系统技术应用、企业数据可视化管理系统开发等服务，是行业领先的可视化智能管理解决方案提供商，咨询热线：4006800432" />
+<link rel="icon" href="favicon.ico" type="image/x-icon" />
+<link type="text/css" rel="stylesheet" href="/template/eyou/pc/css/public.css" />
+<link type="text/css" rel="stylesheet" href="/template/eyou/pc/css/animate.min.css" />
+<link type="text/css" rel="stylesheet" href="/template/eyou/pc/style.css" />
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?0d708743db5c874369fcf24b77f0c9af";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<script type='text/javascript'>
+!function(e,t,n,g,i){e[i]=e[i]||function(){(e[i].q=e[i].q||[]).push(arguments)},n=t.createElement("script"),tag=t.getElementsByTagName("script")[0],n.async=1,n.src=('https:'==document.location.protocol?'https://':'http://')+g,tag.parentNode.insertBefore(n,tag)}(window,document,"script","assets.giocdn.com/2.1/gio.js","gio");
+  gio('init','aa3a0f8f1ff93059', {});
+//custom page code begin here
+//custom page code end here
+gio('send');
+</script>
+</head>
+<body>
+ <!--pc obtn-->
+<div id="obtn">
+    <div class="head">
+        <div class="container1">
+            <div class="logo"><a href="/"><img width="100%" src="/template/eyou/pc/_im_g/logo.png" _tip="137*28" alt="蜂鸟视图LOGO" /></a></div>
+            <div class="menuph" id="menuph">
+                <div class="point">
+                    <span class="navbtn"></span>
+                </div>
+            </div>
+            <div class="cloud"><a href="https://developer.fengmap.com/fmAPI/#/" rel="nofollow" target="_blank" data-agl-cvt="5">在线体验</a></div>
+			  <div class="language">			    
+			    <a href="https://cloud.fengmap.com/about-console.html"rel="nofollow" target="_blank" >开发者中心</a><i>|</i>
+				<a href="https://account.fengmap.com/login" rel="nofollow" target="_blank" >登录</a>
+			  </div>
+			  <div class="tel">
+            	<a href="tel:400-680-0432">400-680-0432</a>
+             </div>
+            <div class="menu">
+                <ul>
+                    <li class="nli active">
+                        <span><a href="/" data-n="1" title="">首页</a></span>
+                    </li>
+                    <li class="nli">
+                        <span><a href="javascript:;" data-n="2" title="">解决方案</a></span>
+					 <ul class="sub" data-m="2">
+                            <div class="subBox">
+                                 <!---li class="first"><a href="javascript:;">解决方案</a></li--->
+								                                <li><a href="/business/">资管招商可视化系统</a></li>
+								                                <li><a href="/industry-iot/">智慧厂务管理系统</a></li>
+								 
+								<li style="padding-left:15%;"><a href="/guide/">定位导航<span style="color:#fe0001"> 活动</span></a></li>
+								<!---li style="padding-left:15%;"><a href="/nursing/">智慧养老<span style="color:#fe0001"> NEW</span></a></li>
+								<li style="padding-left:15%;"><a href="/dt/">数字孪生<span style="color:#fe0001"> NEW</span></a></li>
+								<li style="padding-left:15%;"><a href="/city/">数字城市<span style="color:#fe0001"> NEW</span></a></li>
+								<li style="padding-left:15%;"><a href="/screen/">可视化大屏<span style="color:#fe0001"> NEW</span></a></li>
+								<li style="padding-left:15%;"><a href="/powerplant/">智慧电厂<span style="color:#fe0001"> NEW</span></a></li--->
+                            </div>
+                        </ul>
+
+                    </li>
+                    <li class="nli">
+                        <span><a href="javascript:;" data-n="3" title="">产品与服务</a></span>
+                        <ul class="sub proSub" data-m="3">
+                            <div class="subBox">
+                                <div class="tableBox">
+                                    <li class="first"><a href="javascript:;">蜂鸟云平台</a></li>                                  
+                                          <li><a href="/product-mapeditor/">地图编辑器</a></li>								       
+                                          <li><a href="/product-theme/">主题编辑器</a></li>								       
+                                          <li><a href="/product-sdk/">三维地图引擎</a></li>								       
+                                          <li><a href="/product-location/">室内定位</a></li>
+										  <li><a href="https://developer.fengmap.com/" target="_blank">地图开发平台</a></li>
+										  
+                                </div>
+                                <div class="tableBox two">
+                                    <li class="first"><a href="javascript:;">企业服务</a></li>
+                                          <li><a href="/services-data/">室内外地图绘制服务</a></li>								       
+                                          <li><a href="/services-position/">空间位置服务</a></li>								       
+                                          <li><a href="/services-system/">系统应用开发</a></li>	
+										  <li><a href="/spatial/">私有化部署<span style="color:#fe0001"> NEW</span></a></li>
+                                          <li><a href="/HighFlyer/">翰鸟智能</a></li>
+                                </div>
+                            </div>
+                        </ul>
+                    </li>
+                    <li class="nli">
+                        <span><a href="/price/" data-n="4" title="">产品定价</a></span>
+                    </li>
+                    <li class="nli">
+                        <span><a href="/case/" data-n="5" title="">客户案例</a></span>
+                    </li>
+                    <li class="nli">
+                        <span><a href="/experience/" data-n="6" title="">演示中心 </a></span>
+                    </li>
+                    <li class="nli">
+                        <span><a href="javascript:;" data-n="7" title="">关于我们</a></span>
+                        <ul class="sub" data-m="7">
+                            <div class="subBox subBox1">                                
+                                <li><a href="/about/">公司简介</a></li>
+                                <li><a href="/about/#04">联系我们</a></li>
+                                <li><a href="/news/company/">新闻资讯</a></li>								
+								<li><a href="/join/">代理招募 <sup>HOT</sup></a></li>
+                            </div>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- ph下拉 -->
+    <div class="xialaph">
+        <ul class="ul1">
+            <li>
+                <h4>
+                    <div class="container">
+                        <a href="/">首页</a>
+                    </div>
+                </h4>
+            </li>
+            <li>
+                <h4>
+                    <div class="container">
+                        <a href="javascript:;">解决方案</a>
+						<img class="img_s" src="/template/eyou/pc/_im_g/xiap11.png">
+                        <img class="img_d" src="/template/eyou/pc/_im_g/xiap1.png">
+                    </div>
+                </h4>
+				<ul class="ul2">
+                    <div class="container">
+                                            <li><h5><a href="/business/">资管招商可视化系统</a></h5></li>
+					                         <li><h5><a href="/industry-iot/">智慧厂务管理系统</a></h5></li>
+					   
+					  <li><h5><a href="/guide/">定位导航<sup style="color: #ff0000;">活动</sup></a></h5></li>
+					  <!---li><h5><a href="/nursing/">智慧养老<span style="#ff0000"> NEW</span></a></h5></li>
+					  <li><h5><a href="/dt/">数字孪生<span style="#ff0000"> NEW</span></a></h5></li>
+					  <li><h5><a href="/city/">数字城市<span style="#ff0000"> NEW</span></a></h5></li--->
+                    </div>
+                </ul>
+            </li>
+            <li>
+                <h4>
+                    <div class="container">
+                        <a href="javascript:;">产品与服务</a>
+                        <img class="img_s" src="/template/eyou/pc/_im_g/xiap11.png">
+                        <img class="img_d" src="/template/eyou/pc/_im_g/xiap1.png">
+                    </div>
+                </h4>
+                 <ul class="ul2">
+                    <div class="container">
+                           <li><h5><a href="/product-mapeditor/">地图编辑器</a></h5></li>								       
+                           <li><h5><a href="/product-theme/">主题编辑器</a></h5></li>								       
+                           <li><h5><a href="/product-sdk/">三维地图引擎</a></h5></li>								       
+                           <li><h5><a href="/product-location/">室内定位</a></h5></li>
+                           <li><h5><a href="/services-data/">室内外地图绘制服务</a></h5></li>						   
+                           <li><h5><a href="/services-position/">空间位置服务</a></h5></li>						   
+                           <li><h5><a href="/services-system/">系统应用开发</a></h5></li>						   
+                           <li><h5><a href="/HighFlyer/">翰鸟智能</a></h5></li>
+						   <!--li><h5><a href="/navigation/">5000元导视系统 <sup style="color: #ff0000;">NEW</sup></a></h5></li-->	
+                    </div>
+                </ul>
+            </li>
+            <li>
+                <h4>
+                    <div class="container">
+                        <a href="/price/">产品定价</a>
+                    </div>
+                </h4>
+            </li>
+            <li>
+                <h4>
+                    <div class="container">
+                        <a href="/case/">客户案例</a>
+                    </div>
+                </h4>
+            </li>
+            <li>
+                <h4>
+                    <div class="container">
+                        <a href="/experience/">演示中心 </a>
+                    </div>
+                </h4>
+            </li>
+            <li>
+                <h4>
+                    <div class="container">
+                        <a href="/about/">关于我们</a>                        
+                    </div>
+                </h4>
+            </li>
+			<li>
+                <h4>
+                    <div class="container">
+                        <a href="/join/">代理招募 <sup style="color: #ff0000;">HOT</sup></a>                        
+                    </div>
+                </h4>
+            </li>
+        </ul>
+    </div>
+</div>
+<!--pz_bannner-->
+<div id="obtn">
+    <div class="slide_banner">
+	     
+
+
+	   	<!--banner2-->
+          <div>
+            <div class="box hidden-xs">     
+			   <a href="https://cloud.fengmap.com/about-converter.html"  rel="nofollow" target="_blank" >	
+			   <img src="/template/eyou/pc/banner/059.jpg" alt="CAD转三维地图工具" width="100%"  />		
+			   </a>
+            </div>     
+            <div class="box visible-xs">     
+			   <a href="https://cloud.fengmap.com/about-converter.html" rel="nofollow" target="_blank" >	
+               <img src="/template/eyou/pc/banner/060.jpg" alt="CAD转三维地图工具" width="100%" />  		
+			   </a>
+            </div>
+          </div>
+	   <!--banner1-->
+	   	
+			   	<!--banner2-->
+          <div>
+            <div class="box hidden-xs">     
+			   <a href="https://developer.fengmap.com/develop-document.html"  rel="nofollow" target="_blank" >	
+			   <img src="/template/eyou/pc/banner/061.jpg" alt="openai v2接口上线" width="100%"  />		
+			   </a>
+            </div>     
+            <div class="box visible-xs">     
+			   <a href="https://developer.fengmap.com/develop-document.html" rel="nofollow" target="_blank" >	
+               <img src="/template/eyou/pc/banner/062.jpg" alt="openai v2接口上线" width="100%" />  		
+			   </a>
+            </div>
+          </div>
+	   <!--banner1-->
+
+		<!--banner1-->
+          <!---div>
+            <div class="box hidden-xs">     
+			   <a href="/screen/" target="_blank" >	
+			   <img src="/template/eyou/pc/banner/053.jpg" alt="可视化大屏" width="100%"  />		
+			   </a>
+            </div>     
+            <div class="box visible-xs">     
+			   <a href="/screen/" target="_blank" >	
+               <img src="/template/eyou/pc/banner/054.jpg" alt="可视化大屏" width="100%" />  		
+			   </a>
+            </div>
+          </div--->
+	   <!--banner1-->
+		
+	     	<!--banner1-->
+          <div>
+            <div class="box hidden-xs">     
+			   <a href="https://cloud.fengmap.com/about-creator.html" rel="nofollow" target="_blank" >	
+			   <img src="/template/eyou/pc/banner/051.jpg" alt="蜂鸟云室内外一体化编辑功能上线" width="100%"  />		
+			   </a>
+            </div>     
+            <div class="box visible-xs">     
+			   <a href="https://cloud.fengmap.com/about-creator.html" rel="nofollow" target="_blank" >	
+               <img src="/template/eyou/pc/banner/052.jpg" alt="蜂鸟云室内外一体化编辑功能上线" width="100%" />  		
+			   </a>
+            </div>
+          </div>
+	   <!--banner1-->
+
+	   	<!--banner1-->
+          <div>
+            <div class="box hidden-xs">     
+			   <a href="/spatial/" target="_blank" >	
+			   <img src="/template/eyou/pc/banner/037.jpg" alt="空间数据平台私有化部署" width="100%"  />		
+			   </a>
+            </div>     
+            <div class="box visible-xs">     
+			   <a href="/spatial/" target="_blank" >	
+               <img src="/template/eyou/pc/banner/038.jpg" alt="空间数据平台私有化部署" width="100%" />  		
+			   </a>
+            </div>
+          </div>
+	   <!--banner1-->
+
+		<!--banner1-->
+          <div>
+            <div class="box hidden-xs">     
+			   <a href="/guide/" target="_blank" >	
+			   <img src="/template/eyou/pc/banner/043.jpg" alt="室内外导航导览" width="100%"  />		
+			   </a>
+            </div>     
+            <div class="box visible-xs">     
+			   <a href="/guide/" target="_blank" >	
+               <img src="/template/eyou/pc/banner/044.jpg" alt="室内外导航导览" width="100%" />  		
+			   </a>
+            </div>
+          </div>	  
+		<!--banner1-->
+          <div>
+            <div title="" class="box hidden-xs">
+			   <a href="https://www.fengmap.com/product-mapeditor/"  target="_blank" >
+                <img src="https://fengmap.bsoo.com.cn/c05.jpg" alt="地图编辑器banner" width="100%"  />
+			   </a>
+            </div>     
+            <div title="" class="box visible-xs">
+		      <a href="https://www.fengmap.com/product-mapeditor/" target="_blank" >
+                <img src="https://fengmap.bsoo.com.cn/b05.jpg" alt="地图编辑器banner" width="100%" />
+			  </a>
+            </div>
+          </div>
+		<!---banner5-->
+
+    </div>
+</div>
+<div id="obtn">
+    <div class="container">
+        <div class="homeSolution">
+            <div class="homeTit wow fadeInUp">覆盖全行业的解决方案</div>
+            <div class="hSolutionIco wow fadeInUp">
+                <div>
+                    <div class="tIco"><img src="/template/eyou/pc/picture/main1.png" alt="智慧商业图标" /></div>
+                    <div class="dText">智慧商业</div>
+                </div>
+                <div>
+                    <div class="tIco"><img src="/template/eyou/pc/picture/main2.png" alt="工业互联网图标" /></div>
+                    <div class="dText">工业互联网</div>
+                </div>
+                <div>
+                    <div class="tIco"><img src="/template/eyou/pc/picture/main3.png" alt="智慧园区图标" /></div>
+                    <div class="dText">智慧园区</div>
+                </div>
+                <div>
+                    <div class="tIco"><img src="/template/eyou/pc/picture/main4.png" alt="智慧消防图标" /></div>
+                    <div class="dText">智慧消防</div>
+                </div>
+                <div>
+                    <div class="tIco"><img src="/template/eyou/pc/picture/main5.png" alt="交通枢纽图标" /></div>
+                    <div class="dText">交通枢纽</div>
+                </div>
+                <div>
+                    <div class="tIco"><img src="/template/eyou/pc/picture/main6.png" alt="其他行业图标" /></div>
+                    <div class="dText">其他行业</div>
+                </div>
+            </div>
+            <div class="hSolutionText wow zoomIn">
+                <div>
+                    <div class="li1">
+                        <div class="leftText">
+                            <div class="tH1">智慧商业</div>
+                            <div class="p1">
+                               蜂鸟视图以核心业务为切入点，量身定制以时空大数据为基础的智慧商业可视化管理解决方案。通过选址大数据、资产大数据、消费大数据，进一步提升商业机构的管理效率，实现资源互联。通过平台构建的商业资源总线，为商业机构切实优化招商工作流程，解决商业管理需求。
+					<!--
+                               为商业地产客户打造空间化智慧管理解决方案，整体提升资产管理、商业运营的信息系统可视化水平，完成“数字”到“智慧”的改造升级。<br><div style="width:8px;height:8px;background-color:#58d398;border-radius: 50%;display: inline-block;margin-right: 10px;"></div>购物中心
+					<br><div style="width:8px;height:8px;background-color:#58d398;border-radius: 50%;display: inline-block;margin-right: 10px;"></div>商业综合体
+					<br><div style="width:8px;height:8px;background-color:#58d398;border-radius: 50%;display: inline-block;margin-right: 10px;"></div>连锁商超
+					<br><div style="width:8px;height:8px;background-color:#58d398;border-radius: 50%;display: inline-block;margin-right: 10px;"></div>智慧商圈
+					<br><div style="width:8px;height:8px;background-color:#58d398;border-radius: 50%;display: inline-block;margin-right: 10px;"></div>智慧社区-->
+                            </div>
+                            <div class="more">
+                                <a href="/business/"><span>了解更多</span> <i></i></a>
+                            </div>
+                        </div>
+                        <div class="rightImg">
+                            <img src="/template/eyou/pc/image/j1.jpg" alt="智慧商业可视化方案"/>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="li1">
+                        <div class="leftText">
+                            <div class="tH1">工业互联网</div>
+                            <div class="p1">
+                                工业互联网解决方案实现物联网化中心管控，搭建可视化智慧安全管理平台，助力传统工业实现信息化、数字化、智能化转型。
+					<br><div style="width:8px;height:8px;background-color:#00c1b3;border-radius: 50%;display: inline-block;margin-right: 10px;"></div>化工行业
+					<br><div style="width:8px;height:8px;background-color:#00c1b3;border-radius: 50%;display: inline-block;margin-right: 10px;"></div>电力行业
+					<br><div style="width:8px;height:8px;background-color:#00c1b3;border-radius: 50%;display: inline-block;margin-right: 10px;"></div>钢结构行业
+					<br><div style="width:8px;height:8px;background-color:#00c1b3;border-radius: 50%;display: inline-block;margin-right: 10px;"></div>工程机械行业
+                            </div>
+                            <div class="more">
+                                <a href="/industry-iot/"><span>了解更多</span> <i></i></a>
+                            </div>
+                        </div>
+                        <div class="rightImg">
+                            <img src="/template/eyou/pc/image/j2.jpg" alt="工业互联网可视化方案"/>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="li1">
+                        <div class="leftText">
+                            <div class="tH1">智慧园区</div>
+                            <div class="p1">
+                               把可视化应用带入每个园区，打造智慧化的园区管理模式，升级对园区企业和客户的服务与体验，让智慧触手可及。
+					<br><div style="width:8px;height:8px;background-color:#00c1b3;border-radius: 50%;display: inline-block;margin-right: 10px;"></div>地产园区
+					<br><div style="width:8px;height:8px;background-color:#00c1b3;border-radius: 50%;display: inline-block;margin-right: 10px;"></div>产业园区
+					<br><div style="width:8px;height:8px;background-color:#00c1b3;border-radius: 50%;display: inline-block;margin-right: 10px;"></div>政府园区
+					<br><div style="width:8px;height:8px;background-color:#00c1b3;border-radius: 50%;display: inline-block;margin-right: 10px;"></div>智慧校园
+					<br><div style="width:8px;height:8px;background-color:#00c1b3;border-radius: 50%;display: inline-block;margin-right: 10px;"></div>化工园区
+                            </div>
+                            <div class="more">
+                                <a href="/park/"><span>了解更多</span> <i></i></a>
+                            </div>
+                        </div>
+                        <div class="rightImg">
+                            <img src="/template/eyou/pc/image/j3.jpg" alt="智慧园区管理系统方案"/>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="li1">
+                        <div class="leftText">
+                            <div class="tH1">智慧消防</div>
+                            <div class="p1">
+                                蜂鸟视图响应公安消防部颁布的《关于全面推进“智慧消防”建设的指导意见》，运用物联网、三维可视化技术、定位技术等手段探索建立防消结合工作新模式，研发出“可视化‘防’控管理与‘消’除作战平台”，全力推动社会化消防工作整体提升。
+                            </div>
+                            <div class="more">
+                                <a href="/firefighting/"><span>了解更多</span> <i></i></a>
+                            </div>
+                        </div>
+                        <div class="rightImg">
+                            <img src="/template/eyou/pc/image/j4.jpg" alt="智慧消防可视化方案"/>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="li1">
+                        <div class="leftText">
+                            <div class="tH1">交通枢纽</div>
+                            <div class="p1">
+                               围绕各类交通枢纽“运控、安防、服务”三大业务领域，构建可视化智能管理与服务解决方案，为旅客打造智能化的出行服务，为政府和交管机构提供管控优化指导。
+					<br><div style="width:8px;height:8px;background-color:#00c1b3;border-radius: 50%;display: inline-block;margin-right: 10px;"></div>高铁站
+					<br><div style="width:8px;height:8px;background-color:#00c1b3;border-radius: 50%;display: inline-block;margin-right: 10px;"></div>地铁站
+					<br><div style="width:8px;height:8px;background-color:#00c1b3;border-radius: 50%;display: inline-block;margin-right: 10px;"></div>火车站
+					<br><div style="width:8px;height:8px;background-color:#00c1b3;border-radius: 50%;display: inline-block;margin-right: 10px;"></div>智慧机场
+					<br><div style="width:8px;height:8px;background-color:#00c1b3;border-radius: 50%;display: inline-block;margin-right: 10px;"></div>智慧港口
+                            </div>
+                            <div class="more">
+                                <a href="/traffic/"><span>了解更多</span> <i></i></a>
+                            </div>
+                        </div>
+                        <div class="rightImg">
+                            <img src="/template/eyou/pc/image/j5.jpg" alt="交通枢纽地图导航方案"/>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="li1">
+                        <div class="leftText">
+                            <div class="tH1">其他行业</div>
+                            <div class="p1">                               
+					<div style="width:8px;height:8px;background-color:#00c1b3;border-radius: 50%;display: inline-block;margin-right: 10px;"></div>会议与展览：大型会议、展览、博览会场馆
+					<br><div style="width:8px;height:8px;background-color:#00c1b3;border-radius: 50%;display: inline-block;margin-right: 10px;"></div>景点与度假区：景区、公园、博物馆、花园酒店等场所
+					<br><div style="width:8px;height:8px;background-color:#00c1b3;border-radius: 50%;display: inline-block;margin-right: 10px;"></div>公共服务与办公：学校、医院、图书馆、办事机构等公共服务场所及办公楼宇
+                            </div>
+                            <div class="more">
+                                <a href="http://p.qiao.baidu.com/cps/chat?siteId=15082202&userId=18852476&siteToken=0d708743db5c874369fcf24b77f0c9af" rel="nofollow" target="_blank" ><span>了解更多</span> <i></i></a>
+                            </div>
+                        </div>
+                        <div class="rightImg">
+                            <img src="/template/eyou/pc/image/j6.jpg" alt="其他行业解决方案" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="obtn">
+    <div class="VisualizingBox">
+        <div class="VisualizingBG" style="background: url('/template/eyou/pc/picture/main8.jpg') no-repeat center bottom; background-size:cover;"></div>
+        <div class="homeVisInfo">
+            <div class="homeTit wow fadeInUp">可视化智能管理系统</div>
+            <div class="homeVisTitle wow zoomIn">
+                <div>
+                    <div class="videoTitBox">
+                        <span>智慧楼宇可视化管理</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="videoTitBox">
+                        <span>智慧园区可视化管控</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="videoTitBox">
+                        <span>商业资产管理平台</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="videoTitBox">
+                        <span>经营分析管理平台</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="videoTitBox">
+                        <span>智慧巡场管理系统</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="videoTitBox">
+                        <span>工位与资产管理系统</span>
+                    </div>
+                </div>
+            </div>
+            <div class="homeVisVideo wow zoomIn">
+                <div class="container">
+                    <div>
+                        <div class="videoBox">
+                            <div class="top">
+                                <div class="hVideo">
+                                    <!---video id="video"  poster="" alt="">
+                                        您的浏览器不支持 video 标签。
+                                    </video--->
+									<video id="videoa" controls="controls" autoplay="autoplay" loop='loop'><source src="https://fengmap.bsoo.com.cn/video2.mp4" type="video/mp4" webkit-playsinline /></video>
+  										<video id="videoaa" controls="controls"><source src="https://fengmap.bsoo.com.cn/video2.mp4" type="video/mp4" webkit-playsinline /></video>
+                                    <div class="hVidBox">
+                                        <!--span controls="controls"><img src="/template/eyou/pc/_im_g/main11.png"/></span>
+										<video controls="controls" autoplay="autoplay" loop='loop'><source src="/template/eyou/pc/video/s-yq.mp4" type="video/mp4" /></video--->
+										
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="more"><a href="/experience/">了解更多</a></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="videoBox">
+                            <div class="top">
+                                <div class="hVideo">
+                                    <!---video id="video1"  poster="">
+                                        您的浏览器不支持 video 标签。
+                                    </video--->
+									<video id="videob" controls="controls" autoplay="autoplay" loop='loop'><source src="https://fengmap.bsoo.com.cn/video1.mp4" type="video/mp4" webkit-playsinline  /></video>
+  										<video id="videobb" controls="controls"><source src="https://fengmap.bsoo.com.cn/video1.mp4" type="video/mp4" webkit-playsinline /></video>
+                                    <div class="hVidBox">
+                                        <!--span><img src="/template/eyou/pc/_im_g/main11.png"/></span>
+										<video  controls="controls" autoplay="autoplay" loop='loop'><source src="/template/eyou/pc/video/s-ly.mp4" type="video/mp4" /></video--->
+										
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="more"><a href="/experience/">了解更多</a></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="videoBox">
+                            <div class="top">
+                                <div class="hVideo">
+                                    <video id="video2" poster="/template/eyou/pc/image/k3.png" alt="商业经营可视化系统图">
+                                        您的浏览器不支持 video 标签。
+                                    </video>
+                                    <!--div class="hVidBox">
+                                        <span><img src="/template/eyou/pc/image/main11.png"/></span>
+                                    </div--->
+                                </div>
+                            </div>
+                            <div class="more"><a href="/experience/">了解更多</a></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="videoBox">
+                            <div class="top">
+                                <div class="hVideo">
+                                    <video id="video3" poster="/template/eyou/pc/image/k4.png" alt="商业经营可视化系统图">
+                                        您的浏览器不支持 video 标签。
+                                    </video>
+                                    <!--div class="hVidBox">
+                                        <span><img src="/template/eyou/pc/_im_g/main11.png"/></span>
+                                    </div--->
+                                </div>
+                            </div>
+                            <div class="more"><a href="/experience/">了解更多</a></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="videoBox">
+                            <div class="top">
+                                <div class="hVideo">
+                                    <video id="video4" poster="/template/eyou/pc/image/k5.png" alt="智慧巡场智慧看板">
+                                        您的浏览器不支持 video 标签。
+                                    </video>
+                                    <!--div class="hVidBox">
+                                        <span><img src="/template/eyou/pc/_im_g/main11.png"/></span>
+                                    </div--->
+                                </div>
+                            </div>
+                            <div class="more"><a href="/experience/">了解更多</a></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="videoBox">
+                            <div class="top">
+                                <div class="hVideo">
+                                    <video id="video5" poster="/template/eyou/pc/image/k6.jpg" alt="工位与资产管理系统">
+                                        您的浏览器不支持 video 标签。
+                                    </video>
+                                    <!---div class="hVidBox">
+                                        <span><img src="/template/eyou/pc/_im_g/main11.png"/></span>
+                                    </div--->
+                                </div>
+                            </div>
+                            <div class="more"><a href="/experience/">了解更多</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="obtn">
+    <div class="container">
+        <div class="homeProduct">
+            <div class="homeTit wow fadeInUp">丰富的产品与服务</div>
+            <div class="homeProductList">
+                <div class="hd wow zoomIn">
+                    <ul class="u1">
+                        <li class="l1 on">蜂鸟云平台</li>
+                        <li class="l1">企业服务</li>
+                    </ul>
+                </div>
+                <div class="bd wow zoomIn">
+                    <ul class="u1">
+                        <div class="list">
+                            <li class="li2 on">
+                                <div class="img" style="background:url(/template/eyou/pc/image/f1.jpg) center no-repeat; background-size:cover;"></div>
+                                <div class="layer">
+                                    <div class="hBusBg1"></div>
+                                    <div class="p1">
+                                        <div class="box"><span>地图编辑器</span></div>
+                                    </div>
+                                    <div class="p2">
+                                        <div class="topTit">地图编辑器</div>
+                                        <a href="/product-mapeditor/">了解详情</a>
+                                    </div>
+                                    <div class="desc">
+                                    	<ul>
+                                    		<li><i>.</i><span>多种绘制工具</span></li>
+                                    		<li><i>.</i><span>快速制图</span></li>
+                                    		<li><i>.</i><span>高效体验</span></li>
+                                    		<li><i>.</i><span>导航路径</span></li>
+                                    		<li><i>.</i><span>高精度地图</span></li>
+											<li><i>.</i><span>元素管理</span></li>
+                                    	</ul>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="li2">
+                                <div class="img" style="background:url(/template/eyou/pc/image/f2.jpg) center no-repeat; background-size:cover;"></div>
+                                <div class="layer">
+                                    <div class="hBusBg1"></div>
+                                    <div class="p1">
+                                        <div class="box"><span>主题编辑器</span></div>
+                                    </div>
+                                    <div class="p2">
+                                        <div class="topTit">主题编辑器</div>
+                                        <a href="/product-theme/">了解详情</a>
+                                    </div>
+                                    <div class="desc">
+                                    	<ul>
+                                    		<li><i>.</i><span>多样主题</span></li>
+                                    		<li><i>.</i><span>随心配置</span></li>
+                                    		<li><i>.</i><span>及时预览</span></li>
+                                    		<li><i>.</i><span>主题贴图</span></li>
+                                    	</ul>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="li2">
+                                <div class="img" style="background:url(/template/eyou/pc/image/f3.jpg) center no-repeat; background-size:cover;"></div>
+                                <div class="layer">
+                                    <div class="hBusBg1"></div>
+                                    <div class="p1">
+                                        <div class="box"><span>三维地图引擎</span></div>
+                                    </div>
+                                    <div class="p2">
+                                        <div class="topTit">三维地图引擎</div>
+                                        <a href="/product-sdk/">了解详情</a>
+                                    </div>
+                                    <div class="desc">
+                                    	<ul>
+                                    		<li><i>.</i><span>轻量化的开发模块</span></li>
+                                    		<li><i>.</i><span>灵活的跨平台应用</span></li>
+                                    		<li><i>.</i><span>安全稳定的部署环境</span></li>
+                                    		<li><i>.</i><span>完善的地图功能</span></li>
+                                    		<li><i>.</i><span>丰富的展现效果</span></li>
+                                    	</ul>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="li2">
+                                <div class="img" style="background:url(/template/eyou/pc/image/f4.jpg) center no-repeat; background-size:cover;"></div>
+                                <div class="layer">
+                                    <div class="hBusBg1"></div>
+                                    <div class="p1">
+                                        <div class="box"><span>室内定位</span></div>
+                                    </div>
+                                    <div class="p2">
+                                        <div class="topTit">室内定位</div>
+                                        <a href="/product-location/">了解详情</a>
+                                    </div>
+                                    <div class="desc">
+                                    	<ul>
+                                    		<li><i>.</i><span>蓝牙室内定位</span></li>
+                                    		<li><i>.</i><span>UWB室内定位</span></li>
+                                    		<li><i>.</i><span>Wifi室内定位</span></li>
+                                    		<li><i>.</i><span>Lifi室内定位</span></li>
+                                    		<li><i>.</i><span>RFID室内定位</span></li>
+                                    	</ul>
+                                    </div>
+                                </div>
+                            </li>
+                        </div>
+                    </ul>
+                    <ul class="u1 ptBox">
+                        <div class="list box1">
+                            <li class="li2 on">
+                                <div class="img" style="background:url(/template/eyou/pc/image/f5.jpg) center no-repeat; background-size:cover;"></div>
+                                <div class="layer">
+                                    <div class="hBusBg1"></div>
+                                    <div class="p1">
+                                        <div class="box"><span>地图可视化服务</span></div>
+                                    </div>
+                                    <div class="p2">
+                                        <div class="topTit">地图可视化服务</div>
+                                        <a href="/services-data/">了解详情</a>
+                                    </div>
+									<div class="desc desc1">
+                                    	<ul>
+                                    		<li><i>.</i><span>创建自己的3D室内地图</span></li>
+                                    		<li><i>.</i><span>让我们帮您创建更精细的地图</span></li>
+                                    	</ul>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="li2">
+                                <div class="img" style="background:url(/template/eyou/pc/image/f6.jpg) center no-repeat; background-size:cover;"></div>
+                                <div class="layer">
+                                    <div class="hBusBg1"></div>
+                                    <div class="p1">
+                                        <div class="box"><span>空间位置服务</span></div>
+                                    </div>
+                                    <div class="p2">
+                                        <div class="topTit">空间位置服务</div>
+                                        <a href="/services-position/">了解详情</a>
+                                    </div>
+									<div class="desc desc1">
+                                    	<ul>
+                                    		<li><i>.</i><span>智能规划</span></li>
+                                    		<li><i>.</i><span>语音播报</span></li>
+											<li><i>.</i><span>电子围栏</span></li>
+											<li><i>.</i><span>灵活部署</span></li>
+                                    	</ul>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="li2">
+                                <div class="img" style="background:url(/template/eyou/pc/image/f7.jpg) center no-repeat; background-size:cover;"></div>
+                                <div class="layer">
+                                    <div class="hBusBg1"></div>
+                                    <div class="p1">
+                                        <div class="box"><span>系统应用开发</span></div>
+                                    </div>
+                                    <div class="p2">
+                                        <div class="topTit">系统应用开发</div>
+                                        <a href="/services-system/">了解详情</a>
+                                    </div>
+									<div class="desc desc1">
+                                    	<ul>
+                                    		<li><i>.</i><span>专业的软件开发团队</span></li>
+                                    		<li><i>.</i><span>卓越的软件研发实力</span></li>
+											<li><i>.</i><span>广泛的客户实践积淀</span></li>
+											<li><i>.</i><span>全生命周期开发服务</span></li>
+                                    	</ul>
+                                    </div>
+                                </div>
+                            </li>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="obtn">
+    <div class="homeCaseBox">
+        <div class="homeCaseBg" style="background: url('/template/eyou/pc/_im_g/main36.png')"></div>
+        <div class="container">
+            <div class="homeCaseInfo">
+                <div class="leftCaseIco wow fadeInLeft">
+                    <div class="hCaseTit">
+                        <p>蜂鸟视图</p>
+                        <p>与您一同成长</p>
+                    </div>
+                    <div class="p3">我们正在服务30000+用户</div>
+                    <div class="leftIcoList hd">
+                        <ul>
+                            <li><span>智慧商业</span></li>
+                            <li><span>工业互联网</span></li>
+                            <li><span>智慧园区</span></li>
+                            <li><span>智能会展</span></li>
+                            <li><span>交通枢纽</span></li>
+                            <li><span>智慧消防</span></li>
+                        </ul>
+                    </div>
+                    <div class="more"><a href="/case/">更多案例</a></div>
+                </div>
+                <div class="rightCaseList bd wow fadeInRight">
+                    <ul class="ul1">
+                        <li class="">
+                            <span><img src="/template/eyou/pc/logo/1.jpg" alt="万达集团" width="100%"/></span>
+                        </li>
+                        <li>
+                            <span><img src="/template/eyou/pc/logo/2.jpg" alt="龙湖集团" width="100%"/></span>
+                        </li>
+                        <li>
+                            <span><img src="/template/eyou/pc/logo/3.jpg" alt="新城控股" width="100%"/></span>
+                        </li>
+                        <li>
+                            <span><img src="/template/eyou/pc/logo/4.jpg" alt="中海地产" width="100%"/></span>
+                        </li>
+                        <li>
+                            <span><img src="/template/eyou/pc/logo/5.jpg" alt="合生创展" width="100%"/></span>
+                        </li>
+                        <li>
+                            <span><img src="/template/eyou/pc/logo/6.jpg" alt="复兴" width="100%"/></span>
+                        </li>
+                        <li>
+                            <span><img src="/template/eyou/pc/logo/7.jpg" alt="印力" width="100%"/></span>
+                        </li>
+                        <li>
+                            <span><img src="/template/eyou/pc/logo/8.jpg" alt="华熙国际" width="100%"/></span>
+                        </li>
+                        <li>
+                            <span><img src="/template/eyou/pc/logo/9.jpg" alt="嘉里建设" width="100%"/></span>
+                        </li>
+                        <li>
+                            <span><img src="/template/eyou/pc/logo/10.jpg" alt="新建元" width="100%"/></span>
+                        </li>
+                        <li>
+                            <span><img src="/template/eyou/pc/logo/11.jpg" alt="中铝集团" width="100%"/></span>
+                        </li>
+                        <li>
+                            <span><img src="/template/eyou/pc/logo/12.jpg" alt="国家电投" width="100%"/></span>
+                        </li>
+                        <li>
+                            <span><img src="/template/eyou/pc/logo/13.jpg" alt="上海市政总院" width="100%"/></span>
+                        </li>
+                        <li>
+                            <span><img src="/template/eyou/pc/logo//14.jpg" alt="华晨宝马" width="100%"/></span>
+                        </li>
+                        <li>
+                            <span><img src="/template/eyou/pc/logo/15.jpg" alt="华为" width="100%"/></span>
+                        </li>
+                        <li>
+                            <span><img src="/template/eyou/pc/logo/16.jpg" alt="星河商置" width="100%"/></span>
+                        </li>
+                        <li>
+                            <span><img src="/template/eyou/pc/logo/17.jpg" alt="BOE" width="100%"/></span>
+                        </li>
+                        <li>
+                            <span><img src="/template/eyou/pc/logo/18.jpg" alt="中国进口国际博览会" width="100%"/></span>
+                        </li>
+                        <li>
+                            <span><img src="/template/eyou/pc/logo/19.jpg" alt="华润置地" width="100%"/></span>
+                        </li>
+                        <li>
+                            <span><img src="/template/eyou/pc/logo/20.jpg" alt="中国华能" width="100%"/></span>
+                        </li>
+						<li>
+                            <span><img src="/template/eyou/pc/logo/21.jpg" alt="快手" width="100%"/></span>
+                        </li>
+                        <li>
+                            <span><img src="/template/eyou/pc/logo/22.jpg" alt="红星云" width="100%"/></span>
+                        </li>
+                        <li>
+                            <span><img src="/template/eyou/pc/logo/23.jpg" alt="建发集团" width="100%"/></span>
+                        </li>
+                        <li>
+                            <span><img src="/template/eyou/pc/logo/24.jpg" alt="猎豹移动" width="100%"/></span>
+                        </li>
+                        <li>
+                            <span><img src="/template/eyou/pc/logo/25.jpg" alt="京东" width="100%"/></span>
+                        </li>
+                        <li>
+                            <span><img src="/template/eyou/pc/logo/26.jpg" alt="中关村软件园" width="100%"/></span>
+                        </li>
+                        <li>
+                            <span><img src="/template/eyou/pc/logo/27.jpg" alt="中兴" width="100%"/></span>
+                        </li>
+                        <li>
+                            <span><img src="/template/eyou/pc/logo/28.jpg" alt="珠海粤钢" width="100%"/></span>
+                        </li>
+                        <li>
+                            <span><img src="/template/eyou/pc/logo/29.jpg" alt="中国金茂" width="100%"/></span>
+                        </li>
+                        <li>
+                            <span><img src="/template/eyou/pc/logo/30.jpg" alt="中国（山东）自由贸易试验区" width="100%"/></span>
+                        </li>                 
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="obtn">
+    <div class="container">
+        <div class="homeAdvantage">
+            <div class="homeTit wow fadeInUp">领先的行业优势</div>
+            <div class="homeAdvList">
+                <ul>
+                    <li class="wow flipInY">
+                        <div class="tIco"><img src="/template/eyou/pc/picture/main40.png" alt="经验图标" /></div>
+                        <div class="tH1">丰富经验</div>
+                        <div class="dText">
+                            多年行业深耕经验，研发实力卓著
+                        </div>
+                    </li>
+                    <li class="wow flipInY">
+                        <div class="tIco"><img src="/template/eyou/pc/picture/main38.png" alt="技术图标" /></div>
+                        <div class="tH1">领先技术</div>
+                        <div class="dText">
+                            汇聚各项可视化技术资源，需求到实现可快速完成
+                        </div>
+                    </li>
+				    <li class="wow flipInY">
+                        <div class="tIco"><img src="/template/eyou/pc/picture/main39.png" alt="团队图标" /></div>
+                        <div class="tH1">专业团队</div>
+                        <div class="dText">
+                            强大的团队与专业权威的技术支撑
+                        </div>
+                    </li>
+                    <li class="wow flipInY">
+                        <div class="tIco"><img src="/template/eyou/pc/picture/main41.png" alt="服务图标" /></div>
+                        <div class="tH1">卓越服务</div>
+                        <div class="dText">
+                            6年以上行业垂直领域服务，与20000+用户共同见证
+                        </div>
+                    </li>
+                    <li class="wow flipInY">
+                        <div class="tIco"><img src="/template/eyou/pc/picture/main37.png" alt="值得信赖" /></div>
+                        <div class="tH1">值得信赖</div>
+                        <div class="dText">
+                            覆盖10大领域，全国2000+企业共同选择
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="obtn">
+    <div class="homeNewsBox">
+        <div class="container">
+            <div class="homeNewsInfo">
+                <div class="homeTit wow fadeInUp">企业新闻动态</div>
+                <div class="homeNewsList">
+                    <ul>
+                        <li class="wow zoomIn">
+                            <div class="newsWord">							
+                          						   <a href="https://mp.weixin.qq.com/s?__biz=MzI2MTA0NDY3NQ==&amp;mid=2650480796&amp;idx=1&amp;sn=e2da4f90642af2a019983ba7f8bdc910&amp;chksm=f26fe030c518692649b381100b0ecf32caaa05723591f69f7f48e18371a1c01ada1f41b8cbfe&amp;token=584754081&amp;lang=zh_CN#rd" rel="nofollow" target="_blank" >
+                                <div class="tImg"><img src="/uploads/allimg/20230327/1-23032GQ041534.jpg" alt="廖小健空间数据平台：产业园区、写字楼、商业体等私域地理信息应用之智慧商业篇" width="100%"/></div>
+                                <div class="dText">
+                                    <div class="newLi1">
+                                         <!--img src="/template/eyou/pc/picture/main45.png"/--> <span>廖小健空间数据平台：产业园区、写字楼、商业体等私域地理信息应用之智慧商业篇</span>
+                                    </div>
+									</a>
+                               
+                                    <dl>
+									                                           <dd>
+                                            <a href="https://mp.weixin.qq.com/s/jW98UQ8UVhZp2BpRXu3keQ" rel="nofollow" target="_blank">
+                                                <i>直播</i>
+                                                <span>直播+抽奖报名！蜂鸟邀您一起探寻可视化之旅！</span>
+                                                <em>详情</em>
+                                            </a>
+                                        </dd>
+										                                        <dd>
+                                            <a href="http://bitly.ws/cIz9" rel="nofollow" target="_blank">
+                                                <i>直播</i>
+                                                <span>企业数字化转型「助推器」— “数据融合”工具及“微程序”讲解</span>
+                                                <em>详情</em>
+                                            </a>
+                                        </dd>
+										                                        <dd>
+                                            <a href="https://appeyza9jkz1857.h5.xiaoeknow.com/v2/course/alive/l_6124aa5fe4b020185a9ebeac?alive_mode=0&amp;app_id=appEyZA9Jkz1857&amp;pro_id=&amp;type=2&amp;state=d1b8916c39f402dbad89c8890bb525aa_OqDPJX" rel="nofollow" target="_blank">
+                                                <i>直播</i>
+                                                <span>如何从0搭建线上业务的增长引擎</span>
+                                                <em>详情</em>
+                                            </a>
+                                        </dd>
+										                                        
+                                    </dl>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="wow zoomIn">
+                            <div class="newsWord">
+							 							 <a href="/news/company/549.html">
+                                <div class="tImg"><img src="/uploads/allimg/20230419/1-2304191U93C24.jpg" alt="新建元数字生态发展大会｜蜂鸟视图获评优秀合作伙伴"width="100%"/></div>
+                                <div class="dText">
+                                    <div class="newLi1">
+                                        
+                                           新建元数字生态发展大会｜蜂鸟视图获评优秀合作伙伴                                        </a>
+                                    </div>
+                                  
+
+                                    <dl>
+									                                        <dd class="two">
+                                            <a href="/news/company/548.html">                                                
+                                                <span>印力集团与蜂鸟视图深度合作，共谋数字产业化战略</span>
+                                                <em>详情</em>
+                                            </a>
+                                        </dd>
+										                                        <dd class="two">
+                                            <a href="/news/company/545.html">                                                
+                                                <span>喜报：蜂鸟视图成为北京市朝阳区工商业联合会会员企业</span>
+                                                <em>详情</em>
+                                            </a>
+                                        </dd>
+										                                         
+                                    </dl>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="wow zoomIn">
+                            <div class="newsWord">
+														 <a href="/news/industry/522.html">
+                                <div class="tImg"><img src="/uploads/allimg/20230921/1-2309211J350Y0.jpg" alt="蜂鸟云编辑器限时优惠活动" width="100%"/></div>
+                                <div class="dText">
+                                    <div class="newLi1">
+                                       
+                                          蜂鸟云编辑器限时优惠活动                                        </a>
+                                    </div>
+									    
+                                    <dl>
+									                                        <dd class="two">
+                                          <a href="/news/industry/514.html">                                                
+                                                <span>FengMapServer引擎产品上线-具备地图要素快速查询和路径规划能力</span>
+                                                <em>详情</em>
+                                            </a>
+                                        </dd>
+										                                        <dd class="two">
+                                          <a href="/news/industry/512.html">                                                
+                                                <span>快速搭建多地图嵌套场景，实现室内外无缝切换应用</span>
+                                                <em>详情</em>
+                                            </a>
+                                        </dd>
+										                                        
+                                    </dl>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="newMore wow fadeInUp"><a href="/news/">查看更多</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--down-->
+<div id="obtn">
+    <div class="BottomConBox">
+        <div class="BottomConBg" style="background: url('/template/eyou/pc/picture/main46.jpg') no-repeat center; background-size: cover"></div>
+        <div class="container">
+            <div class="BottomConInfo">
+                <div class="p4">空间 · 位置 · 物联 · 数据</div>
+                <div class="more"><a href="http://p.qiao.baidu.com/cps/chat?siteId=15082202&userId=18852476&siteToken=0d708743db5c874369fcf24b77f0c9af" rel="nofollow" target="_blank" >在线咨询</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="obtn">
+    <div class="pz_down">
+        <div class="container1">
+            <div class="footerBox">
+                <div class="footLogo">
+                    <div class="tImg"><img src="/template/eyou/pc/_im_g/downLogo.png"  alt="蜂鸟视图LOGO" /></div>
+					<div class="timgbt">
+					<a class="lang" data-lang="zh"style="color:#fff;">中文</a> / <a href="/en/" rel="nofollow" target="_blank" >English</a></div>
+                </div>
+                <div class="footNav">
+                    <div class="ul1">
+                        <h5 class="footTit"><a href="javascript:;">解决方案</a></h5>
+                        <ul class="box">
+                                                            <li><a href="/business/">资管招商可视化系统</a></li>
+							                                 <li><a href="/industry-iot/">智慧厂务管理系统</a></li>
+							                                 <li><a href="/guide/">定位导航</a></li>
+							  
+                        </ul>
+                    </div>
+                    <div class="ul1">
+                        <h5 class="footTit"><a href="javascript:;">蜂鸟云平台</a></h5>
+                        <ul class="box">
+                                                            <li><a href="/product-mapeditor/">地图编辑器</a></li>
+								                                <li><a href="/product-theme/">主题编辑器</a></li>
+								                                <li><a href="/product-sdk/">三维地图引擎</a></li>
+								                                <li><a href="/product-location/">室内定位</a></li>
+								 
+								<li><a href="https://developer.fengmap.com/" target="_blank">地图开发平台</a></li>
+								 <li><a href="https://fengmap.bsoo.com.cn/FengMap%20Cloud%20%E4%BA%A7%E5%93%81%E7%99%BD%E7%9A%AE%E4%B9%A6.pdf" target="_blank" rel="nofollow">蜂鸟产品白皮书</a></li>
+                        </ul>
+                    </div>
+                    <div class="ul1">
+                        <h5 class="footTit"><a href="javascript:;">企业服务</a></h5>
+                        <ul class="box">
+                                                                      <li><a href="/services-data/">室内外地图绘制服务</a></li>
+								                                                 <li><a href="/services-position/">空间位置服务</a></li>
+								                                                 <li><a href="/services-system/">系统应用开发</a></li>
+								                                                 <li><a href="/spatial/">私有化部署</a></li>
+								                                                 <li><a href="/HighFlyer/">翰鸟智能</a></li>
+								                               </ul>
+                    </div>
+                    <div class="ul1">
+                        <h5 class="footTit"><a href="javascript:;">产品定价</a></h5>
+                        <ul class="box">
+                            <li><a href="/price/">地图制作</a></li>
+                            <li><a href="/engine/">地图引擎</a></li>
+                        </ul>
+                    </div>
+                    <div class="ul1">
+                        <h5 class="footTit"><a href="javascript:;">演示中心 </a></h5>
+                        <ul class="box">
+                            <li><a href="/experience/">软件系统</a></li>
+                            <li><a href="/experience/#02">地图效果</a></li>
+                            <li><a href="/experience/#03">智能定位</a></li>
+                        </ul>
+                    </div>
+                    <div class="ul1">
+                        <h5 class="footTit"><a href="javascript:;">关于我们</a></h5>
+                        <ul class="box">
+                             <li><a href="/about/">公司简介</a></li>
+                                <li><a href="/about/#02">发展历程</a></li>
+                                <li><a href="/about/#03">企业荣誉</a></li>
+                                <li><a href="/about/#04">联系我们</a></li>
+                                <li><a href="/about/#05">合作伙伴</a></li>
+                                <li><a href="/news/company/">新闻资讯</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footUs">
+                    <div class="footTit">咨询热线</div>
+                    <div class="footTel">400-680-0432</div>
+                    <div class="footAdd">
+						<div class="flex">
+							<img src="/template/eyou/pc/_im_g/v.png" />
+							<img src="/template/eyou/pc/_im_g/vg.png" />
+						</div>
+                        <dd>邮箱：marcom@fengmap.com</dd>
+                        <dd>地址：北京市朝阳区惠新东街11号紫光发展大厦A座706室</dd>
+                    </div>
+                    <div class="footIco">
+                    <span>
+                        <i class="first"><img src="/template/eyou/pc/_im_g/down1.png"/></i>
+                        <i class="last"><img src="/template/eyou/pc/image/down1_1.png"/></i>
+                        <div class="ewm">
+                            <img src="/template/eyou/pc/_im_g/down5.jpg"/>
+                        </div>
+                    </span>
+                    <span>
+                        <i class="first"><img src="/template/eyou/pc/image/down1_q.png" title="QQ扫码进群"/></i>
+                        <i class="last"><img src="/template/eyou/pc/image/down1_q1.png" title="QQ扫码进群"/></i>
+                        <div class="ewmq">
+                            <img src="/template/eyou/pc/_im_g/downq.jpg"/>
+                        </div>
+                    </span>
+					 <span>
+                        <a href="https://profile.zjurl.cn/rogue/ugc/profile/?version_code=7.7.5&version_name=70705&user_id=6825801462&media_id=6833983509&request_source=1&active_tab=dongtai&device_id=65&app_name=news_article&tt_from=weixin&utm_source=weixin&utm_medium=toutiao_ios&utm_campaign=client_share&wxshare_count=1" rel="nofollow" target="_blank" >
+
+						 <i class="first"><img src="/template/eyou/pc/image/down4.png"/></i>
+                            <i class="last"><img src="/template/eyou/pc/image/down4_1.png"/></i>
+                            
+                        </a>
+                    </span>
+                        <span>
+                        <a href="http://v.qq.com/s/videoplus/647567348" rel="nofollow" target="_blank" >
+                            <i class="first"><img src="/template/eyou/pc/image/down2.png"/></i>
+                            <i class="last"><img src="/template/eyou/pc/image/down2_1.png"/></i>
+                        </a>
+                    </span>
+
+                        <span>
+                        <a href="https://www.zhihu.com/org/feng-niao-shi-tu" rel="nofollow" target="_blank" >
+                            <i class="first"><img src="/template/eyou/pc/image/down3.png"/></i>
+                            <i class="last"><img src="/template/eyou/pc/image/down3_1.png"/></i>
+                        </a>
+                    </span>
+                    </div>
+                </div>
+				                <div class="links">
+                    <h5>友情链接  <img src="/template/eyou/pc/_im_g/down6.png"/></h5>
+                    <ul>
+                       <li> <a href="https://www.ythwl.com" target="_blank">广州app开发</a>  <a href="http://www.09dx.com" target="_blank">虚拟展厅</a>  <a href="http://www.yunkukeji.com/" target="_blank">人员定位</a>  <a href="https://www.kejipro.cn/" target="_blank">微店小程序</a>  <a href="https://www.quanshi.com/" target="_blank">视频会议</a>  <a href="https://fk.sikale.com" target="_blank">访客管理系统</a>  <a href="https://www.hollycrm.com" target="_blank">呼叫中心系统</a>  <a href="https://www.aiops.com/" target="_blank">IT运维管理</a>  <a href="http://www.weipm.net" target="_blank">项目管理系统</a>  <a href="http://www.jzyyun.com" target="_blank">国际短信群发</a>  <a href="http://www.istarscloud.com" target="_blank">能源管理系统</a>  <a href="https://www.7x24cc.com/" target="_blank">在线客服系统</a>  <a href="https://www.aiops.com/" target="_blank">告警</a>  <a href="http://www.zboao.com" target="_blank">档案数字化</a>  <a href="http://www.gungho.net.cn" target="_blank">任务管理软件</a>  <a href="http://www.siloon.com" target="_blank">智慧水务</a>  <a href="http://www.kfltzs.com" target="_blank">客服宝</a>  <a href="http://www.jinglianwen.com/" target="_blank">数据标注公司</a>  <a href="https://www.hollyorder.com/" target="_blank">工单管理系统</a>  <a href="http://www.elinkcloud.cn" target="_blank">企业专线</a>  <a href="https://www.digiwin.com/" target="_blank">鼎捷mes</a>  <a href="http://www.elinkcloud.cn" target="_blank">企业专线</a>  <a href="https://www.raysync.cn" target="_blank">大文件传输</a>  <a href="https://www.vrnew3d.com" target="_blank">深圳VR公司</a>  <a href="https://www.corerain.com" target="_blank">智能监控系统</a>    </li>   
+                    </ul>
+                </div>
+            </div>
+            <div class="footerCopyright">
+                北京蜂鸟视图科技有限公司 版权所有 © 2014-2021 Fengmap. All Rights Reserved<br/>
+                <a href="https://beian.miit.gov.cn/" rel="nofollow" target="_blank">京ICP备14054053号</a> |
+                <a href="http://gawa.bjchy.gov.cn/websearch/" target="_blank">京公网安备11010502027619</a> |
+                <a href="/faq/216.html">蜂鸟视图用户服务协议</a> <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280206764'%3E%3C/span%3E%3Cscript src='https://s9.cnzz.com/z_stat.php%3Fid%3D1280206764%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+            </div>
+        </div>
+    </div>
+ <!--漂浮-->
+    <div class="right_pf hidden-xs hidden-sm">
+        <ul class="ul4">
+            <li class="two">
+                <a href="javascript:void(0)" data-agl-cvt="2">
+                    <img src="/template/eyou/pc/_im_g/tell.png"  width="22" height="22"/>
+					<p>电话咨询</p>
+                    <i class="om"><span>400-680-0432</span></i>
+                </a>
+            </li>
+            <li>
+                <a href="http://p.qiao.baidu.com/cps/chat?siteId=15082202&userId=18852476&siteToken=0d708743db5c874369fcf24b77f0c9af" rel="nofollow" target="_blank"  data-agl-cvt="1">
+                    <img src="/template/eyou/pc/_im_g/btn1.png"  width="22" height="22"/>
+					<p>在线咨询</p>
+                    <!---i class="om"><span>获取方案</span></i--->
+                </a>
+            </li>
+            <li class="shi">
+                <a href="https://account.fengmap.com/register" rel="nofollow" target="_blank"  data-agl-cvt="3">
+                    <img src="/template/eyou/pc/_im_g/shi.png"  width="22" height="22"/>
+					<p>免费制图</p>
+                    <i class="om"><span>免费制图</span></i>
+                </a>
+            </li>
+            <!--li class="weixin">
+                <a href="javascript:void(0)" data-agl-cvt="2">
+                    <img src="/template/eyou/pc/_im_g/wxtb.png"  width="22" height="22"/>
+					<p>业务微信</p>
+                    <i class="om"><span><img src="/template/eyou/pc/_im_g/wxkf.png"/><b>扫码一对一咨询</b></span></i>
+                </a>
+            </li>
+            <!--li class="join">
+                <a href="/join/">
+                    <img src="/template/eyou/pc/_im_g/join.png" width="26" height="26"/>
+					<p>招募代理</p>
+                    <i class="om"><span>招募代理</span></i>
+                </a>
+            </li--->
+			<li class="renter">
+                <a><img src="/template/eyou/pc/_im_g/btn18.png" width="22"/>
+				<p>返回顶部</p>
+				</a>
+            </li>
+        </ul>
+    </div>
+    <!--手机底部导航-->
+    <div class="pf_down visible-xs">
+        <li class="l1">
+            <a href="/">
+                <div class="ico7"><img src="/template/eyou/pc/_im_g/btn15.png"></div>
+                <div class="name">首页</div>
+            </a>
+        </li>
+        <li class="l2">
+            <a href="http://p.qiao.baidu.com/cps/chat?siteId=15082202&userId=18852476&siteToken=0d708743db5c874369fcf24b77f0c9af" rel="nofollow" target="_blank" >
+                <div class="ico7"><img src="/template/eyou/pc/image/btn16.png"></div>
+                <div class="name">在线客服</div>
+            </a>
+        </li>
+        <li class="l3">
+            <a href="tel:4006800432">
+                <div class="ico7"><img src="/template/eyou/pc/_im_g/btn17.png"></div>
+                <div class="name">联系电话</div>
+            </a>
+        </li>
+        <li class="l4 renter">
+            <a>
+                <div class="ico7"><img src="/template/eyou/pc/_im_g/btn18.png"></div>
+                <div class="name">返回顶部</div>
+            </a>
+        </li>
+    </div>
+</div>
+<!--百度埋码-->
+<script type="text/javascript">
+        window._agl = window._agl || [];
+        (function () {
+            _agl.push(
+                ['production', '_f7L2XwGXjyszb4d1e2oxPybgD']
+            );
+            (function () {
+                var agl = document.createElement('script');
+                agl.type = 'text/javascript';
+                agl.async = true;
+                agl.src = 'https://fxgate.baidu.com/angelia/fcagl.js?production=_f7L2XwGXjyszb4d1e2oxPybgD';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(agl, s);
+            })();
+        })();
+</script>
+<!--百度埋码-->
+</body>
+<script type="text/javascript" src="/template/eyou/pc/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="/template/eyou/pc/js/slick.min.js"></script>
+<script type="text/javascript" src="/template/eyou/pc/js/jquery.SuperSlide.2.1.1.js"></script>
+<script type="text/javascript" src="/template/eyou/pc/js/jquery.hoverIntent.js"></script>
+<script type="text/javascript" src="/template/eyou/pc/js/respond.src.js"></script>
+<script type="text/javascript" src="/template/eyou/pc/js/wow.min.js"></script>
+<script type="text/javascript" src="/template/eyou/pc/js/common.js"></script>
+<script type="text/javascript">
+//banner
+$('#obtn .slide_banner').slick({
+	dots: true,
+	arrows: true,
+	speed:1000,
+    autoplay:true,
+    autoplaySpeed:4000,
+	fade:true
+
+});
+$('#obtn .hSolutionText').slick({
+    dots: true,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: true,
+    fade: true,
+    asNavFor: '#obtn .hSolutionIco', //关联小图
+    autoplay:true,
+    autoplaySpeed:5000
+});
+$('#obtn .hSolutionIco').slick({
+    slidesToShow: 6,
+    slidesToScroll: 1,
+    asNavFor: '#obtn .hSolutionText',//关联大图
+    //centerMode: true,
+    focusOnSelect: true, //右侧跟随左侧切换
+    autoplay:true,
+    autoplaySpeed:5000,
+    responsive: [
+        {
+            breakpoint: 768,
+            settings: {
+                slidesToShow: 3,
+                slidesToScroll: 1
+            }
+        }
+    ]
+});
+// $("#obtn .hVideo").click(function(){
+//     $(this).hide();
+//     $("#video")[0].play();
+// });
+$('#obtn .homeVisVideo .container').slick({
+    dots: true,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: true,
+    fade: true,
+    asNavFor: '#obtn .homeVisTitle', //关联小图
+    autoplay:false,
+    autoplaySpeed:5000
+});
+$('#obtn .homeVisTitle').slick({
+    slidesToShow: 6,
+    slidesToScroll: 1,
+    asNavFor: '#obtn .homeVisVideo .container',//关联大图
+    //centerMode: true,
+    focusOnSelect: true, //右侧跟随左侧切换
+    vertical:true, //垂直方向
+    autoplay:true,
+    autoplaySpeed:5000,
+    responsive: [
+        {
+            breakpoint: 1400,
+            settings: {
+                slidesToShow:6,
+                slidesToScroll: 1,
+                vertical:false
+            }
+        },
+        {
+            breakpoint: 1024,
+            settings: {
+                slidesToShow:4,
+                slidesToScroll: 1,
+                vertical:false
+            }
+        },
+        {
+            breakpoint: 768,
+            settings: {
+                slidesToShow:2,
+                slidesToScroll: 1,
+                vertical:false
+            }
+        }
+    ]
+});
+jQuery("#obtn .homeProductList").slide({});
+$(document).ready(function() {
+    $(".list .li2").hover(function() {
+        $(".list .li2").eq($(this).index()).addClass("on").siblings().removeClass('on');
+    });
+    $(".list.box1 .li2").hover(function() {
+        $(".list.box1 .li2").eq($(this).index()).addClass("on").siblings().removeClass('on');
+    });
+});
+jQuery("#obtn .homeCaseInfo").slide({});
+$("#obtn .footerBox .links h5").click(function(){
+    $('#obtn .footerBox .links ul').slideToggle();
+});
+</script>
+
+</html>

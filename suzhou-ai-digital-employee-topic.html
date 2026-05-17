@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>数字员工专题 - SCSAI苏州AI+制造平台</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  :root {
+    --bg: #0d1117;
+    --bg-card: #161b22;
+    --bg-card-alt: #1c2333;
+    --border: #30363d;
+    --text: #c9d1d9;
+    --text-bright: #f0f6fc;
+    --accent: #58a6ff;
+    --green: #3fb950;
+    --orange: #d29922;
+    --purple: #bc8cff;
+    --red: #f85149;
+  }
+  
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  
+  .hero {
+    background: linear-gradient(135deg, #0d1117 0%, #1a2850 50%, #0d1117 100%);
+    padding: 80px 40px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+  
+  .hero h1 {
+    font-size: 48px;
+    color: var(--text-bright);
+    margin-bottom: 16px;
+  }
+  
+  .hero .subtitle {
+    font-size: 22px;
+    color: var(--accent);
+    margin-bottom: 24px;
+  }
+  
+  .hero .desc {
+    font-size: 18px;
+    color: var(--text);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
+  
+  .section-title {
+    font-size: 28px;
+    color: var(--text-bright);
+    margin: 40px 0 20px 0;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--accent);
+  }
+  
+  .section-title .badge {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--bg);
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-left: 12px;
+    vertical-align: middle;
+  }
+  
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+  
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    transition: all 0.3s ease;
+  }
+  
+  .card:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(88, 166, 255, 0.15);
+  }
+  
+  .card-icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+  }
+  
+  .card-title {
+    font-size: 20px;
+    color: var(--text-bright);
+    margin-bottom: 8px;
+  }
+  
+  .card-title a {
+    color: var(--text-bright);
+    text-decoration: none;
+  }
+  
+  .card-title a:hover {
+    color: var(--accent);
+  }
+  
+  .card-desc {
+    font-size: 14px;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+  
+  .card-meta {
+    font-size: 12px;
+    color: var(--text);
+    opacity: 0.7;
+  }
+  
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    margin-right: 6px;
+  }
+  
+  .tag-star { background: #f85149; color: #fff; }
+  .tag-core { background: var(--accent); color: var(--bg); }
+  .tag-tech { background: #bc8cff; color: var(--bg); }
+  .tag-demo { background: #3fb950; color: var(--bg); }
+  
+  .footer {
+    text-align: center;
+    padding: 40px;
+    border-top: 1px solid var(--border);
+    color: var(--text);
+    font-size: 14px;
+  }
+  
+  .footer a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🏭 数字员工专题</h1>
+  <div class="subtitle">SCSAI 苏州"AI+制造"数字员工平台全链路文档</div>
+  <div class="desc">
+    全球首个基于ARAS PLM原生打造的工业智能体操作系统<br>
+    从需求提出到数字员工上线运行的端到端自动化、可视化、可追溯管理
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 核心文档区 -->
+  <h2 class="section-title">📄 核心文档 <span class="badge">8篇</span></h2>
+  <div class="card-grid">
+    
+    <div class="card">
+      <div class="card-icon">📘</div>
+      <div class="card-title"><a href="suzhou-ai-whitepaper-2026.html">DOC-001 全链路追溯体系白皮书</a></div>
+      <div class="card-desc">执行摘要、行业痛点、四层技术架构、四大原创突破、客户价值、竞品对比、未来规划</div>
+      <div class="card-meta"><span class="tag tag-star">路演必备</span> 27KB | V2.0 | 2026-05-10</div>
+    </div>
+    
+    <div class="card">
+      <div class="card-icon">📊</div>
+      <div class="card-title"><a href="suzhou-ai-traceability-table-2026.html">DOC-002 需求-技能-代码全链路追溯表</a></div>
+      <div class="card-desc">63项需求→30项技能→22项原子技术组件完整映射，支持Excel/CSV/JSON下载导入</div>
+      <div class="card-meta"><span class="tag tag-core">核心</span> 43KB | V2.0 | 2026-05-10</div>
+    </div>
+    
+    <div class="card">
+      <div class="card-icon">🔧</div>
+      <div class="card-title"><a href="suzhou-ai-aras-implementation-2026.html">DOC-003 ARAS PLM集成实现方案</a></div>
+      <div class="card-desc">6个ItemType定义、2个9节点工作流配置、可视化表单、API集成开发、部署测试</div>
+      <div class="card-meta"><span class="tag tag-tech">技术</span> 44KB | V2.0 | 2026-05-10</div>
+    </div>
+    
+    <div class="card">
+      <div class="card-icon">📖</div>
+      <div class="card-title"><a href="suzhou-ai-manual-2026.html">DOC-004 全链路追溯功能操作手册</a></div>
+      <div class="card-desc">需求管理、技能开发、测试管理、部署运维、追溯中心5大模块，角色指南，FAQ</div>
+      <div class="card-meta"><span class="tag tag-core">核心</span> 39KB | V2.0 | 2026-05-10</div>
+    </div>
+    
+    <div class="card">
+      <div class="card-icon">⚙️</div>
+      <div class="card-title"><a href="suzhou-ai-pipeline-2026.html">DOC-005 GitLab CI自动化流水线</a></div>
+      <div class="card-desc">9阶段流水线、.gitlab-ci.yml完整配置、环境变量、灰度发布、最佳实践</div>
+      <div class="card-meta"><span class="tag tag-tech">技术</span> 35KB | V2.0 | 2026-05-10</div>
+    </div>
+    
+    <div class="card">
+      <div class="card-icon">🚨</div>
+      <div class="card-title"><a href="suzhou-ai-sync-2026.html">DOC-006 运行数据同步与异常处理</a></div>
+      <div class="card-desc">Python同步脚本、3项异常阈值、自动回滚机制、systemd服务配置、监控告警</div>
+      <div class="card-meta"><span class="tag tag-tech">技术</span> 77KB | V2.0 | 2026-05-10</div>
+    </div>
+    
+    <div class="card">
+      <div class="card-icon">🏭</div>
+      <div class="card-title"><a href="suzhou-ai-suzhou-landing-2026.html">DOC-007 苏州落地实施方案</a></div>
+      <div class="card-desc">市场分析、落地时间线、亨通光电/博众精工/沙钢集团3个标杆项目、政策申请</div>
+      <div class="card-meta"><span class="tag tag-star">路演必备</span> 37KB | V2.0 | 2026-05-10</div>
+    </div>
+    
+    <div class="card">
+      <div class="card-icon">🎤</div>
+      <div class="card-title"><a href="suzhou-ai-roadshow-2026.html">DOC-008 苏州OPC大赛路演脚本</a></div>
+      <div class="card-desc">8分钟逐字稿、产品演示步骤、技术优势话术、苏州落地计划、应急方案</div>
+      <div class="card-meta"><span class="tag tag-star">路演必备</span> 22KB | V2.0 | 2026-05-10</div>
+    </div>
+    
+  </div>
+
+  <!-- 技术深度区 -->
+  <h2 class="section-title">🔬 技术深度</h2>
+  <div class="card-grid">
+    
+    <div class="card">
+      <div class="card-icon">🤖</div>
+      <div class="card-title"><a href="suzhou-ai-agent-handbook-2026.html">数字员工交互手册</a></div>
+      <div class="card-desc">5维过滤体系、角色分类、技能详情、完整Agent指南</div>
+      <div class="card-meta"><span class="tag tag-demo">演示</span> 83KB</div>
+    </div>
+    
+    <div class="card">
+      <div class="card-icon">🎯</div>
+      <div class="card-title"><a href="suzhou-ai-skill-cards-2026.html">数字员工技能卡(30项)</a></div>
+      <div class="card-desc">8大角色、30项标准化技能、技术组件映射、完整技能卡片集</div>
+      <div class="card-meta"><span class="tag tag-demo">演示</span> 50KB</div>
+    </div>
+    
+    <div class="card">
+      <div class="card-icon">🧩</div>
+      <div class="card-title"><a href="suzhou-ai-tech-matrix-2026.html">技术能力矩阵</a></div>
+      <div class="card-desc">18类数字员工×22项原子技术能力矩阵可视化</div>
+      <div class="card-meta"><span class="tag tag-tech">技术</span> 28KB</div>
+    </div>
+    
+    <div class="card">
+      <div class="card-icon">🏗️</div>
+      <div class="card-title"><a href="suzhou-ai-platform-arch-2026.html">平台架构设计</a></div>
+      <div class="card-desc">7层架构Tab、入口层→智能层→能力层→数据层完整设计</div>
+      <div class="card-meta"><span class="tag tag-tech">技术</span> 31KB</div>
+    </div>
+    
+    <div class="card">
+      <div class="card-icon">🧪</div>
+      <div class="card-title"><a href="suzhou-ai-testcases-2026.html">测试用例详细设计</a></div>
+      <div class="card-desc">450+测试用例、P0/P1/P2优先级、完整测试步骤与预期结果</div>
+      <div class="card-meta"><span class="tag tag-tech">技术</span> 44KB</div>
+    </div>
+    
+    <div class="card">
+      <div class="card-icon">🔗</div>
+      <div class="card-title"><a href="suzhou-ai-traceability-2026.html">全链路追溯体系</a></div>
+      <div class="card-desc">追溯链路可视化、根因分析、自动化流水线集成</div>
+      <div class="card-meta"><span class="tag tag-core">核心</span> 30KB</div>
+    </div>
+    
+  </div>
+
+  <!-- ARAS PLM专区 -->
+  <h2 class="section-title">🔌 ARAS PLM集成</h2>
+  <div class="card-grid">
+    
+    <div class="card">
+      <div class="card-icon">📦</div>
+      <div class="card-title"><a href="suzhou-ai-aras-delivery-2026.html">ARAS PLM完整交付包</a></div>
+      <div class="card-desc">ItemType XML定义、GitLab CI流水线、部署配置指南</div>
+      <div class="card-meta"><span class="tag tag-tech">技术</span> 29KB</div>
+    </div>
+    
+    <div class="card">
+      <div class="card-icon">🔀</div>
+      <div class="card-title"><a href="suzhou-ai-aras-workflow-2026.html">ARAS全流程工作流</a></div>
+      <div class="card-desc">需求评审工作流(9节点)、技能开发工作流(9节点)、自动动作JS、Python变更单脚本</div>
+      <div class="card-meta"><span class="tag tag-tech">技术</span> 57KB</div>
+    </div>
+    
+    <div class="card">
+      <div class="card-icon">📊</div>
+      <div class="card-title"><a href="suzhou-ai-aras-visualization-2026.html">ARAS可视化与同步方案</a></div>
+      <div class="card-desc">表单配置、4个SQL报表、Python同步脚本、Graph View关系图</div>
+      <div class="card-meta"><span class="tag tag-tech">技术</span> 37KB</div>
+    </div>
+    
+    <div class="card">
+      <div class="card-icon">🔌</div>
+      <div class="card-title"><a href="suzhou-ai-aras-plm-integration-2026.html">ARAS PLM集成方案</a></div>
+      <div class="card-desc">数据模型、工作流配置、API集成、落地实施</div>
+      <div class="card-meta"><span class="tag tag-tech">技术</span> 30KB</div>
+    </div>
+    
+  </div>
+
+  <!-- 苏州落地专区 -->
+  <h2 class="section-title">📍 苏州落地</h2>
+  <div class="card-grid">
+    
+    <div class="card">
+      <div class="card-icon">📋</div>
+      <div class="card-title"><a href="suzhou-ai-demand-2026.html">AI+制造需求清单</a></div>
+      <div class="card-desc">苏州市"AI+制造"应用场景需求清单(第一批)，65项需求，8大行业</div>
+      <div class="card-meta"><span class="tag tag-demo">演示</span> 53KB</div>
+    </div>
+    
+    <div class="card">
+      <div class="card-icon">📖</div>
+      <div class="card-title"><a href="suzhou-ai-traceability-manual-2026.html">追溯功能操作手册</a></div>
+      <div class="card-desc">平台功能操作指南、角色视图、常见问题解答</div>
+      <div class="card-meta"><span class="tag tag-core">核心</span> 42KB</div>
+    </div>
+    
+  </div>
+
+</div>
+
+<div class="footer">
+  <p>苏州超艾智能科技有限公司 | 苏州工业园区 | OPC大赛参赛项目</p>
+  <p>联系方式：186-0192-1816 | tuan_zhang@sina.com</p>
+  <p style="margin-top: 12px; opacity: 0.6;">版本 V2.0 | 更新日期 2026-05-13</p>
+</div>
+
+</body>
+</html>

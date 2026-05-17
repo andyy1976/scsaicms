@@ -1,0 +1,263 @@
+﻿<div class="footer">
+	<div class="width-block">
+		<p><a href="javascript:">版权声明</a>  |  <a href="javascript:">免责声明</a>  |  <a href="javascript:">服务条款</a>  |  <a href="javascript:">隐私政策</a>  |  <a href="javascript:">关于我们</a>  |  <a href="javascript:">联系我们</a></p>
+		<p>Copyright © HR. All rights reserved &nbsp; 京ICP证110088号</p>
+		<p>客服电话：400-555-888 &nbsp;  客服邮箱:Support@HR.com</p>
+	</div>
+</div>
+
+		<!--关联法规弹层-->
+<div class="box-fg" style="display: none;">
+	<div class="register dl-login">
+		<div class="reg-block">
+		
+			<div class="caption"><h3>关联法规</h3><span class="pul-close"><img src="__TMPL__images/modal-close.png" width="18"></span></div>
+			<div class="second">
+			<div class="width-block">
+			
+				<div class="row" style="margin-top:1px;">
+
+				  <div class="right_con">
+
+						<table border="0" cellspacing="2" cellpadding="3"  align="center" class="table table-bordered">
+						    <tr>
+						      <td height="25" bgcolor="f7f7f7">快速查找：</td>
+						      <td align="center" bgcolor="f7f7f7" valign="top">
+							  	<form name="form1" method="POST" action="__URL__/search">
+						        <input name="keywords" type="text" id="keyword" value="" class="s26">
+						        <input type="submit" class="btn btn-danger btn-sm" value="搜索">
+						      </form>
+						      </td>
+						    </tr>
+						</table>
+						<form name="myform" id="myform" method="POST" action="__URL__/delall">
+							<table width="95%" border="0"  align=center cellpadding="3" cellspacing="1" bgcolor="#F2F9E8" class="table table-bordered">
+
+						    <tr bgcolor="#f1f3f5" style="font-weight:bold;">
+						    <td width="5%" height="30" align="center" class="ButtonList">&nbsp;</td>
+						    <td width="75%" align="center" class="ButtonList">文章名称</td>
+
+						    <td width="15%" height="25" align="center" class="ButtonList">管理</td>    
+						    </tr>
+								<volist name="list" id="vo"> 
+							    <tr bgcolor="#ffffff" onMouseOver="this.style.backgroundColor='#EAFCD5';" onMouseOut="this.style.backgroundColor='';this.style.color=''">
+							    <td height="25" align="CENTER"><input type="checkbox" value="{$vo.aid}" name="aid[]" onClick="unselectall(this.form)" style="border:0;"></td>
+							    <td height="25">[<a href="__URL__/index/typeid/{$vo.typeid}">{$vo.typename}</a>]<a href="__ROOT__/{$urlmode}articles/{$vo.aid}{$suffix}" target="_blank">{$vo.title}</a><eq name="vo.ishot" value="1"><font color="red">[荐]</font></eq><eq name="vo.istop" value="1"><font color="red">[顶]</font></eq><eq name="vo.isimg" value="1"><font color="red">[图]</font></eq><eq name="vo.islink" value="1"><font color="red">[转]</font></eq><eq name="vo.isflash" value="1"><font color="red">[幻]</font></eq></td>
+							   
+							    <td align="center"><a href="__URL__/status/aid/{$vo.aid}/status/{$vo.status}"><a href="__APP__/Wenda/answer/qid/{$_GET[qid]}/&typeid={$_GET[typeid]}&aid={$vo.aid}">关联问题</td>
+							    </tr>
+								</volist>
+								<tr>
+									<td bgcolor="f7f7f7" colspan="5">
+
+										<div class="page-al">
+											<div class="dataTables_paginate pagination">
+											    <nav>
+													<ul class="pagination">
+													{$page}
+													</ul>
+						 							</nav>
+											</div>
+										</div>
+
+									</td>
+								</tr>
+								</table>
+						</form>
+					</div>
+				</div>
+			</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+<!--关联案例弹层-->
+
+<!--关联法律依据弹窗-->
+<!--
+<div class="side-bar right-bar">
+	<div class="gl-close"><img src="/Web/Tpl/lvbo/images/modal-close.png" width="14"></div>
+	<div class="query-al">
+		<div class="lookup">
+			<label>快速查找：</label>
+		
+		</div>
+		
+		<div class="search">
+			<form name="form1" method="POST" action="__URL__/search">
+								        <input name="keywords" type="text" id="keyword" value=""/>
+								        <button type="submit">  搜索</button>
+			</form>
+									  
+	
+		
+		</div>
+	</div>
+	<div class="gl-table">
+		<table class="table activ-table table-hover">
+            <thead>
+			
+            <tr>
+                <th></th>
+                <th>文章标题</th>
+              
+                <th>管理</th>
+            </tr>
+            </thead>
+       <tbody>
+		 			<volist name="list1" id="vo"> 
+					<tr>
+					   <td><input type="checkbox"></td>
+		         <td class="bt-left"><div><a href="__ROOT__/{$urlmode}articles/{$vo.aid}{$suffix}" target="_blank">{$vo.title}</a></div></td>
+		                
+		         <td><a href="__APP__/Wenda/answer/qid/{$_GET[qid]}/&typeid=2&aid={$vo.aid}">关联问题</a></td>
+											  
+				  </tr>
+					</volist>
+       </tbody>
+    </table>
+      <div class="dataTables_paginate gl-page">
+        <nav>
+            <ul class="pagination">
+           	 
+                	{$page1}
+            </ul>
+        </nav>
+    	</div>
+	</div>
+	
+	-->
+	<!--
+	<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" >
+    <div class="modal-content">
+        <div class="modal-header">
+         	<div class="gl-close"><img src="/Web/Tpl/lvbo/images/modal-close.png" width="14"></div>
+	<div class="query-al">
+		<div class="lookup">
+			<label>快速查找：</label>
+		
+		</div>
+		
+		<div class="search">
+			<form name="form1" method="POST" action="__URL__/search">
+								        <input name="keywords" type="text" id="keyword" value=""/>
+								        <button type="submit">  搜索</button>
+			</form>
+									  
+	
+		
+		</div>
+	</div>
+        </div>
+        <div class="modal-body">        
+            	<table class="table activ-table table-hover">
+            <thead>
+			
+            <tr>
+                <th></th>
+                <th>文章标题</th>
+              
+                <th>管理</th>
+            </tr>
+            </thead>
+       <tbody>
+		 			<volist name="list1" id="vo"> 
+					<tr>
+					   <td><input type="checkbox"></td>
+		         <td class="bt-left"><div><a href="__ROOT__/{$urlmode}articles/{$vo.aid}{$suffix}" target="_blank">{$vo.title}</a></div></td>
+		                
+		         <td><a href="__APP__/Wenda/answer/qid/{$_GET[qid]}/&typeid=2&aid={$vo.aid}">关联问题</a></td>
+											  
+				  </tr>
+					</volist>
+       </tbody>
+    </table>       
+        </div>
+        <div class="modal-footer">                        
+           <div class="dataTables_paginate gl-page">
+        <nav>
+            <ul class="pagination">
+           	 
+                	{$page1}
+            </ul>
+        </nav>
+    	</div>
+        </div>
+      </div>
+    </div>
+-->
+
+		<!--关联法规弹层-->
+<div class="box-fg" style="display: none;">
+	<div class="register dl-login">
+		<div class="reg-block">
+		
+			<div class="caption"><h3>关联法规</h3><span class="pul-close"><img src="/web/Tpl/lvbo/images/modal-close.png" width="18"></span></div>
+			<div class="second">
+			<div class="width-block">
+			
+				<div class="row" style="margin-top:1px;">
+
+				  <div class="right_con">
+
+						<table border="0" cellspacing="2" cellpadding="3"  align="center" class="table table-bordered">
+						    <tr>
+						      <td height="25" bgcolor="f7f7f7">快速查找：</td>
+						      <td align="center" bgcolor="f7f7f7" valign="top">
+							  	<form name="form1" method="POST" action="__URL__/search">
+						        <input name="keywords" type="text" id="keyword" value="" class="s26">
+						        <input type="submit" class="btn btn-danger btn-sm" value="搜索">
+						      </form>
+						      </td>
+						    </tr>
+						</table>
+						<form name="myform" id="myform" method="POST" action="__URL__/delall">
+							<table width="95%" border="0"  align=center cellpadding="3" cellspacing="1" bgcolor="#F2F9E8" class="table table-bordered">
+
+						    <tr bgcolor="#f1f3f5" style="font-weight:bold;">
+						    <td width="5%" height="30" align="center" class="ButtonList">&nbsp;</td>
+						    <td width="75%" align="center" class="ButtonList">文章名称</td>
+
+						    <td width="15%" height="25" align="center" class="ButtonList">管理</td>    
+						    </tr>
+								<volist name="list1" id="vo"> 
+							    <tr bgcolor="#ffffff" onMouseOver="this.style.backgroundColor='#EAFCD5';" onMouseOut="this.style.backgroundColor='';this.style.color=''">
+							    <td height="25" align="CENTER"><input type="checkbox" value="{$vo.aid}" name="aid[]" onClick="unselectall(this.form)" style="border:0;"></td>
+							    <td height="25">[<a href="__URL__/index/typeid/{$vo.typeid}">{$vo.typename}</a>]<a href="__ROOT__/{$urlmode}articles/{$vo.aid}{$suffix}" target="_blank">{$vo.title}</a><eq name="vo.ishot" value="1"><font color="red">[荐]</font></eq><eq name="vo.istop" value="1"><font color="red">[顶]</font></eq><eq name="vo.isimg" value="1"><font color="red">[图]</font></eq><eq name="vo.islink" value="1"><font color="red">[转]</font></eq><eq name="vo.isflash" value="1"><font color="red">[幻]</font></eq></td>
+							   
+							    <td align="center"><a href="__URL__/status/aid/{$vo.aid}/status/{$vo.status}"><a href="__APP__/Wenda/answer/qid/{$_GET[qid]}/&typeid={$_GET[typeid]}&aid={$vo.aid}">关联问题</td>
+							    </tr>
+								</volist>
+								<tr>
+									<td bgcolor="f7f7f7" colspan="5">
+
+										<div class="page-al">
+											<div class="dataTables_paginate pagination">
+											    <nav>
+													<ul class="pagination">
+													{$page1}
+													</ul>
+						 							</nav>
+											</div>
+										</div>
+
+									</td>
+								</tr>
+								</table>
+						</form>
+					</div>
+				</div>
+			</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+</div>
+</body>
+
+</html>

@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCSAI 数字员工平台全链路追溯体系 · 完整文档集 V2.0</title>
+<style>
+:root {
+  --bg: #060a16; --bg2: #0a1020; --card: #0f1830; --card2: #142040; --card3: #1a2850;
+  --border: #1e3060; --border2: #284080;
+  --text: #e2e8f0; --text2: #94a3b8; --text3: #556080;
+  --cyan: #22d3ee; --blue: #60a5fa; --purple: #a78bfa; --purple2: #8b5cf6;
+  --green: #34d399; --orange: #fbbf24; --red: #f87171; --teal: #2dd4bf;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+  background: var(--bg); color: var(--text); line-height: 1.7;
+}
+.hero {
+  position: relative; background: linear-gradient(135deg, #060918 0%, #0d1830 40%, #180835 70%, #0a0e20 100%);
+  padding: 44px 20px 36px; text-align: center; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 20% 30%, rgba(139,92,246,.10) 0%, transparent 50%),
+              radial-gradient(ellipse at 80% 70%, rgba(34,211,238,.06) 0%, transparent 50%);
+  pointer-events: none;
+}
+.hero h1 {
+  font-size: 1.7em; font-weight: 800;
+  background: linear-gradient(135deg, #e879f9, #a78bfa, #22d3ee, #34d399);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  position: relative; z-index: 1; max-width: 900px; margin: 0 auto 10px;
+}
+.hero .sub { color: var(--text2); font-size: .88em; position: relative; z-index: 1; max-width: 700px; margin: 0 auto; }
+.hero .meta { display: flex; justify-content: center; gap: 16px; margin-top: 14px; flex-wrap: wrap; position: relative; z-index: 1; }
+.hero .meta span { font-size: .78em; color: var(--text3); background: rgba(255,255,255,.04); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,.06); }
+
+/* 导航 */
+.nb {
+  display: flex; justify-content: center; gap: 0; padding: 0 10px;
+  background: rgba(6,10,22,.98); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100; overflow-x: auto;
+}
+.nb button {
+  padding: 11px 13px; background: none; border: none; color: var(--text2);
+  font-size: .76em; cursor: pointer; white-space: nowrap; position: relative;
+  transition: color .2s; font-family: inherit;
+}
+.nb button:hover { color: var(--text); }
+.nb button.on { color: var(--cyan); }
+.nb button.on::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+  height: 2px; background: linear-gradient(90deg, var(--cyan), var(--purple2));
+}
+.ct { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
+.sec { display: none; }
+.sec.on { display: block; }
+
+/* 文档头部 */
+.doc-header {
+  background: linear-gradient(135deg, var(--card) 0%, var(--card2) 100%);
+  border: 1px solid var(--border); border-radius: 14px; padding: 24px;
+  margin-bottom: 22px; display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;
+}
+.doc-header .dh-badge {
+  background: rgba(34,211,238,.10); border: 1px solid rgba(34,211,238,.2);
+  color: var(--cyan); padding: 6px 14px; border-radius: 20px; font-size: .8em; font-weight: 700;
+}
+.doc-header .dh-info { flex: 1; min-width: 240px; }
+.doc-header .dh-info h2 { font-size: 1.2em; margin-bottom: 6px; }
+.doc-header .dh-info .dh-meta { font-size: .82em; color: var(--text2); display: flex; gap: 14px; flex-wrap: wrap; }
+
+/* 通用卡片 */
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+.card h3 { font-size: 1em; color: var(--cyan); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+.card h4 { font-size: .92em; color: var(--purple); margin: 14px 0 8px; }
+.card p, .card li { color: var(--text2); font-size: .88em; line-height: 1.75; }
+.card ul { padding-left: 20px; }
+.card li { margin-bottom: 4px; }
+.card strong { color: var(--text); }
+
+/* 表格 */
+.tbl { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: .85em; }
+.tbl th {
+  text-align: left; padding: 9px 12px; background: var(--card3);
+  color: var(--cyan); border-bottom: 1px solid var(--border); font-weight: 700;
+}
+.tbl td { padding: 8px 12px; border-bottom: 1px solid rgba(30,48,96,.4); color: var(--text2); }
+.tbl tr:hover td { background: rgba(139,92,246,.04); }
+.tbl .highlight { color: var(--orange); font-weight: 700; }
+.tbl .good { color: var(--green); }
+.tbl .bad { color: var(--red); }
+
+/* 价值卡片网格 */
+.vgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin: 14px 0; }
+.vcard {
+  background: var(--card2); border: 1px solid var(--border); border-radius: 10px;
+  padding: 16px; text-align: center; transition: transform .2s, border-color .2s;
+}
+.vcard:hover { transform: translateY(-2px); border-color: var(--cyan); }
+.vcard .vc-icon { font-size: 1.6em; margin-bottom: 6px; }
+.vcard .vc-title { font-weight: 700; font-size: .92em; margin-bottom: 4px; }
+.vcard .vc-desc { font-size: .75em; color: var(--text3); line-height: 1.5; }
+
+/* 架构图 */
+.arch-layer {
+  background: var(--card2); border: 1px solid var(--border); border-radius: 10px;
+  padding: 14px 18px; margin: 8px 0; display: flex; align-items: center; gap: 14px;
+}
+.arch-layer .al-icon { font-size: 1.5em; }
+.arch-layer .al-name { font-weight: 700; font-size: .92em; color: var(--cyan); }
+.arch-layer .al-desc { font-size: .8em; color: var(--text2); }
+
+/* 痛点/优势 */
+.pain-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin: 12px 0; }
+.pain-card { background: var(--card2); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+.pain-card .pc-icon { font-size: 1.3em; margin-bottom: 6px; }
+.pain-card .pc-title { font-weight: 700; font-size: .9em; margin-bottom: 4px; color: var(--orange); }
+.pain-card .pc-desc { font-size: .8em; color: var(--text2); line-height: 1.6; }
+
+/* 路演脚本 */
+.script-box {
+  background: #080f1c; border: 1px solid var(--border); border-radius: 10px;
+  padding: 16px 20px; margin: 10px 0; font-size: .88em; line-height: 1.8;
+}
+.script-box .sc-time { color: var(--orange); font-weight: 700; font-size: .82em; margin-bottom: 4px; }
+.script-box .sc-text { color: var(--text); }
+.script-box .sc-note { color: var(--text3); font-size: .82em; margin-top: 6px; font-style: italic; }
+
+/* 苏州落地 */
+.suzhou-highlight {
+  background: linear-gradient(135deg, rgba(34,211,238,.06), rgba(139,92,246,.06));
+  border: 1px solid rgba(34,211,238,.15); border-radius: 12px; padding: 20px; margin: 14px 0;
+}
+.suzhou-highlight h4 { color: var(--cyan); margin-bottom: 8px; }
+.suzhou-highlight p, .suzhou-highlight li { color: var(--text2); font-size: .86em; line-height: 1.7; }
+
+/* 打印 */
+@media print {
+  .nb, .hero .meta { display: none; }
+  body { background: #fff; color: #111; }
+  .sec { display: block !important; page-break-after: always; }
+  .card { background: #f9f9f9; border: 1px solid #ddd; }
+  .tbl th { background: #eee; color: #111; }
+  .hero h1 { -webkit-text-fill-color: #111; background: none; }
+}
+
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.2em; }
+  .nb button { padding: 10px 8px; font-size: .7em; }
+  .doc-header { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <h1>SCSAI 数字员工平台<br>全链路追溯体系完整文档集</h1>
+  <div class="sub">版本 V2.0 · 基于现有数字员工平台 · 100% 可落地 · 可演示 · 可验证</div>
+  <div class="meta">
+    <span>📅 更新：2026-05-10</span>
+    <span>🏢 版权：苏州超艾智能科技有限公司</span>
+    <span>🎯 适用：客户·投资人·合作伙伴·技术人员</span>
+  </div>
+</div>
+
+<!-- 导航 -->
+<div class="nb">
+  <button class="on" onclick="showSec('doc1')">📄 DOC-001 白皮书</button>
+  <button onclick="showSec('doc2')">🔗 DOC-002 追溯表</button>
+  <button onclick="showSec('doc3')">⚙️ DOC-003 ARAS方案</button>
+  <button onclick="showSec('doc4')">📖 DOC-004 操作手册</button>
+  <button onclick="showSec('doc5')">🔧 DOC-005 流水线</button>
+  <button onclick="showSec('doc6')">🚨 DOC-006 异常处理</button>
+  <button onclick="showSec('doc7')">🏙️ DOC-007 苏州落地</button>
+  <button onclick="showSec('doc8')">🎤 DOC-008 路演脚本</button>
+</div>
+
+<div class="ct">
+
+<!-- ==================== DOC-001 ==================== -->
+<div id="sec-doc1" class="sec on">
+
+  <div class="doc-header">
+    <div><span class="dh-badge">DOC-001</span></div>
+    <div class="dh-info">
+      <h2>SCSAI 数字员工平台全链路追溯体系白皮书</h2>
+      <div class="dh-meta">
+        <span>版本：V2.0</span><span>更新：2026-05-10</span><span>适用：客户·投资人·合作伙伴</span>
+        <span>路演优先级：★★★★★</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 执行摘要 -->
+  <div class="card">
+    <h3>📌 1. 执行摘要</h3>
+    <p><strong>SCSAI数字员工平台</strong>是全球首个基于ARAS PLM原生打造的工业智能体操作系统，通过独创的<strong>"需求→技能→代码全链路追溯体系"</strong>，实现从工业需求提出到数字员工上线运行的端到端自动化管理。</p>
+    <p style="margin-top:10px">我们将传统软件开发中需要多人协作、耗时数月的流程，压缩为<strong>"一句话需求→30秒自动执行"</strong>的全自动化过程。</p>
+    <div class="vgrid" style="margin-top:14px">
+      <div class="vcard"><div class="vc-icon">⚡</div><div class="vc-title">开发效率提升300%</div><div class="vc-desc">一句话需求，30秒自动执行</div></div>
+      <div class="vcard"><div class="vc-icon">🎯</div><div class="vc-title">问题定位时间缩短90%</div><div class="vc-desc">全链路追溯，秒级定位根因</div></div>
+      <div class="vcard"><div class="vc-icon">📚</div><div class="vc-title">知识沉淀100%</div><div class="vc-desc">所有数据自动沉淀为企业数字资产</div></div>
+      <div class="vcard"><div class="vc-icon">🛡️</div><div class="vc-title">天然合规</div><div class="vc-desc">满足制造业合规要求，通过军工认证</div></div>
+    </div>
+  </div>
+
+  <!-- 痛点 -->
+  <div class="card">
+    <h3>🔴 2. 行业背景与痛点分析</h3>
+    <div class="pain-grid">
+      <div class="pain-card"><div class="pc-icon">⏳</div><div class="pc-title">效率低下</div><div class="pc-desc">80%的时间花在系统操作上，而非价值创造。传统软件开发周期长达3-6个月。</div></div>
+      <div class="pain-card"><div class="pc-icon">🔒</div><div class="pc-title">数据孤岛</div><div class="pc-desc">ERP、PLM、MES等系统各自为政，数据不同步导致生产事故频发。</div></div>
+      <div class="pain-card"><div class="pc-icon">🔄</div><div class="pc-title">无法进化</div><div class="pc-desc">业务变化时，软件修改周期长、成本高，无法快速响应市场需求。</div></div>
+      <div class="pain-card"><div class="pc-icon">📊</div><div class="pc-title">数字员工开发挑战</div><div class="pc-desc">缺乏标准化流程、需求与实现脱节、知识无法沉淀、难以规模化复制。</div></div>
+    </div>
+  </div>
+
+  <!-- 核心架构 -->
+  <div class="card">
+    <h3>🏗️ 3. 核心技术架构（四层）</h3>
+    <div class="arch-layer"><div class="al-icon">💬</div><div><div class="al-name">入口层 · 自然语言对话</div><div class="al-desc">飞书 / 钉钉 / 企微 · @数字员工助手即可触发</div></div></div>
+    <div class="arch-layer"><div class="al-icon">🧠</div><div><div class="al-name">智能层 · SOUL规则引擎 + OpenClaw多Agent</div><div class="al-desc">L1规则直通(&lt;100ms) · L2规则+LLM确认 · L3纯LLM兜底</div></div></div>
+    <div class="arch-layer"><div class="al-icon">🤖</div><div><div class="al-name">能力层 · 五大基础数字员工 + 全链路追溯引擎</div><div class="al-desc">识别 / 创建 / 修复 / 优化 / 比对 · 需求→技能→代码→运行全链路自动化</div></div></div>
+    <div class="arch-layer"><div class="al-icon">🗄️</div><div><div class="al-name">数据层 · SCSAI PLM（基于ARAS）+ 10,000+ AML对象</div><div class="al-desc">唯一数据源 · SQLite实时同步 · 100%追溯覆盖</div></div></div>
+  </div>
+
+  <!-- 四大原创突破 -->
+  <div class="card">
+    <h3>💎 4. 四大原创性突破</h3>
+    <table class="tbl">
+      <thead><tr><th>创新点</th><th>技术实现</th><th>客户价值</th></tr></thead>
+      <tbody>
+        <tr><td class="highlight">L1/L2/L3三级智能架构</td><td>90%日常任务L1规则直通，仅10%复杂任务调用LLM</td><td class="good">成本降低90%，延迟&lt;100ms</td></tr>
+        <tr><td class="highlight">基础数字员工原子能力</td><td>工业操作抽象为5种原子能力，可任意组合成复杂技能</td><td class="good">开发周期缩短70%，敏捷响应变化</td></tr>
+        <tr><td class="highlight">自运维自进化闭环</td><td>用户修正→规则生成→模型微调→自动部署完整闭环</td><td class="good">越用越聪明，人工干预减少80%</td></tr>
+        <tr><td class="highlight">ARAS原生全链路追溯</td><td>基于ARAS PLM的ItemType和工作流，100%数据映射</td><td class="good">问题定位秒级，开发效率提升300%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 客户价值 -->
+  <div class="card">
+    <h3>📈 5. 客户价值与应用效果</h3>
+    <table class="tbl">
+      <thead><tr><th>指标</th><th>传统方式</th><th>SCSAI平台</th><th>提升幅度</th></tr></thead>
+      <tbody>
+        <tr><td>BOM维护时间</td><td>4小时/天</td><td>3分钟/天</td><td class="good">效率提升95%</td></tr>
+        <tr><td>变更周期</td><td>3天</td><td>2小时</td><td class="good">缩短92%</td></tr>
+        <tr><td>开发成本</td><td>50-200万元/年</td><td>9999元/年起</td><td class="good">降低70%</td></tr>
+        <tr><td>需求响应时间</td><td>数周</td><td>30秒</td><td class="good">缩短90%</td></tr>
+        <tr><td>系统可用性</td><td>95%</td><td>99.5%</td><td class="good">提升4.5%</td></tr>
+      </tbody>
+    </table>
+    <div class="suzhou-highlight" style="margin-top:16px">
+      <h4>🏆 真实案例效果</h4>
+      <ul>
+        <li><strong>航天院所</strong>：200+质量记录对象，人工3个月 → <strong>2周完成</strong></li>
+        <li><strong>汽车零部件企业</strong>：BOM维护4小时/天 → <strong>3分钟/天，年节省采购成本120万元</strong></li>
+        <li><strong>电子工厂</strong>：班组长事务性工作6小时 → <strong>1小时，OEE提升12%</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 竞品对比 -->
+  <div class="card">
+    <h3>⚖️ 6. 与竞品对比</h3>
+    <table class="tbl">
+      <thead><tr><th>维度</th><th>SCSAI数字员工平台</th><th>通用AI助手</th><th>传统工业软件</th></tr></thead>
+      <tbody>
+        <tr><td>工业理解</td><td class="good">15年积累，10,000+真实工业对象</td><td class="bad">不懂工业术语和流程</td><td class="highlight">懂工业但不智能</td></tr>
+        <tr><td>开发效率</td><td class="good">全自动化，30秒上线</td><td class="highlight">需要大量提示词工程</td><td class="bad">数月开发周期</td></tr>
+        <tr><td>成本</td><td class="good">9999元/年起</td><td class="highlight">按token计费，成本高</td><td class="bad">数十万至数百万</td></tr>
+        <tr><td>数据安全</td><td class="good">端侧部署，数据不出厂</td><td class="bad">数据上传云端</td><td class="good">本地部署但复杂</td></tr>
+        <tr><td>可进化性</td><td class="good">自进化闭环，越用越聪明</td><td class="bad">无法针对企业定制</td><td class="bad">几乎无法进化</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 未来规划 -->
+  <div class="card">
+    <h3>🚀 7. 未来发展规划</h3>
+    <div class="vgrid">
+      <div class="vcard"><div class="vc-icon">📅</div><div class="vc-title">2026年</div><div class="vc-desc">发布全国首个工业数字员工全链路追溯平台，服务50家企业</div></div>
+      <div class="vcard"><div class="vc-icon">📅</div><div class="vc-title">2027年</div><div class="vc-desc">建成数字员工市场，拥有1000+标准化技能</div></div>
+      <div class="vcard"><div class="vc-icon">📅</div><div class="vc-title">2028年</div><div class="vc-desc">成为中国领先的工业数字员工平台，服务1000+企业</div></div>
+      <div class="vcard"><div class="vc-icon">🌍</div><div class="vc-title">2030年</div><div class="vc-desc">打造全球领先的工业智能体生态系统</div></div>
+    </div>
+  </div>
+
+  <!-- 关于我们 -->
+  <div class="card">
+    <h3>🏢 8. 关于我们</h3>
+    <p><strong>SCSAI（苏州超艾智能科技有限公司）</strong>由拥有<strong>30年工业软件经验</strong>的方云超先生创立，核心团队来自北航、清华、西门子、微软等知名高校和企业。</p>
+    <p style="margin-top:8px">我们专注于工业人工智能领域，致力于<strong>让每一家制造企业都拥有自进化的数字员工团队</strong>。</p>
+    <div style="margin-top:14px;font-size:.85em;color:var(--text2)">
+      📞 186-0192-1816 &nbsp;|&nbsp; 📧 tuan_zhang@sina.com &nbsp;|&nbsp; 🏙️ 苏州工业园区
+    </div>
+  </div>
+
+</div><!-- /sec-doc1 -->
+
+<!-- ==================== DOC-002 ==================== -->
+<div id="sec-doc2" class="sec">
+
+  <div class="doc-header">
+    <div><span class="dh-badge">DOC-002</span></div>
+    <div class="dh-info">
+      <h2>需求·技能·代码全链路追溯表（可下载版）</h2>
+      <div class="dh-meta">
+        <span>版本：V2.0</span><span>路演优先级：★★★☆☆</span>
+        <span>适用：开发工程师·项目经理·客户</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📌 文档说明</h3>
+    <p>本追溯表是整个体系的核心数据骨架，<strong>100%映射63项真实工业需求→30项标准化技能→22项原子技术组件→代码模块</strong>，可直接导入Jira、禅道或ARAS PLM。</p>
+  </div>
+
+  <div class="card">
+    <h3>🔗 核心字段定义</h3>
+    <table class="tbl">
+      <thead><tr><th>字段名</th><th>说明</th><th>示例</th></tr></thead>
+      <tbody>
+        <tr><td class="highlight">需求ID</td><td>与原始需求唯一对应</td><td>REQ-UI-001</td></tr>
+        <tr><td class="highlight">技能ID</td><td>标准化技能唯一标识</td><td>SKILL-UI-DET-001</td></tr>
+        <tr><td class="highlight">技术组件</td><td>技能底层依赖的原子技术能力</td><td>COMP-001(目标检测)</td></tr>
+        <tr><td class="highlight">代码模块路径</td><td>对应代码在仓库中的路径</td><td>/vision/object-detection</td></tr>
+        <tr><td class="highlight">测试用例ID</td><td>对应测试用例编号</td><td>TC-UI-DET-001-001</td></tr>
+        <tr><td class="highlight">优先级</td><td>开发优先级(P0/P1/P2)</td><td>P0</td></tr>
+        <tr><td class="highlight">计划上线时间</td><td>按6个月路线图</td><td>2026-07-30</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>📊 全链路统计汇总</h3>
+    <div class="vgrid">
+      <div class="vcard"><div class="vc-icon">📋</div><div class="vc-title">63项需求</div><div class="vc-desc">覆盖电子信息、装备制造、新能源、生物医药等8大行业</div></div>
+      <div class="vcard"><div class="vc-icon">🧩</div><div class="vc-title">30项技能</div><div class="vc-desc">分为基础必备(10)·业务增值(15)·高阶协同(5)三批</div></div>
+      <div class="vcard"><div class="vc-icon">⚙️</div><div class="vc-title">22项技术组件</div><div class="vc-desc">覆盖CV、NLP、ML、RPA、API集成等8大类</div></div>
+      <div class="vcard"><div class="vc-icon">🧪</div><div class="vc-title">450+测试用例</div><div class="vc-desc">P0通过率100%，P1≥95%，P2≥90%</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📥 下载与导入说明</h3>
+    <p>提供 <strong>Excel、CSV、JSON</strong> 三种格式下载，详细说明导入ARAS PLM、Jira、禅道等工具的步骤。</p>
+    <h4>导入ARAS PLM步骤：</h4>
+    <ol style="padding-left:20px;color:var(--text2);font-size:.86em;line-height:1.8">
+      <li>登录ARAS Innovator管理员界面</li>
+      <li>进入 Administation → Import</li>
+      <li>选择下载的CSV文件</li>
+      <li>映射字段：将CSV列与ARAS ItemType属性对应</li>
+      <li>点击 Import 按钮，等待导入完成</li>
+      <li>验证数据是否正确导入</li>
+    </ol>
+  </div>
+
+</div><!-- /sec-doc2 -->
+
+<!-- ==================== DOC-003 ==================== -->
+<div id="sec-doc3" class="sec">
+
+  <div class="doc-header">
+    <div><span class="dh-badge">DOC-003</span></div>
+    <div class="dh-info">
+      <h2>基于ARAS PLM的全链路追溯体系实现方案</h2>
+      <div class="dh-meta"><span>版本：V2.0</span><span>路演优先级：★★☆☆☆</span><span>适用：系统集成工程师·开发工程师</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📌 方案概述</h3>
+    <p>本方案详细说明如何将全链路追溯体系深度集成到<strong>ARAS Innovator 12.0+</strong>平台，实现从需求到运行的真正端到端闭环。</p>
+    <div class="suzhou-highlight">
+      <h4>核心目标</h4>
+      <ul>
+        <li>将ARAS PLM作为唯一数据源</li>
+        <li>实现需求、技能、代码、测试、部署的全链路追溯</li>
+        <li>自动化开发流程，减少人工干预</li>
+        <li>确保所有操作符合企业合规要求</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🗄️ ARAS数据模型配置（6个核心ItemType）</h3>
+    <table class="tbl">
+      <thead><tr><th>ItemType</th><th>核心属性数</th><th>关联关系</th></tr></thead>
+      <tbody>
+        <tr><td class="highlight">Digital Employee Requirement</td><td>11</td><td>关联技能(Item)</td></tr>
+        <tr><td class="highlight">Digital Employee Skill</td><td>12</td><td>依赖组件·测试用例·部署记录</td></tr>
+        <tr><td class="highlight">Atomic Technology Component</td><td>8类</td><td>反向关联技能</td></tr>
+        <tr><td class="highlight">Test Case</td><td>10</td><td>关联技能</td></tr>
+        <tr><td class="highlight">Deployment Record</td><td>11</td><td>关联技能·灰度比例</td></tr>
+        <tr><td class="highlight">Traceability Link</td><td>私有表</td><td>源Item↔目标Item</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>🔄 全流程工作流配置</h3>
+    <div class="arch-layer"><div class="al-icon">📋</div><div><div class="al-name">需求评审工作流 · 9节点</div><div class="al-desc">草稿→需求评审→技能拆解(自动)→开发中→测试中→待上线→已上线→已验收→已关闭/已拒绝</div></div></div>
+    <div class="arch-layer" style="margin-top:8px"><div class="al-icon">🧩</div><div><div class="al-name">技能开发工作流 · 9节点</div><div class="al-desc">待开发→开发中→构建中(自动GitLab)→测试中→待部署→部署中(自动)→运行中→异常(自动变更单)→已下线</div></div></div>
+    <p style="margin-top:12px;font-size:.85em;color:var(--text2)">核心自动动作：评审通过自动创建技能 · 构建中自动触发GitLab CI · 异常自动创建ARAS变更单</p>
+  </div>
+
+</div><!-- /sec-doc3 -->
+
+<!-- ==================== DOC-004 ==================== -->
+<div id="sec-doc4" class="sec">
+
+  <div class="doc-header">
+    <div><span class="dh-badge">DOC-004</span></div>
+    <div class="dh-info">
+      <h2>数字员工平台全链路追溯功能操作手册</h2>
+      <div class="dh-meta"><span>版本：V2.0</span><span>路演优先级：★★★★☆</span><span>适用：所有平台用户</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📖 手册概述</h3>
+    <p>本手册详细介绍数字员工平台全链路追溯功能的操作方法，覆盖从需求提交到数字员工上线运行的全流程。支持5个角色视图：<strong>产品经理、算法工程师、开发工程师、测试工程师、运维工程师</strong>。</p>
+  </div>
+
+  <div class="card">
+    <h3>🖱️ 核心功能操作（5大模块）</h3>
+    <div class="vgrid">
+      <div class="vcard"><div class="vc-icon">📋</div><div class="vc-title">需求管理</div><div class="vc-desc">提交需求→列表查看→需求追溯→变更关闭（4步完成）</div></div>
+      <div class="vcard"><div class="vc-icon">🧩</div><div class="vc-title">技能开发</div><div class="vc-desc">创建技能→可视化编排→代码管理→版本管理</div></div>
+      <div class="vcard"><div class="vc-icon">🧪</div><div class="vc-title">测试管理</div><div class="vc-desc">自动生成用例→创建任务→自动执行→缺陷管理</div></div>
+      <div class="vcard"><div class="vc-icon">🚀</div><div class="vc-title">部署运维</div><div class="vc-desc">一键部署→运行监控→异常告警→日志查询</div></div>
+      <div class="vcard"><div class="vc-icon">🔍</div><div class="vc-title">追溯中心</div><div class="vc-desc">全链路查询→问题快速定位→知识图谱</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>❓ 常见问题（FAQ）</h3>
+    <table class="tbl">
+      <thead><tr><th>问题</th><th>解决方案</th></tr></thead>
+      <tbody>
+        <tr><td>需求拆解不准确怎么办？</td><td>进入"需求管理"手动调整拆解结果，系统会学习这次修正</td></tr>
+        <tr><td>自动生成的代码不符合要求？</td><td>在"技能开发"中手动编辑代码，或提供更详细的需求描述</td></tr>
+        <tr><td>测试用例不完整怎么办？</td><td>系统会根据代码自动补充测试用例，也可手动添加</td></tr>
+        <tr><td>部署失败怎么办？</td><td>查看"部署运维"中的部署日志，根据错误提示修复问题</td></tr>
+        <tr><td>数字员工准确率下降怎么办？</td><td>系统会自动检测并创建ARAS变更单，按照变更流程修复</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div><!-- /sec-doc4 -->
+
+<!-- ==================== DOC-005 ==================== -->
+<div id="sec-doc5" class="sec">
+
+  <div class="doc-header">
+    <div><span class="dh-badge">DOC-005</span></div>
+    <div class="dh-info">
+      <h2>GitLab CI 自动化开发流水线配置指南</h2>
+      <div class="dh-meta"><span>版本：V2.0</span><span>路演优先级：★★☆☆☆</span><span>适用：开发工程师·运维工程师</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔧 流水线整体设计（9阶段）</h3>
+    <div class="arch-layer"><div class="al-icon">⚙️</div><div><div class="al-name">Stage 1-3：init → code-check → unit-test</div><div class="al-desc">环境初始化 · 代码质量检查（ESLint/Black）· 单元测试（Jest/PyTest）</div></div></div>
+    <div class="arch-layer"><div class="al-icon">🔨</div><div><div class="al-name">Stage 4-5：build → deploy-test</div><div class="al-desc">Docker镜像构建 · 部署到测试环境</div></div></div>
+    <div class="arch-layer"><div class="al-icon">🧪</div><div><div class="al-name">Stage 6-7：integration-test → acceptance-test</div><div class="al-desc">集成测试 · 验收测试（ARAS中记录结果）</div></div></div>
+    <div class="arch-layer"><div class="al-icon">🚀</div><div><div class="al-name">Stage 8-9：deploy-prod → finish</div><div class="al-desc">灰度部署生产(10%→100%) · 更新ARAS追溯表·发送通知</div></div></div>
+  </div>
+
+  <div class="card">
+    <h3>🔐 环境变量配置</h3>
+    <table class="tbl">
+      <thead><tr><th>变量名</th><th>说明</th><th>示例值</th></tr></thead>
+      <tbody>
+        <tr><td>ARAS_USERNAME</td><td>ARAS自动化机器人用户名</td><td>automation-bot</td></tr>
+        <tr><td>ARAS_PASSWORD</td><td>ARAS自动化机器人密码</td><td>（加密存储）</td></tr>
+        <tr><td>PLATFORM_API_TOKEN</td><td>数字员工平台API令牌</td><td>your-platform-api-token</td></tr>
+        <tr><td>DOCKER_REGISTRY_USER</td><td>Docker镜像仓库用户名</td><td>your-docker-username</td></tr>
+        <tr><td>NOTIFICATION_WEBHOOK</td><td>企业微信/飞书通知webhook</td><td>https://qyapi.weixin.qq.com/...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>✅ 最佳实践</h3>
+    <ul>
+      <li><strong>灰度发布策略</strong>：生产环境默认10%灰度，运行2小时无异常后自动扩大到100%</li>
+      <li><strong>版本管理规范</strong>：采用语义化版本号，每次流水线自动递增修订号</li>
+      <li><strong>安全</strong>：所有敏感信息通过环境变量传递，不硬编码在脚本中</li>
+      <li><strong>监控</strong>：监控流水线执行状态和成功率，及时发现问题</li>
+    </ul>
+  </div>
+
+</div><!-- /sec-doc5 -->
+
+<!-- ==================== DOC-006 ==================== -->
+<div id="sec-doc6" class="sec">
+
+  <div class="doc-header">
+    <div><span class="dh-badge">DOC-006</span></div>
+    <div class="dh-info">
+      <h2>运行数据同步与异常处理方案</h2>
+      <div class="dh-meta"><span>版本：V2.0</span><span>路演优先级：★★☆☆☆</span><span>适用：运维工程师·开发工程师</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📊 异常阈值配置（3项核心指标）</h3>
+    <div class="vgrid">
+      <div class="vcard"><div class="vc-icon">🎯</div><div class="vc-title">准确率阈值</div><div class="vc-desc">低于 <strong>95%</strong> 触发异常<br>检测周期：每5分钟</div></div>
+      <div class="vcard"><div class="vc-icon">⚡</div><div class="vc-title">响应时间阈值</div><div class="vc-desc">超过 <strong>1000ms</strong> 触发异常<br>检测周期：每5分钟</div></div>
+      <div class="vcard"><div class="vc-icon">📊</div><div class="vc-title">可用性阈值</div><div class="vc-desc">低于 <strong>99.5%</strong> 触发异常<br>检测周期：每5分钟</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔄 异常处理流程</h3>
+    <div class="arch-layer"><div class="al-icon">🚨</div><div><div class="al-name">Step 1：检测到异常</div><div class="al-desc">Python脚本每5分钟检查运行中技能的指标</div></div></div>
+    <div class="arch-layer"><div class="al-icon">📝</div><div><div class="al-name">Step 2：更新ARAS技能状态为"异常"</div><div class="al-desc">调用ARAS REST API PATCH更新status字段</div></div></div>
+    <div class="arch-layer"><div class="al-icon">📋</div><div><div class="al-name">Step 3：自动创建ARAS变更单</div><div class="al-desc">变更类型"缺陷修复"，优先级"高"</div></div></div>
+    <div class="arch-layer"><div class="al-icon">📢</div><div><div class="al-name">Step 4：发送告警通知</div><div class="al-desc">企业微信/飞书Webhook，包含异常原因和变更单ID</div></div></div>
+    <div class="arch-layer"><div class="al-icon">🔧</div><div><div class="al-name">Step 5：负责人修复并重新部署</div><div class="al-desc">按照变更单流程修复，部署后验证恢复正常</div></div></div>
+  </div>
+
+  <div class="card">
+    <h3>⏪ 自动回滚机制</h3>
+    <p>当生产环境部署后准确率下降超过<strong>5%</strong>，或服务不可用超过<strong>5分钟</strong>，系统自动将流量切换到上一个稳定版本。</p>
+    <p style="margin-top:8px;font-size:.85em;color:var(--text2)">回滚后自动更新ARAS技能状态为"异常"，创建变更单并发送告警通知。</p>
+  </div>
+
+</div><!-- /sec-doc6 -->
+
+<!-- ==================== DOC-007 ==================== -->
+<div id="sec-doc7" class="sec">
+
+  <div class="doc-header">
+    <div><span class="dh-badge">DOC-007</span></div>
+    <div class="dh-info">
+      <h2>苏州工业数字员工全链路追溯平台落地实施方案</h2>
+      <div class="dh-meta"><span>版本：V2.0</span><span>路演优先级：★★★★★</span><span>适用：管理层·市场人员·政府对接</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏙️ 苏州市场分析</h3>
+    <div class="suzhou-highlight">
+      <h4>产业基础</h4>
+      <ul>
+        <li>苏州制造业全国第一，拥有 <strong>16万家工业企业</strong></li>
+        <li>工业总产值突破 <strong>4万亿元</strong></li>
+        <li>形成了电子信息、装备制造、生物医药、先进材料 <strong>四大主导产业</strong></li>
+      </ul>
+    </div>
+    <div class="suzhou-highlight" style="margin-top:12px">
+      <h4>政策红利（"AI+制造"八大行动）</h4>
+      <ul>
+        <li>数字经济核心产业规模突破 <strong>1万亿元</strong></li>
+        <li>揭榜挂帅项目单项最高 <strong>500万元</strong></li>
+        <li>姑苏领军人才 <strong>最高500万元</strong>资助</li>
+        <li>工业园区科技领军人才 <strong>最高300万元</strong>资助</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🗓️ 整体落地规划</h3>
+    <table class="tbl">
+      <thead><tr><th>时间节点</th><th>里程碑事件</th><th>预期营收</th></tr></thead>
+      <tbody>
+        <tr><td class="highlight">2026 Q3</td><td>注册成立苏州子公司，落户工业园区人工智能产业园</td><td>—</td></tr>
+        <tr><td class="highlight">2026 Q4</td><td>发布全国首个工业数字员工全链路追溯平台，开始市场推广</td><td>400万元（苏州）</td></tr>
+        <tr><td class="highlight">2027 Q1</td><td>完成3个苏州本地标杆项目，申请揭榜挂帅项目</td><td rowspan="2">2000万元（苏州）</td></tr>
+        <tr><td class="highlight">2027 Q2</td><td>组建15人本地团队，拓展长三角市场</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>🏆 标杆项目详解（3个）</h3>
+    <div class="vgrid">
+      <div class="vcard"><div class="vc-icon">🔬</div><div class="vc-title">亨通光电·光纤生产数字员工</div><div class="vc-desc">质量检测效率提升80% · 工艺优化周期缩短70% · 完成：2027 Q1</div></div>
+      <div class="vcard"><div class="vc-icon">⚙️</div><div class="vc-title">博众精工·BOM管理数字员工</div><div class="vc-desc">BOM效率提升95% · 年节省采购成本150万元 · 完成：2027 Q1</div></div>
+      <div class="vcard"><div class="vc-icon">🏭</div><div class="vc-title">沙钢集团·钢铁质量检测数字员工</div><div class="vc-desc">检测效率提升90% · 准确率达99.5% · 完成：2027 Q1</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📋 政策申请指南</h3>
+    <table class="tbl">
+      <thead><tr><th>政策名称</th><th>资助金额</th><th>申请时间</th><th>申请条件</th></tr></thead>
+      <tbody>
+        <tr><td>姑苏领军人才</td><td class="good">最高500万元</td><td>每年3-4月</td><td>硕士以上，3年相关经验</td></tr>
+        <tr><td>工业园区科技领军人才</td><td class="good">最高300万元</td><td>每年5-6月</td><td>本科以上，2年相关经验</td></tr>
+        <tr><td>"AI+制造"揭榜挂帅</td><td class="good">单项最高500万元</td><td>每年9-10月</td><td>工业大模型/具身智能方向</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div><!-- /sec-doc7 -->
+
+<!-- ==================== DOC-008 ==================== -->
+<div id="sec-doc8" class="sec">
+
+  <div class="doc-header">
+    <div><span class="dh-badge">DOC-008</span></div>
+    <div class="dh-info">
+      <h2>苏州OPC大赛路演演示脚本与操作指南</h2>
+      <div class="dh-meta"><span>版本：V2.0</span><span>路演优先级：★★★★★</span><span>适用：路演演讲者·演示操作人员</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎤 演示整体规划</h3>
+    <div class="suzhou-highlight">
+      <p><strong>总时长</strong>：8分钟（路演）+ 5分钟（问答）</p>
+      <p style="margin-top:6px"><strong>演示环境</strong>：飞书机器人 + 数字员工平台 + ARAS PLM</p>
+      <p style="margin-top:6px"><strong>核心亮点</strong>：全链路追溯体系的自动化能力和真实效果</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📝 8分钟路演逐字稿</h3>
+
+    <div class="script-box">
+      <div class="sc-time">[第1分钟 · 开场]</div>
+      <div class="sc-text">"各位评委老师好，我是SCSAI的方云超。今天我给大家带来的是<strong>SCSAI数字员工平台——自进化的工业智能体操作系统</strong>。我们的核心口号是：<strong>对话即执行，系统即员工</strong>。"</div>
+      <div class="sc-note">💡 配合PPT展示：公司Logo + 核心口号</div>
+    </div>
+
+    <div class="script-box">
+      <div class="sc-time">[第2分钟 · 痛点与机会]</div>
+      <div class="sc-text">"制造企业数字化有<strong>三大顽疾</strong>：操作复杂、数据孤岛、无法进化。而苏州正在实施'AI+制造'八大行动，这给我们带来了巨大的市场机会。"</div>
+      <div class="sc-note">💡 配合PPT：三大顽疾 + 苏州政策红利数据</div>
+    </div>
+
+    <div class="script-box">
+      <div class="sc-time">[第3-6分钟 · 产品演示]</div>
+      <div class="sc-text">"现在我给大家现场演示一下我们的产品。大家看，这是飞书，我只需要@我们的数字员工助手，说一句话：<strong>'帮我优化这个汽车零部件BOM的成本，并生成全链路追溯报告'</strong>。"<br><br>
+      "大家看，数字员工已经开始工作了。它自动解析需求，拆解为对应的技能，调用BOM管理数字员工，从ARAS PLM中获取最新的BOM数据，进行成本优化计算。"<br><br>
+      "<strong>（等待30秒）</strong><br>
+      好了，已经完成了！大家看，这是优化后的BOM，<strong>成本降低了12%，年节省采购成本120万元</strong>。这是自动生成的全链路追溯报告，包含了需求、技能、代码、测试、部署的完整信息，完全符合ARAS标准。"<br><br>
+      "整个过程没有任何人工干预，从需求提出到结果输出，<strong>只用了30秒</strong>。这就是我们全链路追溯体系的威力。"</div>
+      <div class="sc-note">💡 这是核心演示环节！确保网络畅通，提前测试好演示环境</div>
+    </div>
+
+    <div class="script-box">
+      <div class="sc-time">[第7分钟 · 技术优势与商业模式]</div>
+      <div class="sc-text">"我们的核心技术优势是<strong>基于ARAS PLM的全链路追溯体系</strong>，这是全球独有的。我们的商业模式是按年订阅，像发工资一样简单：<strong>基础版9999元/年，专业版29999元/年，企业版49999元/年</strong>。"</div>
+    </div>
+
+    <div class="script-box">
+      <div class="sc-time">[第8分钟 · 苏州落地计划 + 结尾]</div>
+      <div class="sc-text">"我们已经决定在<strong>苏州工业园区</strong>落地，注册成立子公司，发布全国首个工业数字员工全链路追溯平台，联合亨通、博众精工、沙钢打造<strong>3个标杆项目</strong>。我们相信，在苏州这片制造业的沃土上，我们的数字员工一定能大放异彩！"<br><br>
+      "最后，我想用一句话总结：<strong>SCSAI数字员工，就是7×24小时在线、越用越聪明的AI同事。欢迎各位评委老师会后体验我们的产品。谢谢大家！</strong>"</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📋 演示准备清单</h3>
+    <ul>
+      <li>✅ 提前准备好测试用的BOM数据</li>
+      <li>✅ 确保飞书机器人、数字员工平台、ARAS PLM网络畅通</li>
+      <li>✅ 准备好备用演示视频，以防网络问题</li>
+      <li>✅ 熟悉常见问题的回答</li>
+      <li>✅ 打印好名片和宣传资料</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🚨 应急方案</h3>
+    <table class="tbl">
+      <thead><tr><th>异常情况</th><th>应急处理</th></tr></thead>
+      <tbody>
+        <tr><td>网络中断</td><td>立即播放提前录制好的演示视频，同时说明"由于网络问题，我们先看录制视频，会后可以做现场演示"</td></tr>
+        <tr><td>演示失败</td><td>不要纠结，快速切换到下一个演示点，说"这个功能我们会后可以单独演示，接下来介绍苏州落地计划"</td></tr>
+        <tr><td>评委提问超出预期</td><td>诚实回答，不要编造，可以说"这个问题非常好，我们会后详细交流"</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div><!-- /sec-doc8 -->
+
+</div><!-- /ct -->
+
+<div style="text-align:center;padding:30px;color:var(--text3);font-size:.78em;border-top:1px solid var(--border);margin-top:40px">
+  SCSAI 数字员工平台全链路追溯体系完整文档集 V2.0 · 苏州超艾智能科技有限公司 · 2026-05-10<br>
+  186-0192-1816 · tuan_zhang@sina.com · 苏州工业园区人工智能产业园
+</div>
+
+<script>
+function showSec(id) {
+  document.querySelectorAll('.sec').forEach(s => s.classList.remove('on'));
+  document.querySelectorAll('.nb button').forEach(b => b.classList.remove('on'));
+  document.getElementById('sec-' + id).classList.add('on');
+  event.target.classList.add('on');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

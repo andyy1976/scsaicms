@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>技术能力组件与数字员工关系矩阵</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'PingFang SC','Microsoft YaHei',Arial,sans-serif;background:#0d1117;color:#e6edf3;min-height:100vh}
+.hero{background:linear-gradient(135deg,#0d1117 0%,#161b22 50%,#1a1f2e 100%);padding:48px 20px 36px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 40%,rgba(56,189,248,.08) 0%,transparent 50%),radial-gradient(ellipse at 80% 60%,rgba(139,92,246,.08) 0%,transparent 50%)}
+.hero h1{font-size:1.75rem;font-weight:700;position:relative;z-index:1;margin-bottom:8px;background:linear-gradient(90deg,#e6edf3,#a5d6ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{position:relative;z-index:1;color:#7d8590;font-size:.9rem}
+.hero .badges{position:relative;z-index:1;margin-top:12px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.hero .badges span{display:inline-block;padding:4px 14px;border-radius:20px;font-size:.78rem}
+.b1{background:rgba(56,189,248,.15);color:#38bdf8;border:1px solid rgba(56,189,248,.3)}
+.b2{background:rgba(34,197,94,.15);color:#22c55e;border:1px solid rgba(34,197,94,.3)}
+.b3{background:rgba(139,92,246,.15);color:#a78bfa;border:1px solid rgba(139,92,246,.3)}
+.nav{position:sticky;top:0;z-index:100;background:rgba(13,17,23,.96);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.06);padding:0 16px;display:flex;align-items:center;overflow-x:auto;gap:2px}
+.nav button{flex-shrink:0;background:none;border:none;color:#7d8590;padding:12px 14px;cursor:pointer;font-size:.85rem;transition:all .2s;border-bottom:2px solid transparent;white-space:nowrap}
+.nav button:hover{color:#e6edf3}
+.nav button.active{color:#38bdf8;border-bottom-color:#38bdf8}
+.stats-bar{display:flex;gap:10px;padding:16px 20px;flex-wrap:wrap}
+.sc2{flex:1;min-width:100px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:14px;text-align:center}
+.sc2 .num{font-size:1.5rem;font-weight:700;background:linear-gradient(90deg,#38bdf8,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sc2 .label{color:#7d8590;font-size:.75rem;margin-top:3px}
+.content{padding:16px 20px;max-width:1500px;margin:0 auto}
+.tc{display:none}.tc.active{display:block}
+.section{margin-bottom:24px}
+.section-h{display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.05)}
+.sh-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.sh-icon.b1{background:linear-gradient(135deg,rgba(56,189,248,.2),rgba(56,189,248,.1));border:1px solid rgba(56,189,248,.3)}
+.sh-icon.b2{background:linear-gradient(135deg,rgba(34,197,94,.2),rgba(34,197,94,.1));border:1px solid rgba(34,197,94,.3)}
+.sh-icon.b3{background:linear-gradient(135deg,rgba(139,92,246,.2),rgba(139,92,246,.1));border:1px solid rgba(139,92,246,.3)}
+.sh-title{font-size:1rem;font-weight:600}
+.sh-sub{color:#7d8590;font-size:.75rem;margin-top:2px}
+.legend{display:flex;gap:14px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:.78rem;color:#7d8590}
+.legend .star{color:#f59e0b;font-size:.85rem}
+.scroll-wrap{overflow-x:auto;border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+.mt2{width:100%;border-collapse:collapse;font-size:.8rem;min-width:600px}
+.mt2 th{background:rgba(255,255,255,.03);color:#7d8590;text-align:left;padding:8px 10px;font-weight:500;border-bottom:1px solid rgba(255,255,255,.06);position:sticky;top:0;white-space:nowrap;font-size:.75rem}
+.mt2 td{padding:9px 10px;border-bottom:1px solid rgba(255,255,255,.03);vertical-align:middle;font-size:.78rem}
+.mt2 .role-cell{min-width:120px;font-weight:500;color:#e6edf3}
+.mt2 .tech-cell{min-width:90px;color:#7d8590}
+.mt2 tr:hover td{background:rgba(255,255,255,.02)}
+.mt2 tr:last-child td{border-bottom:none}
+.cell{padding:2px 5px;border-radius:4px;font-size:.78rem;font-weight:600;text-align:center;display:inline-block;min-width:28px}
+.c3{background:rgba(245,158,11,.2);color:#f59e0b;border:1px solid rgba(245,158,11,.3)}
+.c2{background:rgba(56,189,248,.15);color:#38bdf8;border:1px solid rgba(56,189,248,.25)}
+.c1{background:rgba(125,133,144,.15);color:#7d8590;border:1px solid rgba(125,133,144,.2)}
+.p0{color:#ef4444;font-size:.72rem;font-weight:600;margin-left:4px}
+.p1{color:#f59e0b;font-size:.72rem;font-weight:600;margin-left:4px}
+.p2{color:#22c55e;font-size:.72rem;font-weight:600;margin-left:4px}
+.ov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:20px}
+.ov-item{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:14px;text-align:center;cursor:pointer;transition:all .2s}
+.ov-item:hover{border-color:rgba(56,189,248,.35);transform:translateY(-1px)}
+.ov-item .ov-emoji{font-size:1.6rem;margin-bottom:6px}
+.ov-item .ov-name{font-size:.8rem;font-weight:600;color:#e6edf3}
+.ov-item .ov-count{font-size:.7rem;color:#7d8590;margin-top:3px}
+.tech-cat{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.tech-tag{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:7px;padding:7px 12px;font-size:.78rem;color:#a5d6ff;display:flex;align-items:center;gap:6px;transition:all .2s}
+.tech-tag:hover{border-color:rgba(56,189,248,.4)}
+.tech-tag .dot{width:6px;height:6px;border-radius:50%}
+.tc-dot-cv{background:#f59e0b}.tc-dot-llm{background:#38bdf8}.tc-dot-ts{background:#22c55e}.tc-dot-opt{background:#a78bfa}.tc-dot-ma{background:#ec4899}.tc-dot-ro{background:#14b8a6}.tc-dot-dt{background:#f97316}.tc-dot-dp{background:#64748b}
+.filters{padding:12px 20px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;background:rgba(255,255,255,.02);border-bottom:1px solid rgba(255,255,255,.04)}
+.filters input{flex:1;min-width:180px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:8px 12px;color:#e6edf3;font-size:.85rem}
+.filters input:focus{outline:none;border-color:#38bdf8}
+.filters input::placeholder{color:#546e7a}
+.ranking-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.rank-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:14px 16px;transition:all .2s}
+.rank-card:hover{border-color:rgba(56,189,248,.3)}
+.rank-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.rank-num{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;flex-shrink:0}
+.rn1{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff}
+.rn2{background:linear-gradient(135deg,#7d8590,#4b5563);color:#fff}
+.rn3{background:linear-gradient(135deg,#cd7c32,#a0522d);color:#fff}
+.rn-else{background:rgba(255,255,255,.06);color:#7d8590}
+.rank-name{font-size:.88rem;font-weight:600;color:#e6edf3;flex:1;min-width:0}
+.rank-tech{font-size:.75rem;color:#7d8590;margin-bottom:8px;padding-left:38px}
+.rank-bars{display:flex;gap:4px;align-items:center}
+.rank-bar{height:6px;border-radius:3px;flex:1;min-width:20px}
+.rb-high{background:linear-gradient(90deg,#ef4444,#f97316)}
+.rb-mid{background:linear-gradient(90deg,#f59e0b,#eab308)}
+.rb-low{background:linear-gradient(90deg,#22c55e,#16a34a)}
+.rank-count{font-size:.7rem;color:#7d8590;white-space:nowrap;margin-left:6px}
+.insight-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:18px;margin-bottom:12px}
+.insight-card h3{font-size:.95rem;font-weight:600;color:#e6edf3;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.insight-card ul{margin:0;padding-left:18px}
+.insight-card li{color:#7d8590;font-size:.82rem;margin-bottom:6px;line-height:1.5}
+.insight-card li strong{color:#a5d6ff}
+.phase{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.phase-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;overflow:hidden}
+.phase-hdr{padding:14px 16px;font-weight:600;font-size:.9rem}
+.ph1 .phase-hdr{background:linear-gradient(135deg,rgba(56,189,248,.15),rgba(56,189,248,.05));border-bottom:1px solid rgba(56,189,248,.2);color:#38bdf8}
+.ph2 .phase-hdr{background:linear-gradient(135deg,rgba(34,197,94,.15),rgba(34,197,94,.05));border-bottom:1px solid rgba(34,197,94,.2);color:#22c55e}
+.ph3 .phase-hdr{background:linear-gradient(135deg,rgba(139,92,246,.15),rgba(139,92,246,.05));border-bottom:1px solid rgba(139,92,246,.2);color:#a78bfa}
+.phase-body{padding:14px 16px}
+.phase-time{font-size:.75rem;color:#7d8590;margin-bottom:10px}
+.phase-items{list-style:none;padding:0;margin:0}
+.phase-items li{font-size:.8rem;color:#a5d6ff;margin-bottom:5px;display:flex;align-items:flex-start;gap:6px}
+.phase-items li::before{content:'→';color:#38bdf8;flex-shrink:0;margin-top:1px}
+.ft{text-align:center;padding:24px 20px;color:#2d3748;font-size:.75rem;border-top:1px solid rgba(255,255,255,.04);margin-top:20px}
+@media(max-width:700px){.hero h1{font-size:1.3rem}.stats-bar{overflow-x:auto;flex-wrap:nowrap;padding-bottom:6px}.scroll-wrap{-webkit-overflow-scrolling:touch}}
+</style>
+</head>
+<body>
+<div class="hero">
+<h1>技术能力组件与数字员工关系矩阵</h1>
+<p>18类数字员工 · 22项原子技术能力 · 30项技能 · 63项工业需求 100%覆盖</p>
+<div class="badges">
+<span class="b1">CV类 5项</span>
+<span class="b2">LLM类 5项</span>
+<span class="b3">时序预测 5项</span>
+<span class="b1">运筹优化 4项</span>
+<span class="b2">多智能体 4项</span>
+<span class="b3">具身智能 4项</span>
+<span class="b1">数字孪生 3项</span>
+<span class="b2">数据处理 4项</span>
+</div>
+</div>
+<nav class="nav" id="mainNav">
+<button class="active" data-tab="overview">📊 总览</button>
+<button data-tab="b1">🔵 第一批矩阵</button>
+<button data-tab="b2">🟢 第二批矩阵</button>
+<button data-tab="b3">🟣 第三批矩阵</button>
+<button data-tab="ranking">🏆 能力排名</button>
+<button data-tab="insights">💡 关键洞察</button>
+<button data-tab="roadmap">🗺️ 演进路线</button>
+</nav>
+<div class="stats-bar">
+<div class="sc2"><div class="num">18</div><div class="label">数字员工</div></div>
+<div class="sc2"><div class="num">22</div><div class="label">原子能力</div></div>
+<div class="sc2"><div class="num">30</div><div class="label">技能</div></div>
+<div class="sc2"><div class="num">63</div><div class="label">需求覆盖</div></div>
+<div class="sc2"><div class="num">100%</div><div class="label">覆盖率</div></div>
+</div>
+<div class="content">
+<div class="tc active" id="tab-overview">
+<div class="section">
+<div class="section-h">
+<div class="sh-icon" style="background:linear-gradient(135deg,rgba(56,189,248,.2),rgba(56,189,248,.1))">🏗️</div>
+<div class="sh-title">8大技术能力类别</div>
+</div>
+<div class="tech-cat">
+<span class="tech-tag"><span class="dot tc-dot-cv"></span>CV计算机视觉 5项</span>
+<span class="tech-tag"><span class="dot tc-dot-llm"></span>LLM大语言模型 5项</span>
+<span class="tech-tag"><span class="dot tc-dot-ts"></span>时序预测 5项</span>
+<span class="tech-tag"><span class="dot tc-dot-opt"></span>运筹优化 4项</span>
+<span class="tech-tag"><span class="dot tc-dot-ma"></span>多智能体 4项</span>
+<span class="tech-tag"><span class="dot tc-dot-ro"></span>具身智能 4项</span>
+<span class="tech-tag"><span class="dot tc-dot-dt"></span>数字孪生 3项</span>
+<span class="tech-tag"><span class="dot tc-dot-dp"></span>数据处理 4项</span>
+</div>
+</div>
+<div class="section">
+<div class="section-h">
+<div class="sh-icon" style="background:linear-gradient(135deg,rgba(34,197,94,.2),rgba(34,197,94,.1))">🤖</div>
+<div class="sh-title">数字员工全家桶</div>
+<div class="sh-sub">点击卡片筛选对应能力</div>
+</div>
+<div class="ov-grid" id="empGrid"></div>
+</div>
+<div class="section">
+<div class="section-h">
+<div class="sh-icon" style="background:linear-gradient(135deg,rgba(139,92,246,.2),rgba(139,92,246,.1))">🔗</div>
+<div class="sh-title">能力依赖度排名 TOP10</div>
+</div>
+<div class="ranking-grid" id="rankingGrid"></div>
+</div>
+</div>
+<div class="tc" id="tab-b1">
+<div class="section">
+<div class="section-h">
+<div class="sh-icon b1">🔵</div>
+<div class="sh-title">第一批 · 基础必备数字员工矩阵</div>
+<div class="sh-sub">3类角色 × 9项原子能力</div>
+</div>
+<div class="legend">
+<div class="legend-item"><span class="star">★★★</span> 核心依赖</div>
+<div class="legend-item"><span class="star">★★</span> 重要支撑</div>
+<div class="legend-item"><span class="star">★</span> 一般辅助</div>
+</div>
+<div class="scroll-wrap">
+<table class="mt2" id="m1"><thead></thead><tbody></tbody></table>
+</div>
+</div>
+</div>
+<div class="tc" id="tab-b2">
+<div class="section">
+<div class="section-h">
+<div class="sh-icon b2">🟢</div>
+<div class="sh-title">第二批 · 业务增值数字员工矩阵</div>
+<div class="sh-sub">12类角色 × 12项原子能力</div>
+</div>
+<div class="legend">
+<div class="legend-item"><span class="star">★★★</span> 核心依赖</div>
+<div class="legend-item"><span class="star">★★</span> 重要支撑</div>
+<div class="legend-item"><span class="star">★</span> 一般辅助</div>
+</div>
+<div class="scroll-wrap">
+<table class="mt2" id="m2"><thead></thead><tbody></tbody></table>
+</div>
+</div>
+</div>
+<div class="tc" id="tab-b3">
+<div class="section">
+<div class="section-h">
+<div class="sh-icon b3">🟣</div>
+<div class="sh-title">第三批 · 高阶协同数字员工矩阵</div>
+<div class="sh-sub">3类角色 × 9项原子能力</div>
+</div>
+<div class="legend">
+<div class="legend-item"><span class="star">★★★</span> 核心依赖</div>
+<div class="legend-item"><span class="star">★★</span> 重要支撑</div>
+<div class="legend-item"><span class="star">★</span> 一般辅助</div>
+</div>
+<div class="scroll-wrap">
+<table class="mt2" id="m3"><thead></thead><tbody></tbody></table>
+</div>
+</div>
+</div>
+<div class="tc" id="tab-ranking">
+<div class="section">
+<div class="section-h">
+<div class="sh-icon" style="background:linear-gradient(135deg,rgba(245,158,11,.2),rgba(245,158,11,.1))">🏆</div>
+<div class="sh-title">原子技术能力依赖度排名</div>
+<div class="sh-sub">按支撑数字员工数量排序 · P0/P1/P2优先级</div>
+</div>
+<div class="ranking-grid" id="rankingGrid2"></div>
+</div>
+</div>
+<div class="tc" id="tab-insights">
+<div class="insight-card">
+<h3>🔧 技术底座核心三支柱</h3>
+<ul>
+<li><strong>大语言模型(LLM)</strong> — 18类数字员工中15类依赖LLM相关能力。建议优先部署端侧轻量化大模型（如Qwen2.5-3B），统一支撑自然语言交互、文档处理、知识推理。</li>
+<li><strong>计算机视觉(CV)</strong> — 工业场景第一刚需，支撑质检智能体和巡检智能体。建议集成YOLOv8/RT-DETR等成熟框架，提供标注-训练-部署一体化视觉引擎。</li>
+<li><strong>运筹优化(OR)</strong> — 价值提升核心引擎，支撑工艺优化、排程调度、能源管理等高价值场景。建议集成OR-Tools开源求解器，提供参数化建模能力。</li>
+</ul>
+</div>
+<div class="insight-card">
+<h3>🏗️ 能力复用最大化设计原则</h3>
+<ul>
+<li><strong>通用能力下沉</strong> — 知识图谱/RAG、多模态解析、数据处理等下沉到平台层，所有数字员工统一调用，避免重复开发。</li>
+<li><strong>行业能力组件化</strong> — 金相分析、染色体核型分析、电池SOH预测等行业专用能力封装为独立组件，按需加载。</li>
+<li><strong>技能模板化</strong> — 基于30项标准化技能，预制"压铸件缺陷检测"、"CNC工艺参数寻优"等开箱即用模板，缩短交付周期。</li>
+</ul>
+</div>
+<div class="insight-card">
+<h3>⚡ P0建设优先级（必须先做）</h3>
+<ul>
+<li>知识图谱/RAG — 支撑12类数字员工，排名第1，所有依赖LLM的场景都需要</li>
+<li>多模态文档解析 — 支撑11类，排名第2，设计辅助、客服、文档智能体的核心</li>
+<li>自然语言理解 — 支撑10类，排名第3，客服/HR/文档智能体的基础</li>
+<li>全局参数寻优 — 支撑9类，排名第4，工艺优化/设备维护/研发仿真的核心</li>
+<li>时序数据预处理 — 支撑9类，排名第5，设备维护/供应链/能源管理的基础</li>
+<li>文本生成 — 支撑8类，排名第6，质检/工艺/设备/文档智能体的输出能力</li>
+<li>通用目标检测 — 支撑7类，排名第7，质检/巡检/具身智能的核心感知能力</li>
+</ul>
+</div>
+<div class="insight-card">
+<h3>🚀 P1建设优先级（第二阶段）</h3>
+<ul>
+<li>多约束排程 — 支撑6类，排程调度/生产运营/供应链的核心决策能力</li>
+<li>代码生成 — 支撑5类，编程智能体/设计辅助的核心能力</li>
+<li>3D视觉感知 — 支撑5类，具身智能/设计辅助/巡检的三维感知基础</li>
+</ul>
+</div>
+</div>
+<div class="tc" id="tab-roadmap">
+<div class="phase" id="roadmapGrid"></div>
+</div>
+</div>
+<footer class="ft">苏州市"AI+制造"技术能力矩阵 · 18类数字员工×22项原子能力 · 2026年5月</footer>
+<script>
+// === DATA ===
+// Batch 1 matrix
+const M1={
+header:["数字员工角色","通用目标检测","高精度尺寸测量","显微图像分析","时序数据预处理","设备故障预测","全局参数寻优","知识图谱/RAG","多模态文档解析","文本生成"],
+rows:[
+{role:"质检智能体",emoji:"🔍",data:["★★★","★★★","★★★","★","★","★★","★","★","★★"]},
+{role:"工艺优化智能体",emoji:"⚙️",data:["★","★","★","★★","★","★★★","★★★","★★","★★"]},
+{role:"设备维护智能体",emoji:"🏭",data:["★★","★","★","★★★","★★★","★★","★★","★","★★"]}
+]
+};
+
+// Batch 2 matrix
+const M2={
+header:["数字员工角色","知识图谱/RAG","多模态文档解析","自然语言理解","时序数据预处理","负荷/需求预测","库存优化","多约束排程","3D视觉感知","机器人运动规划","力控自适应控制","自主导航避障","代码生成"],
+rows:[
+{role:"供应链智能体",emoji:"📦",data:["★★★","★★","★★","★★★","★★★","★★★","★★","★★","★","★","★","★"]},
+{role:"设计辅助智能体",emoji:"🎨",data:["★★","★★★","★★","★","★","★","★","★★","★","★","★","★★★"]},
+{role:"具身智能操作智能体",emoji:"🤖",data:["★","★","★","★","★","★","★","★★★","★★★","★★★","★★★","★"]},
+{role:"能源/碳管理智能体",emoji:"⚡",data:["★★","★★","★★","★★★","★★★","★","★","★","★","★","★","★"]},
+{role:"客服/知识智能体",emoji:"💬",data:["★★★","★★★","★★★","★","★","★","★","★","★","★","★","★"]},
+{role:"数据智能体",emoji:"📊",data:["★","★★","★★★","★★","★★","★","★","★","★","★","★","★"]},
+{role:"编程智能体",emoji:"💻",data:["★","★★","★★","★","★","★","★","★","★","★","★","★★★"]},
+{role:"巡检智能体",emoji:"🔭",data:["★★★","★","★★","★★","★","★","★","★★","★★","★","★★★","★"]},
+{role:"文档智能体",emoji:"📝",data:["★★","★★★","★★★","★","★","★","★","★","★","★","★","★"]},
+{role:"HR智能体",emoji:"👥",data:["★★","★★","★★★","★★","★","★","★","★","★","★","★","★"]},
+{role:"报价智能体",emoji:"💰",data:["★","★★","★★","★","★","★★","★","★★","★","★","★","★"]},
+{role:"医学分析智能体",emoji:"🧬",data:["★★","★","★","★","★","★","★","★","★","★","★","★"]}
+]
+};
+
+// Batch 3 matrix
+const M3={
+header:["数字员工角色","任务拆解与分配","智能体间通信","全局协同决策","数字孪生建模","仿真验证","虚实同步","多约束排程","全局参数寻优","多源数据整合"],
+rows:[
+{role:"生产运营智能体",emoji:"🏭",data:["★★★","★★★","★★★","★★","★★","★★","★★★","★★","★★★"]},
+{role:"研发仿真智能体",emoji:"🔬",data:["★★","★★","★★","★★★","★★★","★★★","★","★★★","★★"]},
+{role:"排程调度智能体",emoji:"📋",data:["★★★","★★","★★★","★★","★","★","★★★","★★","★★"]}
+]
+};
+
+// Ranking
+const RANKING=[
+{name:"知识图谱/RAG",support:12,priority:"P0",tech:"LLM类",color:"#38bdf8"},
+{name:"多模态文档解析",support:11,priority:"P0",tech:"LLM类",color:"#38bdf8"},
+{name:"自然语言理解",support:10,priority:"P0",tech:"LLM类",color:"#38bdf8"},
+{name:"全局参数寻优",support:9,priority:"P0",tech:"运筹优化类",color:"#a78bfa"},
+{name:"时序数据预处理",support:9,priority:"P0",tech:"时序预测类",color:"#22c55e"},
+{name:"文本生成",support:8,priority:"P0",tech:"LLM类",color:"#38bdf8"},
+{name:"通用目标检测",support:7,priority:"P0",tech:"CV类",color:"#f59e0b"},
+{name:"多约束排程",support:6,priority:"P1",tech:"运筹优化类",color:"#a78bfa"},
+{name:"代码生成",support:5,priority:"P1",tech:"LLM类",color:"#38bdf8"},
+{name:"3D视觉感知",support:5,priority:"P1",tech:"CV类",color:"#f59e0b"}
+];
+
+// Employee grid
+const EMPS=[
+{emoji:"🔍",name:"质检智能体",type:"第一批",color:"#38bdf8",count:4,reqs:7},
+{emoji:"⚙️",name:"工艺优化智能体",type:"第一批",color:"#38bdf8",count:3,reqs:6},
+{emoji:"🏭",name:"设备维护智能体",type:"第一批",color:"#38bdf8",count:3,reqs:6},
+{emoji:"📦",name:"供应链智能体",type:"第二批",color:"#22c55e",count:5,reqs:5},
+{emoji:"🎨",name:"设计辅助智能体",type:"第二批",color:"#22c55e",count:5,reqs:5},
+{emoji:"🤖",name:"具身智能操作",type:"第二批",color:"#22c55e",count:4,reqs:4},
+{emoji:"⚡",name:"能源/碳管理",type:"第二批",color:"#22c55e",count:3,reqs:3},
+{emoji:"💬",name:"客服/知识智能体",type:"第二批",color:"#22c55e",count:0,reqs:0},
+{emoji:"📊",name:"数据智能体",type:"第二批",color:"#22c55e",count:0,reqs:0},
+{emoji:"💻",name:"编程智能体",type:"第二批",color:"#22c55e",count:0,reqs:0},
+{emoji:"🔭",name:"巡检智能体",type:"第二批",color:"#22c55e",count:2,reqs:2},
+{emoji:"📝",name:"文档智能体",type:"第二批",color:"#22c55e",count:0,reqs:0},
+{emoji:"👥",name:"HR智能体",type:"第二批",color:"#22c55e",count:0,reqs:0},
+{emoji:"💰",name:"报价智能体",type:"第二批",color:"#22c55e",count:0,reqs:0},
+{emoji:"🧬",name:"医学分析智能体",type:"第二批",color:"#22c55e",count:0,reqs:0},
+{emoji:"🏭",name:"生产运营智能体",type:"第三批",color:"#a78bfa",count:3,reqs:3},
+{emoji:"🔬",name:"研发仿真智能体",type:"第三批",color:"#a78bfa",count:2,reqs:2},
+{emoji:"📋",name:"排程调度智能体",type:"第三批",color:"#a78bfa",count:2,reqs:2}
+];
+
+// Roadmap
+const ROADMAP=[
+{phase:"第一阶段",time:"0-3个月",items:["完成LLM底座部署（Qwen2.5-3B端侧模型）","构建视觉引擎（YOLOv8/RT-DETR，标注-训练-部署一体化）","构建时序预测引擎（设备故障/电池SOH/负荷预测）","支撑第一批10项基础技能（质检/工艺/设备维护）"]},
+{phase:"第二阶段",time:"3-6个月",items:["完成运筹优化引擎（OR-Tools/商业求解器）","完成具身智能框架（机器人运动规划+力控+视觉引导）","构建知识图谱平台（物料/工艺/供应商知识图谱）","支撑第二批15项业务增值技能"]},
+{phase:"第三阶段",time:"6-12个月",items:["完成多智能体协同框架（任务拆解+通信+全局决策）","构建数字孪生平台（建模+仿真+虚实同步）","多智能体系统集成与测试","支撑第三批5项高阶协同技能"]}
+];
+
+// === RENDER FUNCTIONS ===
+function s2c(s){return s==="★★★"?"c3":s==="★★"?"c2":"c1";}
+function s2text(s){return s.replace(/★/g,function(){return'<span class="star">★</span>';});}
+
+function buildMatrix(containerId, matrixData){
+var th="<tr>";
+matrixData.header.forEach(function(h,idx){
+var w=idx===0?'style="min-width:140px"':'';
+th+='<th '+w+'>'+h+'</th>';
+});
+th+="</tr>";
+var tb="";
+matrixData.rows.forEach(function(row){
+tb+='<tr><td class="role-cell"><span style="margin-right:6px">'+row.emoji+'</span>'+row.role+'</td>';
+row.data.forEach(function(d){
+tb+='<td style="text-align:center"><span class="cell '+s2c(d)+'">'+d+'</span></td>';
+});
+tb+="</tr>";
+});
+document.querySelector('#'+containerId+' thead').innerHTML=th;
+document.querySelector('#'+containerId+' tbody').innerHTML=tb;
+}
+
+function buildRanking(containerId, data){
+var max=Math.max.apply(null,data.map(function(d){return d.support;}));
+var h="";
+data.forEach(function(d,i){
+var rankClass=i<3?"rn"+(i+1):"rn-else";
+var barClass=d.support>=8?"rb-high":d.support>=5?"rb-mid":"rb-low";
+var barW=Math.round(d.support/max*100);
+var pClass=d.priority==="P0"?"p0":d.priority==="P1"?"p1":"p2";
+h+='<div class="rank-card"><div class="rank-header"><div class="rank-num '+rankClass+'">'+(i+1)+'</div><div class="rank-name">'+d.name+'</div><span class="'+pClass+'">'+d.priority+'</span></div>'+
+'<div class="rank-tech" style="color:'+d.color+'">'+d.tech+'</div>'+
+'<div class="rank-bars"><div class="rank-bar '+barClass+'" style="width:'+barW+'%"></div><span class="rank-count">'+d.support+'个员工</span></div></div>';
+});
+document.getElementById(containerId).innerHTML=h;
+}
+
+function buildRoadmap(){
+var h="";
+ROADMAP.forEach(function(p,i){
+var cls="ph"+(i+1);
+var items=p.items.map(function(item){return'<li>'+item+'</li>';}).join('');
+h+='<div class="phase-card '+cls+'"><div class="phase-hdr">第'+(i+1)+'阶段 · '+p.phase+'</div><div class="phase-body"><div class="phase-time">⏱ '+p.time+'</div><ul class="phase-items">'+items+'</ul></div></div>';
+});
+document.getElementById('roadmapGrid').innerHTML=h;
+}
+
+function showTab(id){
+document.querySelectorAll('.tc').forEach(function(t){t.classList.remove('active');});
+document.querySelectorAll('.nav button').forEach(function(b){b.classList.remove('active');});
+document.getElementById('tab-'+id).classList.add('active');
+document.querySelector('[data-tab="'+id+'"]').classList.add('active');
+}
+
+// Init
+document.querySelectorAll('.nav button').forEach(function(btn){
+btn.addEventListener('click',function(){showTab(this.dataset.tab);});
+});
+
+buildMatrix('m1',M1);
+buildMatrix('m2',M2);
+buildMatrix('m3',M3);
+buildRanking('rankingGrid',RANKING);
+buildRanking('rankingGrid2',RANKING);
+buildRoadmap();
+
+// Employee grid
+var eg=EMPS.map(function(e){
+return'<div class="ov-item"><div class="ov-emoji">'+e.emoji+'</div><div class="ov-name">'+e.name+'</div><div class="ov-count">'+e.type+(e.count>0?' · '+e.count+'项技能':'')+'</div></div>';
+}).join('');
+document.getElementById('empGrid').innerHTML=eg;
+</script>
+</body>
+</html>

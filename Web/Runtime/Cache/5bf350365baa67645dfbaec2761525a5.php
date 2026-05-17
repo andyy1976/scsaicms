@@ -109,7 +109,7 @@
                             <img src="__TMPL__/images/heaph.png" class="he_img1">
                         </div>
                         <div class="he_iphote fl">
-                            <p>136-6106-8044</p>
+                            <p>186-0192-1816</p>
                         </div>
                     </div>
                     <div class="he_sear fl">
@@ -1302,7 +1302,7 @@
                            	<div class="g_fttitle he_dttph"><a href="/contact-us">联系我们</a></div>
                            	</div>
                            		<div class="g_ftaddnr clearfix"><div class="g_ftaddfl fl"><img src="__TMPL__/images/fticon1.png" alt=""/></div>
-                           			<div class="g_ftaddfr fl"><p>136-6106-8044</p></div></div><div class="g_ftaddnr clearfix">
+                           			<div class="g_ftaddfr fl"><p>186-0192-1816</p></div></div><div class="g_ftaddnr clearfix">
                            				<div class="g_ftaddfl fl"><img src="__TMPL__/images/fticon2.png" alt=""/></div>
                            				<div class="g_ftaddfr fl"><p>tuan_zhang@sina.com</p></div>
                            				</div>

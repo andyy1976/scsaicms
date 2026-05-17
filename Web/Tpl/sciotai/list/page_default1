@@ -1,0 +1,174 @@
+<include file="head_inner"/>
+<div class="mainer">
+<div class="mainer-list-side">
+		<div class="mainer-side">
+	
+			
+		
+				<div class="public-side-name">
+							
+				
+							<!--当前级的上一级菜单，本级循环二级-->
+								
+									<php>
+									//	$first_id=get_first_father($type['typeid']);
+										$fid=get_field('type','typeid='.$type[typeid],'fid');
+										
+										if($fid==0)
+										{ 
+											$pid=$type[typeid]; 
+											$pname=$type[typename];
+										}
+										else
+										{ 
+											$pid=$fid; 
+											$pname=get_field('type','typeid='.$pid,'typename');
+										}
+								  </php>
+								  
+								  	 <?php
+															//查询数据库和缓存
+													$article = D('ArticleView');
+													
+													//封装条件
+									        $map['status'] = 1;
+													
+									        $arr = get_children($pid);
+									        //echo $arr[0];
+									        $map['article.typeid'] = array('in', $arr);
+									       
+									        $countofcurrenttypeid = $article->where($map)->count();
+												//echo  $countofcurrenttypeid;
+											?>
+							<h1>{$pname}</h1>
+								<ul>	
+									<category parentid="$pid" id="vo">
+									
+										
+											<?php
+														
+													
+									        $arr = get_children($vo['typeid']);
+									        //echo $arr[0];
+									        $map['article.typeid'] = array('in', $arr);
+									       
+									        $countofcurrenttypeid = $article->where($map)->count();
+												//echo  $countofcurrenttypeid;
+											?>
+											<li class="<php>if($type['typeid'] == $vo['typeid']){</php>  onm <php>}</php> "><a href='{$vo.typeid|url=lists,###}'>{$vo.typename}(<?php echo $countofcurrenttypeid  ?>)</a>
+												<php>
+													$cid = get_children($vo['typeid']);
+													
+													
+													if($vo['typeid'] != $cid)
+													{</php>
+													<ul>
+														<category parentid="$vo[typeid]" id="voo">
+														<?php
+														
+													
+												        $arr = get_children($voo['typeid']);
+												        //echo $arr[0];
+												        $map['article.typeid'] = array('in', $arr);
+												       
+												        $countofcurrenttypeid = $article->where($map)->count();
+															//echo  $countofcurrenttypeid;
+														?>
+															
+														<li><span class="file <php>if($type['typeid'] == $voo['typeid']){</php>  active <php>}</php>"><a href='{$voo.typeid|url=lists,###}' >{$voo.typename}(<?php echo $countofcurrenttypeid  ?>)</a></span></li> 
+														</category>
+													</ul>
+												<php>}</php>
+											</li>
+									</category>
+								</ul>
+							</h1>
+					
+	
+				</div>
+
+		</div>
+		<div class="mainer-square">
+				<div class="mainer-path">
+					<span class='guide_menu'>你的位置：{$nav}</span>
+				</div>
+				
+							<div class="mainer-page-list">
+									<div class='caption'>
+										<h1><notempty name="article.titlecolor"><font color="{$article.titlecolor}"></notempty>{$article.title}<present name="nowpage">({$nowpage})</present><notempty name="article.titlecolor"></font></notempty></h1>
+
+										<div class='share-list-type'>
+												<div class='share-list'><b>[ 信息发布：本站 |&nbsp;时间：2023-12-29  |  浏览：10 ]</b>
+														<div class='share'><span >分享到：</span>
+																<div class='bshare-custom'>
+											            <a title='分享到微信' class='bshare-weixin'></a>
+											            <a title='分享到QQ好友' class='bshare-qqim'></a>
+											            <a title='分享到QQ空间' class='bshare-qzone'></a>
+											            <a title='分享到新浪微博' class='bshare-sinaminiblog'></a>
+											            <a title='分享到人人网' class='bshare-renren'></a>
+											            <a title='分享到网易微博' class='bshare-neteasemb'></a>
+											            <a title='更多平台' class='bshare-more bshare-more-icon more-style-addthis'></a>
+											          </div>
+									          </div>
+									       </div>
+					     		  </div>
+					    	  </div>
+			          
+			            <div class='showText'>
+			        			    	<p class="p" align="justify" style="margin-top:0px;margin-bottom:1em;margin-left:0pt;text-indent:2em;text-align:justify;background:#FFFFFF;font-size:16px;line-height:2;">
+														<br />
+													</p>
+
+												{$article.content}
+						
+
+				
+
+						
+											<!--详细页的分页自己美化-->
+										<div class="clearfix">{$page}</div>
+										<div class="prenext">{$updown}</div>
+										
+										<!--评论区-->
+				
+										<div class="IntroTitle">评论</div>
+										<div class='clearfix'></div>
+								    <link href="__TMPL__/css/pl.css" rel="stylesheet" type="text/css"/>
+								    <div id="pinglun">
+											  <div id="pinglunt">以下是网友对 <span class="blue">{$article.title}</span> 的评论：</div>
+											  <div id="list"></div>
+											  <div id="MultiPage"></div><!--评论分页 -->
+								              <div id="pinglunother">
+								               <div id="pinglunym"></div><!--评论信息 -->
+								              </div>
+								              <div id="pinglunfb">
+											  <div id="pinglunfbt">发表评论</div>
+											  <input type="hidden" name="aid" id="aid" value="{$article.aid}">
+											  <textarea rows="20" name="content" cols="50"  style="width:100%; height:90px; border:1px solid #e6e6e6;" id="plContent"></textarea>
+											  <div class="qdfb">大名:<input name="author" class="button" type="text" value="<neq name='_SESSION.cms_username' value=''>{$_SESSION.cms_username}<else/>游客</neq>" id="Author"  maxlength="20" size="12"/>
+											  <input type="button" value="确认发表" name="submit"  id="sendGuest" class="button submit" onClick="AddNew()"></div>
+											  </div>
+								    </div>
+										<script type="text/javascript" src="__TMPL__/js/ajaxpl.js"></script>
+										<script>
+										var root = '__ROOT__';
+										$(function(){
+											showre({$article.aid},1);
+											$('#page_hits').load('{:U('Api/hits_js?aid='.$article['aid'])}');
+											$('#dianzhan_num_{$article.aid}').load('{:U('Api/hits_js?type=1&aid='.$article['aid'])}');
+										});
+										</script>
+										<br>    
+														
+					
+									</div>
+			          
+          
+          
+          
+						
+							</div>
+	
+	</div>
+</div>
+<include file="$footer"/>

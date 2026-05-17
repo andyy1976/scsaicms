@@ -1,0 +1,87 @@
+<include file="./head_ps"/>
+
+ <!-- banner -->
+ <div class="he_banner he_banner1">
+    <div class="he_bannigul">
+        <div class="he_bannigli">
+            <div class="he_banig">
+                <img src="__TMPL__images/newsBanner.jpg" alt="技术观察" class="he_banpc">
+                <img src="__TMPL__images/newsBanner_ph.jpg" alt="技术观察" class="he_banph">
+            </div>
+            <div class="he_bante he_common">
+                <div class="he_bantepy">
+                    <div class="he_bantep2t">
+                        <h1><p>技术观察</p></h1>
+                    </div>
+                    <div class="he_bantep3v">
+                        <p>聚焦人工智能、机器人与工业软件前沿，深度解析数字化转型趋势</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+ <!-- banner end -->
+
+ <!-- 内容区 -->
+ <div class="he_content">
+    <div class="container clearfix">
+
+        <!-- 左侧导航 -->
+        <div class="pz_SideLayerNews fl">
+            <php>
+                $fid=get_field('type','typeid='.$type[typeid],'fid');
+                if($fid==0){
+                    $pid=$type[typeid];
+                    $pname=$type[typename];
+                } else {
+                    $pid=$fid;
+                    $pname=get_field('type','typeid='.$pid,'typename');
+                }
+            </php>
+
+            <category parentid="$pid" id="vo">
+            <li class="l1 <php>if($type['typeid'] == $vo['typeid']){</php>  on <php>}</php>">
+                <a href='{$vo.typeid|url=lists,###}'>{$vo.typename}</a>
+                <php>{</php>
+                    <ul>
+                        <category parentid="$vo[typeid]" id="voo">
+                        <li><span class="file <php>if($type['typeid'] == $voo['typeid']){</php>  active <php>}</php>">
+                            <a href='{$voo.typeid|url=lists,###}'>{$voo.typename}</a>
+                        </span></li>
+                        </category>
+                    </ul>
+                <php>}</php>
+            </li>
+            </category>
+        </div>
+        <!-- 左侧导航 end -->
+
+        <!-- 右侧内容 -->
+        <div class="pz_SideLayerMain fr">
+            <div class="he_list clearfix">
+                <articlelist typeid="$type.typeid" limit="{$type.pernum}" page="page" id="vo">
+                <div class="he_listli wow fadeInUp" data-wow-delay="0.1s">
+                    <a href="{$vo.id|url=show,###}">
+                        <div class="he_listimg">
+                            <img src="{$vo.thumb}" alt="{$vo.title}">
+                        </div>
+                        <div class="he_listtext">
+                            <h3>{$vo.title}</h3>
+                            <p>{$vo.description}</p>
+                            <span class="he_date">{$vo.createtime|date='Y-m-d'}</span>
+                        </div>
+                    </a>
+                </div>
+                </articlelist>
+            </div>
+
+            <!-- 分页 -->
+            <div class="he_page">{$page}</div>
+        </div>
+        <!-- 右侧内容 end -->
+
+    </div>
+</div>
+
+<include file="./footer"/>

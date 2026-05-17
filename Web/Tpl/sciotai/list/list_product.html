@@ -1,0 +1,149 @@
+<include file="./head_inner"/>
+<div class="second">
+	<div class="width-block">
+		<div class="second-left">
+			<div class="left-list">
+				<div class="second-treemenu">
+					<div class="title"><h3><a href="#">主题分类</a></h3></div>
+					<div class="treemenu">
+						<ul id='suckertree1'>
+							<!--当前级的上一级菜单，本级循环二级-->
+								
+									<php>
+									//	$first_id=get_first_father($type['typeid']);
+										$fid=get_field('type','typeid='.$type[typeid],'fid');
+										
+										if($fid==0)
+										{ 
+											$pid=$type[typeid]; 
+											$pname=$type[typename];
+										}
+										else
+										{ 
+											$pid=$fid; 
+											$pname=get_field('type','typeid='.$pid,'typename');
+										}
+								  </php>
+								  
+								  	<?php
+															//查询数据库和缓存
+													$article = D('ArticleView');
+													
+													//封装条件
+									        $map['status'] = 1;
+													
+									        $arr = get_children($pid);
+									        //echo $arr[0];
+									        $map['article.typeid'] = array('in', $arr);
+									       
+									        $countofcurrenttypeid = $article->where($map)->count();
+												//echo  $countofcurrenttypeid;
+											?>
+							<li><span class="arrow"></span><span class="file 	<php>if($type['typeid'] == $pid){</php>  active <php>}</php> "><a href='{$pid|url=lists,###}'>{$pname}(<?php echo $countofcurrenttypeid  ?>)</a></span>
+								<ul>	
+									<category parentid="$pid" id="vo">
+										<li>
+											<span class="arrow"></span>
+											<?php
+														
+													
+									        $arr = get_children($vo['typeid']);
+									        //echo $arr[0];
+									        $map['article.typeid'] = array('in', $arr);									       
+									        $countofcurrenttypeid = $article->where($map)->count();
+												//echo  $countofcurrenttypeid;
+											?>
+											<span class="file <php>if($type['typeid'] == $vo['typeid']){</php>  active <php>}</php> "><a href='{$vo.typeid|url=lists,###}'>{$vo.typename}(<?php echo $countofcurrenttypeid  ?>)</a></span><!--判定是否有子类-->
+												<php>
+													$cid = get_children($vo['typeid']);
+																									
+													if($vo['typeid'] != $cid)
+													{</php>
+													<ul>
+														<category parentid="$vo[typeid]" id="voo">
+														<?php
+														
+													
+												        $arr = get_children($voo['typeid']);
+												        //echo $arr[0];
+												        $map['article.typeid'] = array('in', $arr);
+												       
+												        $countofcurrenttypeid = $article->where($map)->count();
+															//echo  $countofcurrenttypeid;
+														?>
+															
+														<li><span class="file <php>if($type['typeid'] == $voo['typeid']){</php>  active <php>}</php>"><a href='{$voo.typeid|url=lists,###}' >{$voo.typename}(<?php echo $countofcurrenttypeid  ?>)</a></span></li> 
+														</category>
+													</ul>
+												<php>}</php>
+										</li>
+									</category>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="ranking">
+				<div class="title">热门课程排行</div>
+							<ul>
+										<php>		$number=1 </php>
+									<volist name="list" id="vo">
+
+										<li>
+												<php>if($number<4){</php>	
+												<span class="topic_flag_hot">{$number++}</span>
+												<php>}else{</php>	
+												<span class="topic_flag">{$number++}</span>
+												<php>}</php>	
+												<div>
+															<a href='/index.php?s=article&aid={$vo.id}' target='_blank'>{$vo.title|msubstr=###,0,38,'utf-8'}</a>
+												</div>
+												</li>
+									</volist>
+							</ul>
+			</div>	
+		</div>
+		<div class="second-right">
+			<div class="pusl-list">
+			<div class="joint">务实课堂 ， 共有<span>	{$count}</span>条课程信息 
+				<php>if(!(isset($_SESSION['cms_username'])&&$_SESSION['cms_username'] !='')){</php>
+			,未<a href="javascript:">登录</a>时只显示前10门课程
+								<php>	}</php>
+			</div>
+				<div class="bule"></div>
+				<ul>
+				<php>$idnumber = 0;</php>
+				<volist name="list" id="vo">
+					<li>
+							<div class="number">{$startnumber++}</div>
+						<div class="rit-cont">
+							<div class="name">
+								<div><a href='{$vo.aid|url=articles,###}' target='_blank'>{$vo.title|msubstr=###,0,38,'utf-8'}</a></div>
+								<div style="float:right;"> [{$vo.addtime|msubstr=###,0,10}]</div>
+					</div>
+					<div class='info'>
+					<a href='{$vo.aid|url=articles,###}' target='_blank'><img style="width:800px;height:150px;" src='__ROOT__{$vo.imgurl|ret_pic}' /></a>
+					</div>
+					</li>
+				</volist>
+				</ul>
+					<php>if((isset($_SESSION['cms_username'])&&$_SESSION['cms_username'] !='')){</php>
+				
+				<div class="page-al">
+					<div class="dataTables_paginate pagination">
+					    <nav>
+					        <ul class="pagination">
+					        	
+					        	 {$page}
+					        </ul>
+					    </nav>
+					</div>
+				</div>
+				<php>	}</php>
+			</div>
+		</div>
+	</div>
+</div>
+<include file="$footer"/>
+

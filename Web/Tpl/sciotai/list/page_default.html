@@ -1,0 +1,113 @@
+<include file="./head_inner"/>
+
+<div class="mainer">
+	<div class="mainer-list-side">
+			
+				<div class="mainer-side">
+								<div class="public-side-name">
+											
+								
+											<!--当前级的上一级菜单，本级循环二级-->
+												
+													<php>
+													//	$first_id=get_first_father($type['typeid']);
+														$fid=get_field('type','typeid='.$type[typeid],'fid');
+														
+														if($fid==0)
+														{ 
+															$pid=$type[typeid]; 
+															$pname=$type[typename];
+														}
+														else
+														{ 
+															$pid=$fid; 
+															$pname=get_field('type','typeid='.$pid,'typename');
+														}
+												  </php>
+												  
+												  	
+											<h1>{$pname}</h1>
+												<ul>	
+													<category parentid="$pid" id="vo">
+													
+												
+															<li class="<php>if($type['typeid'] == $vo['typeid']){</php>  onm <php>}</php> "><a href='{$vo.typeid|url=lists,###}'>{$vo.typename}</a>
+																<php>
+																	$cid = get_children($vo['typeid']);
+																	
+																	
+																	if($vo['typeid'] != $cid)
+																	{</php>
+																	<ul>
+																		<category parentid="$vo[typeid]" id="voo">
+																	
+																			
+																		<li><span class="file <php>if($type['typeid'] == $voo['typeid']){</php>  active <php>}</php>"><a href='{$voo.typeid|url=lists,###}' >{$voo.typename}</a></span></li> 
+																		</category>
+																	</ul>
+																<php>}</php>
+															</li>
+													</category>
+												</ul>
+																	
+					
+								</div>
+				</div>
+
+				<div class="mainer-square">
+					<div class="mainer-path">
+						<span class='guide_menu'>你的位置：{$nav}</span>
+					</div>
+					
+								<div class="mainer-page-list">
+										<div class='caption'>
+											<h1><notempty name="article.titlecolor"><font color="{$article.titlecolor}"></notempty>{$article.title}<present name="nowpage">({$nowpage})</present><notempty name="article.titlecolor"></font></notempty> <present name="nowpage">({$nowpage})</present></h1>
+											
+													<div class='share-list-type'>
+														<div class='share-list'><b>[ 信息发布：本站 |&nbsp; 浏览：{$article.hits} ]</b>
+																
+											       </div>
+											     </div>
+					     		  </div>
+								
+								
+								
+										</div>
+				
+										<div class="width-block">
+											
+									
+											
+											<div class="text-conent">
+												
+												<div class="text-info">
+											
+																	
+													
+																{$article.content}
+													<div id='home-page' style="text-align:center;">
+							
+																<!--详细页的分页自己美化-->
+																<div class="clearfix">{$page}</div>
+																
+														
+																<div class="prenext">{$updown}</div>
+													</div>
+			
+														
+												</div>
+											</div>
+											
+										</div>
+				
+								</div>
+								
+							</div>
+		
+	</div>
+</div>
+<include file="$footer"/>
+
+</body>
+
+</html>

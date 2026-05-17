@@ -1,0 +1,51 @@
+<include file="./head_inner"/>
+
+<div class="second">
+	<div class="width-block">
+		<div class="second-left">
+			<div class="left-list">
+				<div class="second-treemenu">
+					<div class="title"><h3><a href="/index.php?s=/member/main.html">用户中心</a></h3></div>
+					<div class="treemenu">
+						<ul id='suckertree1'>
+						<volist name='member_menu' id='vo'>
+													<li><span class="arrow"></span><span class="file"><a href="__ROOT__{$vo.url}" target="_self">{$vo.name}</a></span>
+						<!--判定是否有子类-->
+						</li>
+						</volist>
+						</ul>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="second-right">
+			<div class="joint"><span>你的位置：{$nav}用户投稿列表</span></div>
+
+			<div class="pusl-list">
+				<div class="bule"></div>
+					<!--main start-->
+					<div class="main">
+					<!--content start-->
+						<div class="panel panel-default">
+						  <div class="panel-heading">会员投稿列表&nbsp;&nbsp;<a href="{:U('Member/tougao')}" class="btn btn-success active" >我要投稿</a></div>
+						  <div class="panel-body">
+						    <table class="table table-bordered">
+							<tr><th width="80" align="center">系统编号</th><th>标题</th><th width="100" align="center">状态</th><th width="150" align="center">操作</th></tr>
+								<volist name="list" id="vo">
+								<tr><td align="center">{$vo.aid}</td><td>{$vo.title}</td><td><eq name="vo.status" value="1"><font color="#006600">审核通过</font></eq><eq name="vo.status" value="0"><font color="#FF0000">待审核</font></eq><eq name="vo.status" value="2"><font color="#FF0000">被拒绝</font></eq></td><td align="center"><a href="{:U('Member/modpage',array('aid'=>$vo[aid]))}" class="btn btn-primary active">修改</a> <neq name="vo.status" value="1"><a href="javascript:if(confirm('您确定要删除吗?')){
+								location.href='{:U('Member/delpage',array('aid'=>$vo[aid]))}';
+								}" class="btn btn-danger active">删除</a></neq></td></tr>
+								</volist>
+							</table>
+						  </div>    
+						</div>
+					</div>
+
+			</div>
+		</div>
+</div>
+</div>
+<include file="$footer"/>
