@@ -14,7 +14,7 @@ return array(
     'TAGLIB_BEGIN' => '<',
     'TAGLIB_END' => '>',
     'TMPL_PARSE_STRING' => array(
-        '__TMPL__' => '/Web/Tpl/sciotai/',
+'__TMPL__' => '/Web/Tpl/sciotai/',
     ),
 
     // 语言设置

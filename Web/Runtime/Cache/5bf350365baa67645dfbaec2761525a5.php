@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<?php if (!defined('THINK_PATH')) exit();?>﻿<!DOCTYPE html>
 
 <html lang="zh-CN">
 
@@ -17,9 +17,9 @@
     <meta name="format-detection" content="telephone=no, email=no" />
 
     <meta name="renderer" content="webkit">
-		<title><neq name="title" value="">{$title}-</neq>{$config.sitetitle}-{$config.sitetitle2}</title>
-		<meta name="keywords" content="{$keywords}"/>
-		<meta name="description" content="{$description}"/>
+		<title><?php if(($title) != ""): echo ($title); ?>-<?php endif; echo ($config["sitetitle"]); ?>-<?php echo ($config["sitetitle2"]); ?></title>
+		<meta name="keywords" content="<?php echo ($keywords); ?>"/>
+		<meta name="description" content="<?php echo ($description); ?>"/>
 
     <link href="__TMPL__/css/bootstrap.min-v3.3.5.css" type="text/css" rel="stylesheet" />
 
@@ -56,8 +56,8 @@
             <div class="he_syhead clearfix">
                 <div class="he_sylogo fl">
          				   <a href="/">
-                        <img src="__PUBLIC__/Uploads/logo/{$config.sitelogo}" alt="超云智能智能智造软件研发商" class="he_img">
-                        <img src="__PUBLIC__/Uploads/logo/{$config.sitelogo}" alt="超云智能智能智造软件研发商" class="he_img1">
+                        <img src="__PUBLIC__/Uploads/logo/<?php echo ($config["sitelogo"]); ?>" alt="超云智能智能智造软件研发商" class="he_img">
+                        <img src="__PUBLIC__/Uploads/logo/<?php echo ($config["sitelogo"]); ?>" alt="超云智能智能智造软件研发商" class="he_img1">
                     </a>
                 </div>
                 <div class="he_synav fr clearfix">
@@ -72,25 +72,21 @@
 	                                                       
 	                  </div>
 	                  
-	               			<volist name="menu" id="vo" offset="0" length='7' key="k"> 
-                     		  <div class="he_synavli fl ">
-															<a  data-n="{$vo.drank}"  href="<eq name="vo.url" value="">{$vo.typeid|url=lists,###}<else/>__ROOT__{$vo.url}</eq>" target="<eq name="vo.target" value="1">_self<else/>_blank</eq>">{$vo.typename}</a> 
+	               			<?php if(is_array($menu)): $k = 0; $__LIST__ = array_slice($menu,0,7,true);if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($k % 2 );++$k;?><div class="he_synavli fl ">
+															<a  data-n="<?php echo ($vo["drank"]); ?>"  href="<?php if(($vo["url"]) == ""): echo (url(lists,$vo["typeid"])); else: ?>__ROOT__<?php echo ($vo["url"]); endif; ?>" target="<?php if(($vo["target"]) == "1"): ?>_self<?php else: ?>_blank<?php endif; ?>"><?php echo ($vo["typename"]); ?></a> 
 														   
 														    
-																<php>if($vo[submenu]){</php>
+																<?php if($vo[submenu]){ ?>
 			                           <div class="he_sypcuna he_xzdwm">
                                         <div class="he_comto">
                                             <div class="he_sypcuul clearfix">
                                                 <div class="he_sypcuule fl clearfix">
 
-																			<volist name="vo[submenu]" id="sub" key="m">
-																				 <div class="he_sypculi fl  ">
+																			<?php if(is_array($vo[submenu])): $m = 0; $__LIST__ = $vo[submenu];if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$sub): $mod = ($m % 2 );++$m;?><div class="he_sypculi fl  ">
                                                             <div class="he_sypcuto">
-			                                            <a class=" he_sypcp" href="{$sub.typeid|url=lists,###}" target="_self">{$sub.typename}</a>
+			                                            <a class=" he_sypcp" href="<?php echo (url(lists,$sub["typeid"])); ?>" target="_self"><?php echo ($sub["typename"]); ?></a>
 		                                            </div>
-                                                        </div>   
-																					
-																			</volist>
+                                                        </div><?php endforeach; endif; else: echo "" ;endif; ?>
 																			 </div>
                                             </div>
                                         </div>
@@ -100,12 +96,10 @@
                                     </div>
 												
 																			
-																<php>}</php>
+																<?php } ?>
 										
                       
-	                        </div>
-	              		   
-												</volist>		
+	                        </div><?php endforeach; endif; else: echo "" ;endif; ?>		
         	 	
         	 	
        				  </div>
@@ -150,14 +144,12 @@
             	
 
 	     
-							<arclist model="flash" where="status=1" order="rank asc" id="vo">
-
-					    <div class="he_bannigli">
+							<?php $m=new Model("lvbo_flash",NULL);$ret=$m->Distinct()->field("")->where("status=1")->group("")->order("rank asc")->limit("")->select();if(is_array($ret)):$i = 0;foreach($ret as $key=>$vo):++$i;?><div class="he_bannigli">
 
 			               <div class="he_banig">
 			                    	     
-										   <a href="{$vo.url}"  rel="nofollow" target="_blank" >	
-										   <img src="__PUBLIC__/Uploads/hd/{$vo.pic}" alt="{$vo.title}" width="100%"  />		
+										   <a href="<?php echo ($vo["url"]); ?>"  rel="nofollow" target="_blank" >	
+										   <img src="__PUBLIC__/Uploads/hd/<?php echo ($vo["pic"]); ?>" alt="<?php echo ($vo["title"]); ?>" width="100%"  />		
 										   </a>
 				            </div>  
 				         
@@ -166,8 +158,7 @@
 						
 			            </div>
 				        
-				 		  <!--banner1-->
-							</arclist>
+				 		  <!--banner1--><?php endforeach;endif; ?>
 
 						</div>
 				 <div class="he_imgshubvx wow g_fadein1">
@@ -1238,14 +1229,12 @@
 
                     <div class="g_sect6nrfr fl">
 
-																						 <arclist model='article' where="status=1" order='ishot desc,addtime desc' num='6' id='vo'>
-																		                   	     <div class="g_sect6cen wow g_fadeup1">
-																		                   		<a href="{$vo.aid|url=articles,###}" target="_blank" title="{$vo.title}" >
-																		                   	<h5>{$vo.title}</h5>
+																						 <?php $m=new Model("lvbo_article",NULL);$ret=$m->Distinct()->field("")->where("status=1")->group("")->order("ishot desc,addtime desc")->limit("6")->select();if(is_array($ret)):$i = 0;foreach($ret as $key=>$vo):++$i;?><div class="g_sect6cen wow g_fadeup1">
+																		                   		<a href="<?php echo (url(articles,$vo["aid"])); ?>" target="_blank" title="<?php echo ($vo["title"]); ?>" >
+																		                   	<h5><?php echo ($vo["title"]); ?></h5>
 																		                   
 																		                      </a>
-                                       							 </div>
-																		                </arclist>
+                                       							 </div><?php endforeach;endif; ?>
 
                  
                     </div>
@@ -1279,33 +1268,25 @@
 
                         <div class="g_foottp clearfix fl">
                         	
-                        	   	<volist name="menu" id="vo" offset="0" length='7' key="k"> 
-											           			  <div class="g_ftnav clearfix fl">
-						                            	<div class="g_fttitle he_dttpc">   <a href="<eq name="vo.url" value="">{$vo.typeid|url=lists,###}<else/>__ROOT__{$vo.url}</eq>" target="<eq name="vo.target" value="1">_self<else/>_blank</eq>"">{$vo.typename}</a></div>
+                        	   	<?php if(is_array($menu)): $k = 0; $__LIST__ = array_slice($menu,0,7,true);if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($k % 2 );++$k;?><div class="g_ftnav clearfix fl">
+						                            	<div class="g_fttitle he_dttpc">   <a href="<?php if(($vo["url"]) == ""): echo (url(lists,$vo["typeid"])); else: ?>__ROOT__<?php echo ($vo["url"]); endif; ?>" target="<?php if(($vo["target"]) == "1"): ?>_self<?php else: ?>_blank<?php endif; ?>""><?php echo ($vo["typename"]); ?></a></div>
 											                       	<!--第二级-->
-																									<php>if($vo[submenu]){</php>
+																									<?php if($vo[submenu]){ ?>
 																									<div class="he_navfu">
-														                        	<volist name="vo[submenu]" id="sub" key="m">
-														                              <div class="g_ftnavh2"><a href="{$sub.typeid|url=lists,###}">{$sub.typename}
+														                        	<?php if(is_array($vo[submenu])): $m = 0; $__LIST__ = $vo[submenu];if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$sub): $mod = ($m % 2 );++$m;?><div class="g_ftnavh2"><a href="<?php echo (url(lists,$sub["typeid"])); ?>"><?php echo ($sub["typename"]); ?>
 														                               		<!--第三级-->
-																																			<php>if(have_child($sub[typeid])){</php>
+																																			<?php if(have_child($sub[typeid])){ ?>
 																																		
 																																			<ul>
-																																			<arclist model="type" where="fid=$sub[typeid]" order="drank asc" id="tree">
-																																			<li><a href='{$tree.typeid|url=lists,###}'>{$tree.typename}</a></li>
-																																			</arclist>
+																																			<?php $m=new Model("lvbo_type",NULL);$ret=$m->Distinct()->field("")->where("fid=$sub[typeid]")->group("")->order("drank asc")->limit("")->select();if(is_array($ret)):$i = 0;foreach($ret as $key=>$tree):++$i;?><li><a href='<?php echo (url(lists,$tree["typeid"])); ?>'><?php echo ($tree["typename"]); ?></a></li><?php endforeach;endif; ?>
 																																			</ul>
 																																			
-																																			<php>}</php>
+																																			<?php } ?>
 														                               	
-														                               	</div>
-																					                                
-																					 					 	</volist>
+														                               	</div><?php endforeach; endif; else: echo "" ;endif; ?>
 											                  		      </div>
-											                        			<php>}</php>
-											                    </div>
-											             
-																				</volist>		
+											                        			<?php } ?>
+											                    </div><?php endforeach; endif; else: echo "" ;endif; ?>		
                     
 											 					 
                          
@@ -1372,10 +1353,7 @@
                     <h6 class="g_fttitle fl">友情链接</h6>
 
                     <ul class="clearfix fl">
-														 <arclist model='link' where="status=1" order='rank asc' id='vo'>
-   
-									            	<li class="fl" ><a href="{$vo.url}" target="_blank">{$vo.title}</a></li>
-									        </arclist>
+														 <?php $m=new Model("lvbo_link",NULL);$ret=$m->Distinct()->field("")->where("status=1")->group("")->order("rank asc")->limit("")->select();if(is_array($ret)):$i = 0;foreach($ret as $key=>$vo):++$i;?><li class="fl" ><a href="<?php echo ($vo["url"]); ?>" target="_blank"><?php echo ($vo["title"]); ?></a></li><?php endforeach;endif; ?>
            			 </ul>
 
                 </div>
