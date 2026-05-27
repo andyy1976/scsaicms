@@ -84,31 +84,46 @@
                         </div>
                     </if>
 
-                    <!-- 上下篇导航 -->
-                    <div class="article-nav">
-                        <div class="nav-prev">
-                            <label><i class="fa fa-chevron-left"></i> 上一篇</label>
-                            <if condition="$prevtitle neq ''">
-                                <a href="{$prevurl}">{$prevtitle|msubstr=###,0,30}</a>
-                            <else/>
-                                <span class="nav-none">已是第一篇</span>
-                            </if>
+                    <!-- 文章底部操作区 -->
+                    <div class="article-bottom">
+                        <!-- 上下篇导航 -->
+                        <div class="article-nav">
+                            <div class="nav-item nav-prev">
+                                <div class="nav-icon">
+                                    <i class="fa fa-arrow-left"></i>
+                                </div>
+                                <div class="nav-content">
+                                    <span class="nav-label">上一篇</span>
+                                    <if condition="$prevtitle neq ''">
+                                        <a href="{$prevurl}" target="_self">{$prevtitle|msubstr=###,0,35}</a>
+                                    <else/>
+                                        <span class="nav-none">已是第一篇</span>
+                                    </if>
+                                </div>
+                            </div>
+                            <div class="nav-divider"></div>
+                            <div class="nav-item nav-next">
+                                <div class="nav-content">
+                                    <span class="nav-label">下一篇</span>
+                                    <if condition="$nexttitle neq ''">
+                                        <a href="{$nexturl}" target="_self">{$nexttitle|msubstr=###,0,35}</a>
+                                    <else/>
+                                        <span class="nav-none">已是最后一篇</span>
+                                    </if>
+                                </div>
+                                <div class="nav-icon">
+                                    <i class="fa fa-arrow-right"></i>
+                                </div>
+                            </div>
                         </div>
-                        <div class="nav-next">
-                            <label>下一篇 <i class="fa fa-chevron-right"></i></label>
-                            <if condition="$nexttitle neq ''">
-                                <a href="{$nexturl}">{$nexttitle|msubstr=###,0,30}</a>
-                            <else/>
-                                <span class="nav-none">已是最后一篇</span>
-                            </if>
-                        </div>
-                    </div>
 
-                    <!-- 返回按钮 -->
-                    <div class="article-back">
-                        <a href="__ROOT__/index.php?s=Lists/index/typeid/{$article.typeid}" class="btn-back">
-                            <i class="fa fa-arrow-left"></i> 返回列表
-                        </a>
+                        <!-- 返回按钮 -->
+                        <div class="article-back">
+                            <a href="__ROOT__/index.php?s=Lists/index/typeid/{$article.typeid}" class="btn-back" target="_self">
+                                <i class="fa fa-arrow-left"></i>
+                                <span>返回列表</span>
+                            </a>
+                        </div>
                     </div>
 
                 </footer>
