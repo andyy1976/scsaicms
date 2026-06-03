@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>定时任务管理 - WorkBuddy</title>
+    <style>
+        :root {
+            --bg: #0f1117;
+            --surface: #1a1d27;
+            --surface2: #232733;
+            --border: #2d3140;
+            --text: #e1e4ed;
+            --text2: #8b8fa3;
+            --accent: #6c5ce7;
+            --accent2: #a29bfe;
+            --success: #00b894;
+            --warning: #fdcb6e;
+            --danger: #e17055;
+            --info: #74b9ff;
+            --radius: 10px;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+        /* Layout */
+        .app { display: flex; height: 100vh; }
+        .sidebar { width: 240px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; }
+        .sidebar-logo { padding: 20px; border-bottom: 1px solid var(--border); }
+        .sidebar-logo h1 { font-size: 16px; color: var(--accent2); }
+        .sidebar-logo p { font-size: 11px; color: var(--text2); margin-top: 4px; }
+        .sidebar-nav { flex: 1; padding: 12px 0; overflow-y: auto; }
+        .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 20px; cursor: pointer; transition: all .2s; color: var(--text2); font-size: 14px; }
+        .nav-item:hover { background: var(--surface2); color: var(--text); }
+        .nav-item.active { background: var(--accent); color: #fff; }
+        .nav-item .icon { font-size: 16px; width: 20px; text-align: center; }
+        .nav-section { padding: 8px 20px; font-size: 11px; color: var(--text2); text-transform: uppercase; letter-spacing: 1px; margin-top: 8px; }
+        .sidebar-footer { padding: 16px 20px; border-top: 1px solid var(--border); }
+        .sidebar-footer .status { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text2); }
+        .sidebar-footer .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); }
+
+        .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+        .topbar { height: 56px; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 24px; flex-shrink: 0; }
+        .topbar h2 { font-size: 15px; font-weight: 500; }
+        .topbar-actions { display: flex; gap: 8px; }
+        .content { flex: 1; overflow-y: auto; padding: 24px; }
+
+        /* Buttons */
+        .btn { padding: 8px 16px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface2); color: var(--text); font-size: 13px; cursor: pointer; transition: all .2s; display: inline-flex; align-items: center; gap: 6px; }
+        .btn:hover { border-color: var(--accent); }
+        .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+        .btn-primary:hover { background: var(--accent2); }
+        .btn-danger { background: var(--danger); border-color: var(--danger); color: #fff; }
+        .btn-sm { padding: 4px 10px; font-size: 12px; }
+
+        /* Cards */
+        .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 20px; }
+        .card-title { font-size: 15px; font-weight: 600; margin-bottom: 16px; }
+
+        /* Task list */
+        .task-list { display: grid; gap: 12px; }
+        .task-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .task-info { flex: 1; }
+        .task-name { font-size: 15px; font-weight: 500; margin-bottom: 4px; }
+        .task-meta { font-size: 12px; color: var(--text2); }
+        .task-actions { display: flex; gap: 8px; }
+
+        /* Forms */
+        .form-group { margin-bottom: 16px; }
+        .form-label { display: block; font-size: 13px; color: var(--text2); margin-bottom: 6px; }
+        .form-input, .form-select { width: 100%; padding: 10px 14px; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 14px; font-family: inherit; transition: border-color .2s; }
+        .form-input:focus, .form-select:focus { outline: none; border-color: var(--accent); }
+
+        /* Modal */
+        .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); z-index:1000; align-items: center; justify-content: center; }
+        .modal.show { display: flex; }
+        .modal-content { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; width: 500px; max-width: 90%; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .modal-title { font-size: 18px; font-weight: 600; }
+
+        /* Badge */
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; }
+        .badge-success { background: var(--success); color: #fff; }
+        .badge-danger { background: var(--danger); color: #fff; }
+
+        /* Checkbox */
+        .checkbox-group { display: flex; gap: 16px; flex-wrap: wrap; }
+        .checkbox-group label { display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--text); cursor: pointer; }
+
+        /* Toast */
+        .toast { position: fixed; top: 20px; right: 20px; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 12px 20px; color: var(--text); font-size: 13px; z-index: 1000; transform: translateX(120%); transition: transform .3s; }
+        .toast.show { transform: translateX(0); }
+        .toast.success { border-color: var(--success); }
+        .toast.error { border-color: var(--danger); }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .sidebar { width: 60px; }
+            .sidebar-logo p, .nav-item span, .nav-section { display: none; }
+            .nav-item { justify-content: center; padding: 12px; }
+            .sidebar-footer span { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <h1>🚀 WorkBuddy</h1>
+                <p>内容数字员工平台 v6.0</p>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-section">核心功能</div>
+                <div class="nav-item" onclick="location.href='/'"><span class="icon">📊</span><span>工作台</span></div>
+                <div class="nav-item" onclick="location.href='/?page=generate'"><span class="icon">✍️</span><span>内容生成</span></div>
+                <div class="nav-item" onclick="location.href='/?page=deaiify'"><span class="icon">🧹</span><span>去AI味</span></div>
+                <div class="nav-item" onclick="location.href='/?page=publish'"><span class="icon">📤</span><span>一键发布</span></div>
+                <div class="nav-section">数据驱动</div>
+                <div class="nav-item" onclick="location.href='/?page=product'"><span class="icon">🏭</span><span>产品数据中心</span></div>
+                <div class="nav-item" onclick="location.href='/?page=style'"><span class="icon">🎨</span><span>风格系统</span></div>
+                <div class="nav-section">集成</div>
+                <div class="nav-item" onclick="location.href='/?page=cms'"><span class="icon">🔗</span><span>CMS管理</span></div>
+                <div class="nav-item active"><span class="icon">⏰</span><span>定时任务</span></div>
+                <div class="nav-section">AI对话</div>
+                <div class="nav-item" onclick="location.href='/?page=chat'"><span class="icon">💬</span><span>智能对话</span></div>
+                <div class="nav-item" onclick="location.href='/?page=models'"><span class="icon">🧠</span><span>模型配置</span></div>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="status"><span class="dot"></span><span>服务运行中</span></div>
+            </div>
+        </aside>
+
+        <!-- Main -->
+        <div class="main">
+            <header class="topbar">
+                <h2>⏰ 定时任务管理</h2>
+                <div class="topbar-actions">
+                    <button class="btn btn-primary" onclick="showAddTaskModal()">+ 新建任务</button>
+                </div>
+            </header>
+
+            <div class="content">
+                <div class="card">
+                    <div class="card-title">任务列表</div>
+                    <div id="taskList" class="task-list">
+                        <div style="color: var(--text2); padding: 40px; text-align: center;">加载中...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加/编辑任务模态框 -->
+    <div id="taskModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle">新建任务</div>
+                <button class="btn" onclick="closeTaskModal()">✕</button>
+            </div>
+            <form id="taskForm" onsubmit="saveTask(event)">
+                <input type="hidden" id="taskId">
+
+                <div class="form-group">
+                    <label class="form-label">任务名称</label>
+                    <input type="text" id="taskName" class="form-input" placeholder="例如：每日AI热点文章" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">话题选择</label>
+                    <select id="taskTopic" class="form-input" onchange="updateKeywordsFromTopic()">
+                        <option value="">-- 从话题库选择 --</option>
+                    </select>
+                    <div id="topicPreview" style="margin-top:8px;font-size:12px;color:var(--text2);"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">关键词（逗号分隔，可手动修改）</label>
+                    <input type="text" id="taskKeywords" class="form-input" placeholder="例如：AI, 人工智能, 数字化转型" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">AI模型</label>
+                    <select id="taskModel" class="form-input">
+                        <option value="deepseek">DeepSeek v4-flash（推荐）</option>
+                        <option value="ark-code">火山方舟 Ark</option>
+                        <option value="astron">讯飞 Astron</option>
+                        <option value="teal">匿名模型 Teal</option>
+                        <option value="coral">匿名模型 Coral</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">写作风格</label>
+                    <select id="taskStyle" class="form-input">
+                        <option value="kazik">卡兹克风格（推荐）</option>
+                        <option value="professional">专业深度</option>
+                        <option value="story">轻松故事</option>
+                        <option value="technical">硬核技术</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">执行时间（Cron表达式）</label>
+                    <input type="text" id="taskSchedule" class="form-input" placeholder="例如：0 9 * * * （每天9点）" required>
+                    <small style="color: var(--text2); font-size: 12px;">格式：分 时 日 月 周（0 9 * * * = 每天9点）</small>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">发布平台</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" value="wechat" checked> 微信公众号</label>
+                        <label><input type="checkbox" value="cms" checked> CMS系统</label>
+                        <label><input type="checkbox" value="xiaohongshu"> 小红书</label>
+                        <label><input type="checkbox" value="douyin"> 抖音</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label><input type="checkbox" id="taskEnabled"> 启用任务</label>
+                </div>
+
+                <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                    <button type="button" class="btn" onclick="closeTaskModal()">取消</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+
+        const API = '/api/tasks';
+
+        // 加载任务列表
+        async function loadTasks() {
+            try {
+                const r = await fetch(API);
+                const d = await r.json();
+
+                if (d.success) {
+                    renderTasks(d.data);
+                } else {
+                    showToast('加载失败: ' + d.message, 'error');
+                }
+            } catch (e) {
+                showToast('请求失败: ' + e.message, 'error');
+            }
+        }
+
+        // 渲染任务列表
+        function renderTasks(tasks) {
+            const container = document.getElementById('taskList');
+
+            if (tasks.length === 0) {
+                container.innerHTML = '<div style="color: var(--text2); padding: 40px; text-align: center;">暂无任务,点击"新建任务"添加</div>';
+                return;
+            }
+
+            container.innerHTML = tasks.map(task => `
+                <div class="task-item">
+                    <div class="task-info">
+                        <div class="task-name">${task.name}</div>
+                        <div class="task-meta">
+                            关键词: ${task.keywords.join(', ')} |
+                            时间: ${task.schedule} |
+                            平台: ${task.platforms.join(', ')} |
+                            状态: <span class="badge ${task.enabled ? 'badge-success' : 'badge-danger'}">${task.enabled ? '已启用' : '已禁用'}</span>
+                        </div>
+                    </div>
+                    <div class="task-actions">
+                        <button class="btn btn-sm" onclick="runTask('${task.id}')">▶ 执行</button>
+                        <button class="btn btn-sm" onclick="editTask('${task.id}')">✏️ 编辑</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteTask('${task.id}')">🗑️ 删除</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 显示添加任务模态框
+        function showAddTaskModal() {
+            document.getElementById('modalTitle').textContent = '新建任务';
+            document.getElementById('taskForm').reset();
+            document.getElementById('taskId').value = '';
+            document.getElementById('taskModal').classList.add('show');
+        }
+
+        // 显示编辑任务模态框
+        async function editTask(id) {
+            try {
+                const r = await fetch(API);
+                const d = await r.json();
+                const task = d.data.find(t => t.id === id);
+
+                if (task) {
+                    document.getElementById('modalTitle').textContent = '编辑任务';
+                    document.getElementById('taskId').value = task.id;
+                    document.getElementById('taskName').value = task.name;
+                    document.getElementById('taskKeywords').value = task.keywords.join(', ');
+                    document.getElementById('taskSchedule').value = task.schedule;
+                    document.querySelectorAll('input[type="checkbox"][value]').forEach(cb => {
+                        cb.checked = task.platforms.includes(cb.value);
+                    });
+                    document.getElementById('taskEnabled').checked = task.enabled;
+
+                    document.getElementById('taskModal').classList.add('show');
+                }
+            } catch (e) {
+                showToast('加载任务失败: ' + e.message, 'error');
+            }
+        }
+
+        // 关闭模态框
+        function closeTaskModal() {
+            document.getElementById('taskModal').classList.remove('show');
+        }
+
+        // 保存任务
+        async function saveTask(e) {
+            e.preventDefault();
+
+            const id = document.getElementById('taskId').value;
+            const name = document.getElementById('taskName').value.trim();
+            const keywords = document.getElementById('taskKeywords').value.split(',').map(k => k.trim());
+            const schedule = document.getElementById('taskSchedule').value.trim();
+            const platforms = Array.from(document.querySelectorAll('input[type="checkbox"][value]:checked')).map(cb => cb.value);
+            const enabled = document.getElementById('taskEnabled').checked;
+
+            if (!name || !keywords || !schedule || platforms.length === 0) {
+                return showToast('请填写完整信息', 'error');
+            }
+
+            try {
+                const url = id ? `${API}/${id}` : API;
+                const method = id ? 'PUT' : 'POST';
+                const body = { name, keywords, schedule, platforms, enabled };
+
+                const r = await fetch(url, {
+                    method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+
+                const d = await r.json();
+
+                if (d.success) {
+                    showToast(id ? '任务已更新' : '任务已创建');
+                    closeTaskModal();
+                    loadTasks();
+                } else {
+                    showToast('保存失败: ' + d.message, 'error');
+                }
+            } catch (e) {
+                showToast('请求失败: ' + e.message, 'error');
+            }
+        }
+
+        // 删除任务
+        async function deleteTask(id) {
+            if (!confirm('确定要删除这个任务吗？')) return;
+
+            try {
+                const r = await fetch(`${API}/${id}`, { method: 'DELETE' });
+                const d = await r.json();
+
+                if (d.success) {
+                    showToast('任务已删除');
+                    loadTasks();
+                } else {
+                    showToast('删除失败: ' + d.message, 'error');
+                }
+            } catch (e) {
+                showToast('请求失败: ' + e.message, 'error');
+            }
+        }
+
+        // 立即执行任务
+        async function runTask(id) {
+            try {
+                const r = await fetch(`${API}/${id}/run`, { method: 'POST' });
+                const d = await r.json();
+
+                if (d.success) {
+                    showToast('任务已开始执行,请稍后查看结果');
+                } else {
+                    showToast('执行失败: ' + d.message, 'error');
+                }
+            } catch (e) {
+                showToast('请求失败: ' + e.message, 'error');
+            }
+        }
+
+        // 显示Toast消息
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // 页面加载时执行
+        loadTasks();
+        loadTopics();
+        
+        // 加载话题库
+        let topicsData = [];
+        async function loadTopics() {
+            try {
+                const r = await fetch('/api/publish/topics');
+                const d = await r.json();
+                
+                if (d.success) {
+                    topicsData = d.data.topics || (Array.isArray(d.data) ? d.data : []);
+                    const select = document.getElementById('taskTopic');
+                    select.innerHTML = '<option value="">-- 从话题库选择 --</option>' + 
+                        topicsData.map(t => `<option value="${t.id}">${t.topic} (${t.category})</option>`).join('');
+                }
+            } catch (e) {
+                console.error('加载话题库失败:', e);
+            }
+        }
+        
+        // 从话题更新关键词
+        function updateKeywordsFromTopic() {
+            const topicId = document.getElementById('taskTopic').value;
+            if (!topicId) return;
+            
+            const topic = topicsData.find(t => t.id == topicId);
+            if (topic) {
+                document.getElementById('taskKeywords').value = topic.topic;
+                document.getElementById('topicPreview').innerHTML = 
+                    `分类: ${topic.category} | 热度: ${topic.heat || 'N/A'} | 已用: ${topic.usedCount || 0}次`;
+            }
+        }
+
+    </script>
+    </body>
+</html>

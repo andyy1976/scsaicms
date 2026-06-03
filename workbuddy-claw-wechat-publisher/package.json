@@ -1,0 +1,61 @@
+{
+  "name": "workbuddy-claw-wechat-publisher",
+  "version": "3.0.0",
+  "description": "微信公众号智能发布器 v3 - 热点抓取 + 卡兹克风格AI写作 + 增强版自动封面配图 + 一键发布（全整合版）",
+  "main": "index.js",
+  "bin": {
+    "wechat-publisher": "index.js"
+  },
+  "scripts": {
+    "start": "node index.js --publish",
+    "hotspot": "node index.js --hotspot",
+    "validate": "node index.js --validate",
+    "setup": "node scripts/setup.js",
+    "test": "node test.js",
+    "build": "echo 'Build completed'"
+  },
+  "keywords": [
+    "wechat",
+    "公众号",
+    "AI写作",
+    "automation",
+    "openclaw",
+    "workbuddy",
+    "khazix",
+    "markdown",
+    "publish"
+  ],
+  "author": "超云艾艾",
+  "license": "MIT",
+  "dependencies": {
+    "@playwright/test": "^1.59.1",
+    "axios": "^1.16.0",
+    "better-sqlite3": "^12.10.0",
+    "cheerio": "^1.0.0-rc.12",
+    "cors": "^2.8.6",
+    "dotenv": "^16.4.0",
+    "express": "^5.2.1",
+    "form-data": "^4.0.5",
+    "googleapis": "^171.4.0",
+    "marked": "^18.0.4",
+    "minimist": "^1.2.8",
+    "multer": "^2.1.1",
+    "mysql2": "^3.22.3",
+    "node-cron": "^4.2.1",
+    "playwright": "^1.59.1",
+    "pptxgenjs": "^4.0.1",
+    "tencentcloud-sdk-nodejs-hunyuan": "^4.1.188",
+    "uuid": "^14.0.0"
+  },
+  "directories": {
+    "doc": "docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andyy1976/workbuddy-claw-wechat-publisher.git"
+  },
+  "bugs": {
+    "url": "https://github.com/andyy1976/workbuddy-claw-wechat-publisher/issues"
+  },
+  "homepage": "https://github.com/andyy1976/workbuddy-claw-wechat-publisher#readme"
+}

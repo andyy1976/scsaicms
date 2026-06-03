@@ -1,0 +1,23 @@
+{
+  "tasks": [
+    {
+      "id": "task_9am_daily",
+      "name": "每日9点热点内容发布",
+      "keywords": [
+        "AI",
+        "数字化转型",
+        "智能制造",
+        "数字员工"
+      ],
+      "schedule": "0 9 * * *",
+      "platforms": [
+        "wechat",
+        "cms"
+      ],
+      "enabled": true,
+      "createdAt": "2026-05-18T12:20:00.000Z",
+      "description": "每天9点自动采集热点、生成文章、发布到CMS和公众号草稿箱"
+    }
+  ],
+  "lastRun": null
+}
