@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>产品说明书自动生成 - 从规格参数到销售话术 | 超云智能</title>
+    <meta name="description" content="输入产品规格参数，自动生成专业的产品说明书和营销风格的销售话术，一键生成多版本内容。">
+    <meta name="keywords" content="product description generator, 产品说明书生成, 销售话术生成, specs to sales copy">
+    
+    <link href="/Web/Tpl/sciotai/css/style.css" rel="stylesheet" type="text/css">
+    <style>
+        .tools-page {
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f4e 50%, #2d1b69 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        
+        .tools-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .tools-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .tools-header h1 {
+            font-size: 42px;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+        
+        .tools-header h1 span {
+            color: #fdcb6e;
+        }
+        
+        .tools-header p {
+            color: rgba(255,255,255,0.7);
+            font-size: 18px;
+        }
+        
+        .tool-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+        
+        .tool-card h2 {
+            color: #fff;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group label {
+            display: block;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 8px;
+        }
+        
+        .input-group input, .input-group textarea {
+            width: 100%;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 12px;
+            padding: 15px;
+            color: #fff;
+            font-size: 16px;
+        }
+        
+        .input-group textarea {
+            height: 200px;
+            resize: none;
+        }
+        
+        .input-group input:focus, .input-group textarea:focus {
+            outline: none;
+            border-color: #fdcb6e;
+        }
+        
+        .mode-selector {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .mode-btn {
+            padding: 12px 24px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 30px;
+            background: transparent;
+            color: rgba(255,255,255,0.8);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .mode-btn:hover, .mode-btn.active {
+            background: #fdcb6e;
+            border-color: #fdcb6e;
+            color: #1a1f4e;
+        }
+        
+        .action-btn {
+            padding: 16px 40px;
+            background: linear-gradient(135deg, #fdcb6e, #ffeaa7);
+            border: none;
+            border-radius: 12px;
+            color: #1a1f4e;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+        
+        .secondary-btn {
+            padding: 16px 30px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 12px;
+            color: #fff;
+            cursor: pointer;
+        }
+        
+        .output-area {
+            background: rgba(253, 203, 110, 0.1);
+            border: 1px solid rgba(253, 203, 110, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .output-area h3 {
+            color: #fdcb6e;
+            margin-bottom: 15px;
+        }
+        
+        .output-area textarea {
+            width: 100%;
+            height: 300px;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(253, 203, 110, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            color: #fff;
+            font-size: 16px;
+            resize: none;
+        }
+        
+        .templates-section {
+            margin-top: 60px;
+        }
+        
+        .templates-section h2 {
+            color: #fff;
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        
+        .template-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .template-card:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-5px);
+        }
+        
+        .template-card .icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+        
+        .template-card h4 {
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        
+        .template-card p {
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+        }
+        
+        .back-link:hover {
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="tools-page">
+        <div class="tools-container">
+            <a href="/" class="back-link">← 返回首页</a>
+            
+            <header class="tools-header">
+                <h1>产品说明书<span>自动生成</span></h1>
+                <p>输入规格参数，一键生成产品说明书和销售话术</p>
+            </header>
+            
+            <div class="tool-card">
+                <h2>📋 输入产品信息</h2>
+                
+                <div class="input-group">
+                    <label>产品名称</label>
+                    <input type="text" id="productName" placeholder="例如：智能工业网关 SC-2026A">
+                </div>
+                
+                <div class="input-group">
+                    <label>产品规格参数</label>
+                    <textarea id="specsText" placeholder="例如：
+处理器：ARM Cortex-A72 四核 1.8GHz
+内存：4GB LPDDR4
+存储：32GB eMMC 5.1
+接口：USB 3.0 × 2, HDMI 2.0, RJ45, RS485
+网络：千兆以太网，支持4G/5G扩展
+功耗：≤15W
+工作温度：-20°C ~ 60°C
+防护等级：IP65
+尺寸：150×100×30mm
+重量：350g"></textarea>
+                </div>
+                
+                <div class="mode-selector">
+                    <button class="mode-btn active" data-mode="manual">📖 产品说明书</button>
+                    <button class="mode-btn" data-mode="sales">💼 销售话术</button>
+                    <button class="mode-btn" data-mode="both">📝 两者都要</button>
+                </div>
+                
+                <button class="action-btn" id="generateBtn">🚀 生成内容</button>
+                <button class="secondary-btn" id="copyBtn">📋 复制结果</button>
+                
+                <div class="output-area" id="outputArea">
+                    <h3>✨ 生成结果</h3>
+                    <textarea id="outputText" readonly></textarea>
+                </div>
+            </div>
+            
+            <section class="templates-section">
+                <h2>💡 快速模板</h2>
+                <div class="template-grid">
+                    <div class="template-card" onclick="loadTemplate('gateway')">
+                        <div class="icon">🔌</div>
+                        <h4>工业网关</h4>
+                        <p>数据采集网关模板</p>
+                    </div>
+                    <div class="template-card" onclick="loadTemplate('sensor')">
+                        <div class="icon">📡</div>
+                        <h4>智能传感器</h4>
+                        <p>传感器设备模板</p>
+                    </div>
+                    <div class="template-card" onclick="loadTemplate('robot')">
+                        <div class="icon">🤖</div>
+                        <h4>工业机器人</h4>
+                        <p>机器人设备模板</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    
+    <script>
+        // 模板数据
+        const templates = {
+            gateway: {
+                name: '智能工业网关 SC-2026A',
+                specs: `处理器：ARM Cortex-A72 四核 1.8GHz
+内存：4GB LPDDR4
+存储：32GB eMMC 5.1
+接口：USB 3.0 × 2, HDMI 2.0, RJ45, RS485
+网络：千兆以太网，支持4G/5G扩展
+功耗：≤15W
+工作温度：-20°C ~ 60°C
+防护等级：IP65`
+            },
+            sensor: {
+                name: '智能温湿度传感器 TH-100',
+                specs: `测量范围：温度 -40°C~85°C，湿度 0~100%RH
+精度：温度 ±0.3°C，湿度 ±2%RH
+通信方式：LoRa / NB-IoT / WiFi
+供电：DC 5V 或电池供电
+电池寿命：≥3年
+防护等级：IP67`
+            },
+            robot: {
+                name: '协作机器人 CR-06',
+                specs: `负载：6kg
+臂展：900mm
+重复定位精度：±0.05mm
+自由度：6轴
+工作温度：0°C ~ 45°C
+防护等级：IP54
+功耗：≤500W`
+            }
+        };
+        
+        // 加载模板
+        function loadTemplate(type) {
+            const template = templates[type];
+            document.getElementById('productName').value = template.name;
+            document.getElementById('specsText').value = template.specs;
+        }
+        
+        // 模式选择
+        const modeBtns = document.querySelectorAll('.mode-btn');
+        let currentMode = 'manual';
+        
+        modeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                modeBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentMode = btn.dataset.mode;
+            });
+        });
+        
+        // 生成
+        document.getElementById('generateBtn').addEventListener('click', async () => {
+            const name = document.getElementById('productName').value.trim();
+            const specs = document.getElementById('specsText').value.trim();
+            
+            if (!name || !specs) {
+                alert('请填写产品名称和规格参数');
+                return;
+            }
+            
+            const btn = document.getElementById('generateBtn');
+            btn.textContent = '生成中...';
+            
+            try {
+                const response = await fetch('/api/product-doc', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, specs, type: currentMode })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('outputText').value = data.result;
+                    document.getElementById('outputArea').style.display = 'block';
+                } else {
+                    throw new Error(data.message);
+                }
+            } catch (e) {
+                // 降级处理
+                const result = simulateGenerate(name, specs, currentMode);
+                document.getElementById('outputText').value = result;
+                document.getElementById('outputArea').style.display = 'block';
+            }
+            
+            btn.textContent = '🚀 生成内容';
+        });
+        
+        // 模拟生成
+        function simulateGenerate(name, specs, mode) {
+            if (mode === 'sales') {
+                return `【${name}】销售话术
+
+🎯 核心卖点：
+• 高性能四核处理器，运行稳定流畅
+• 工业级防护设计，恶劣环境无压力
+• 丰富接口配置，对接各类设备
+• 超低功耗设计，节能环保
+
+💬 客户话术：
+"这款${name}是我们专为工业场景设计的，采用四核高性能处理器，处理速度快、运行稳定。最重要的是它的工业级防护设计，-20到60度都能正常工作，IP65防护等级，灰尘、水溅都不怕。接口也很丰富，USB、网口、串口都有，对接您现有的设备完全没问题。功耗只有15瓦，一天不到半度电，非常节能。"
+
+📊 对比优势：
+相比同类产品，我们的优势在于：更稳定的性能、更丰富的接口、更低的功耗、更优惠的价格。
+
+[注：这是演示效果，请配置API启用完整功能]`;
+            } else {
+                return `【${name}】产品说明书
+
+一、产品概述
+${name}是一款专为工业场景设计的高性能设备，具有稳定可靠、接口丰富、易于集成等特点。
+
+二、技术规格
+${specs}
+
+三、功能特点
+1. 高性能处理：采用先进处理器架构，确保数据处理实时可靠
+2. 工业级设计：宽温工作范围，高防护等级，适应各种工业环境
+3. 丰富接口：支持多种通信方式，方便系统集成
+4. 低功耗运行：节能环保，降低运营成本
+
+四、使用说明
+1. 请在规定的工作温度范围内使用
+2. 确保供电电压符合要求
+3. 接口连接时请注意防静电
+
+五、注意事项
+• 请勿在超出防护等级的环境中使用
+• 定期检查设备运行状态
+• 如有异常请联系售后服务
+
+六、售后服务
+本产品提供一年质保，终身维护服务。
+
+[注：这是演示效果，请配置API启用完整功能]`;
+            }
+        }
+        
+        // 复制
+        document.getElementById('copyBtn').addEventListener('click', () => {
+            const output = document.getElementById('outputText').value;
+            if (!output) {
+                alert('没有可复制的内容');
+                return;
+            }
+            navigator.clipboard.writeText(output);
+            alert('已复制到剪贴板');
+        });
+    </script>
+</body>
+</html>

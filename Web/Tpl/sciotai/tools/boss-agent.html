@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>老板智能体 - 企业专属AI助手24小时运营 | 超云智能</title>
+    <meta name="description" content="企业专属AI助手，对接企业知识库，自动生成内容、自动发布、自动回复，24小时无人值守运营。">
+    <meta name="keywords" content="boss AI agent, 老板智能体, 企业AI助手, 自动运营">
+    
+    <link href="/Web/Tpl/sciotai/css/style.css" rel="stylesheet" type="text/css">
+    <style>
+        .tools-page {
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f4e 50%, #2d1b69 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        
+        .tools-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .tools-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .tools-header h1 {
+            font-size: 48px;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        
+        .tools-header h1 span {
+            background: linear-gradient(90deg, #ffeaa7, #fdcb6e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .tools-header p {
+            color: rgba(255,255,255,0.7);
+            font-size: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+        }
+        
+        /* 能力展示 */
+        .capabilities-section {
+            margin-bottom: 60px;
+        }
+        
+        .capabilities-section h2 {
+            color: #fff;
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .capabilities-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        .capability-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 35px;
+            transition: all 0.3s;
+        }
+        
+        .capability-card:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-5px);
+        }
+        
+        .capability-card .icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+        }
+        
+        .capability-card h3 {
+            color: #fff;
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+        
+        .capability-card p {
+            color: rgba(255,255,255,0.6);
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .capability-card ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .capability-card li {
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .capability-card li:last-child {
+            border-bottom: none;
+        }
+        
+        /* 工作流程 */
+        .workflow-section {
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 50px;
+            margin-bottom: 60px;
+        }
+        
+        .workflow-section h2 {
+            color: #fff;
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .workflow-steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            position: relative;
+        }
+        
+        .workflow-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+        
+        .workflow-step .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #fdcb6e, #ffeaa7);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1f4e;
+            margin: 0 auto 20px;
+        }
+        
+        .workflow-step h4 {
+            color: #fff;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        .workflow-step p {
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+            max-width: 150px;
+            margin: 0 auto;
+        }
+        
+        .workflow-line {
+            position: absolute;
+            top: 30px;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background: linear-gradient(90deg, #fdcb6e, #ffeaa7);
+            z-index: 0;
+        }
+        
+        /* 应用场景 */
+        .scenarios-section {
+            margin-bottom: 60px;
+        }
+        
+        .scenarios-section h2 {
+            color: #fff;
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .scenarios-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+        
+        .scenario-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 30px;
+            display: flex;
+            gap: 20px;
+        }
+        
+        .scenario-card .icon {
+            font-size: 40px;
+            flex-shrink: 0;
+        }
+        
+        .scenario-card h4 {
+            color: #fff;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        .scenario-card p {
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        /* 价格方案 */
+        .pricing-section {
+            margin-bottom: 60px;
+        }
+        
+        .pricing-section h2 {
+            color: #fff;
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        .pricing-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 35px;
+            text-align: center;
+        }
+        
+        .pricing-card.featured {
+            border-color: #fdcb6e;
+            background: rgba(253, 203, 110, 0.1);
+        }
+        
+        .pricing-card h3 {
+            color: #fff;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .pricing-card .price {
+            font-size: 48px;
+            font-weight: 700;
+            color: #fdcb6e;
+            margin-bottom: 5px;
+        }
+        
+        .pricing-card .price-unit {
+            color: rgba(255,255,255,0.5);
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .pricing-card ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 30px;
+        }
+        
+        .pricing-card li {
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .pricing-card li:last-child {
+            border-bottom: none;
+        }
+        
+        .pricing-btn {
+            display: inline-block;
+            padding: 14px 30px;
+            background: linear-gradient(135deg, #fdcb6e, #ffeaa7);
+            color: #1a1f4e;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+        
+        /* CTA */
+        .cta-section {
+            text-align: center;
+            padding: 50px;
+            background: linear-gradient(135deg, rgba(253, 203, 110, 0.2), rgba(255, 234, 167, 0.1));
+            border: 1px solid rgba(253, 203, 110, 0.3);
+            border-radius: 20px;
+        }
+        
+        .cta-section h2 {
+            color: #fff;
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+        
+        .cta-section p {
+            color: rgba(255,255,255,0.7);
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+        
+        .cta-btn {
+            display: inline-block;
+            padding: 18px 50px;
+            background: linear-gradient(135deg, #fdcb6e, #ffeaa7);
+            color: #1a1f4e;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 768px) {
+            .capabilities-grid { grid-template-columns: 1fr; }
+            .scenarios-grid { grid-template-columns: 1fr; }
+            .pricing-grid { grid-template-columns: 1fr; }
+            .workflow-steps { flex-direction: column; gap: 30px; }
+            .workflow-line { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="tools-page">
+        <div class="tools-container">
+            <a href="/" class="back-link">← 返回首页</a>
+            
+            <header class="tools-header">
+                <h1>老板<span>智能体</span></h1>
+                <p>企业专属AI助手，对接知识库，24小时自动运营</p>
+            </header>
+            
+            <!-- 核心能力 -->
+            <section class="capabilities-section">
+                <h2>🚀 核心能力</h2>
+                <div class="capabilities-grid">
+                    <div class="capability-card">
+                        <div class="icon">📚</div>
+                        <h3>知识库对接</h3>
+                        <p>对接企业产品库、技术文档、客户案例，AI自动学习企业知识</p>
+                        <ul>
+                            <li>产品规格自动提取</li>
+                            <li>技术文档智能索引</li>
+                            <li>客户案例自动归类</li>
+                        </ul>
+                    </div>
+                    <div class="capability-card">
+                        <div class="icon">✍️</div>
+                        <h3>内容自动生成</h3>
+                        <p>基于知识库自动生成产品说明书、营销文案、技术文档</p>
+                        <ul>
+                            <li>产品说明书生成</li>
+                            <li>营销文案多风格</li>
+                            <li>技术文档人性化</li>
+                        </ul>
+                    </div>
+                    <div class="capability-card">
+                        <div class="icon">🚀</div>
+                        <h3>多平台发布</h3>
+                        <p>一键发布到微信、小红书、抖音、企业官网</p>
+                        <ul>
+                            <li>自动适配格式</li>
+                            <li>定时发布</li>
+                            <li>数据统计</li>
+                        </ul>
+                    </div>
+                    <div class="capability-card">
+                        <div class="icon">💬</div>
+                        <h3>智能客服</h3>
+                        <p>7×24小时自动回复客户咨询，精准匹配知识库</p>
+                        <ul>
+                            <li>多轮对话</li>
+                            <li>意图识别</li>
+                            <li>工单转人工</li>
+                        </ul>
+                    </div>
+                    <div class="capability-card">
+                        <div class="icon">🔥</div>
+                        <h3>热点追踪</h3>
+                        <p>自动采集行业热点，AI评分筛选，生成关联内容</p>
+                        <ul>
+                            <li>多信源采集</li>
+                            <li>五维评分</li>
+                            <li>自动关联产品</li>
+                        </ul>
+                    </div>
+                    <div class="capability-card">
+                        <div class="icon">📊</div>
+                        <h3>数据分析</h3>
+                        <p>内容效果分析、用户画像、转化追踪</p>
+                        <ul>
+                            <li>阅读分析</li>
+                            <li>转化漏斗</li>
+                            <li>ROI计算</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 工作流程 -->
+            <section class="workflow-section">
+                <h2>⚙️ 工作流程</h2>
+                <div class="workflow-steps">
+                    <div class="workflow-line"></div>
+                    <div class="workflow-step">
+                        <div class="step-number">1</div>
+                        <h4>导入知识库</h4>
+                        <p>上传产品文档、技术资料</p>
+                    </div>
+                    <div class="workflow-step">
+                        <div class="step-number">2</div>
+                        <h4>配置规则</h4>
+                        <p>设置内容风格、发布频率</p>
+                    </div>
+                    <div class="workflow-step">
+                        <div class="step-number">3</div>
+                        <h4>自动运行</h4>
+                        <p>AI自动生成发布内容</p>
+                    </div>
+                    <div class="workflow-step">
+                        <div class="step-number">4</div>
+                        <h4>效果优化</h4>
+                        <p>数据分析持续优化</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 应用场景 -->
+            <section class="scenarios-section">
+                <h2>💡 应用场景</h2>
+                <div class="scenarios-grid">
+                    <div class="scenario-card">
+                        <div class="icon">🏭</div>
+                        <div>
+                            <h4>智能制造企业</h4>
+                            <p>自动生成产品说明书、技术文档、行业资讯，发布到官网和公众号，提升品牌影响力。</p>
+                        </div>
+                    </div>
+                    <div class="scenario-card">
+                        <div class="icon">🛒</div>
+                        <div>
+                            <h4>电商企业</h4>
+                            <p>自动生成商品详情、营销文案、种草笔记，多平台发布，提升转化率。</p>
+                        </div>
+                    </div>
+                    <div class="scenario-card">
+                        <div class="icon">🏢</div>
+                        <div>
+                            <h4>B2B企业</h4>
+                            <p>自动生成解决方案、客户案例、行业白皮书，精准获客。</p>
+                        </div>
+                    </div>
+                    <div class="scenario-card">
+                        <div class="icon">📰</div>
+                        <div>
+                            <h4>媒体机构</h4>
+                            <p>热点追踪、内容生成、多平台分发，提升内容生产效率。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 价格方案 -->
+            <section class="pricing-section">
+                <h2>💰 价格方案</h2>
+                <div class="pricing-grid">
+                    <div class="pricing-card">
+                        <h3>基础版</h3>
+                        <div class="price">¥999</div>
+                        <div class="price-unit">/月</div>
+                        <ul>
+                            <li>知识库容量 100MB</li>
+                            <li>月生成内容 100篇</li>
+                            <li>发布平台 2个</li>
+                            <li>基础数据分析</li>
+                        </ul>
+                        <a href="#" class="pricing-btn">立即开通</a>
+                    </div>
+                    <div class="pricing-card featured">
+                        <h3>专业版</h3>
+                        <div class="price">¥2999</div>
+                        <div class="price-unit">/月</div>
+                        <ul>
+                            <li>知识库容量 1GB</li>
+                            <li>月生成内容 500篇</li>
+                            <li>发布平台 5个</li>
+                            <li>高级数据分析</li>
+                            <li>智能客服</li>
+                        </ul>
+                        <a href="#" class="pricing-btn">立即开通</a>
+                    </div>
+                    <div class="pricing-card">
+                        <h3>企业版</h3>
+                        <div class="price">¥9999</div>
+                        <div class="price-unit">/月</div>
+                        <ul>
+                            <li>知识库容量 无限</li>
+                            <li>月生成内容 无限</li>
+                            <li>发布平台 无限</li>
+                            <li>私有化部署</li>
+                            <li>专属技术支持</li>
+                        </ul>
+                        <a href="#" class="pricing-btn">联系我们</a>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- CTA -->
+            <section class="cta-section">
+                <h2>🎯 开启智能运营之旅</h2>
+                <p>让AI成为您的24小时内容运营助手</p>
+                <a href="/index.php?s=/lists/4.html" class="cta-btn">免费试用</a>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

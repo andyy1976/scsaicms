@@ -1,5 +1,18 @@
 <?php
 	return array(
+	// 内容数字员工API路由
+	'api/humanize' => 'Contentemployee/humanize',
+	'api/detect-ai' => 'Contentemployee/detect_ai',
+	'api/tech-translate' => 'Contentemployee/tech_translate',
+	'api/product-doc' => 'Contentemployee/product_doc',
+	'api/hotspot' => 'Contentemployee/hotspot',
+	'api/publish' => 'Contentemployee/publish',
+	
+	// 工具页面路由
+	'tools' => 'Contentemployee/index',
+	'humanize' => 'Contentemployee/index',
+	
+	// 原有路由
 	'articles/:aid' => 'Article/index',
 	'lists/:typeid' => 'List/index',
 	'photos' => 'List/photo',
@@ -15,5 +28,9 @@
 	'systems' => 'List/index?typeid=2',
 	'digital-employee' => 'List/index?typeid=4',
 	'enablement' => 'List/index?typeid=7',
+	
+	// 原首页保留为内容页
+	'content' => 'Index/index',
+	'home' => 'Index/index',
 	);
 ?>

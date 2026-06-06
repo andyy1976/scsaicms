@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>产品内容自动化服务 - 每月省下1个文案的人力成本 | 超云智能</title>
+    <meta name="description" content="为制造业企业提供产品说明书自动生成、公众号内容自动化、销售话术库维护等服务，每月省下1个文案的人力成本，新品发布从4天缩短到10分钟。">
+    <meta name="keywords" content="产品内容自动化, 产品说明书生成, 企业AI服务, 内容数字员工">
+    
+    <link href="/Web/Tpl/sciotai/css/style.css" rel="stylesheet" type="text/css">
+    <style>
+        .service-page {
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f4e 50%, #2d1b69 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        
+        .service-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .service-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .service-header .badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: rgba(253, 203, 110, 0.2);
+            border: 1px solid rgba(253, 203, 110, 0.5);
+            border-radius: 30px;
+            color: #fdcb6e;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        
+        .service-header h1 {
+            font-size: 42px;
+            color: #fff;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+        
+        .service-header h1 span {
+            color: #fdcb6e;
+        }
+        
+        .service-header p {
+            color: rgba(255,255,255,0.7);
+            font-size: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+        }
+        
+        /* 痛点展示 */
+        .pain-points {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 50px;
+        }
+        
+        .pain-points h2 {
+            color: #fff;
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .pain-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+        
+        .pain-item {
+            text-align: center;
+            padding: 25px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 16px;
+        }
+        
+        .pain-item .icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+        
+        .pain-item h4 {
+            color: #e17055;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        .pain-item p {
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        /* 解决方案 */
+        .solution-section {
+            margin-bottom: 50px;
+        }
+        
+        .solution-section h2 {
+            color: #fff;
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .solution-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 25px;
+        }
+        
+        .solution-card h3 {
+            color: #fdcb6e;
+            font-size: 22px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .solution-card p {
+            color: rgba(255,255,255,0.8);
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        
+        .solution-card ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .solution-card li {
+            color: rgba(255,255,255,0.7);
+            padding: 10px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .solution-card li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #00b894;
+        }
+        
+        /* 案例展示 */
+        .case-section {
+            background: rgba(0, 184, 148, 0.1);
+            border: 1px solid rgba(0, 184, 148, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 50px;
+        }
+        
+        .case-section h2 {
+            color: #00b894;
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .case-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .case-before, .case-after {
+            padding: 25px;
+            border-radius: 16px;
+        }
+        
+        .case-before {
+            background: rgba(231, 76, 60, 0.1);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+        
+        .case-after {
+            background: rgba(0, 184, 148, 0.1);
+            border: 1px solid rgba(0, 184, 148, 0.3);
+        }
+        
+        .case-before h4, .case-after h4 {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        
+        .case-before h4 { color: #e74c3c; }
+        .case-after h4 { color: #00b894; }
+        
+        .case-before p, .case-after p {
+            color: rgba(255,255,255,0.8);
+            font-size: 15px;
+            line-height: 1.8;
+        }
+        
+        /* 价格方案 */
+        .pricing-section {
+            margin-bottom: 50px;
+        }
+        
+        .pricing-section h2 {
+            color: #fff;
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+        
+        .pricing-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 35px;
+            text-align: center;
+        }
+        
+        .pricing-card.recommended {
+            border-color: #fdcb6e;
+            background: rgba(253, 203, 110, 0.1);
+        }
+        
+        .pricing-card .tag {
+            display: inline-block;
+            padding: 5px 15px;
+            background: #fdcb6e;
+            color: #1a1f4e;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .pricing-card h3 {
+            color: #fff;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .pricing-card .price {
+            font-size: 42px;
+            font-weight: 700;
+            color: #fdcb6e;
+            margin-bottom: 5px;
+        }
+        
+        .pricing-card .price-note {
+            color: rgba(255,255,255,0.5);
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+        
+        .pricing-card ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+        
+        .pricing-card li {
+            color: rgba(255,255,255,0.7);
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 14px;
+        }
+        
+        .pricing-card li:last-child {
+            border-bottom: none;
+        }
+        
+        .pricing-btn {
+            display: inline-block;
+            padding: 14px 35px;
+            background: linear-gradient(135deg, #fdcb6e, #ffeaa7);
+            color: #1a1f4e;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+        
+        /* ROI计算 */
+        .roi-section {
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 50px;
+        }
+        
+        .roi-section h2 {
+            color: #fff;
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .roi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        
+        .roi-item {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+        }
+        
+        .roi-item .value {
+            font-size: 36px;
+            font-weight: 700;
+            color: #fdcb6e;
+            margin-bottom: 5px;
+        }
+        
+        .roi-item .label {
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+        }
+        
+        /* CTA */
+        .cta-section {
+            text-align: center;
+            padding: 50px;
+            background: linear-gradient(135deg, rgba(253, 203, 110, 0.2), rgba(255, 234, 167, 0.1));
+            border: 1px solid rgba(253, 203, 110, 0.3);
+            border-radius: 20px;
+        }
+        
+        .cta-section h2 {
+            color: #fff;
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+        
+        .cta-section p {
+            color: rgba(255,255,255,0.7);
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+        
+        .cta-btn {
+            padding: 18px 40px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        
+        .cta-btn.primary {
+            background: linear-gradient(135deg, #fdcb6e, #ffeaa7);
+            color: #1a1f4e;
+        }
+        
+        .cta-btn.secondary {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: #fff;
+        }
+        
+        /* FAQ */
+        .faq-section {
+            margin-top: 60px;
+        }
+        
+        .faq-section h2 {
+            color: #fff;
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .faq-item {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .faq-item h4 {
+            color: #fdcb6e;
+            margin-bottom: 10px;
+        }
+        
+        .faq-item p {
+            color: rgba(255,255,255,0.7);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 768px) {
+            .pain-grid { grid-template-columns: 1fr; }
+            .case-content { grid-template-columns: 1fr; }
+            .pricing-grid { grid-template-columns: 1fr; }
+            .roi-grid { grid-template-columns: repeat(2, 1fr); }
+            .cta-buttons { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="service-page">
+        <div class="service-container">
+            <a href="/" class="back-link">← 返回首页</a>
+            
+            <header class="service-header">
+                <div class="badge">🎯 企业自动化服务</div>
+                <h1>产品内容自动化助手<br><span>每月省下1个文案的人力成本</span></h1>
+                <p>新品发布从4天缩短到10分钟，公众号内容永不缺席</p>
+            </header>
+            
+            <!-- 痛点展示 -->
+            <section class="pain-points">
+                <h2>😰 您是否正在经历这些？</h2>
+                <div class="pain-grid">
+                    <div class="pain-item">
+                        <div class="icon">⏰</div>
+                        <h4>说明书制作慢</h4>
+                        <p>每次新品发布都要从头写说明书、宣传册、销售话术，耗时3-5天</p>
+                    </div>
+                    <div class="pain-item">
+                        <div class="icon">📝</div>
+                        <h4>公众号内容匮乏</h4>
+                        <p>更新频率低，选题发愁，老板不会写，招人又太贵</p>
+                    </div>
+                    <div class="pain-item">
+                        <div class="icon">💼</div>
+                        <h4>销售资料脱节</h4>
+                        <p>技术文档客户看不懂，销售拿到的资料和产品不匹配</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 解决方案 -->
+            <section class="solution-section">
+                <h2>✨ 我们提供什么？</h2>
+                
+                <div class="solution-card">
+                    <h3>📚 1. 企业知识库搭建</h3>
+                    <p>将您的产品目录、技术参数、历史案例、常见问题录入系统，AI自动学习企业知识。</p>
+                    <ul>
+                        <li>支持Excel、ERP导出、产品目录等多种数据格式</li>
+                        <li>自动提取产品规格、技术参数、应用场景</li>
+                        <li>持续学习，越用越懂您的产品</li>
+                    </ul>
+                </div>
+                
+                <div class="solution-card">
+                    <h3>⚙️ 2. 三条自动化工作流</h3>
+                    <p>根据您的业务场景，配置三条核心工作流：</p>
+                    <ul>
+                        <li><strong>新品说明书生成</strong>：输入产品名+参数，自动生成标准说明书+用户易懂版+销售话术</li>
+                        <li><strong>月度公众号推文</strong>：每月抓取行业热点，生成3篇符合企业风格的文章，排版好直接能发</li>
+                        <li><strong>销售话术库维护</strong>：每周自动更新常见客户问题及答案，新销售也能快速上手</li>
+                    </ul>
+                </div>
+                
+                <div class="solution-card">
+                    <h3>📅 3. 定时任务与发布集成</h3>
+                    <p>自动化运营，解放人力：</p>
+                    <ul>
+                        <li>每周一自动生成上周销售数据简报，发送到老板邮箱</li>
+                        <li>生成的内容自动排版并发布到公众号（需提供API或手动触发）</li>
+                        <li>支持多平台发布：微信、小红书、抖音、企业官网</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <!-- 案例展示 -->
+            <section class="case-section">
+                <h2>📊 真实案例：某工业机器人企业</h2>
+                <div class="case-content">
+                    <div class="case-before">
+                        <h4>❌ 使用前</h4>
+                        <p>• 每次新品发布需要4天准备资料<br>
+                        • 公众号每月只更新1-2篇<br>
+                        • 文案月薪1万，产出不稳定<br>
+                        • 销售抱怨技术文档客户看不懂</p>
+                    </div>
+                    <div class="case-after">
+                        <h4>✅ 使用后</h4>
+                        <p>• 新品说明书10分钟自动生成<br>
+                        • 公众号每月稳定更新4篇专业内容<br>
+                        • 文案效率提升3倍，专注策划<br>
+                        • 公众号阅读量提升40%，销售转化提升15%</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 价格方案 -->
+            <section class="pricing-section">
+                <h2>💰 服务套餐</h2>
+                <div class="pricing-grid">
+                    <div class="pricing-card">
+                        <h3>标准版</h3>
+                        <div class="price">¥2.5万</div>
+                        <div class="price-note">项目费 + 5000元/月维护费</div>
+                        <ul>
+                            <li>企业知识库搭建</li>
+                            <li>3条自动化工作流</li>
+                            <li>30天技术支持</li>
+                            <li>月度内容生成（50篇/月）</li>
+                            <li>单平台发布（公众号）</li>
+                        </ul>
+                        <a href="#" class="pricing-btn">立即咨询</a>
+                    </div>
+                    <div class="pricing-card recommended">
+                        <div class="tag">推荐</div>
+                        <h3>专业版</h3>
+                        <div class="price">¥4万</div>
+                        <div class="price-note">项目费 + 8000元/月维护费</div>
+                        <ul>
+                            <li>企业知识库搭建</li>
+                            <li>5条自动化工作流</li>
+                            <li>定制开发支持</li>
+                            <li>月度内容生成（100篇/月）</li>
+                            <li>多平台发布（微信+小红书+官网）</li>
+                            <li>销售话术库+智能客服</li>
+                        </ul>
+                        <a href="#" class="pricing-btn">立即咨询</a>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- ROI计算 -->
+            <section class="roi-section">
+                <h2>📈 投资回报计算</h2>
+                <div class="roi-grid">
+                    <div class="roi-item">
+                        <div class="value">¥10万</div>
+                        <div class="label">文案年薪成本</div>
+                    </div>
+                    <div class="roi-item">
+                        <div class="value">50%</div>
+                        <div class="label">工作量节省</div>
+                    </div>
+                    <div class="roi-item">
+                        <div class="value">¥6万</div>
+                        <div class="label">第二年服务费</div>
+                    </div>
+                    <div class="roi-item">
+                        <div class="value">ROI 167%</div>
+                        <div class="label">投资回报率</div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- CTA -->
+            <section class="cta-section">
+                <h2>🎯 开启自动化之旅</h2>
+                <p>免费诊断您的企业内容流程，出具定制方案</p>
+                <div class="cta-buttons">
+                    <a href="tel:400-888-8888" class="cta-btn primary">📞 立即咨询 400-888-8888</a>
+                    <a href="mailto:service@sciotai.com" class="cta-btn secondary">📧 发送邮件咨询</a>
+                </div>
+            </section>
+            
+            <!-- FAQ -->
+            <section class="faq-section">
+                <h2>❓ 常见问题</h2>
+                <div class="faq-item">
+                    <h4>Q: AI生成的内容质量如何保证？</h4>
+                    <p>A: 我们的内容数字员工不是简单的ChatGPT套壳，而是接入了您的企业知识库，生成的内容基于您的产品参数、技术文档、历史案例。同时有专业的"去AI味"处理，每条内容生成后都会人工审核，确保质量。</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Q: 需要对接我们的系统，会不会很麻烦？</h4>
+                    <p>A: 您只需要提供产品数据（Excel、ERP导出、产品目录都行），我们技术团队负责对接，一般3-5个工作日完成。对接完成后，我们会培训您的同事怎么使用。</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Q: 能不能先试用一下？</h4>
+                    <p>A: 可以！您可以发一个产品参数，我们免费帮您生成一份说明书，您先看看效果。满意再谈合作。</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Q: 我们已经有文案了，还需要这个吗？</h4>
+                    <p>A: 我们的系统不是要替代您的文案，而是让他从重复劳动中解放出来。相当于花5000元/月，给文案配了一个"超级助手"，他的产出效率能翻倍。</p>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

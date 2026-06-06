@@ -9,6 +9,18 @@ class IndexAction extends BaseAction
    	}
     public function index()
     {
+        // 检查是否访问根路径，如果是则显示工具页面
+        $requestUri = $_SERVER['REQUEST_URI'];
+        if ($requestUri === '/' || $requestUri === '/index.php' || $requestUri === '/index.php/') {
+            // 显示工具页面作为新首页
+            $template = cookie('think_template');
+            if (empty($template)) {
+                $template = C('DEFAULT_THEME');
+            }
+            $this->display(TMPL_PATH . $template . '/tools.html');
+            return;
+        }
+        
         ob_start();
 				
 				//用于生成静态HTML

@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>热点内容自动生成 - AI评分筛选多平台适配 | 超云智能</title>
+    <meta name="description" content="自动采集微博热搜、知乎热榜等热点话题，AI五维评分筛选，生成适配微信、小红书、抖音的多平台内容。">
+    <meta name="keywords" content="hotspot content generator, 热点内容生成, AI内容评分, 多平台内容适配">
+    
+    <link href="/Web/Tpl/sciotai/css/style.css" rel="stylesheet" type="text/css">
+    <style>
+        .tools-page {
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f4e 50%, #2d1b69 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        
+        .tools-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .tools-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .tools-header h1 {
+            font-size: 42px;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+        
+        .tools-header h1 span {
+            color: #e17055;
+        }
+        
+        .tools-header p {
+            color: rgba(255,255,255,0.7);
+            font-size: 18px;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+        }
+        
+        .source-selector {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .source-btn {
+            padding: 12px 24px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 30px;
+            background: transparent;
+            color: rgba(255,255,255,0.8);
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .source-btn:hover, .source-btn.active {
+            background: #e17055;
+            border-color: #e17055;
+            color: #fff;
+        }
+        
+        .hotspot-list {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .hotspot-list h2 {
+            color: #fff;
+            font-size: 24px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .hotspot-item {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+        
+        .hotspot-item:hover {
+            background: rgba(0,0,0,0.3);
+        }
+        
+        .hotspot-rank {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #e17055, #ff7675);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 700;
+            margin-right: 20px;
+        }
+        
+        .hotspot-info {
+            flex: 1;
+        }
+        
+        .hotspot-title {
+            color: #fff;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+        
+        .hotspot-meta {
+            display: flex;
+            gap: 20px;
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+        }
+        
+        .hotspot-score {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 80px;
+        }
+        
+        .score-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #e17055;
+        }
+        
+        .score-label {
+            font-size: 12px;
+            color: rgba(255,255,255,0.5);
+        }
+        
+        .hotspot-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .action-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .btn-generate {
+            background: linear-gradient(135deg, #e17055, #ff7675);
+            color: #fff;
+        }
+        
+        .btn-generate:hover {
+            transform: translateY(-2px);
+        }
+        
+        .output-section {
+            background: rgba(225, 112, 85, 0.1);
+            border: 1px solid rgba(225, 112, 85, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 30px;
+            display: none;
+        }
+        
+        .output-section h3 {
+            color: #e17055;
+            margin-bottom: 20px;
+        }
+        
+        .platform-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .platform-tab {
+            padding: 10px 20px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 8px;
+            background: transparent;
+            color: rgba(255,255,255,0.8);
+            cursor: pointer;
+        }
+        
+        .platform-tab.active {
+            background: #e17055;
+            border-color: #e17055;
+            color: #fff;
+        }
+        
+        .content-output {
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            padding: 20px;
+            color: #fff;
+            font-size: 16px;
+            line-height: 1.8;
+            min-height: 200px;
+        }
+        
+        .copy-btn {
+            margin-top: 15px;
+            padding: 12px 24px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 8px;
+            color: #fff;
+            cursor: pointer;
+        }
+        
+        .workflow-section {
+            margin-top: 60px;
+            text-align: center;
+        }
+        
+        .workflow-section h2 {
+            color: #fff;
+            font-size: 28px;
+            margin-bottom: 40px;
+        }
+        
+        .workflow-steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .workflow-step {
+            flex: 1;
+            min-width: 200px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 30px;
+        }
+        
+        .workflow-step .icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+        
+        .workflow-step h4 {
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        
+        .workflow-step p {
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+        }
+        
+        .workflow-arrow {
+            color: #e17055;
+            font-size: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="tools-page">
+        <div class="tools-container">
+            <a href="/" class="back-link">← 返回首页</a>
+            
+            <header class="tools-header">
+                <h1>热点内容<span>自动生成</span></h1>
+                <p>采集热点话题 → AI五维评分 → 生成多平台内容</p>
+            </header>
+            
+            <!-- 信源选择 -->
+            <div class="source-selector">
+                <button class="source-btn active" data-source="weibo">🔥 微博热搜</button>
+                <button class="source-btn" data-source="zhihu">💡 知乎热榜</button>
+                <button class="source-btn" data-source="baidu">📊 百度热榜</button>
+                <button class="source-btn" data-source="douyin">🎵 抖音热点</button>
+            </div>
+            
+            <!-- 热点列表 -->
+            <div class="hotspot-list">
+                <h2>📋 热点列表 <span style="font-size:14px;color:rgba(255,255,255,0.5);">点击生成按钮创作内容</span></h2>
+                
+                <div id="hotspotItems">
+                    <div class="hotspot-item">
+                        <div class="hotspot-rank">1</div>
+                        <div class="hotspot-info">
+                            <div class="hotspot-title">AI大模型最新突破：GPT-5即将发布</div>
+                            <div class="hotspot-meta">
+                                <span>🔥 热度 850万</span>
+                                <span>📈 上升趋势</span>
+                                <span>⏰ 2小时前</span>
+                            </div>
+                        </div>
+                        <div class="hotspot-score">
+                            <div class="score-value">92</div>
+                            <div class="score-label">AI评分</div>
+                        </div>
+                        <div class="hotspot-actions">
+                            <button class="action-btn btn-generate" onclick="generateContent(1)">生成内容</button>
+                        </div>
+                    </div>
+                    
+                    <div class="hotspot-item">
+                        <div class="hotspot-rank">2</div>
+                        <div class="hotspot-info">
+                            <div class="hotspot-title">智能制造转型升级：工业4.0新机遇</div>
+                            <div class="hotspot-meta">
+                                <span>🔥 热度 620万</span>
+                                <span>📈 上升趋势</span>
+                                <span>⏰ 3小时前</span>
+                            </div>
+                        </div>
+                        <div class="hotspot-score">
+                            <div class="score-value">88</div>
+                            <div class="score-label">AI评分</div>
+                        </div>
+                        <div class="hotspot-actions">
+                            <button class="action-btn btn-generate" onclick="generateContent(2)">生成内容</button>
+                        </div>
+                    </div>
+                    
+                    <div class="hotspot-item">
+                        <div class="hotspot-rank">3</div>
+                        <div class="hotspot-info">
+                            <div class="hotspot-title">机器人产业新动态：人形机器人量产在即</div>
+                            <div class="hotspot-meta">
+                                <span>🔥 热度 480万</span>
+                                <span>📊 稳定</span>
+                                <span>⏰ 5小时前</span>
+                            </div>
+                        </div>
+                        <div class="hotspot-score">
+                            <div class="score-value">85</div>
+                            <div class="score-label">AI评分</div>
+                        </div>
+                        <div class="hotspot-actions">
+                            <button class="action-btn btn-generate" onclick="generateContent(3)">生成内容</button>
+                        </div>
+                    </div>
+                    
+                    <div class="hotspot-item">
+                        <div class="hotspot-rank">4</div>
+                        <div class="hotspot-info">
+                            <div class="hotspot-title">数字化转型案例：中小企业如何破局</div>
+                            <div class="hotspot-meta">
+                                <span>🔥 热度 350万</span>
+                                <span>📊 稳定</span>
+                                <span>⏰ 6小时前</span>
+                            </div>
+                        </div>
+                        <div class="hotspot-score">
+                            <div class="score-value">82</div>
+                            <div class="score-label">AI评分</div>
+                        </div>
+                        <div class="hotspot-actions">
+                            <button class="action-btn btn-generate" onclick="generateContent(4)">生成内容</button>
+                        </div>
+                    </div>
+                    
+                    <div class="hotspot-item">
+                        <div class="hotspot-rank">5</div>
+                        <div class="hotspot-info">
+                            <div class="hotspot-title">新能源汽车产业链：电池技术新突破</div>
+                            <div class="hotspot-meta">
+                                <span>🔥 热度 280万</span>
+                                <span>📉 下降趋势</span>
+                                <span>⏰ 8小时前</span>
+                            </div>
+                        </div>
+                        <div class="hotspot-score">
+                            <div class="score-value">78</div>
+                            <div class="score-label">AI评分</div>
+                        </div>
+                        <div class="hotspot-actions">
+                            <button class="action-btn btn-generate" onclick="generateContent(5)">生成内容</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 生成结果 -->
+            <div class="output-section" id="outputSection">
+                <h3>✨ 多平台内容</h3>
+                
+                <div class="platform-tabs">
+                    <button class="platform-tab active" data-platform="wechat">微信公众号</button>
+                    <button class="platform-tab" data-platform="xiaohongshu">小红书</button>
+                    <button class="platform-tab" data-platform="douyin">抖音文案</button>
+                </div>
+                
+                <div class="content-output" id="contentOutput">
+                    <p><strong>标题：</strong>AI大模型再进化！GPT-5即将发布，这些变化将颠覆你的认知</p>
+                    <br>
+                    <p>近日，OpenAI宣布GPT-5即将发布，这一消息迅速引发科技圈热议。</p>
+                    <br>
+                    <p><strong>核心亮点：</strong></p>
+                    <p>• 推理能力大幅提升，复杂问题解决能力更强</p>
+                    <p>• 多模态融合更深入，图文音视频无缝处理</p>
+                    <p>• 上下文窗口扩展到100K，长文档处理无压力</p>
+                    <p>• 响应速度提升3倍，用户体验更流畅</p>
+                    <br>
+                    <p><strong>行业影响：</strong></p>
+                    <p>这次升级将加速AI在各行业的落地应用，特别是在智能制造、自动驾驶、医疗诊断等领域，有望带来质的飞跃。</p>
+                </div>
+                
+                <button class="copy-btn" onclick="copyContent()">📋 复制内容</button>
+            </div>
+            
+            <!-- 工作流程 -->
+            <section class="workflow-section">
+                <h2>🔄 内容生成工作流</h2>
+                <div class="workflow-steps">
+                    <div class="workflow-step">
+                        <div class="icon">📡</div>
+                        <h4>采集热点</h4>
+                        <p>多平台实时采集热搜热榜</p>
+                    </div>
+                    <div class="workflow-arrow">→</div>
+                    <div class="workflow-step">
+                        <div class="icon">🤖</div>
+                        <h4>AI评分</h4>
+                        <p>五维评分筛选优质话题</p>
+                    </div>
+                    <div class="workflow-arrow">→</div>
+                    <div class="workflow-step">
+                        <div class="icon">✍️</div>
+                        <h4>生成内容</h4>
+                        <p>适配各平台风格生成</p>
+                    </div>
+                    <div class="workflow-arrow">→</div>
+                    <div class="workflow-step">
+                        <div class="icon">🚀</div>
+                        <h4>一键发布</h4>
+                        <p>多平台同步发布</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    
+    <script>
+        // 信源选择
+        const sourceBtns = document.querySelectorAll('.source-btn');
+        sourceBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                sourceBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                // 这里可以加载不同信源的热点
+            });
+        });
+        
+        // 平台切换
+        const platformTabs = document.querySelectorAll('.platform-tab');
+        platformTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                platformTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                // 这里可以切换不同平台的内容
+            });
+        });
+        
+        // 生成内容
+        function generateContent(id) {
+            document.getElementById('outputSection').style.display = 'block';
+            document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // 复制内容
+        function copyContent() {
+            const content = document.getElementById('contentOutput').innerText;
+            navigator.clipboard.writeText(content);
+            alert('已复制到剪贴板');
+        }
+    </script>
+</body>
+</html>

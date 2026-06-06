@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>技术文档翻译成人话 - 把参数变成故事 | 超云智能</title>
+    <meta name="description" content="将技术文档、API文档、产品规格翻译成普通人能看懂的语言，告别术语堆砌，让技术内容更易理解。">
+    <meta name="keywords" content="technical document humanizer, tech doc translation, 技术文档翻译, 产品说明书生成">
+    
+    <link href="/Web/Tpl/sciotai/css/style.css" rel="stylesheet" type="text/css">
+    <style>
+        .tools-page {
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f4e 50%, #2d1b69 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        
+        .tools-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .tools-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .tools-header h1 {
+            font-size: 42px;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+        
+        .tools-header h1 span {
+            color: #00b894;
+        }
+        
+        .tools-header p {
+            color: rgba(255,255,255,0.7);
+            font-size: 18px;
+        }
+        
+        .tool-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+        
+        .tool-card h2 {
+            color: #fff;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .tool-card label {
+            display: block;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 10px;
+        }
+        
+        .tool-card textarea {
+            width: 100%;
+            height: 200px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 12px;
+            padding: 20px;
+            color: #fff;
+            font-size: 16px;
+            resize: none;
+            margin-bottom: 20px;
+        }
+        
+        .tool-card textarea:focus {
+            outline: none;
+            border-color: #00b894;
+        }
+        
+        .mode-selector {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .mode-btn {
+            padding: 12px 24px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 30px;
+            background: transparent;
+            color: rgba(255,255,255,0.8);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .mode-btn:hover, .mode-btn.active {
+            background: #00b894;
+            border-color: #00b894;
+            color: #fff;
+        }
+        
+        .action-btn {
+            padding: 16px 40px;
+            background: linear-gradient(135deg, #00b894, #55efc4);
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+        
+        .secondary-btn {
+            padding: 16px 30px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 12px;
+            color: #fff;
+            cursor: pointer;
+        }
+        
+        .output-area {
+            background: rgba(0, 184, 148, 0.1);
+            border: 1px solid rgba(0, 184, 148, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .output-area h3 {
+            color: #00b894;
+            margin-bottom: 15px;
+        }
+        
+        .output-area textarea {
+            background: rgba(0,0,0,0.2);
+            border-color: rgba(0, 184, 148, 0.3);
+        }
+        
+        .examples-section {
+            margin-top: 60px;
+        }
+        
+        .examples-section h2 {
+            color: #fff;
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .example-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .example-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 25px;
+        }
+        
+        .example-card h4 {
+            color: #00b894;
+            margin-bottom: 15px;
+        }
+        
+        .example-card .before {
+            color: rgba(255,255,255,0.5);
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .example-card .after {
+            color: #fff;
+            font-size: 14px;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+        }
+        
+        .back-link:hover {
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="tools-page">
+        <div class="tools-container">
+            <a href="/" class="back-link">← 返回首页</a>
+            
+            <header class="tools-header">
+                <h1>技术文档<span>翻译成人话</span></h1>
+                <p>把参数、API文档、技术规格翻译成普通人能看懂的语言</p>
+            </header>
+            
+            <div class="tool-card">
+                <h2>📝 输入技术文档</h2>
+                <label>粘贴技术参数、API文档、产品规格等</label>
+                <textarea id="inputText" placeholder="例如：
+产品型号：SC-2026A
+处理器：ARM Cortex-A72 四核 1.8GHz
+内存：4GB LPDDR4
+存储：32GB eMMC 5.1
+接口：USB 3.0 × 2, HDMI 2.0, RJ45
+功耗：≤15W
+工作温度：-20°C ~ 60°C"></textarea>
+                
+                <div class="mode-selector">
+                    <button class="mode-btn active" data-mode="plain">🗣️ 通俗语言</button>
+                    <button class="mode-btn" data-mode="marketing">💼 营销话术</button>
+                    <button class="mode-btn" data-mode="user">📖 用户手册</button>
+                </div>
+                
+                <button class="action-btn" id="translateBtn">🚀 开始翻译</button>
+                <button class="secondary-btn" id="copyBtn">📋 复制结果</button>
+                
+                <div class="output-area" id="outputArea">
+                    <h3>✨ 翻译结果</h3>
+                    <textarea id="outputText" readonly></textarea>
+                </div>
+            </div>
+            
+            <section class="examples-section">
+                <h2>💡 翻译示例</h2>
+                <div class="example-grid">
+                    <div class="example-card">
+                        <h4>技术参数 → 产品卖点</h4>
+                        <p class="before">ARM Cortex-A72 四核 1.8GHz</p>
+                        <p class="after">搭载高性能四核处理器，主频高达1.8GHz，运行流畅不卡顿</p>
+                    </div>
+                    <div class="example-card">
+                        <h4>API文档 → 使用说明</h4>
+                        <p class="before">GET /api/v1/users?page=1&limit=10</p>
+                        <p class="after">获取用户列表：支持分页查询，每页最多显示10条记录</p>
+                    </div>
+                    <div class="example-card">
+                        <h4>存储规格 → 容量说明</h4>
+                        <p class="before">4GB LPDDR4 + 32GB eMMC 5.1</p>
+                        <p class="after">4GB运行内存+32GB存储空间，可存约8000张照片或20部高清电影</p>
+                    </div>
+                    <div class="example-card">
+                        <h4>功耗参数 → 使用场景</h4>
+                        <p class="before">功耗≤15W，工作温度-20°C~60°C</p>
+                        <p class="after">超低功耗设计，一天不到0.5度电；适应严苛环境，从冷冻库到高温车间都能用</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    
+    <script>
+        // 模式选择
+        const modeBtns = document.querySelectorAll('.mode-btn');
+        let currentMode = 'plain';
+        
+        modeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                modeBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentMode = btn.dataset.mode;
+            });
+        });
+        
+        // 翻译
+        document.getElementById('translateBtn').addEventListener('click', async () => {
+            const input = document.getElementById('inputText').value.trim();
+            if (!input) {
+                alert('请输入技术文档');
+                return;
+            }
+            
+            const btn = document.getElementById('translateBtn');
+            btn.textContent = '处理中...';
+            
+            try {
+                const response = await fetch('/api/tech-translate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: input, target: currentMode })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('outputText').value = data.result;
+                    document.getElementById('outputArea').style.display = 'block';
+                } else {
+                    throw new Error(data.message);
+                }
+            } catch (e) {
+                // 降级处理
+                const result = simulateTranslate(input, currentMode);
+                document.getElementById('outputText').value = result;
+                document.getElementById('outputArea').style.display = 'block';
+            }
+            
+            btn.textContent = '🚀 开始翻译';
+        });
+        
+        // 模拟翻译
+        function simulateTranslate(text, mode) {
+            const translations = {
+                'ARM Cortex-A72 四核 1.8GHz': '搭载高性能四核处理器，主频高达1.8GHz，运行流畅不卡顿',
+                '4GB LPDDR4': '4GB高速运行内存，多任务处理无压力',
+                '32GB eMMC 5.1': '32GB存储空间，可存约8000张照片',
+                'USB 3.0': '高速USB接口，传输速度可达5Gbps',
+                '功耗：≤15W': '超低功耗设计，一天不到0.5度电',
+                '-20°C ~ 60°C': '适应严苛环境，从冷冻库到高温车间都能用'
+            };
+            
+            let result = text;
+            for (const [tech, plain] of Object.entries(translations)) {
+                result = result.replace(tech, plain);
+            }
+            
+            return result + '\n\n[注：这是演示效果，请配置API启用完整功能]';
+        }
+        
+        // 复制
+        document.getElementById('copyBtn').addEventListener('click', () => {
+            const output = document.getElementById('outputText').value;
+            if (!output) {
+                alert('没有可复制的内容');
+                return;
+            }
+            navigator.clipboard.writeText(output);
+            alert('已复制到剪贴板');
+        });
+    </script>
+</body>
+</html>
