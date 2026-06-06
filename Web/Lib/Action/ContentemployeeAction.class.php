@@ -15,9 +15,10 @@ class ContentemployeeAction extends Action
     // AI配置
     private $aiConfig;
     
-    // DeepSeek API配置
-    private $deepseekApiKey = ''; // 请配置你的API密钥
-    private $deepseekApiUrl = 'https://api.deepseek.com/v1/chat/completions';
+    // Agnes AI API配置（兼容OpenAI格式）
+    private $apiKey = 'sk-eSAkMaKq5DpXACQqiba9zuxVif3rHNqQpQmKA9fP6XTf5zFX';
+    private $apiUrl = 'https://apihub.agnes-ai.com/v1/chat/completions';
+    private $model = 'gpt-4o-mini'; // 可选模型：gpt-4o-mini, gpt-4o, claude-3-5-sonnet-latest 等
     
     // CMS保存配置
     private $cmsApiKey = 'sciot_content_2026'; // CMS API密钥
@@ -332,15 +333,14 @@ class ContentemployeeAction extends Action
      */
     private function callAI($prompt, $maxTokens = 2000)
     {
-        // 优先使用DeepSeek
-        $apiKey = getenv('DEEPSEEK_API_KEY');
-        if (!$apiKey && $this->aiConfig) {
-            foreach ($this->aiConfig['providers'] as $provider) {
-                if ($provider['name'] === 'deepseek' && $provider['enabled']) {
-                    $apiKey = $provider['apiKey'];
-                    break;
-                }
-            }
+        // 使用Agnes AI（兼容OpenAI格式）
+        $apiKey = $this->apiKey;
+        $apiUrl = $this->apiUrl;
+        $model = $this->model;
+        
+        // 也可以从环境变量覆盖
+        if (getenv('AGNES_API_KEY')) {
+            $apiKey = getenv('AGNES_API_KEY');
         }
         
         if (!$apiKey) {
@@ -348,10 +348,8 @@ class ContentemployeeAction extends Action
             return $this->simulateAIResponse($prompt);
         }
         
-        $url = 'https://api.deepseek.com/v1/chat/completions';
-        
         $data = [
-            'model' => 'deepseek-chat',
+            'model' => $model,
             'messages' => [
                 ['role' => 'user', 'content' => $prompt]
             ],
@@ -361,7 +359,7 @@ class ContentemployeeAction extends Action
         
         $ch = curl_init();
         curl_setopt_array($ch, [
-            CURLOPT_URL => $url,
+            CURLOPT_URL => $apiUrl,
             CURLOPT_POST => true,
             CURLOPT_POSTFIELDS => json_encode($data),
             CURLOPT_HTTPHEADER => [
@@ -369,15 +367,20 @@ class ContentemployeeAction extends Action
                 'Authorization: Bearer ' . $apiKey
             ],
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_TIMEOUT => 60
+            CURLOPT_TIMEOUT => 60,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false
         ]);
         
         $response = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $error = curl_error($ch);
         curl_close($ch);
         
         if ($httpCode !== 200) {
-            throw new Exception('AI调用失败：HTTP ' . $httpCode);
+            // 记录错误日志
+            error_log("AI API Error: HTTP {$httpCode}, Response: {$response}, Error: {$error}");
+            throw new Exception('AI调用失败：HTTP ' . $httpCode . ' - ' . $error);
         }
         
         $result = json_decode($response, true);
@@ -386,7 +389,7 @@ class ContentemployeeAction extends Action
             return $result['choices'][0]['message']['content'];
         }
         
-        throw new Exception('AI返回格式错误');
+        throw new Exception('AI返回格式错误：' . $response);
     }
     
     /**
