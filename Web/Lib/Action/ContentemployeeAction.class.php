@@ -15,6 +15,13 @@ class ContentemployeeAction extends Action
     // AI配置
     private $aiConfig;
     
+    // DeepSeek API配置
+    private $deepseekApiKey = ''; // 请配置你的API密钥
+    private $deepseekApiUrl = 'https://api.deepseek.com/v1/chat/completions';
+    
+    // CMS保存配置
+    private $cmsApiKey = 'sciot_content_2026'; // CMS API密钥
+    
     public function __construct()
     {
         parent::__construct();
@@ -23,6 +30,94 @@ class ContentemployeeAction extends Action
         if (file_exists($configPath)) {
             $this->aiConfig = json_decode(file_get_contents($configPath), true);
         }
+    }
+    
+    /**
+     * 保存文章到CMS
+     * POST /api/save-article
+     */
+    public function saveArticle()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        header('Access-Control-Allow-Origin: *');
+        
+        // 获取参数
+        $title = I('post.title', '', '');
+        $content = I('post.content', '', '');
+        $typeid = I('post.typeid', 21215, 'intval'); // 默认：技术观察
+        $keywords = I('post.keywords', '', '');
+        $description = I('post.description', '', '');
+        $source = I('post.source', 'AI数字员工', '');
+        
+        if (empty($title) || empty($content)) {
+            $this->ajaxReturn(['success' => false, 'message' => '标题和内容不能为空'], 'JSON');
+            return;
+        }
+        
+        // 保存到数据库
+        $article = M('article', 'lvbo_');
+        
+        // 检查是否已存在
+        $exists = $article->where(['title' => $title])->find();
+        if ($exists) {
+            $this->ajaxReturn([
+                'success' => true, 
+                'message' => '文章已存在',
+                'aid' => $exists['aid'],
+                'url' => '/index.php?s=Article/index/aid/' . $exists['aid'] . '.html'
+            ], 'JSON');
+            return;
+        }
+        
+        // 构建数据
+        $data = [
+            'title' => mb_substr($title, 0, 80, 'utf-8'),
+            'keywords' => mb_substr($keywords, 0, 40, 'utf-8'),
+            'description' => $description ?: mb_substr(strip_tags($content), 0, 200, 'utf-8'),
+            'note' => mb_substr(strip_tags($content), 0, 200, 'utf-8'),
+            'content' => $content,
+            'typeid' => $typeid,
+            'status' => 1,
+            'addtime' => date('Y-m-d H:i:s'),
+            'author' => $source,
+            'copyfrom' => $source,
+            'hits' => 1,
+            'is_ai_generated' => 1,
+        ];
+        
+        $aid = $article->add($data);
+        
+        if ($aid) {
+            $this->ajaxReturn([
+                'success' => true,
+                'message' => '保存成功',
+                'aid' => $aid,
+                'url' => '/index.php?s=Article/index/aid/' . $aid . '.html'
+            ], 'JSON');
+        } else {
+            $this->ajaxReturn([
+                'success' => false,
+                'message' => '保存失败：' . $article->getDbError()
+            ], 'JSON');
+        }
+    }
+    
+    /**
+     * 获取栏目列表
+     * GET /api/categories
+     */
+    public function categories()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        header('Access-Control-Allow-Origin: *');
+        
+        $type = M('type', 'lvbo_');
+        $list = $type->field('typeid, typename, fid')
+                     ->where('ismenu = 1')
+                     ->order('drank asc')
+                     ->select();
+        
+        $this->ajaxReturn(['success' => true, 'data' => $list], 'JSON');
     }
     
     /**

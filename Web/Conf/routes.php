@@ -7,6 +7,8 @@
 	'api/product-doc' => 'Contentemployee/product_doc',
 	'api/hotspot' => 'Contentemployee/hotspot',
 	'api/publish' => 'Contentemployee/publish',
+	'api/save-article' => 'Contentemployee/saveArticle',
+	'api/categories' => 'Contentemployee/categories',
 	
 	// 工具页面路由
 	'tools' => 'Contentemployee/index',

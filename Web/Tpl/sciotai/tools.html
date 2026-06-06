@@ -471,11 +471,35 @@
                         <button class="primary-btn" id="humanizeBtn">🚀 一键改写</button>
                         <button class="secondary-btn" id="detectBtn">🔍 检测AI</button>
                         <button class="secondary-btn" id="copyBtn">📋 复制结果</button>
+                        <button class="secondary-btn" id="saveBtn" style="display:none;">💾 保存到CMS</button>
                     </div>
                     
                     <div class="output-section" style="display: none;" id="outputSection">
                         <label>✨ 改写结果</label>
                         <textarea id="outputText" readonly></textarea>
+                        
+                        <!-- 保存选项 -->
+                        <div id="saveOptions" style="display:none; margin-top:15px; padding:15px; background:rgba(0,0,0,0.2); border-radius:10px;">
+                            <div style="display:flex; gap:15px; align-items:center; flex-wrap:wrap;">
+                                <div>
+                                    <label style="font-size:14px; color:rgba(255,255,255,0.7);">文章标题：</label>
+                                    <input type="text" id="saveTitle" style="width:300px; padding:8px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.3); background:rgba(0,0,0,0.3); color:#fff;">
+                                </div>
+                                <div>
+                                    <label style="font-size:14px; color:rgba(255,255,255,0.7);">栏目：</label>
+                                    <select id="saveTypeid" style="padding:8px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.3); background:rgba(0,0,0,0.3); color:#fff;">
+                                        <option value="21215">技术观察</option>
+                                        <option value="12">人工智能</option>
+                                        <option value="13">智能制造</option>
+                                        <option value="14">机器人</option>
+                                        <option value="11">数字员工</option>
+                                    </select>
+                                </div>
+                                <button class="primary-btn" id="confirmSaveBtn" style="padding:10px 20px; font-size:14px;">✅ 确认保存</button>
+                            </div>
+                            <div id="saveResult" style="margin-top:10px; display:none;"></div>
+                        </div>
+                        
                         <div class="detection-result">
                             <span class="detection-score" id="aiScore">--</span>
                             <span class="detection-label">AI检测概率</span>
@@ -625,6 +649,7 @@
                     document.getElementById('outputText').value = data.result;
                     document.getElementById('outputSection').style.display = 'block';
                     document.getElementById('aiScore').textContent = data.aiScore + '%';
+                    document.getElementById('saveBtn').style.display = 'inline-block'; // 显示保存按钮
                     
                     // 滚动到结果
                     document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
@@ -637,6 +662,7 @@
                 document.getElementById('outputText').value = mockResult;
                 document.getElementById('outputSection').style.display = 'block';
                 document.getElementById('aiScore').textContent = '15%';
+                document.getElementById('saveBtn').style.display = 'inline-block'; // 显示保存按钮
             }
             
             btn.classList.remove('loading');
@@ -708,6 +734,67 @@
                 btn.textContent = '✅ 已复制';
                 setTimeout(() => btn.textContent = originalText, 2000);
             });
+        });
+        
+        // 保存到CMS
+        document.getElementById('saveBtn').addEventListener('click', () => {
+            const outputText = document.getElementById('outputText').value;
+            if (!outputText) {
+                alert('没有可保存的内容');
+                return;
+            }
+            
+            // 显示保存选项
+            document.getElementById('saveOptions').style.display = 'block';
+            document.getElementById('saveTitle').value = ''; // 清空标题
+            document.getElementById('saveResult').style.display = 'none';
+        });
+        
+        // 确认保存
+        document.getElementById('confirmSaveBtn').addEventListener('click', async () => {
+            const title = document.getElementById('saveTitle').value.trim();
+            const content = document.getElementById('outputText').value;
+            const typeid = document.getElementById('saveTypeid').value;
+            
+            if (!title) {
+                alert('请输入文章标题');
+                return;
+            }
+            
+            const btn = document.getElementById('confirmSaveBtn');
+            btn.textContent = '保存中...';
+            btn.disabled = true;
+            
+            try {
+                const response = await fetch('/api/save-article', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        title: title,
+                        content: content,
+                        typeid: typeid,
+                        source: 'AI人性化改写工具'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                const resultDiv = document.getElementById('saveResult');
+                resultDiv.style.display = 'block';
+                
+                if (data.success) {
+                    resultDiv.innerHTML = `<span style="color:#00b894;">✅ ${data.message}</span> 
+                        <a href="${data.url}" target="_blank" style="color:#6c5ce7; margin-left:10px;">查看文章 →</a>`;
+                } else {
+                    resultDiv.innerHTML = `<span style="color:#e74c3c;">❌ ${data.message}</span>`;
+                }
+            } catch (e) {
+                document.getElementById('saveResult').style.display = 'block';
+                document.getElementById('saveResult').innerHTML = `<span style="color:#e74c3c;">❌ 保存失败：${e.message}</span>`;
+            }
+            
+            btn.textContent = '✅ 确认保存';
+            btn.disabled = false;
         });
         
         // 字数统计
