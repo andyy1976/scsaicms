@@ -35,6 +35,57 @@
     <style>
         * { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
         
+        /* Toast通知样式 */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .toast {
+            padding: 16px 24px;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 14px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            animation: slideIn 0.3s ease;
+            max-width: 400px;
+        }
+        
+        .toast.success { background: linear-gradient(135deg, #00b894, #55efc4); }
+        .toast.error { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+        .toast.warning { background: linear-gradient(135deg, #fdcb6e, #e17055); }
+        .toast.info { background: linear-gradient(135deg, #6c5ce7, #a29bfe); }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        /* 语言切换按钮 */
+        .lang-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 20px;
+            padding: 8px 16px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .lang-switch:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
         /* 工具页面专用样式 */
         .tools-hero {
             background: linear-gradient(135deg, #0a0e27 0%, #1a1f4e 50%, #2d1b69 100%);
@@ -435,6 +486,12 @@
     </style>
 </head>
 <body>
+    <!-- Toast通知容器 -->
+    <div class="toast-container" id="toastContainer"></div>
+    
+    <!-- 语言切换按钮 -->
+    <button class="lang-switch" id="langSwitch" onclick="toggleLanguage()">🌐 EN</button>
+    
     <div class="tools-hero">
         <div class="tools-container">
             <!-- 头部导航 -->
@@ -575,6 +632,118 @@
                 </div>
             </section>
             
+            <!-- 四大产品线（来自原首页） -->
+            <section style="padding: 80px 0; background: #f8f9ff; margin-top: 60px; border-radius: 20px;">
+                <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+                    <div style="text-align: center; margin-bottom: 60px;">
+                        <h3 style="font-size: 36px; color: #1a1f4e;">四大产品线，驱动企业智能化转型</h3>
+                        <p style="font-size: 16px; color: #666; margin-top: 15px;">从内容创作到智能制造，全栈AI赋能</p>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px;">
+                        <!-- 数字员工 -->
+                        <div style="background: #fff; border-radius: 16px; padding: 40px 30px; text-align: center; transition: all 0.3s; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                            <div style="width: 80px; height: 80px; border-radius: 20px; background: linear-gradient(135deg, #6c5ce7, #a29bfe); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 36px;">🤖</div>
+                            <h4 style="font-size: 22px; color: #1a1f4e; margin-bottom: 12px;">数字员工</h4>
+                            <p style="font-size: 14px; color: #666; line-height: 1.8;">AI内容数字员工、营销数字员工、客服数字员工，7x24自动运行</p>
+                            <a href="/index.php?s=/lists/4.html" style="display: inline-block; margin-top: 20px; color: #6c5ce7; font-size: 14px; text-decoration: none;">了解更多 →</a>
+                        </div>
+                        <!-- 人工智能 -->
+                        <div style="background: #fff; border-radius: 16px; padding: 40px 30px; text-align: center; transition: all 0.3s; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                            <div style="width: 80px; height: 80px; border-radius: 20px; background: linear-gradient(135deg, #00b894, #55efc4); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 36px;">🧠</div>
+                            <h4 style="font-size: 22px; color: #1a1f4e; margin-bottom: 12px;">人工智能</h4>
+                            <p style="font-size: 14px; color: #666; line-height: 1.8;">大模型、AI智能体、多模态应用，拥抱AGI时代</p>
+                            <a href="/index.php?s=/lists/12.html" style="display: inline-block; margin-top: 20px; color: #00b894; font-size: 14px; text-decoration: none;">了解更多 →</a>
+                        </div>
+                        <!-- 智能制造 -->
+                        <div style="background: #fff; border-radius: 16px; padding: 40px 30px; text-align: center; transition: all 0.3s; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                            <div style="width: 80px; height: 80px; border-radius: 20px; background: linear-gradient(135deg, #fdcb6e, #ffeaa7); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 36px;">🏭</div>
+                            <h4 style="font-size: 22px; color: #1a1f4e; margin-bottom: 12px;">智能制造</h4>
+                            <p style="font-size: 14px; color: #666; line-height: 1.8;">PLM/MES/QMS/ERP全链路工业软件，赋能制造企业数字化转型</p>
+                            <a href="/index.php?s=/lists/2.html" style="display: inline-block; margin-top: 20px; color: #e17055; font-size: 14px; text-decoration: none;">了解更多 →</a>
+                        </div>
+                        <!-- 机器人 -->
+                        <div style="background: #fff; border-radius: 16px; padding: 40px 30px; text-align: center; transition: all 0.3s; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                            <div style="width: 80px; height: 80px; border-radius: 20px; background: linear-gradient(135deg, #e17055, #fab1a0); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 36px;">🦾</div>
+                            <h4 style="font-size: 22px; color: #1a1f4e; margin-bottom: 12px;">机器人</h4>
+                            <p style="font-size: 14px; color: #666; line-height: 1.8;">具身智能、人形机器人、工业机器人，人机协同新未来</p>
+                            <a href="/index.php?s=/lists/4.html" style="display: inline-block; margin-top: 20px; color: #fd79a8; font-size: 14px; text-decoration: none;">了解更多 →</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- AI内容引擎工作流（来自原首页） -->
+            <section style="padding: 80px 0; background: #fff; margin-top: 60px; border-radius: 20px;">
+                <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+                    <div style="text-align: center; margin-bottom: 60px;">
+                        <h3 style="font-size: 36px; color: #1a1f4e;">AI内容数字员工工作流</h3>
+                        <p style="font-size: 16px; color: #666; margin-top: 15px;">5步自动完成，从热点到获客全链路</p>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 15px; flex-wrap: wrap;">
+                        <div style="background: #f0f0ff; border-radius: 12px; padding: 25px; text-align: center; width: 180px;">
+                            <div style="font-size: 30px; margin-bottom: 8px;">📡</div>
+                            <div style="font-weight: 600; color: #6c5ce7;">自动采集</div>
+                            <div style="font-size: 12px; color: #999; margin-top: 4px;">5+信源平台</div>
+                        </div>
+                        <div style="font-size: 24px; color: #6c5ce7;">→</div>
+                        <div style="background: #f0fff4; border-radius: 12px; padding: 25px; text-align: center; width: 180px;">
+                            <div style="font-size: 30px; margin-bottom: 8px;">🎯</div>
+                            <div style="font-weight: 600; color: #00b894;">AI评分</div>
+                            <div style="font-size: 12px; color: #999; margin-top: 4px;">五维评分筛选</div>
+                        </div>
+                        <div style="font-size: 24px; color: #00b894;">→</div>
+                        <div style="background: #fff8f0; border-radius: 12px; padding: 25px; text-align: center; width: 180px;">
+                            <div style="font-size: 30px; margin-bottom: 8px;">✍️</div>
+                            <div style="font-weight: 600; color: #e17055;">智能生成</div>
+                            <div style="font-size: 12px; color: #999; margin-top: 4px;">AI改写创作</div>
+                        </div>
+                        <div style="font-size: 24px; color: #e17055;">→</div>
+                        <div style="background: #fff0f6; border-radius: 12px; padding: 25px; text-align: center; width: 180px;">
+                            <div style="font-size: 30px; margin-bottom: 8px;">🚀</div>
+                            <div style="font-weight: 600; color: #fd79a8;">多平台发布</div>
+                            <div style="font-size: 12px; color: #999; margin-top: 4px;">公众号/小红书/抖音</div>
+                        </div>
+                        <div style="font-size: 24px; color: #fd79a8;">→</div>
+                        <div style="background: #f0f7ff; border-radius: 12px; padding: 25px; text-align: center; width: 180px;">
+                            <div style="font-size: 30px; margin-bottom: 8px;">💰</div>
+                            <div style="font-weight: 600; color: #0984e3;">精准获客</div>
+                            <div style="font-size: 12px; color: #999; margin-top: 4px;">私域+线索转化</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 订阅/体验入口（来自原首页） -->
+            <section style="padding: 80px 0; background: linear-gradient(135deg, #1a1f4e, #2d1b69); margin-top: 60px; border-radius: 20px;">
+                <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px; text-align: center;">
+                    <h3 style="font-size: 36px; color: #fff;">开始使用AI数字内容员工</h3>
+                    <p style="font-size: 16px; color: rgba(255,255,255,0.7); margin-top: 15px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                        免费体验，感受AI自动化内容营销的力量
+                    </p>
+                    <div style="display: flex; gap: 30px; justify-content: center; margin-top: 40px; flex-wrap: wrap;">
+                        <div style="background: rgba(255,255,255,0.1); border-radius: 16px; padding: 35px; width: 250px; border: 1px solid rgba(255,255,255,0.2);">
+                            <h4 style="color: #fff; font-size: 20px; margin-bottom: 10px;">免费版</h4>
+                            <div style="font-size: 36px; color: #6c5ce7; font-weight: 700;">¥0</div>
+                            <div style="color: rgba(255,255,255,0.5); font-size: 13px; margin: 10px 0 20px;">每月50条内容</div>
+                            <a href="/index.php?s=/Guestbook/index" style="background: rgba(255,255,255,0.2); color: #fff; padding: 10px 25px; border-radius: 6px; text-decoration: none; display: inline-block;">开始体验</a>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.1); border-radius: 16px; padding: 35px; width: 250px; border: 2px solid #6c5ce7; position: relative;">
+                            <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #6c5ce7; color: #fff; padding: 2px 15px; border-radius: 10px; font-size: 12px;">推荐</div>
+                            <h4 style="color: #fff; font-size: 20px; margin-bottom: 10px;">专业版</h4>
+                            <div style="font-size: 36px; color: #6c5ce7; font-weight: 700;">¥99<span style="font-size: 14px; color: rgba(255,255,255,0.5);">/月</span></div>
+                            <div style="color: rgba(255,255,255,0.5); font-size: 13px; margin: 10px 0 20px;">每月500条 + AI评分</div>
+                            <a href="/index.php?s=/Guestbook/index" style="background: #6c5ce7; color: #fff; padding: 10px 25px; border-radius: 6px; text-decoration: none; display: inline-block;">立即订阅</a>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.1); border-radius: 16px; padding: 35px; width: 250px; border: 1px solid rgba(255,255,255,0.2);">
+                            <h4 style="color: #fff; font-size: 20px; margin-bottom: 10px;">企业版</h4>
+                            <div style="font-size: 36px; color: #fdcb6e; font-weight: 700;">定制</div>
+                            <div style="color: rgba(255,255,255,0.5); font-size: 13px; margin: 10px 0 20px;">不限量 + PLM集成</div>
+                            <a href="/index.php?s=/Guestbook/index" style="background: rgba(255,255,255,0.2); color: #fff; padding: 10px 25px; border-radius: 6px; text-decoration: none; display: inline-block;">咨询方案</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
             <!-- 企业版导流 -->
             <section class="enterprise-cta">
                 <h3>💡 需要更强大的企业级能力？</h3>
@@ -594,7 +763,116 @@
     </div>
     
     <script>
-        // 风格选择
+        // ========== 多语言支持 ==========
+        let currentLang = 'zh'; // 默认中文
+        
+        const i18n = {
+            zh: {
+                title: 'AI文字人性化改写',
+                subtitle: '粘贴ChatGPT、Claude等AI生成的文字，一键去除机器感，让文字像真人写的',
+                inputLabel: '📝 粘贴AI生成的文字（最多3000字）',
+                inputPlaceholder: '例如：人工智能技术的快速发展正在深刻改变着各个行业的运作模式...',
+                styleGeneral: '🌟 通用流畅',
+                styleAcademic: '📚 学术严谨',
+                styleMarketing: '💼 营销口语',
+                styleTech: '🔧 技术翻译',
+                btnHumanize: '🚀 一键改写',
+                btnDetect: '🔍 检测AI',
+                btnCopy: '📋 复制结果',
+                btnSave: '💾 保存到CMS',
+                outputLabel: '✨ 改写结果',
+                aiScore: 'AI检测概率',
+                errorNoInput: '请先输入需要改写的文字',
+                errorTooLong: '文字长度超过3000字，请分段处理',
+                processing: '处理中...',
+                success: '操作成功',
+                copied: '已复制',
+                noContent: '没有可复制的内容',
+                moreTools: '更多内容数字员工工具',
+                products: '四大产品线，驱动企业智能化转型',
+                workflow: 'AI内容数字员工工作流',
+                pricing: '开始使用AI数字内容员工'
+            },
+            en: {
+                title: 'AI Text Humanizer',
+                subtitle: 'Paste AI-generated text from ChatGPT, Claude, etc. Remove machine-like tone instantly',
+                inputLabel: '📝 Paste AI-generated text (max 3000 chars)',
+                inputPlaceholder: 'e.g., The rapid development of AI technology is profoundly changing...',
+                styleGeneral: '🌟 General',
+                styleAcademic: '📚 Academic',
+                styleMarketing: '💼 Marketing',
+                styleTech: '🔧 Technical',
+                btnHumanize: '🚀 Humanize',
+                btnDetect: '🔍 Detect AI',
+                btnCopy: '📋 Copy',
+                btnSave: '💾 Save to CMS',
+                outputLabel: '✨ Result',
+                aiScore: 'AI Detection Score',
+                errorNoInput: 'Please enter text to humanize',
+                errorTooLong: 'Text exceeds 3000 characters, please split',
+                processing: 'Processing...',
+                success: 'Success',
+                copied: 'Copied',
+                noContent: 'No content to copy',
+                moreTools: 'More AI Content Tools',
+                products: 'Four Product Lines',
+                workflow: 'AI Content Workflow',
+                pricing: 'Start Using AI Content Employee'
+            }
+        };
+        
+        // Toast通知函数
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideIn 0.3s ease reverse';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+        
+        // 语言切换函数
+        function toggleLanguage() {
+            currentLang = currentLang === 'zh' ? 'en' : 'zh';
+            const btn = document.getElementById('langSwitch');
+            btn.textContent = currentLang === 'zh' ? '🌐 EN' : '🌐 中文';
+            updateLanguage();
+            showToast(currentLang === 'zh' ? '已切换为中文' : 'Switched to English', 'info');
+        }
+        
+        // 更新页面语言
+        function updateLanguage() {
+            const t = i18n[currentLang];
+            // 更新标题和文本
+            document.querySelector('.main-tool-section h1').innerHTML = currentLang === 'zh' 
+                ? 'AI文字<span>人性化改写</span>' 
+                : 'AI Text <span>Humanizer</span>';
+            document.querySelector('.main-tool-section .subtitle').textContent = t.subtitle;
+            document.querySelector('.input-section label').textContent = t.inputLabel;
+            document.getElementById('inputText').placeholder = t.inputPlaceholder;
+            
+            // 更新按钮
+            const styleBtns = document.querySelectorAll('.style-btn');
+            const styleTexts = [t.styleGeneral, t.styleAcademic, t.styleMarketing, t.styleTech];
+            styleBtns.forEach((btn, i) => btn.textContent = styleTexts[i]);
+            
+            document.getElementById('humanizeBtn').textContent = t.btnHumanize;
+            document.getElementById('detectBtn').textContent = t.btnDetect;
+            document.getElementById('copyBtn').textContent = t.btnCopy;
+            
+            // 更新输出标签
+            const outputLabel = document.querySelector('.output-section label');
+            if (outputLabel) outputLabel.textContent = t.outputLabel;
+            
+            const scoreLabel = document.querySelector('.detection-label');
+            if (scoreLabel) scoreLabel.textContent = t.aiScore;
+        }
+        
+        // ========== 风格选择 ==========
         const styleBtns = document.querySelectorAll('.style-btn');
         let currentStyle = 'general';
         
@@ -617,19 +895,21 @@
         // 一键改写
         document.getElementById('humanizeBtn').addEventListener('click', async () => {
             const inputText = document.getElementById('inputText').value.trim();
+            const t = i18n[currentLang];
+            
             if (!inputText) {
-                alert('请先输入需要改写的文字');
+                showToast(t.errorNoInput, 'warning');
                 return;
             }
             
             if (inputText.length > 3000) {
-                alert('文字长度超过3000字，请分段处理');
+                showToast(t.errorTooLong, 'warning');
                 return;
             }
             
             const btn = document.getElementById('humanizeBtn');
             btn.classList.add('loading');
-            btn.textContent = '处理中...';
+            btn.textContent = t.processing;
             
             try {
                 // 调用后端API
@@ -649,7 +929,9 @@
                     document.getElementById('outputText').value = data.result;
                     document.getElementById('outputSection').style.display = 'block';
                     document.getElementById('aiScore').textContent = data.aiScore + '%';
-                    document.getElementById('saveBtn').style.display = 'inline-block'; // 显示保存按钮
+                    document.getElementById('saveBtn').style.display = 'inline-block';
+                    
+                    showToast(t.success, 'success');
                     
                     // 滚动到结果
                     document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
@@ -657,16 +939,25 @@
                     throw new Error(data.message || '处理失败');
                 }
             } catch (e) {
-                // 降级处理：模拟改写
-                const mockResult = simulateHumanize(inputText, currentStyle);
-                document.getElementById('outputText').value = mockResult;
-                document.getElementById('outputSection').style.display = 'block';
-                document.getElementById('aiScore').textContent = '15%';
-                document.getElementById('saveBtn').style.display = 'inline-block'; // 显示保存按钮
+                // 显示错误信息
+                console.error('API调用失败:', e);
+                showToast('API调用失败：' + e.message, 'error');
+                
+                // 降级处理：模拟改写（仅作为备用）
+                const useFallback = confirm(currentLang === 'zh' 
+                    ? 'API调用失败，是否使用本地模拟改写？' 
+                    : 'API failed. Use local simulation?');
+                if (useFallback) {
+                    const mockResult = simulateHumanize(inputText, currentStyle);
+                    document.getElementById('outputText').value = mockResult;
+                    document.getElementById('outputSection').style.display = 'block';
+                    document.getElementById('aiScore').textContent = '15%';
+                    document.getElementById('saveBtn').style.display = 'inline-block';
+                }
             }
             
             btn.classList.remove('loading');
-            btn.textContent = '🚀 一键改写';
+            btn.textContent = t.btnHumanize;
         });
         
         // 模拟改写（降级方案）
@@ -723,30 +1014,31 @@
         // 复制结果
         document.getElementById('copyBtn').addEventListener('click', () => {
             const outputText = document.getElementById('outputText').value;
+            const t = i18n[currentLang];
+            
             if (!outputText) {
-                alert('没有可复制的内容');
+                showToast(t.noContent, 'warning');
                 return;
             }
             
             navigator.clipboard.writeText(outputText).then(() => {
-                const btn = document.getElementById('copyBtn');
-                const originalText = btn.textContent;
-                btn.textContent = '✅ 已复制';
-                setTimeout(() => btn.textContent = originalText, 2000);
+                showToast(t.copied + '!', 'success');
             });
         });
         
         // 保存到CMS
         document.getElementById('saveBtn').addEventListener('click', () => {
             const outputText = document.getElementById('outputText').value;
+            const t = i18n[currentLang];
+            
             if (!outputText) {
-                alert('没有可保存的内容');
+                showToast(t.noContent, 'warning');
                 return;
             }
             
             // 显示保存选项
             document.getElementById('saveOptions').style.display = 'block';
-            document.getElementById('saveTitle').value = ''; // 清空标题
+            document.getElementById('saveTitle').value = '';
             document.getElementById('saveResult').style.display = 'none';
         });
         
@@ -755,14 +1047,15 @@
             const title = document.getElementById('saveTitle').value.trim();
             const content = document.getElementById('outputText').value;
             const typeid = document.getElementById('saveTypeid').value;
+            const t = i18n[currentLang];
             
             if (!title) {
-                alert('请输入文章标题');
+                showToast(currentLang === 'zh' ? '请输入文章标题' : 'Please enter title', 'warning');
                 return;
             }
             
             const btn = document.getElementById('confirmSaveBtn');
-            btn.textContent = '保存中...';
+            btn.textContent = currentLang === 'zh' ? '保存中...' : 'Saving...';
             btn.disabled = true;
             
             try {
@@ -783,17 +1076,20 @@
                 resultDiv.style.display = 'block';
                 
                 if (data.success) {
+                    showToast(data.message, 'success');
                     resultDiv.innerHTML = `<span style="color:#00b894;">✅ ${data.message}</span> 
-                        <a href="${data.url}" target="_blank" style="color:#6c5ce7; margin-left:10px;">查看文章 →</a>`;
+                        <a href="${data.url}" target="_blank" style="color:#6c5ce7; margin-left:10px;">${currentLang === 'zh' ? '查看文章' : 'View Article'} →</a>`;
                 } else {
+                    showToast(data.message, 'error');
                     resultDiv.innerHTML = `<span style="color:#e74c3c;">❌ ${data.message}</span>`;
                 }
             } catch (e) {
+                showToast(currentLang === 'zh' ? '保存失败' : 'Save failed', 'error');
                 document.getElementById('saveResult').style.display = 'block';
-                document.getElementById('saveResult').innerHTML = `<span style="color:#e74c3c;">❌ 保存失败：${e.message}</span>`;
+                document.getElementById('saveResult').innerHTML = `<span style="color:#e74c3c;">❌ ${e.message}</span>`;
             }
             
-            btn.textContent = '✅ 确认保存';
+            btn.textContent = '✅ ' + (currentLang === 'zh' ? '确认保存' : 'Confirm Save');
             btn.disabled = false;
         });
         

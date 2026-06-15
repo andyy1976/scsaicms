@@ -39,6 +39,11 @@ Thumbs.db
 *.exe
 *.msi
 
+# 运行时缓存
+Admin/Runtime/
+Web/Runtime/
+Runtime/
+
 # 其他
 workbuddy-repo/
 workbuddy-claw-wechat-publisher/node_modules/

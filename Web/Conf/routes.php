@@ -9,6 +9,7 @@
 	'api/publish' => 'Contentemployee/publish',
 	'api/save-article' => 'Contentemployee/saveArticle',
 	'api/categories' => 'Contentemployee/categories',
+	'api/test-ai' => 'Contentemployee/test_ai',
 	
 	// 工具页面路由
 	'tools' => 'Contentemployee/index',

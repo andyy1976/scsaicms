@@ -15,10 +15,17 @@ class ContentemployeeAction extends Action
     // AI配置
     private $aiConfig;
     
-    // Agnes AI API配置（兼容OpenAI格式）
-    private $apiKey = 'sk-eSAkMaKq5DpXACQqiba9zuxVif3rHNqQpQmKA9fP6XTf5zFX';
-    private $apiUrl = 'https://apihub.agnes-ai.com/v1/chat/completions';
-    private $model = 'gpt-4o-mini'; // 可选模型：gpt-4o-mini, gpt-4o, claude-3-5-sonnet-latest 等
+    // DeepSeek API配置
+    private $apiKey = 'sk-037a111a60be4b28b812fa3407399c07';
+    private $apiUrl = 'https://api.deepseek.com/v1/chat/completions';
+    private $model = 'deepseek-v4-flash';
+    // 备选模型列表
+    private $fallbackModels = [
+        'deepseek-v4-flash',
+        'deepseek-chat',
+        'deepseek-coder',
+        'deepseek-reasoner'
+    ];
     
     // CMS保存配置
     private $cmsApiKey = 'sciot_content_2026'; // CMS API密钥
@@ -41,14 +48,27 @@ class ContentemployeeAction extends Action
     {
         header('Content-Type: application/json; charset=utf-8');
         header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: POST, OPTIONS');
+        header('Access-Control-Allow-Headers: Content-Type');
+        
+        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+            exit(0);
+        }
+        
+        // 获取JSON请求体
+        $input = file_get_contents('php://input');
+        $postData = json_decode($input, true);
+        if (!$postData) {
+            $postData = $_POST;
+        }
         
         // 获取参数
-        $title = I('post.title', '', '');
-        $content = I('post.content', '', '');
-        $typeid = I('post.typeid', 21215, 'intval'); // 默认：技术观察
-        $keywords = I('post.keywords', '', '');
-        $description = I('post.description', '', '');
-        $source = I('post.source', 'AI数字员工', '');
+        $title = isset($postData['title']) ? $postData['title'] : '';
+        $content = isset($postData['content']) ? $postData['content'] : '';
+        $typeid = isset($postData['typeid']) ? intval($postData['typeid']) : 21215; // 默认：技术观察
+        $keywords = isset($postData['keywords']) ? $postData['keywords'] : '';
+        $description = isset($postData['description']) ? $postData['description'] : '';
+        $source = isset($postData['source']) ? $postData['source'] : 'AI数字员工';
         
         if (empty($title) || empty($content)) {
             $this->ajaxReturn(['success' => false, 'message' => '标题和内容不能为空'], 'JSON');
@@ -128,11 +148,27 @@ class ContentemployeeAction extends Action
     public function humanize()
     {
         header('Content-Type: application/json; charset=utf-8');
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: POST, OPTIONS');
+        header('Access-Control-Allow-Headers: Content-Type');
         
-        // 获取请求参数
-        $text = I('post.text', '', '');
-        $style = I('post.style', 'general', '');
-        $prompt = I('post.prompt', '', '');
+        // 处理OPTIONS预检请求
+        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+            exit(0);
+        }
+        
+        // 获取JSON请求体
+        $input = file_get_contents('php://input');
+        $postData = json_decode($input, true);
+        
+        // 如果JSON解析失败，尝试从POST获取
+        if (!$postData) {
+            $postData = $_POST;
+        }
+        
+        $text = isset($postData['text']) ? $postData['text'] : '';
+        $style = isset($postData['style']) ? $postData['style'] : 'general';
+        $prompt = isset($postData['prompt']) ? $postData['prompt'] : '';
         
         if (empty($text)) {
             $this->ajaxReturn(['success' => false, 'message' => '请输入需要改写的文字'], 'JSON');
@@ -173,8 +209,15 @@ class ContentemployeeAction extends Action
     public function detect_ai()
     {
         header('Content-Type: application/json; charset=utf-8');
+        header('Access-Control-Allow-Origin: *');
         
-        $text = I('post.text', '', '');
+        $input = file_get_contents('php://input');
+        $postData = json_decode($input, true);
+        if (!$postData) {
+            $postData = $_POST;
+        }
+        
+        $text = isset($postData['text']) ? $postData['text'] : '';
         
         if (empty($text)) {
             $this->ajaxReturn(['success' => false, 'message' => '请输入文字'], 'JSON');
@@ -196,9 +239,16 @@ class ContentemployeeAction extends Action
     public function tech_translate()
     {
         header('Content-Type: application/json; charset=utf-8');
+        header('Access-Control-Allow-Origin: *');
         
-        $text = I('post.text', '', '');
-        $target = I('post.target', 'plain', ''); // plain: 通俗语言, marketing: 营销语言
+        $input = file_get_contents('php://input');
+        $postData = json_decode($input, true);
+        if (!$postData) {
+            $postData = $_POST;
+        }
+        
+        $text = isset($postData['text']) ? $postData['text'] : '';
+        $target = isset($postData['target']) ? $postData['target'] : 'plain'; // plain: 通俗语言, marketing: 营销语言
         
         if (empty($text)) {
             $this->ajaxReturn(['success' => false, 'message' => '请输入技术文档'], 'JSON');
@@ -232,10 +282,17 @@ class ContentemployeeAction extends Action
     public function product_doc()
     {
         header('Content-Type: application/json; charset=utf-8');
+        header('Access-Control-Allow-Origin: *');
         
-        $specs = I('post.specs', '', ''); // 产品规格参数
-        $productName = I('post.name', '', ''); // 产品名称
-        $type = I('post.type', 'manual', ''); // manual: 说明书, sales: 销售话术
+        $input = file_get_contents('php://input');
+        $postData = json_decode($input, true);
+        if (!$postData) {
+            $postData = $_POST;
+        }
+        
+        $specs = isset($postData['specs']) ? $postData['specs'] : ''; // 产品规格参数
+        $productName = isset($postData['name']) ? $postData['name'] : ''; // 产品名称
+        $type = isset($postData['type']) ? $postData['type'] : 'manual'; // manual: 说明书, sales: 销售话术
         
         if (empty($specs)) {
             $this->ajaxReturn(['success' => false, 'message' => '请输入产品规格'], 'JSON');
@@ -269,9 +326,10 @@ class ContentemployeeAction extends Action
     public function hotspot()
     {
         header('Content-Type: application/json; charset=utf-8');
+        header('Access-Control-Allow-Origin: *');
         
-        $source = I('get.source', 'weibo', ''); // weibo, zhihu, reddit
-        $limit = I('get.limit', 10, 'intval');
+        $source = isset($_GET['source']) ? $_GET['source'] : 'weibo'; // weibo, zhihu, reddit
+        $limit = isset($_GET['limit']) ? intval($_GET['limit']) : 10;
         
         try {
             // 调用内容数字员工的热点采集功能
@@ -298,10 +356,17 @@ class ContentemployeeAction extends Action
     public function publish()
     {
         header('Content-Type: application/json; charset=utf-8');
+        header('Access-Control-Allow-Origin: *');
         
-        $title = I('post.title', '', '');
-        $content = I('post.content', '', '');
-        $platforms = I('post.platforms', [], ''); // ['wechat', 'xiaohongshu', 'douyin']
+        $input = file_get_contents('php://input');
+        $postData = json_decode($input, true);
+        if (!$postData) {
+            $postData = $_POST;
+        }
+        
+        $title = isset($postData['title']) ? $postData['title'] : '';
+        $content = isset($postData['content']) ? $postData['content'] : '';
+        $platforms = isset($postData['platforms']) ? $postData['platforms'] : []; // ['wechat', 'xiaohongshu', 'douyin']
         
         if (empty($title) || empty($content)) {
             $this->ajaxReturn(['success' => false, 'message' => '请填写标题和内容'], 'JSON');
@@ -329,25 +394,58 @@ class ContentemployeeAction extends Action
     }
     
     /**
-     * 调用AI模型
+     * 调用AI模型（支持模型回退）
      */
     private function callAI($prompt, $maxTokens = 2000)
     {
         // 使用Agnes AI（兼容OpenAI格式）
         $apiKey = $this->apiKey;
         $apiUrl = $this->apiUrl;
-        $model = $this->model;
         
         // 也可以从环境变量覆盖
         if (getenv('AGNES_API_KEY')) {
             $apiKey = getenv('AGNES_API_KEY');
         }
         
-        if (!$apiKey) {
-            // 降级：返回模拟结果
-            return $this->simulateAIResponse($prompt);
+        if (empty($apiKey)) {
+            throw new Exception('API Key未配置');
         }
         
+        // 检查curl扩展
+        if (!function_exists('curl_init')) {
+            throw new Exception('PHP curl扩展未启用，请在php.ini中启用extension=curl');
+        }
+        
+        // 尝试主模型和备选模型
+        $modelsToTry = array_merge([$this->model], $this->fallbackModels);
+        $modelsToTry = array_unique($modelsToTry); // 去重
+        
+        $lastError = '';
+        foreach ($modelsToTry as $model) {
+            try {
+                $result = $this->callAIWithModel($apiKey, $apiUrl, $model, $prompt, $maxTokens);
+                return $result;
+            } catch (Exception $e) {
+                $lastError = $e->getMessage();
+                // 如果是503错误（模型不可用），尝试下一个模型
+                if (strpos($lastError, '503') !== false || strpos($lastError, 'No available channel') !== false) {
+                    error_log("模型 {$model} 不可用，尝试下一个模型");
+                    continue;
+                }
+                // 其他错误直接抛出
+                throw $e;
+            }
+        }
+        
+        // 所有模型都失败了
+        throw new Exception('所有模型都不可用：' . $lastError);
+    }
+    
+    /**
+     * 使用指定模型调用AI
+     */
+    private function callAIWithModel($apiKey, $apiUrl, $model, $prompt, $maxTokens)
+    {
         $data = [
             'model' => $model,
             'messages' => [
@@ -358,6 +456,10 @@ class ContentemployeeAction extends Action
         ];
         
         $ch = curl_init();
+        if ($ch === false) {
+            throw new Exception('curl_init失败');
+        }
+        
         curl_setopt_array($ch, [
             CURLOPT_URL => $apiUrl,
             CURLOPT_POST => true,
@@ -375,21 +477,54 @@ class ContentemployeeAction extends Action
         $response = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $error = curl_error($ch);
+        $errno = curl_errno($ch);
         curl_close($ch);
         
+        // 记录详细调试日志
+        $logMsg = date('Y-m-d H:i:s') . " AI API Call:\n" .
+                  "URL: {$apiUrl}\n" .
+                  "Model: {$model}\n" .
+                  "HTTP Code: {$httpCode}\n" .
+                  "Curl Error: {$error} ({$errno})\n" .
+                  "Response: " . substr($response, 0, 500) . "\n";
+        error_log($logMsg);
+        
+        // 检查curl错误
+        if ($errno !== 0) {
+            throw new Exception('网络请求失败：' . $error . ' (错误码:' . $errno . ')');
+        }
+        
         if ($httpCode !== 200) {
-            // 记录错误日志
-            error_log("AI API Error: HTTP {$httpCode}, Response: {$response}, Error: {$error}");
-            throw new Exception('AI调用失败：HTTP ' . $httpCode . ' - ' . $error);
+            $errorMsg = 'API返回HTTP ' . $httpCode;
+            if ($response) {
+                $errorData = json_decode($response, true);
+                if (isset($errorData['error']['message'])) {
+                    $errorMsg .= ' - ' . $errorData['error']['message'];
+                }
+            }
+            throw new Exception($errorMsg);
+        }
+        
+        if (empty($response)) {
+            throw new Exception('API返回空响应');
         }
         
         $result = json_decode($response, true);
+        
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new Exception('JSON解析失败：' . json_last_error_msg() . '，响应内容：' . substr($response, 0, 200));
+        }
         
         if (isset($result['choices'][0]['message']['content'])) {
             return $result['choices'][0]['message']['content'];
         }
         
-        throw new Exception('AI返回格式错误：' . $response);
+        // 检查是否有错误信息
+        if (isset($result['error'])) {
+            throw new Exception('API错误：' . $result['error']['message']);
+        }
+        
+        throw new Exception('API返回格式错误，缺少choices字段。响应：' . substr($response, 0, 300));
     }
     
     /**
@@ -481,6 +616,90 @@ class ContentemployeeAction extends Action
             'status' => 'success',
             'message' => "已发布到 {$platform}",
             'url' => "https://example.com/{$platform}/123"
+        ];
+    }
+    
+    /**
+     * 测试API连接
+     * GET /api/test-ai
+     */
+    public function test_ai()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        header('Access-Control-Allow-Origin: *');
+        
+        // 先尝试获取模型列表
+        $modelsInfo = $this->getAvailableModels();
+        
+        try {
+            $result = $this->callAI('你好，请回复"API连接成功"', 50);
+            
+            $this->ajaxReturn([
+                'success' => true,
+                'message' => 'API连接正常',
+                'response' => $result,
+                'config' => [
+                    'apiUrl' => $this->apiUrl,
+                    'model' => $this->model,
+                    'apiKeyPrefix' => substr($this->apiKey, 0, 10) . '...'
+                ],
+                'availableModels' => $modelsInfo
+            ], 'JSON');
+            
+        } catch (Exception $e) {
+            $this->ajaxReturn([
+                'success' => false,
+                'message' => 'API连接失败：' . $e->getMessage(),
+                'config' => [
+                    'apiUrl' => $this->apiUrl,
+                    'model' => $this->model,
+                    'apiKeyPrefix' => substr($this->apiKey, 0, 10) . '...'
+                ],
+                'availableModels' => $modelsInfo,
+                'suggestion' => '请检查：1. API Key是否有权限 2. 账户余额是否充足 3. 联系Agnes AI客服确认可用模型'
+            ], 'JSON');
+        }
+    }
+    
+    /**
+     * 获取可用模型列表
+     */
+    private function getAvailableModels()
+    {
+        // 根据API URL确定models端点
+        $modelsUrl = str_replace('/chat/completions', '/models', $this->apiUrl);
+        
+        $ch = curl_init();
+        curl_setopt_array($ch, [
+            CURLOPT_URL => $modelsUrl,
+            CURLOPT_HTTPHEADER => [
+                'Authorization: Bearer ' . $this->apiKey
+            ],
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 10,
+            CURLOPT_SSL_VERIFYPEER => false
+        ]);
+        
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        
+        if ($httpCode === 200) {
+            $data = json_decode($response, true);
+            if (isset($data['data'])) {
+                $models = array_column($data['data'], 'id');
+                return [
+                    'status' => 'success',
+                    'count' => count($models),
+                    'models' => array_slice($models, 0, 20) // 只返回前20个
+                ];
+            }
+        }
+        
+        return [
+            'status' => 'failed',
+            'httpCode' => $httpCode,
+            'message' => '无法获取模型列表'
         ];
     }
     
