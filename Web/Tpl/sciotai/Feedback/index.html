@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>需求征集 - 内容数字员工</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a1f4e;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .category-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .category-tag {
+            padding: 8px 16px;
+            background: #f5f5f5;
+            border-radius: 20px;
+            font-size: 13px;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .category-tag.selected {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-color: #667eea;
+        }
+
+        .priority-selector {
+            display: flex;
+            gap: 12px;
+        }
+
+        .priority-btn {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background: white;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .priority-btn.selected {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-color: #667eea;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .hot-requests {
+            margin-top: 20px;
+        }
+
+        .request-item {
+            padding: 16px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .request-item:last-child {
+            border-bottom: none;
+        }
+
+        .request-title {
+            font-size: 15px;
+            font-weight: 500;
+            color: #1a1f4e;
+            margin-bottom: 8px;
+        }
+
+        .request-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .request-category {
+            font-size: 12px;
+            color: #666;
+            background: #f5f5f5;
+            padding: 4px 10px;
+            border-radius: 12px;
+        }
+
+        .request-votes {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 13px;
+            color: #667eea;
+        }
+
+        .vote-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 4px;
+        }
+
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .success-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .success-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1a1f4e;
+            margin-bottom: 8px;
+        }
+
+        .success-desc {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 24px;
+        }
+
+        .action-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💡 需求征集</h1>
+            <p>告诉我们你希望内容数字员工增加什么功能</p>
+        </div>
+
+        <div class="card" id="feedbackForm">
+            <div class="card-title">
+                <span>📝 提交需求</span>
+            </div>
+
+            <form id="needForm">
+                <div class="form-group">
+                    <label class="form-label">需求类别</label>
+                    <div class="category-tags" id="categoryTags">
+                        <div class="category-tag" data-value="content-generation">内容生成</div>
+                        <div class="category-tag" data-value="platform-support">平台支持</div>
+                        <div class="category-tag" data-value="ui-improvement">界面优化</div>
+                        <div class="category-tag" data-value="performance">性能优化</div>
+                        <div class="category-tag" data-value="integration">集成功能</div>
+                        <div class="category-tag" data-value="other">其他</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">需求标题</label>
+                    <input type="text" class="form-input" id="needTitle" placeholder="例如：希望增加小红书风格的内容生成" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">详细描述</label>
+                    <textarea class="form-textarea" id="needDesc" placeholder="请详细描述你的需求，包括使用场景、期望效果等..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">优先级</label>
+                    <div class="priority-selector" id="prioritySelector">
+                        <div class="priority-btn" data-value="low">🟢 低</div>
+                        <div class="priority-btn" data-value="medium">🟡 中</div>
+                        <div class="priority-btn" data-value="high">🔴 高</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">联系方式（选填）</label>
+                    <input type="text" class="form-input" id="contactInfo" placeholder="微信/邮箱，方便我们联系你">
+                </div>
+
+                <button type="submit" class="submit-btn">提交需求</button>
+            </form>
+        </div>
+
+        <div class="card success-message" id="successMessage">
+            <div class="success-icon">✅</div>
+            <div class="success-title">提交成功！</div>
+            <div class="success-desc">感谢你的反馈，我们会认真评估你的需求</div>
+            <a href="/tools" class="action-btn">返回内容工坊</a>
+        </div>
+
+        <div class="card hot-requests">
+            <div class="card-title">
+                <span>🔥 热门需求</span>
+            </div>
+
+            <div id="hotRequests">
+                <div class="request-item">
+                    <div class="request-title">增加小红书风格的内容生成</div>
+                    <div class="request-meta">
+                        <span class="request-category">内容生成</span>
+                        <div class="request-votes">
+                            <button class="vote-btn" onclick="vote(this)">👍</button>
+                            <span class="vote-count">128</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="request-item">
+                    <div class="request-title">支持直接发布到公众号</div>
+                    <div class="request-meta">
+                        <span class="request-category">平台支持</span>
+                        <div class="request-votes">
+                            <button class="vote-btn" onclick="vote(this)">👍</button>
+                            <span class="vote-count">96</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="request-item">
+                    <div class="request-title">增加内容效果分析报告</div>
+                    <div class="request-meta">
+                        <span class="request-category">内容生成</span>
+                        <div class="request-votes">
+                            <button class="vote-btn" onclick="vote(this)">👍</button>
+                            <span class="vote-count">84</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="request-item">
+                    <div class="request-title">支持批量内容生成</div>
+                    <div class="request-meta">
+                        <span class="request-category">性能优化</span>
+                        <div class="request-votes">
+                            <button class="vote-btn" onclick="vote(this)">👍</button>
+                            <span class="vote-count">72</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="request-item">
+                    <div class="request-title">增加企业知识库功能</div>
+                    <div class="request-meta">
+                        <span class="request-category">集成功能</span>
+                        <div class="request-votes">
+                            <button class="vote-btn" onclick="vote(this)">👍</button>
+                            <span class="vote-count">65</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">
+                <span>🌟 开源项目</span>
+            </div>
+            <p style="font-size: 14px; color: #666; line-height: 1.6; margin-bottom: 16px;">
+                内容数字员工核心功能已开源！欢迎开发者参与贡献，一起打造更好的内容生成工具。
+            </p>
+            <a href="https://github.com/scsaiclaw/content-digital-employee" target="_blank" class="action-btn" style="display: inline-block;">
+                ⭐ Star GitHub仓库
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // 类别选择
+        const categoryTags = document.querySelectorAll('.category-tag');
+        let selectedCategory = '';
+
+        categoryTags.forEach(tag => {
+            tag.addEventListener('click', function() {
+                categoryTags.forEach(t => t.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedCategory = this.dataset.value;
+            });
+        });
+
+        // 优先级选择
+        const priorityBtns = document.querySelectorAll('.priority-btn');
+        let selectedPriority = '';
+
+        priorityBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                priorityBtns.forEach(b => b.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedPriority = this.dataset.value;
+            });
+        });
+
+        // 表单提交
+        document.getElementById('needForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            if (!selectedCategory) {
+                alert('请选择需求类别');
+                return;
+            }
+
+            if (!selectedPriority) {
+                alert('请选择优先级');
+                return;
+            }
+
+            const data = {
+                category: selectedCategory,
+                title: document.getElementById('needTitle').value,
+                description: document.getElementById('needDesc').value,
+                priority: selectedPriority,
+                contact: document.getElementById('contactInfo').value,
+                created_at: new Date().toISOString()
+            };
+
+            try {
+                const response = await fetch('/api/feedback/save', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    document.getElementById('feedbackForm').style.display = 'none';
+                    document.getElementById('successMessage').style.display = 'block';
+                } else {
+                    alert('提交失败：' + result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('提交失败，请稍后重试');
+            }
+        });
+
+        // 投票功能
+        function vote(btn) {
+            const voteCount = btn.nextElementSibling;
+            const currentCount = parseInt(voteCount.textContent);
+            
+            if (btn.classList.contains('voted')) {
+                btn.classList.remove('voted');
+                voteCount.textContent = currentCount - 1;
+            } else {
+                btn.classList.add('voted');
+                voteCount.textContent = currentCount + 1;
+            }
+        }
+    </script>
+</body>
+</html>

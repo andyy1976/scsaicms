@@ -66,8 +66,30 @@ $_cur_typename = $article['typename'];
                 </if>
 
                 <!-- 文章正文 -->
-                <div class="article-content">
+                <div class="article-content" id="articleContent">
                     {$article.content}
+                </div>
+
+                <!-- 阅读反馈 -->
+                <div class="read-feedback">
+                    <div class="feedback-buttons">
+                        <button class="feedback-btn" onclick="handleLike({$article.aid})" id="likeBtn">
+                            <i class="fa fa-thumbs-up"></i>
+                            <span>点赞</span>
+                        </button>
+                        <button class="feedback-btn" onclick="handleShare({$article.aid})" id="shareBtn">
+                            <i class="fa fa-share-alt"></i>
+                            <span>分享</span>
+                        </button>
+                        <button class="feedback-btn style-toggle-btn" onclick="toggleStylePanel()" id="styleBtn">
+                            <i class="fa fa-palette"></i>
+                            <span>切换风格</span>
+                        </button>
+                        <button class="feedback-btn" onclick="scrollToTop()">
+                            <i class="fa fa-arrow-up"></i>
+                            <span>返回顶部</span>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- 文章底部 -->
@@ -185,4 +207,366 @@ $_cur_typename = $article['typename'];
     </div>
 </div>
 
+<!-- 风格切换面板 -->
+<div class="style-panel" id="stylePanel">
+    <div class="style-panel-header">
+        <h3><i class="fa fa-palette"></i> 选择阅读风格</h3>
+        <button class="style-panel-close" onclick="toggleStylePanel()">
+            <i class="fa fa-times"></i>
+        </button>
+    </div>
+    
+    <div class="style-panel-body">
+        <!-- AI风格搜索 -->
+        <div class="style-search-box">
+            <input type="text" id="stylePrompt" placeholder="输入风格提示词，如：科技感、商务风、清新自然..." 
+                   onkeydown="if(event.keyCode===13) searchStyle()">
+            <button class="style-search-btn" onclick="searchStyle()">
+                <i class="fa fa-search"></i> AI匹配
+            </button>
+        </div>
+        
+        <!-- 风格预设列表 -->
+        <div class="style-presets-grid" id="stylePresets">
+            <!-- 风格卡片将通过JS动态生成 -->
+        </div>
+        
+        <!-- 当前风格信息 -->
+        <div class="current-style-info" id="currentStyleInfo">
+            <span class="current-style-label">当前风格：</span>
+            <span class="current-style-name" id="currentStyleName">科技风格</span>
+        </div>
+    </div>
+</div>
+
+<!-- 风格面板遮罩 -->
+<div class="style-panel-overlay" id="styleOverlay" onclick="toggleStylePanel()"></div>
+
+<!-- 返回顶部按钮 -->
+<div class="back-to-top" id="backToTop" onclick="scrollToTop()">
+    <i class="fa fa-arrow-up"></i>
+</div>
+
 <include file="./footer"/>
+
+<script>
+    // 阅读反馈追踪
+    (function() {
+        const aid = {$article.aid};
+        let startTime = Date.now();
+        let maxScrollDepth = 0;
+        let isPageVisible = true;
+
+        // 监听页面可见性变化
+        document.addEventListener('visibilitychange', function() {
+            isPageVisible = !document.hidden;
+        });
+
+        // 监听滚动深度
+        window.addEventListener('scroll', function() {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollDepth = docHeight > 0 ? Math.round((scrollTop / docHeight) * 100) : 0;
+            maxScrollDepth = Math.max(maxScrollDepth, scrollDepth);
+        });
+
+        // 页面离开时发送阅读数据
+        window.addEventListener('beforeunload', function() {
+            const duration = Math.round((Date.now() - startTime) / 1000);
+            sendReadFeedback(aid, 'read', duration, maxScrollDepth);
+        });
+
+        // 发送阅读反馈
+        function sendReadFeedback(aid, action, duration, scrollDepth) {
+            try {
+                fetch('/api/read-feedback/track', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        aid: aid,
+                        action: action,
+                        duration: duration,
+                        scrollDepth: scrollDepth,
+                        device: window.innerWidth < 768 ? 'mobile' : 'desktop',
+                        referrer: document.referrer
+                    }),
+                    keepalive: true
+                });
+            } catch (e) {
+                console.log('Failed to send feedback:', e);
+            }
+        }
+    })();
+
+    // 点赞功能
+    function handleLike(aid) {
+        const btn = document.getElementById('likeBtn');
+        if (btn.classList.contains('liked')) {
+            return;
+        }
+        
+        fetch('/api/read-feedback/like', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ aid: aid })
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.success) {
+                btn.classList.add('liked');
+                btn.innerHTML = '<i class="fa fa-thumbs-up"></i><span>已点赞</span>';
+                
+                const icon = btn.querySelector('i');
+                icon.style.transform = 'scale(1.5)';
+                setTimeout(() => {
+                    icon.style.transform = 'scale(1)';
+                }, 300);
+            }
+        });
+    }
+
+    // 分享功能
+    function handleShare(aid) {
+        fetch('/api/read-feedback/share', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ aid: aid })
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.success) {
+                alert('分享成功！感谢您的支持');
+            }
+        });
+    }
+
+    // 返回顶部
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // 返回顶部按钮显示逻辑
+    window.addEventListener('scroll', function() {
+        const btn = document.getElementById('backToTop');
+        if (btn) {
+            if (window.scrollY > 300) {
+                btn.classList.add('show');
+            } else {
+                btn.classList.remove('show');
+            }
+        }
+    });
+
+    // === 风格切换功能 ===
+    
+    // 预设风格配置
+    const presetStyles = {
+        tech: { name: '科技风格', desc: '现代科技感，蓝色主调', primary: '#0077ff', keywords: ['科技', 'AI', '数字化'] },
+        business: { name: '商务风格', desc: '专业商务风格，灰色主调', primary: '#2c3e50', keywords: ['商务', '金融', '企业'] },
+        fresh: { name: '清新风格', desc: '清新自然风格，绿色主调', primary: '#27ae60', keywords: ['清新', '生活', '健康'] },
+        vintage: { name: '复古风格', desc: '经典复古风格，棕色主调', primary: '#8b4513', keywords: ['复古', '文艺', '文化'] },
+        minimal: { name: '极简风格', desc: '极简主义风格，黑白主调', primary: '#000000', keywords: ['极简', '设计', '简约'] },
+        energetic: { name: '活力风格', desc: '年轻活力风格，橙色主调', primary: '#e67e22', keywords: ['活力', '年轻', '运动'] },
+        warm: { name: '温馨风格', desc: '温馨浪漫风格，粉色主调', primary: '#e91e8c', keywords: ['温馨', '浪漫', '情感'] },
+        dark: { name: '深色模式', desc: '暗色主题，护眼舒适', primary: '#60a5fa', keywords: ['深色', '夜间', '护眼'] }
+    };
+
+    // 风格变量映射 - 升级版
+    const styleVariables = {
+        tech: { 
+            '--primary': '#0077ff', '--primaryDark': '#0055cc', '--accent': '#00d4ff',
+            '--bg': '#f0f5ff', '--bgGradient': 'linear-gradient(135deg, #f0f5ff 0%, #e6f0ff 100%)',
+            '--text': '#1a1a2e', '--textSecondary': '#4a5568',
+            '--card-bg': '#ffffff', '--borderColor': '#e6f0ff',
+            '--shadow': '0 4px 16px rgba(0, 119, 255, 0.1)',
+            '--articleLineHeight': '1.8'
+        },
+        business: { 
+            '--primary': '#2c3e50', '--primaryDark': '#1a252f', '--accent': '#3498db',
+            '--bg': '#f8f9fa', '--bgGradient': 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)',
+            '--text': '#2c3e50', '--textSecondary': '#5a6c7d',
+            '--card-bg': '#ffffff', '--borderColor': '#dee2e6',
+            '--shadow': '0 4px 16px rgba(44, 62, 80, 0.1)',
+            '--articleLineHeight': '1.75'
+        },
+        fresh: { 
+            '--primary': '#27ae60', '--primaryDark': '#1e8449', '--accent': '#58d68d',
+            '--bg': '#f0fff4', '--bgGradient': 'linear-gradient(135deg, #f0fff4 0%, #d5f5e3 100%)',
+            '--text': '#1e8449', '--textSecondary': '#5d9a73',
+            '--card-bg': '#ffffff', '--borderColor': '#d5f5e3',
+            '--shadow': '0 4px 16px rgba(39, 174, 96, 0.1)',
+            '--articleLineHeight': '1.85'
+        },
+        vintage: { 
+            '--primary': '#8b4513', '--primaryDark': '#654321', '--accent': '#a0522d',
+            '--bg': '#fdfbf7', '--bgGradient': 'linear-gradient(135deg, #fdfbf7 0%, #f5ebe0 100%)',
+            '--text': '#5d4e37', '--textSecondary': '#8b7355',
+            '--card-bg': '#faf7f2', '--borderColor': '#e8dcc8',
+            '--shadow': '0 4px 16px rgba(139, 69, 19, 0.1)',
+            '--articleLineHeight': '1.8'
+        },
+        minimal: { 
+            '--primary': '#000000', '--primaryDark': '#333333', '--accent': '#666666',
+            '--bg': '#ffffff', '--bgGradient': 'linear-gradient(135deg, #ffffff 0%, #fafafa 100%)',
+            '--text': '#1a1a1a', '--textSecondary': '#666666',
+            '--card-bg': '#ffffff', '--borderColor': '#eeeeee',
+            '--shadow': '0 4px 16px rgba(0, 0, 0, 0.05)',
+            '--articleLineHeight': '1.7'
+        },
+        energetic: { 
+            '--primary': '#e67e22', '--primaryDark': '#d35400', '--accent': '#f39c12',
+            '--bg': '#fff8f0', '--bgGradient': 'linear-gradient(135deg, #fff8f0 0%, #ffeaa7 100%)',
+            '--text': '#d35400', '--textSecondary': '#e67e22',
+            '--card-bg': '#ffffff', '--borderColor': '#ffeaa7',
+            '--shadow': '0 4px 16px rgba(230, 126, 34, 0.15)',
+            '--articleLineHeight': '1.8'
+        },
+        warm: { 
+            '--primary': '#e91e8c', '--primaryDark': '#c2185b', '--accent': '#f06292',
+            '--bg': '#fdf2f8', '--bgGradient': 'linear-gradient(135deg, #fdf2f8 0%, #fce4ec 100%)',
+            '--text': '#c2185b', '--textSecondary': '#e91e8c',
+            '--card-bg': '#ffffff', '--borderColor': '#fce4ec',
+            '--shadow': '0 4px 16px rgba(233, 30, 140, 0.1)',
+            '--articleLineHeight': '1.85'
+        },
+        dark: { 
+            '--primary': '#60a5fa', '--primaryDark': '#3b82f6', '--accent': '#93c5fd',
+            '--bg': '#0f172a', '--bgGradient': 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
+            '--text': '#f1f5f9', '--textSecondary': '#94a3b8',
+            '--card-bg': '#1e293b', '--borderColor': '#334155',
+            '--shadow': '0 4px 16px rgba(96, 165, 250, 0.1)',
+            '--articleLineHeight': '1.8'
+        }
+    };
+
+    let currentStyle = localStorage.getItem('article-style') || 'tech';
+
+    // 初始化风格
+    function initStyle() {
+        applyStyle(currentStyle);
+        renderStylePresets();
+        updateCurrentStyleName();
+    }
+
+    // 应用风格
+    function applyStyle(styleKey) {
+        const vars = styleVariables[styleKey];
+        if (!vars) return;
+
+        currentStyle = styleKey;
+        localStorage.setItem('article-style', styleKey);
+
+        const root = document.documentElement;
+        Object.entries(vars).forEach(([key, value]) => {
+            root.style.setProperty(key, value);
+        });
+
+        updateCurrentStyleName();
+    }
+
+    // 渲染风格预设列表
+    function renderStylePresets() {
+        const container = document.getElementById('stylePresets');
+        if (!container) return;
+
+        let html = '';
+        for (const [key, style] of Object.entries(presetStyles)) {
+            const isActive = key === currentStyle;
+            html += `
+                <div class="style-card ${isActive ? 'active' : ''}" onclick="applyStyle('${key}')">
+                    <div class="style-color-bar" style="background: ${style.primary}"></div>
+                    <h4>${style.name}</h4>
+                    <p>${style.desc}</p>
+                    ${isActive ? '<div class="style-check"><i class="fa fa-check"></i></div>' : ''}
+                </div>
+            `;
+        }
+        container.innerHTML = html;
+    }
+
+    // 更新当前风格名称
+    function updateCurrentStyleName() {
+        const nameEl = document.getElementById('currentStyleName');
+        if (nameEl && presetStyles[currentStyle]) {
+            nameEl.textContent = presetStyles[currentStyle].name;
+            nameEl.style.color = presetStyles[currentStyle].primary;
+        }
+    }
+
+    // 切换风格面板显示
+    function toggleStylePanel() {
+        const panel = document.getElementById('stylePanel');
+        const overlay = document.getElementById('styleOverlay');
+        
+        if (panel.classList.contains('show')) {
+            panel.classList.remove('show');
+            overlay.classList.remove('show');
+        } else {
+            panel.classList.add('show');
+            overlay.classList.add('show');
+        }
+    }
+
+    // AI风格搜索
+    function searchStyle() {
+        const prompt = document.getElementById('stylePrompt').value.trim();
+        if (!prompt) {
+            alert('请输入风格提示词');
+            return;
+        }
+
+        const result = analyzeStylePrompt(prompt);
+        if (result.style) {
+            applyStyle(result.style);
+            renderStylePresets();
+            alert(`AI匹配结果：${result.message}`);
+        } else {
+            alert('未能匹配到合适的风格，请尝试其他关键词');
+        }
+    }
+
+    // 风格提示词分析器
+    function analyzeStylePrompt(prompt) {
+        const lowerPrompt = prompt.toLowerCase();
+        
+        // 关键词匹配
+        for (const [styleKey, style] of Object.entries(presetStyles)) {
+            for (const keyword of style.keywords) {
+                if (lowerPrompt.includes(keyword)) {
+                    return {
+                        style: styleKey,
+                        message: `匹配到「${style.name}」（关键词：${keyword}）`
+                    };
+                }
+            }
+        }
+
+        // 情感分析
+        if (lowerPrompt.includes('温暖') || lowerPrompt.includes('温馨') || lowerPrompt.includes('浪漫')) {
+            return { style: 'warm', message: '匹配到「温馨风格」' };
+        }
+        if (lowerPrompt.includes('暗黑') || lowerPrompt.includes('夜间') || lowerPrompt.includes('护眼')) {
+            return { style: 'dark', message: '匹配到「深色模式」' };
+        }
+        if (lowerPrompt.includes('极简') || lowerPrompt.includes('简约') || lowerPrompt.includes('设计')) {
+            return { style: 'minimal', message: '匹配到「极简风格」' };
+        }
+        if (lowerPrompt.includes('商务') || lowerPrompt.includes('金融') || lowerPrompt.includes('专业')) {
+            return { style: 'business', message: '匹配到「商务风格」' };
+        }
+        if (lowerPrompt.includes('科技') || lowerPrompt.includes('AI') || lowerPrompt.includes('数字')) {
+            return { style: 'tech', message: '匹配到「科技风格」' };
+        }
+
+        return { style: null, message: '未找到匹配风格' };
+    }
+
+    // 初始化
+    initStyle();
+</script>

@@ -1,0 +1,77 @@
+{
+  "preferences": {
+    "styleWeights": {
+      "professional": 0.2727272727272727,
+      "casual": 0.2727272727272727,
+      "humorous": 0.22727272727272727,
+      "academic": 0.22727272727272727
+    },
+    "structureWeights": {
+      "storyIntro": 0.39090909090909093,
+      "directIntro": 0.3,
+      "questionIntro": 0.3090909090909091
+    },
+    "optimalLength": 1500,
+    "lengthVariance": 500,
+    "callToActionRate": 0.8,
+    "askQuestionRate": 0.6,
+    "topicWeights": {},
+    "lastUpdated": "2026-06-18T08:48:11.516Z"
+  },
+  "currentParams": {
+    "style": "professional",
+    "tone": "neutral",
+    "introStyle": "storyIntro",
+    "paragraphLength": "medium",
+    "useBulletPoints": true,
+    "useExamples": true,
+    "targetLength": 1500,
+    "callToAction": true,
+    "askQuestion": true,
+    "temperature": 0.7,
+    "maxTokens": 2000,
+    "platform": "wechat"
+  },
+  "feedbackHistory": [
+    {
+      "contentId": "article-001",
+      "userId": "user-001",
+      "avgDepth": 0.85,
+      "avgDuration": 180,
+      "totalLikes": 15,
+      "style": "professional",
+      "introStyle": "story",
+      "topics": [
+        "AI",
+        "数字化"
+      ]
+    },
+    {
+      "contentId": "article-002",
+      "userId": "user-002",
+      "avgDepth": 0.72,
+      "avgDuration": 120,
+      "totalLikes": 8,
+      "style": "casual",
+      "introStyle": "question",
+      "topics": [
+        "自动化",
+        "效率"
+      ]
+    },
+    {
+      "contentId": "article-003",
+      "userId": "user-003",
+      "avgDepth": 0.91,
+      "avgDuration": 240,
+      "totalLikes": 22,
+      "style": "professional",
+      "introStyle": "story",
+      "topics": [
+        "AI",
+        "智能制造"
+      ]
+    }
+  ],
+  "lastUpdated": "2026-06-18T08:48:11.522Z"
+}

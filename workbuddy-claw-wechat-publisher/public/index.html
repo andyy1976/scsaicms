@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>内容数字员工 - 独立工具版</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --text: #1e293b;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+        /* Header */
+        .header { background: var(--primary); color: white; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .header h1 { font-size: 20px; font-weight: 600; display: flex; align-items: center; gap: 10px; }
+        .header-actions { display: flex; gap: 12px; }
+        .header-btn { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+        .header-btn:hover { background: rgba(255,255,255,0.25); }
+        .header-btn.cms { background: var(--success); border-color: var(--success); }
+
+        /* Main Layout */
+        .main-container { display: flex; height: calc(100vh - 60px); }
+        
+        /* Sidebar */
+        .sidebar { width: 220px; background: var(--surface); border-right: 1px solid var(--border); flex-shrink: 0; overflow-y: auto; }
+        .sidebar-section { padding: 16px 0; }
+        .sidebar-title { padding: 0 16px; font-size: 11px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+        .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 16px; cursor: pointer; transition: all 0.2s; color: var(--text); font-size: 14px; border-left: 3px solid transparent; }
+        .nav-item:hover { background: #f1f5f9; }
+        .nav-item.active { background: #eef2ff; color: var(--primary); border-left-color: var(--primary); }
+        .nav-item .icon { font-size: 16px; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; }
+        .nav-item .badge { background: var(--danger); color: white; font-size: 10px; padding: 2px 6px; border-radius: 10px; margin-left: auto; }
+        
+        /* Content */
+        .content { flex: 1; overflow-y: auto; padding: 24px; }
+        
+        /* Page Sections */
+        .page { display: none; }
+        .page.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Cards */
+        .card { background: var(--surface); border-radius: 12px; padding: 24px; margin-bottom: 24px; border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+        .card-title { font-size: 16px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 8px; }
+        .card-title .tag { background: #e0e7ff; color: var(--primary); font-size: 11px; padding: 3px 8px; border-radius: 4px; font-weight: 500; }
+        
+        /* Forms */
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 8px; }
+        .form-group label .required { color: var(--danger); }
+        .input, .select, .textarea { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; transition: all 0.2s; background: white; }
+        .input:focus, .select:focus, .textarea:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1); }
+        .textarea { min-height: 150px; resize: vertical; }
+        
+        /* Buttons */
+        .btn { padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; border: none; cursor: pointer; transition: all 0.2s; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-secondary { background: #f1f5f9; color: var(--text); }
+        .btn-secondary:hover { background: #e2e8f0; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-sm { padding: 6px 14px; font-size: 13px; }
+        
+        /* Grid */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+        .stat-card { background: linear-gradient(135deg, #f8fafc, #f1f5f9); padding: 20px; border-radius: 10px; border: 1px solid var(--border); }
+        .stat-card .icon { font-size: 24px; margin-bottom: 8px; }
+        .stat-card .value { font-size: 28px; font-weight: 700; color: var(--text); }
+        .stat-card .label { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+        
+        /* Tabs */
+        .tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab { padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 500; border: 1px solid var(--border); background: white; color: var(--text-secondary); transition: all 0.2s; }
+        .tab:hover { background: #f1f5f9; }
+        .tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+        
+        /* Radio Group */
+        .radio-group { display: flex; gap: 20px; flex-wrap: wrap; }
+        .radio-item { display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 14px; }
+        .radio-item input[type="radio"] { accent-color: var(--primary); }
+        
+        /* Result Box */
+        .result-box { background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 16px; min-height: 150px; font-size: 14px; line-height: 1.6; white-space: pre-wrap; }
+        
+        /* Loading */
+        .loading { display: flex; align-items: center; gap: 8px; color: var(--text-secondary); padding: 20px; }
+        .spinner { width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        /* Feature Cards */
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .feature-card { background: white; border-radius: 12px; padding: 24px; border: 1px solid var(--border); transition: all 0.3s; }
+        .feature-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+        .feature-card .icon { width: 48px; height: 48px; background: #e0e7ff; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 16px; }
+        .feature-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+        .feature-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+        
+        /* Alert */
+        .alert { padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; font-size: 14px; }
+        .alert-info { background: #dbeafe; color: #1e40af; }
+        .alert-success { background: #d1fae5; color: #065f46; }
+        .alert-warning { background: #fef3c7; color: #92400e; }
+        .alert-danger { background: #fee2e2; color: #991b1b; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>
+            <span style="font-size: 24px;">🤖</span>
+            内容数字员工
+            <span style="font-size: 12px; opacity: 0.8; font-weight: 400;">- 独立工具版</span>
+        </h1>
+        <div class="header-actions">
+            <button class="header-btn" onclick="openCmsIntegration()">
+                📦 进入CMS集成版
+            </button>
+            <button class="header-btn" onclick="location.href='/cms'" style="background: rgba(16,185,129,0.2);">
+                🌐 CMS管理后台
+            </button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-title">核心功能</div>
+                <div class="nav-item active" onclick="switchPage('home')">
+                    <span class="icon">🏠</span>
+                    <span>工作台首页</span>
+                </div>
+                <div class="nav-item" onclick="switchPage('content-fission')">
+                    <span class="icon">✂️</span>
+                    <span>内容裂变</span>
+                </div>
+                <div class="nav-item" onclick="switchPage('ai-rewrite')">
+                    <span class="icon">✨</span>
+                    <span>AI改写</span>
+                </div>
+                <div class="nav-item" onclick="switchPage('article-generator')">
+                    <span class="icon">📝</span>
+                    <span>文章生成</span>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-title">增强功能</div>
+                <div class="nav-item" onclick="switchPage('ai-report')">
+                    <span class="icon">📊</span>
+                    <span>AI分析报告</span>
+                </div>
+                <div class="nav-item" onclick="switchPage('optimization')">
+                    <span class="icon">🎯</span>
+                    <span>优化闭环</span>
+                </div>
+                <div class="nav-item" onclick="switchPage('community')">
+                    <span class="icon">🛒</span>
+                    <span>社区市场</span>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-title">CMS集成</div>
+                <div class="nav-item" onclick="switchPage('cms-content')">
+                    <span class="icon">📥</span>
+                    <span>内容导入</span>
+                </div>
+                <div class="nav-item" onclick="switchPage('cms-publish')">
+                    <span class="icon">📤</span>
+                    <span>发布到CMS</span>
+                </div>
+                <div class="nav-item" onclick="switchPage('cms-sync')">
+                    <span class="icon">🔄</span>
+                    <span>数据同步</span>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-title">其他</div>
+                <div class="nav-item" onclick="switchPage('settings')">
+                    <span class="icon">⚙️</span>
+                    <span>设置</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="content">
+            <!-- 首页 -->
+            <div class="page active" id="page-home">
+                <div class="alert alert-info">
+                    <strong>欢迎使用内容数字员工！</strong> 这是一个独立的AI内容创作工具，可以单独使用，也可以与CMS系统集成使用。
+                    <br><br>
+                    <strong>架构说明：</strong>
+                    <br>• <strong>独立工具版</strong>：处理任意来源的内容，不依赖CMS
+                    <br>• <strong>CMS集成版</strong>：专门处理CMS存量内容，支持阅读反馈和数据同步
+                    <br>• <strong>组合使用</strong>：在独立工具中处理内容，通过API发布到CMS
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">📈 今日概览</div>
+                    </div>
+                    <div class="grid">
+                        <div class="stat-card">
+                            <div class="icon">📄</div>
+                            <div class="value" id="stat-articles">0</div>
+                            <div class="label">生成文章</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="icon">✂️</div>
+                            <div class="value" id="stat-fission">0</div>
+                            <div class="label">内容裂变</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="icon">📊</div>
+                            <div class="value" id="stat-reports">0</div>
+                            <div class="label">分析报告</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="icon">🔄</div>
+                            <div class="value" id="stat-optimize">0</div>
+                            <div class="label">优化次数</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">🚀 快速开始</div>
+                    </div>
+                    <div class="feature-grid">
+                        <div class="feature-card" onclick="switchPage('content-fission')">
+                            <div class="icon">✂️</div>
+                            <h3>内容裂变</h3>
+                            <p>将长文拆解为短视频脚本、图文卡片、金句海报，一键多平台分发</p>
+                        </div>
+                        <div class="feature-card" onclick="switchPage('ai-rewrite')">
+                            <div class="icon">✨</div>
+                            <h3>AI改写</h3>
+                            <p>将AI生成的内容改写为真人风格，去除AI痕迹，支持多平台适配</p>
+                        </div>
+                        <div class="feature-card" onclick="switchPage('article-generator')">
+                            <div class="icon">📝</div>
+                            <h3>文章生成</h3>
+                            <p>基于关键词或大纲自动生成文章，支持多种风格和长度</p>
+                        </div>
+                        <div class="feature-card" onclick="switchPage('ai-report')">
+                            <div class="icon">📊</div>
+                            <h3>AI分析报告</h3>
+                            <p>自动分析内容效果数据，生成优化建议报告</p>
+                        </div>
+                        <div class="feature-card" onclick="switchPage('optimization')">
+                            <div class="icon">🎯</div>
+                            <h3>优化闭环</h3>
+                            <p>学习读者偏好，持续优化内容生成策略</p>
+                        </div>
+                        <div class="feature-card" onclick="switchPage('community')">
+                            <div class="icon">🛒</div>
+                            <h3>社区市场</h3>
+                            <p>下载插件和模板，分享你的创作成果</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 内容裂变 -->
+            <div class="page" id="page-content-fission">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">✂️ 内容裂变引擎 <span class="tag">核心功能</span></div>
+                    </div>
+                    <div class="alert alert-info">
+                        将长文内容拆解为多种格式，适用于不同平台传播。
+                        <br>• 短视频脚本：适用于抖音、快手、视频号
+                        <br>• 图文卡片：适用于小红书、朋友圈
+                        <br>• 金句海报：适用于微博、ins
+                    </div>
+                    <div class="form-group">
+                        <label>输入原始文章内容 <span class="required">*</span></label>
+                        <textarea id="fission-content" class="textarea" placeholder="请粘贴需要裂变的长文内容..."></textarea>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+                        <div class="form-group">
+                            <label>视频时长</label>
+                            <select id="fission-duration" class="select">
+                                <option value="30s">30秒</option>
+                                <option value="60s" selected>60秒</option>
+                                <option value="90s">90秒</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>视频风格</label>
+                            <select id="fission-style" class="select">
+                                <option value="documentary">纪录片</option>
+                                <option value="viral" selected>爆款</option>
+                                <option value="educational">教育</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>卡片数量</label>
+                            <select id="fission-cards" class="select">
+                                <option value="4">4张</option>
+                                <option value="6" selected>6张</option>
+                                <option value="9">9张</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 12px; margin-top: 16px;">
+                        <button class="btn btn-primary" onclick="doContentFission()">开始裂变</button>
+                        <button class="btn btn-secondary" onclick="clearFission()">清空</button>
+                    </div>
+                </div>
+
+                <div class="card" id="fission-result" style="display: none;">
+                    <div class="card-header">
+                        <div class="card-title">📋 裂变结果</div>
+                        <button class="btn btn-sm btn-secondary" onclick="downloadFissionResult()">下载结果</button>
+                    </div>
+                    <div id="fission-output"></div>
+                </div>
+            </div>
+
+            <!-- AI改写 -->
+            <div class="page" id="page-ai-rewrite">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">✨ AI人性化改写</div>
+                        <div class="tabs">
+                            <div class="tab active" onclick="setRewriteStyle(this, 'general')">通用</div>
+                            <div class="tab" onclick="setRewriteStyle(this, 'academic')">学术</div>
+                            <div class="tab" onclick="setRewriteStyle(this, 'marketing')">营销</div>
+                            <div class="tab" onclick="setRewriteStyle(this, 'casual')">口语</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>输入需要改写的文字 <span class="required">*</span></label>
+                        <textarea id="rewrite-input" class="textarea" placeholder="请输入需要改写的内容，支持最多3000字..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>改写强度</label>
+                        <div class="radio-group">
+                            <label class="radio-item"><input type="radio" name="rewrite-strength" value="light" checked> 轻度改写（保持原意）</label>
+                            <label class="radio-item"><input type="radio" name="rewrite-strength" value="medium"> 中度改写（调整结构）</label>
+                            <label class="radio-item"><input type="radio" name="rewrite-strength" value="heavy"> 深度改写（完全重写）</label>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 12px;">
+                        <button class="btn btn-primary" onclick="doRewrite()">开始改写</button>
+                        <button class="btn btn-secondary" onclick="copyRewriteResult()">复制结果</button>
+                    </div>
+                    <div class="form-group" style="margin-top: 20px;">
+                        <label>改写结果</label>
+                        <div id="rewrite-output" class="result-box">改写后的内容将显示在这里...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 文章生成 -->
+            <div class="page" id="page-article-generator">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">📝 AI文章生成</div>
+                    </div>
+                    <div class="form-group">
+                        <label>文章主题/关键词 <span class="required">*</span></label>
+                        <input type="text" id="article-topic" class="input" placeholder="例如：制造业数字化转型">
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+                        <div class="form-group">
+                            <label>文章类型</label>
+                            <select id="article-type" class="select">
+                                <option value="news">新闻资讯</option>
+                                <option value="case" selected>案例分析</option>
+                                <option value="tutorial">教程指南</option>
+                                <option value="opinion">观点评论</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>目标平台</label>
+                            <select id="article-platform" class="select">
+                                <option value="wechat" selected>公众号</option>
+                                <option value="website">官网</option>
+                                <option value="zhihu">知乎</option>
+                                <option value="xiaohongshu">小红书</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>文章大纲（可选）</label>
+                        <textarea id="article-outline" class="textarea" placeholder="输入文章大纲，每行一个要点..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>字数要求</label>
+                        <div class="radio-group">
+                            <label class="radio-item"><input type="radio" name="article-length" value="short" checked> 短文 (800-1000字)</label>
+                            <label class="radio-item"><input type="radio" name="article-length" value="medium"> 中等 (1500-2000字)</label>
+                            <label class="radio-item"><input type="radio" name="article-length" value="long"> 长文 (3000+字)</label>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="generateArticle()">生成文章</button>
+                    <div class="form-group" style="margin-top: 20px;">
+                        <label>生成结果</label>
+                        <div id="article-output" class="result-box">文章内容将显示在这里...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI分析报告 -->
+            <div class="page" id="page-ai-report">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">📊 AI内容分析报告</div>
+                    </div>
+                    <div class="form-group">
+                        <label>报告时间范围</label>
+                        <select id="report-period" class="select">
+                            <option value="7">最近7天</option>
+                            <option value="30" selected>最近30天</option>
+                            <option value="90">最近90天</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>分析维度</label>
+                        <div class="radio-group">
+                            <label class="radio-item"><input type="checkbox" value="performance" checked> 内容表现</label>
+                            <label class="radio-item"><input type="checkbox" value="engagement" checked> 用户参与度</label>
+                            <label class="radio-item"><input type="checkbox" value="topics"> 主题分析</label>
+                            <label class="radio-item"><input type="checkbox" value="trends"> 趋势预测</label>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="generateReport()">生成报告</button>
+                    <div id="report-result" style="margin-top: 20px;"></div>
+                </div>
+            </div>
+
+            <!-- 优化闭环 -->
+            <div class="page" id="page-optimization">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">🎯 内容优化闭环</div>
+                    </div>
+                    <div class="alert alert-info">
+                        通过分析读者反馈数据，自动优化内容生成策略，形成持续改进的闭环。
+                    </div>
+                    <div class="grid">
+                        <div class="stat-card">
+                            <div class="icon">🧠</div>
+                            <div class="value" id="pref-score">--</div>
+                            <div class="label">偏好匹配度</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="icon">📈</div>
+                            <div class="value" id="optimize-rate">--</div>
+                            <div class="label">优化迭代次数</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="icon">🎯</div>
+                            <div class="value" id="success-rate">--</div>
+                            <div class="label">策略成功率</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <button class="btn btn-primary" onclick="loadOptimizationStatus()">刷新状态</button>
+                        <button class="btn btn-secondary" onclick="resetPreferences()">重置偏好</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 社区市场 -->
+            <div class="page" id="page-community">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">🛒 插件/模板市场</div>
+                        <button class="btn btn-sm btn-primary" onclick="showSubmitModal()">提交作品</button>
+                    </div>
+                    <div id="community-list">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                            <span>加载中...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CMS内容导入 -->
+            <div class="page" id="page-cms-content">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">📥 从CMS导入内容</div>
+                    </div>
+                    <div class="alert alert-info">
+                        连接CMS系统，导入已有内容进行处理。
+                        <br><strong>注意：</strong>需要CMS系统开启API接口才能正常使用此功能。
+                    </div>
+                    <div class="form-group">
+                        <label>CMS接口地址</label>
+                        <input type="text" id="cms-url" class="input" placeholder="http://your-cms.com/api" value="http://127.0.0.1:8080">
+                    </div>
+                    <div class="form-group">
+                        <label>API密钥</label>
+                        <input type="password" id="cms-api-key" class="input" placeholder="输入API密钥">
+                    </div>
+                    <button class="btn btn-success" onclick="connectCms()">连接CMS</button>
+                    
+                    <div id="cms-content-list" style="margin-top: 24px; display: none;">
+                        <h4 style="margin-bottom: 16px;">可用文章列表</h4>
+                        <div id="cms-articles"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 发布到CMS -->
+            <div class="page" id="page-cms-publish">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">📤 发布到CMS</div>
+                    </div>
+                    <div class="form-group">
+                        <label>选择已处理的内容</label>
+                        <select id="publish-select" class="select">
+                            <option value="">-- 选择内容 --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>发布到栏目</label>
+                        <select id="publish-category" class="select">
+                            <option value="">-- 选择栏目 --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>发布选项</label>
+                        <div class="radio-group">
+                            <label class="radio-item"><input type="checkbox" value="publish"> 直接发布</label>
+                            <label class="radio-item"><input type="checkbox" value="schedule"> 定时发布</label>
+                        </div>
+                    </div>
+                    <button class="btn btn-success" onclick="publishToCms()">发布</button>
+                </div>
+            </div>
+
+            <!-- 数据同步 -->
+            <div class="page" id="page-cms-sync">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">🔄 CMS数据同步</div>
+                    </div>
+                    <div class="grid">
+                        <div class="stat-card">
+                            <div class="icon">📄</div>
+                            <div class="value" id="sync-articles">--</div>
+                            <div class="label">同步文章数</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="icon">🔗</div>
+                            <div class="value" id="sync-status">离线</div>
+                            <div class="label">连接状态</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="icon">🕐</div>
+                            <div class="value" id="sync-time">--</div>
+                            <div class="label">最后同步</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <button class="btn btn-primary" onclick="syncCms()">立即同步</button>
+                        <button class="btn btn-secondary" onclick="setupAutoSync()">设置自动同步</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 设置 -->
+            <div class="page" id="page-settings">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">⚙️ 系统设置</div>
+                    </div>
+                    <div class="form-group">
+                        <label>默认AI模型</label>
+                        <select id="default-model" class="select">
+                            <option value="deepseek">DeepSeek</option>
+                            <option value="astron">讯飞Astron</option>
+                            <option value="volcengine">火山引擎</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>默认内容风格</label>
+                        <select id="default-style" class="select">
+                            <option value="professional">专业正式</option>
+                            <option value="casual">轻松随意</option>
+                            <option value="academic">学术严谨</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>输出语言</label>
+                        <div class="radio-group">
+                            <label class="radio-item"><input type="radio" name="output-lang" value="zh" checked> 中文</label>
+                            <label class="radio-item"><input type="radio" name="output-lang" value="en"> English</label>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="saveSettings()">保存设置</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // CMS API基础URL - 需要根据实际情况配置
+        const CMS_API_BASE = 'http://localhost/cms'; // CMS主系统地址
+
+        // 全局变量
+        let currentRewriteStyle = 'general';
+        let fissionResult = null;
+        let cmsConnected = false;
+
+        // 页面切换
+        function switchPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            
+            document.getElementById('page-' + pageId).classList.add('active');
+            document.querySelector(`[onclick="switchPage('${pageId}')"]`).classList.add('active');
+
+            // 加载页面数据
+            if (pageId === 'optimization') loadOptimizationStatus();
+            if (pageId === 'community') loadCommunityList();
+        }
+
+        // 内容裂变
+        async function doContentFission() {
+            const content = document.getElementById('fission-content').value.trim();
+            if (!content) {
+                alert('请输入内容');
+                return;
+            }
+
+            const resultDiv = document.getElementById('fission-result');
+            const outputDiv = document.getElementById('fission-output');
+            resultDiv.style.display = 'block';
+            outputDiv.innerHTML = '<div class="loading"><div class="spinner"></div><span>正在裂变...</span></div>';
+
+            try {
+                const response = await fetch('/api/cms/content-fission', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        title: '裂变内容',
+                        content: content,
+                        outputs: ['video-script', 'image-cards', 'quote-poster'],
+                        videoOptions: {
+                            duration: document.getElementById('fission-duration').value,
+                            style: document.getElementById('fission-style').value
+                        },
+                        imageOptions: {
+                            cardCount: parseInt(document.getElementById('fission-cards').value)
+                        }
+                    })
+                });
+
+                const result = await response.json();
+                fissionResult = result;
+
+                outputDiv.innerHTML = `
+                    <div class="alert alert-success">内容裂变完成！</div>
+                    <div style="margin-top: 16px;">
+                        <h4>📹 短视频脚本</h4>
+                        <div class="result-box">${result.generated?.videoScript?.title || '生成失败'}</div>
+                    </div>
+                    <div style="margin-top: 16px;">
+                        <h4>🖼️ 图文卡片</h4>
+                        <div class="result-box">${result.generated?.imageCards?.length || 0} 张卡片已生成</div>
+                    </div>
+                    <div style="margin-top: 16px;">
+                        <h4>💬 金句海报</h4>
+                        <div class="result-box">${result.generated?.quotePoster?.length || 0} 张海报已生成</div>
+                    </div>
+                `;
+            } catch (error) {
+                outputDiv.innerHTML = `<div class="alert alert-danger">裂变失败: ${error.message}</div>`;
+            }
+        }
+
+        function clearFission() {
+            document.getElementById('fission-content').value = '';
+            document.getElementById('fission-result').style.display = 'none';
+            fissionResult = null;
+        }
+
+        function downloadFissionResult() {
+            if (!fissionResult) return;
+            const blob = new Blob([JSON.stringify(fissionResult, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `fission_result_${Date.now()}.json`;
+            a.click();
+        }
+
+        // AI改写
+        function setRewriteStyle(el, style) {
+            document.querySelectorAll('#page-ai-rewrite .tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            currentRewriteStyle = style;
+        }
+
+        async function doRewrite() {
+            const input = document.getElementById('rewrite-input').value.trim();
+            if (!input) {
+                alert('请输入需要改写的内容');
+                return;
+            }
+
+            const output = document.getElementById('rewrite-output');
+            output.innerHTML = '<div class="loading"><div class="spinner"></div><span>正在改写...</span></div>';
+
+            try {
+                const response = await fetch('/api/rewrite', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        content: input,
+                        style: currentRewriteStyle,
+                        strength: document.querySelector('input[name="rewrite-strength"]:checked').value
+                    })
+                });
+
+                const result = await response.json();
+                output.textContent = result.content || result.error || '改写失败';
+            } catch (error) {
+                output.innerHTML = `<span style="color: var(--danger);">改写失败: ${error.message}</span>`;
+            }
+        }
+
+        function copyRewriteResult() {
+            const output = document.getElementById('rewrite-output').textContent;
+            navigator.clipboard.writeText(output).then(() => {
+                alert('已复制到剪贴板');
+            });
+        }
+
+        // 文章生成
+        async function generateArticle() {
+            const topic = document.getElementById('article-topic').value.trim();
+            if (!topic) {
+                alert('请输入文章主题');
+                return;
+            }
+
+            const output = document.getElementById('article-output');
+            output.innerHTML = '<div class="loading"><div class="spinner"></div><span>正在生成...</span></div>';
+
+            try {
+                const response = await fetch('/api/publish/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        topic: topic,
+                        type: document.getElementById('article-type').value,
+                        platform: document.getElementById('article-platform').value,
+                        outline: document.getElementById('article-outline').value,
+                        length: document.querySelector('input[name="article-length"]:checked').value
+                    })
+                });
+
+                const result = await response.json();
+                output.textContent = result.content || result.error || '生成失败';
+            } catch (error) {
+                output.innerHTML = `<span style="color: var(--danger);">生成失败: ${error.message}</span>`;
+            }
+        }
+
+        // AI报告
+        async function generateReport() {
+            const resultDiv = document.getElementById('report-result');
+            resultDiv.innerHTML = '<div class="loading"><div class="spinner"></div><span>正在生成报告...</span></div>';
+
+            try {
+                const response = await fetch('/api/cms/generate-report', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        period: document.getElementById('report-period').value,
+                        dimensions: Array.from(document.querySelectorAll('#page-ai-report input[type="checkbox"]:checked')).map(c => c.value)
+                    })
+                });
+
+                const result = await response.json();
+                resultDiv.innerHTML = `<div class="result-box">${result.report || '报告生成完成'}</div>`;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="alert alert-danger">报告生成失败: ${error.message}</div>`;
+            }
+        }
+
+        // 优化闭环
+        async function loadOptimizationStatus() {
+            try {
+                const response = await fetch('/api/cms/optimization-status');
+                const result = await response.json();
+                
+                document.getElementById('pref-score').textContent = result.preferenceScore || '--';
+                document.getElementById('optimize-rate').textContent = result.iterations || '--';
+                document.getElementById('success-rate').textContent = result.successRate || '--';
+            } catch (error) {
+                console.error('加载优化状态失败:', error);
+            }
+        }
+
+        function resetPreferences() {
+            if (confirm('确定要重置所有偏好设置吗？')) {
+                fetch('/api/cms/reset-preferences', { method: 'POST' })
+                    .then(() => {
+                        alert('偏好已重置');
+                        loadOptimizationStatus();
+                    });
+            }
+        }
+
+        // 社区市场
+        async function loadCommunityList() {
+            const listDiv = document.getElementById('community-list');
+            try {
+                const response = await fetch('/api/cms/community-list');
+                const result = await response.json();
+                
+                if (result.items && result.items.length > 0) {
+                    listDiv.innerHTML = result.items.map(item => `
+                        <div style="padding: 16px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 12px;">
+                            <h4>${item.name}</h4>
+                            <p style="color: var(--text-secondary); font-size: 13px;">${item.description}</p>
+                            <div style="margin-top: 8px;">
+                                <span style="font-size: 12px; color: var(--text-secondary);">作者: ${item.author}</span>
+                                <span style="font-size: 12px; color: var(--text-secondary); margin-left: 16px;">下载: ${item.downloads || 0}</span>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    listDiv.innerHTML = '<div class="alert alert-warning">暂无内容，成为第一个贡献者吧！</div>';
+                }
+            } catch (error) {
+                listDiv.innerHTML = `<div class="alert alert-danger">加载失败: ${error.message}</div>`;
+            }
+        }
+
+        function showSubmitModal() {
+            alert('提交功能开发中...');
+        }
+
+        // CMS集成 - 连接并获取CMS配置
+        async function connectCms() {
+            const url = document.getElementById('cms-url')?.value || CMS_API_BASE;
+            const apiKey = document.getElementById('cms-api-key')?.value || '';
+
+            // 保存CMS配置
+            localStorage.setItem('cms-config', JSON.stringify({ url, apiKey }));
+            cmsConnected = false;
+
+            try {
+                // 测试连接 - 使用stats接口
+                const response = await fetch(url + '/digitalemployee/getStats', {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    if (result.code === 1) {
+                        cmsConnected = true;
+                        document.getElementById('cms-content-list').style.display = 'block';
+                        loadCmsArticles();
+                        alert('CMS连接成功！');
+                    } else {
+                        alert('连接失败: ' + (result.msg || '未知错误'));
+                    }
+                } else {
+                    alert('连接失败: HTTP ' + response.status);
+                }
+            } catch (error) {
+                console.error('CMS连接失败:', error);
+                alert('连接失败: ' + error.message + '\n\n请确保CMS系统正在运行并且API地址正确。');
+            }
+        }
+
+        async function loadCmsArticles() {
+            const url = JSON.parse(localStorage.getItem('cms-config') || '{}').url || CMS_API_BASE;
+
+            try {
+                const response = await fetch(url + '/digitalemployee/getContentForWorker?type=articles&limit=20');
+                const result = await response.json();
+
+                const container = document.getElementById('cms-articles');
+                if (!container) return;
+
+                if (result.code === 1 && result.data && result.data.length > 0) {
+                    container.innerHTML = result.data.map(a => `
+                        <div class="feature-card" style="cursor: pointer; margin-bottom: 12px;" onclick="selectCmsArticle('${a.id}', '${escapeHtml(a.title)}')">
+                            <h3>${a.title || '无标题'}</h3>
+                            <p>${a.description || a.title || ''}</p>
+                            <div style="font-size: 12px; color: #64748b; margin-top: 8px;">
+                                栏目ID: ${a.typeid || '-'} | 添加时间: ${formatDate(a.addtime)}
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = '<p style="color: #64748b;">暂无可用文章</p>';
+                }
+            } catch (error) {
+                console.error('加载CMS文章失败:', error);
+                const container = document.getElementById('cms-articles');
+                if (container) {
+                    container.innerHTML = '<p style="color: #ef4444;">加载失败: ' + error.message + '</p>';
+                }
+            }
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        function formatDate(timestamp) {
+            if (!timestamp) return '-';
+            const d = new Date(timestamp * 1000);
+            return d.toLocaleDateString();
+        }
+
+        function selectCmsArticle(id, title) {
+            if (confirm('确定要导入这篇文章进行裂变处理吗？\n\n标题: ' + title)) {
+                document.getElementById('fission-content').value = `正在加载CMS文章 ID: ${id}...`;
+                switchPage('content-fission');
+
+                // 获取文章详情
+                fetchFromCMSArticle(id);
+            }
+        }
+
+        async function fetchFromCMSArticle(articleId) {
+            const url = JSON.parse(localStorage.getItem('cms-config') || '{}').url || CMS_API_BASE;
+
+            try {
+                const response = await fetch(url + '/digitalemployee/getCmsArticle?id=' + articleId);
+                const result = await response.json();
+
+                if (result.code === 1 && result.data) {
+                    document.getElementById('fission-content').value = result.data.content || result.data.description || '';
+                    alert('文章已导入，可以开始裂变处理！');
+                } else {
+                    document.getElementById('fission-content').value = '';
+                    alert('获取文章内容失败');
+                }
+            } catch (error) {
+                console.error('获取文章详情失败:', error);
+                document.getElementById('fission-content').value = '';
+            }
+        }
+
+        // 发布到CMS
+        async function publishToCms() {
+            const content = document.getElementById('fission-output')?.value ||
+                           document.getElementById('rewriteOutput')?.value ||
+                           document.querySelector('.result-box')?.textContent || '';
+
+            if (!content || content.trim() === '') {
+                alert('没有可发布的内容，请先进行内容处理！');
+                return;
+            }
+
+            const title = prompt('请输入文章标题:', 'AI处理-' + new Date().toLocaleDateString());
+            if (!title) return;
+
+            const categorySelect = document.getElementById('publish-category');
+            const typeid = categorySelect?.value || 21215; // 默认技术观察
+
+            const result = await sendToCMS(content, title, 'new', null);
+
+            if (result.code === 1) {
+                alert('发布成功！文章ID: ' + result.id);
+            } else {
+                alert('发布失败: ' + (result.msg || '未知错误'));
+            }
+        }
+
+        // 加载CMS栏目列表
+        async function loadCmsCategories() {
+            const url = JSON.parse(localStorage.getItem('cms-config') || '{}').url || CMS_API_BASE;
+
+            try {
+                const response = await fetch(url + '/digitalemployee/getCategories');
+                const result = await response.json();
+
+                const select = document.getElementById('publish-category');
+                if (!select) return;
+
+                if (result.code === 1 && result.data && result.data.length > 0) {
+                    select.innerHTML = '<option value="">-- 选择栏目 --</option>' +
+                        result.data.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+                }
+            } catch (error) {
+                console.error('加载栏目失败:', error);
+            }
+        }
+
+        // 数据同步 - 从CMS获取文章
+        async function syncCms() {
+            document.getElementById('sync-status').textContent = '同步中...';
+            try {
+                // 测试CMS连接
+                const response = await fetch(CMS_API_BASE + '/digitalemployee/getStats', {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.code === 1) {
+                        document.getElementById('sync-articles').textContent = data.data.totalArticles || 0;
+                        document.getElementById('sync-status').textContent = '在线';
+                        cmsConnected = true;
+
+                        // 保存同步数据到本地
+                        localStorage.setItem('cms-stats', JSON.stringify(data.data));
+                        localStorage.setItem('cms-last-sync', new Date().toISOString());
+                    }
+                } else {
+                    document.getElementById('sync-status').textContent = '离线';
+                    cmsConnected = false;
+                }
+                document.getElementById('sync-time').textContent = new Date().toLocaleTimeString();
+            } catch (error) {
+                console.error('CMS同步失败:', error);
+                document.getElementById('sync-status').textContent = '离线';
+                cmsConnected = false;
+            }
+        }
+
+        // 同步阅读反馈到CMS
+        async function syncFeedbackToCMS(feedbackData) {
+            if (!cmsConnected) {
+                await syncCms();
+            }
+
+            if (!cmsConnected) {
+                console.log('CMS未连接，反馈数据暂存本地');
+                // 暂存到本地待同步
+                const pending = JSON.parse(localStorage.getItem('pending-feedback') || '[]');
+                pending.push({ ...feedbackData, timestamp: new Date().toISOString() });
+                localStorage.setItem('pending-feedback', JSON.stringify(pending));
+                return false;
+            }
+
+            try {
+                const response = await fetch(CMS_API_BASE + '/digitalemployee/saveReadFeedback', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(feedbackData)
+                });
+                return response.ok;
+            } catch (error) {
+                console.error('反馈同步失败:', error);
+                return false;
+            }
+        }
+
+        // 从CMS获取内容用于处理
+        async function fetchContentFromCMS(categoryId = null, limit = 10) {
+            try {
+                let url = CMS_API_BASE + '/digitalemployee/getContentForWorker?type=articles&limit=' + limit;
+                if (categoryId) {
+                    url += '&categoryId=' + categoryId;
+                }
+
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (data.code === 1) {
+                    return data.data;
+                }
+            } catch (error) {
+                console.error('获取CMS内容失败:', error);
+            }
+            return [];
+        }
+
+        // 发送处理后的内容到CMS
+        async function sendToCMS(content, title, action = 'new', originalId = null) {
+            if (!cmsConnected) {
+                await syncCms();
+            }
+
+            try {
+                const payload = {
+                    content: content,
+                    title: title,
+                    action: action,
+                    source: 'content-worker'
+                };
+
+                if (originalId) {
+                    payload.originalId = originalId;
+                }
+
+                const response = await fetch(CMS_API_BASE + '/digitalemployee/receiveFromWorker', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('发送到CMS失败:', error);
+                return { code: 0, msg: error.message };
+            }
+        }
+
+        function setupAutoSync() {
+            alert('自动同步设置开发中...\n\n功能说明：\n1. 自动同步CMS文章到本地\n2. 自动同步阅读反馈到CMS\n3. 定时保持数据一致性');
+        }
+
+        // 设置
+        function saveSettings() {
+            const settings = {
+                defaultModel: document.getElementById('default-model').value,
+                defaultStyle: document.getElementById('default-style').value,
+                outputLang: document.querySelector('input[name="output-lang"]:checked').value
+            };
+            localStorage.setItem('content-worker-settings', JSON.stringify(settings));
+            alert('设置已保存');
+        }
+
+        function loadSettings() {
+            const saved = localStorage.getItem('content-worker-settings');
+            if (saved) {
+                const settings = JSON.parse(saved);
+                document.getElementById('default-model').value = settings.defaultModel || 'deepseek';
+                document.getElementById('default-style').value = settings.defaultStyle || 'professional';
+            }
+        }
+
+        // 打开CMS集成版
+        function openCmsIntegration() {
+            // CMS集成版在CMS主系统 /digital-employee 路由
+            window.open('/digital-employee', '_blank');
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSettings();
+        });
+    </script>
+</body>
+</html>

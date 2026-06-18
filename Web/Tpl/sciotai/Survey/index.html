@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测测你的企业内容生产效率能提升多少？</title>
+    <link rel="stylesheet" href="__TMPL__css/bootstrap.min.css">
+    <style>
+        body { background: linear-gradient(135deg, #6c5ce7, #a29bfe); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; min-height: 100vh; }
+        .survey-container { max-width: 700px; margin: 40px auto; padding: 0 20px; }
+        .survey-card { background: #fff; border-radius: 20px; padding: 40px; box-shadow: 0 12px 48px rgba(0,0,0,0.15); }
+        
+        .survey-header { text-align: center; margin-bottom: 40px; }
+        .survey-header h1 { font-size: 26px; color: #1a1f4e; margin-bottom: 12px; }
+        .survey-header p { font-size: 14px; color: #666; line-height: 1.6; }
+        
+        .question-section { margin-bottom: 30px; }
+        .question-title { font-size: 16px; font-weight: 600; color: #1a1f4e; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .question-title .num { width: 24px; height: 24px; background: linear-gradient(135deg, #6c5ce7, #a29bfe); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; }
+        
+        .option-list { display: flex; flex-direction: column; gap: 12px; }
+        .option-item { padding: 14px 18px; border: 2px solid #e8ebf0; border-radius: 12px; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 12px; }
+        .option-item:hover { border-color: #6c5ce7; background: #f8f9fc; }
+        .option-item.selected { border-color: #6c5ce7; background: #f5f2ff; }
+        .option-item input[type="radio"] { display: none; }
+        .option-item .check-icon { width: 20px; height: 20px; border: 2px solid #d0d5dd; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .option-item.selected .check-icon { background: #6c5ce7; border-color: #6c5ce7; }
+        .option-item.selected .check-icon::after { content: '✓'; color: #fff; font-size: 12px; }
+        
+        .checkbox-list { display: flex; flex-wrap: wrap; gap: 10px; }
+        .checkbox-item { padding: 10px 18px; border: 2px solid #e8ebf0; border-radius: 20px; cursor: pointer; transition: all 0.3s; font-size: 14px; }
+        .checkbox-item:hover { border-color: #6c5ce7; }
+        .checkbox-item.selected { border-color: #6c5ce7; background: #6c5ce7; color: #fff; }
+        
+        .input-group { margin-top: 12px; }
+        .input-group input { width: 100%; padding: 12px 16px; border: 1px solid #e8ebf0; border-radius: 8px; font-size: 14px; }
+        .input-group input:focus { outline: none; border-color: #6c5ce7; }
+        
+        .hours-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .hours-item { padding: 12px; border: 1px solid #e8ebf0; border-radius: 8px; }
+        .hours-item label { display: block; font-size: 13px; color: #666; margin-bottom: 8px; }
+        .hours-item input { width: 100%; padding: 8px; border: 1px solid #e8ebf0; border-radius: 6px; text-align: center; font-size: 14px; }
+        
+        .submit-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, #6c5ce7, #a29bfe); color: #fff; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(108,92,231,0.3); }
+        
+        .result-page { display: none; text-align: center; }
+        .result-icon { font-size: 72px; margin-bottom: 20px; }
+        .result-score { font-size: 48px; font-weight: 700; color: #6c5ce7; margin-bottom: 12px; }
+        .result-label { font-size: 18px; color: #1a1f4e; margin-bottom: 8px; }
+        .result-desc { font-size: 14px; color: #666; line-height: 1.6; margin-bottom: 24px; }
+        
+        .result-detail { background: #f8f9fc; border-radius: 12px; padding: 24px; text-align: left; }
+        .result-detail h4 { font-size: 15px; color: #1a1f4e; margin-bottom: 16px; }
+        .result-detail ul { padding-left: 20px; font-size: 14px; color: #666; line-height: 1.8; }
+        
+        .contact-box { background: linear-gradient(135deg, #6c5ce7, #a29bfe); border-radius: 16px; padding: 30px; color: #fff; margin-top: 24px; }
+        .contact-box h4 { font-size: 18px; margin-bottom: 12px; }
+        .contact-box p { font-size: 14px; opacity: 0.9; line-height: 1.6; }
+        .contact-btn { display: inline-block; padding: 12px 32px; background: #fff; color: #6c5ce7; text-decoration: none; border-radius: 30px; font-weight: 600; margin-top: 16px; }
+        
+        .progress-bar { height: 8px; background: #f0f2f5; border-radius: 4px; overflow: hidden; margin-bottom: 40px; }
+        .progress-fill { height: 100%; background: linear-gradient(135deg, #6c5ce7, #a29bfe); width: 0%; transition: width 0.3s; }
+        
+        @media (max-width: 768px) {
+            .survey-card { padding: 24px; }
+            .hours-row { grid-template-columns: 1fr; }
+            .survey-header h1 { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="survey-container">
+        <div class="survey-card">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <div class="survey-header">
+                <h1>测测你的企业内容生产效率能提升多少？</h1>
+                <p>填写约3分钟，我们将免费为你生成《内容自动化潜力诊断报告》</p>
+            </div>
+
+            <div id="surveyForm">
+                <div class="question-section">
+                    <div class="question-title"><span class="num">1</span>你的行业</div>
+                    <div class="option-list">
+                        <div class="option-item" onclick="selectRadio(this, 'industry', 'manufacturing')">
+                            <div class="check-icon"></div>
+                            <span>制造业/设备/仪器</span>
+                            <input type="radio" name="industry" value="manufacturing">
+                        </div>
+                        <div class="option-item" onclick="selectRadio(this, 'industry', 'trade')">
+                            <div class="check-icon"></div>
+                            <span>贸易/批发</span>
+                            <input type="radio" name="industry" value="trade">
+                        </div>
+                        <div class="option-item" onclick="selectRadio(this, 'industry', 'ecommerce')">
+                            <div class="check-icon"></div>
+                            <span>电商/品牌</span>
+                            <input type="radio" name="industry" value="ecommerce">
+                        </div>
+                        <div class="option-item" onclick="selectRadio(this, 'industry', 'service')">
+                            <div class="check-icon"></div>
+                            <span>专业服务（咨询/律所/财务）</span>
+                            <input type="radio" name="industry" value="service">
+                        </div>
+                        <div class="option-item" onclick="selectRadio(this, 'industry', 'other')">
+                            <div class="check-icon"></div>
+                            <span>其他</span>
+                            <input type="radio" name="industry" value="other">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-section">
+                    <div class="question-title"><span class="num">2</span>公司规模（人数）</div>
+                    <div class="option-list">
+                        <div class="option-item" onclick="selectRadio(this, 'size', '1-10')">
+                            <div class="check-icon"></div>
+                            <span>1-10人</span>
+                            <input type="radio" name="size" value="1-10">
+                        </div>
+                        <div class="option-item" onclick="selectRadio(this, 'size', '11-50')">
+                            <div class="check-icon"></div>
+                            <span>11-50人</span>
+                            <input type="radio" name="size" value="11-50">
+                        </div>
+                        <div class="option-item" onclick="selectRadio(this, 'size', '51-200')">
+                            <div class="check-icon"></div>
+                            <span>51-200人</span>
+                            <input type="radio" name="size" value="51-200">
+                        </div>
+                        <div class="option-item" onclick="selectRadio(this, 'size', '200+')">
+                            <div class="check-icon"></div>
+                            <span>200人以上</span>
+                            <input type="radio" name="size" value="200+">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-section">
+                    <div class="question-title"><span class="num">3</span>以下内容任务，每周大约占用多少小时？</div>
+                    <div class="hours-row">
+                        <div class="hours-item">
+                            <label>产品说明书/技术文档</label>
+                            <input type="number" id="hours1" placeholder="0" min="0">
+                        </div>
+                        <div class="hours-item">
+                            <label>公众号/知乎/官网文章</label>
+                            <input type="number" id="hours2" placeholder="0" min="0">
+                        </div>
+                        <div class="hours-item">
+                            <label>销售话术/客户邮件</label>
+                            <input type="number" id="hours3" placeholder="0" min="0">
+                        </div>
+                        <div class="hours-item">
+                            <label>竞品分析/市场报告</label>
+                            <input type="number" id="hours4" placeholder="0" min="0">
+                        </div>
+                        <div class="hours-item">
+                            <label>客户案例/内部资料</label>
+                            <input type="number" id="hours5" placeholder="0" min="0">
+                        </div>
+                        <div class="hours-item">
+                            <label>其他重复性文案</label>
+                            <input type="number" id="hours6" placeholder="0" min="0">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-section">
+                    <div class="question-title"><span class="num">4</span>目前谁在负责这些内容？</div>
+                    <div class="option-list">
+                        <div class="option-item" onclick="selectRadio(this, 'responsible', 'boss')">
+                            <div class="check-icon"></div>
+                            <span>老板/创始人自己</span>
+                            <input type="radio" name="responsible" value="boss">
+                        </div>
+                        <div class="option-item" onclick="selectRadio(this, 'responsible', 'staff')">
+                            <div class="check-icon"></div>
+                            <span>员工（非专职文案）</span>
+                            <input type="radio" name="responsible" value="staff">
+                        </div>
+                        <div class="option-item" onclick="selectRadio(this, 'responsible', 'specialist')">
+                            <div class="check-icon"></div>
+                            <span>专职文案/市场人员</span>
+                            <input type="radio" name="responsible" value="specialist">
+                        </div>
+                        <div class="option-item" onclick="selectRadio(this, 'responsible', 'outsourcing')">
+                            <div class="check-icon"></div>
+                            <span>外包</span>
+                            <input type="radio" name="responsible" value="outsourcing">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-section">
+                    <div class="question-title"><span class="num">5</span>最耗时的环节是？</div>
+                    <div class="option-list">
+                        <div class="option-item" onclick="selectRadio(this, 'bottleneck', 'research')">
+                            <div class="check-icon"></div>
+                            <span>收集资料</span>
+                            <input type="radio" name="bottleneck" value="research">
+                        </div>
+                        <div class="option-item" onclick="selectRadio(this, 'bottleneck', 'idea')">
+                            <div class="check-icon"></div>
+                            <span>构思角度</span>
+                            <input type="radio" name="bottleneck" value="idea">
+                        </div>
+                        <div class="option-item" onclick="selectRadio(this, 'bottleneck', 'writing')">
+                            <div class="check-icon"></div>
+                            <span>撰写初稿</span>
+                            <input type="radio" name="bottleneck" value="writing">
+                        </div>
+                        <div class="option-item" onclick="selectRadio(this, 'bottleneck', 'editing')">
+                            <div class="check-icon"></div>
+                            <span>修改排版</span>
+                            <input type="radio" name="bottleneck" value="editing">
+                        </div>
+                        <div class="option-item" onclick="selectRadio(this, 'bottleneck', 'publish')">
+                            <div class="check-icon"></div>
+                            <span>多平台发布</span>
+                            <input type="radio" name="bottleneck" value="publish">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-section">
+                    <div class="question-title"><span class="num">6</span>你是否有以下困扰？（可多选）</div>
+                    <div class="checkbox-list">
+                        <div class="checkbox-item" onclick="toggleCheckbox(this, 'painpoint', 'update')">内容更新频率低</div>
+                        <div class="checkbox-item" onclick="toggleCheckbox(this, 'painpoint', 'newproduct')">新品资料总是来不及</div>
+                        <div class="checkbox-item" onclick="toggleCheckbox(this, 'painpoint', 'technical')">客户反映产品介绍太技术化</div>
+                        <div class="checkbox-item" onclick="toggleCheckbox(this, 'painpoint', 'staff')">人手不够</div>
+                    </div>
+                    <div class="input-group" style="margin-top: 16px;">
+                        <input type="text" id="painpointOther" placeholder="其他困扰（选填）">
+                    </div>
+                </div>
+
+                <div class="question-section">
+                    <div class="question-title"><span class="num">7</span>是否尝试过用AI生成内容？</div>
+                    <div class="option-list">
+                        <div class="option-item" onclick="selectRadio(this, 'aiExp', 'never')">
+                            <div class="check-icon"></div>
+                            <span>从未</span>
+                            <input type="radio" name="aiExp" value="never">
+                        </div>
+                        <div class="option-item" onclick="selectRadio(this, 'aiExp', 'tried')">
+                            <div class="check-icon"></div>
+                            <span>试过但效果不满意</span>
+                            <input type="radio" name="aiExp" value="tried">
+                        </div>
+                        <div class="option-item" onclick="selectRadio(this, 'aiExp', 'using')">
+                            <div class="check-icon"></div>
+                            <span>正在用，但觉得不够专业</span>
+                            <input type="radio" name="aiExp" value="using">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-section">
+                    <div class="question-title"><span class="num">8</span>如果有工具能帮你自动完成50-80%的内容工作，你愿意的付费方式？</div>
+                    <div class="option-list">
+                        <div class="option-item" onclick="selectRadio(this, 'payment', 'project')">
+                            <div class="check-icon"></div>
+                            <span>按项目一次性付费</span>
+                            <input type="radio" name="payment" value="project">
+                        </div>
+                        <div class="option-item" onclick="selectRadio(this, 'payment', 'monthly')">
+                            <div class="check-icon"></div>
+                            <span>按月付服务费</span>
+                            <input type="radio" name="payment" value="monthly">
+                        </div>
+                        <div class="option-item" onclick="selectRadio(this, 'payment', 'trial')">
+                            <div class="check-icon"></div>
+                            <span>先免费试用</span>
+                            <input type="radio" name="payment" value="trial">
+                        </div>
+                        <div class="option-item" onclick="selectRadio(this, 'payment', 'undecided')">
+                            <div class="check-icon"></div>
+                            <span>不确定，要看具体能省多少时间</span>
+                            <input type="radio" name="payment" value="undecided">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-section">
+                    <div class="question-title"><span class="num">9</span>联系方式（选填，用于发送诊断报告）</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div class="input-group">
+                            <input type="text" id="contactName" placeholder="姓名">
+                        </div>
+                        <div class="input-group">
+                            <input type="text" id="contactCompany" placeholder="公司">
+                        </div>
+                    </div>
+                    <div class="input-group" style="margin-top: 12px;">
+                        <input type="text" id="contactWechat" placeholder="微信/手机">
+                    </div>
+                </div>
+
+                <button class="submit-btn" onclick="submitSurvey()">立即生成诊断报告</button>
+            </div>
+
+            <div id="resultPage" class="result-page">
+                <div class="result-icon">🎯</div>
+                <div class="result-score" id="resultScore">0%</div>
+                <div class="result-label" id="resultLabel">内容自动化潜力评估</div>
+                <div class="result-desc" id="resultDesc"></div>
+
+                <div class="result-detail">
+                    <h4>📊 你的企业内容现状分析</h4>
+                    <ul id="resultDetails"></ul>
+                </div>
+
+                <div class="contact-box">
+                    <h4>💬 获取完整诊断报告</h4>
+                    <p>我们将在24小时内添加你的微信，发送《企业内容自动化潜力诊断报告》，包含详细的自动化方案建议。</p>
+                    <a href="tel:400-888-8888" class="contact-btn">立即咨询</a>
+                    <p style="margin-top: 12px; font-size: 12px;">或添加微信：AI_Content_Expert</p>
+                </div>
+
+                <div style="margin-top: 24px; text-align: center;">
+                    <p style="font-size: 14px; color: #666; margin-bottom: 16px;">立即体验免费工具：</p>
+                    <a href="/tools" class="contact-btn" style="background: #f8f9fc; color: #6c5ce7;">进入【内容工坊】免费体验</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedOptions = {};
+        let selectedPainpoints = [];
+
+        function selectRadio(el, name, value) {
+            document.querySelectorAll(`.option-item[data-name="${name}"]`).forEach(e => {
+                e.classList.remove('selected');
+            });
+            el.classList.add('selected');
+            el.setAttribute('data-name', name);
+            selectedOptions[name] = value;
+            updateProgress();
+        }
+
+        function toggleCheckbox(el, name, value) {
+            el.classList.toggle('selected');
+            const index = selectedPainpoints.indexOf(value);
+            if (index > -1) {
+                selectedPainpoints.splice(index, 1);
+            } else {
+                selectedPainpoints.push(value);
+            }
+            updateProgress();
+        }
+
+        function updateProgress() {
+            let filled = 0;
+            const required = ['industry', 'size', 'responsible', 'bottleneck', 'aiExp', 'payment'];
+            required.forEach(k => { if (selectedOptions[k]) filled++; });
+            
+            const hours = [hours1, hours2, hours3, hours4, hours5, hours6].some(h => h.value > 0);
+            if (hours) filled++;
+            if (selectedPainpoints.length > 0) filled++;
+
+            const progress = Math.round((filled / 9) * 100);
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function submitSurvey() {
+            const hours = [
+                parseFloat(document.getElementById('hours1').value) || 0,
+                parseFloat(document.getElementById('hours2').value) || 0,
+                parseFloat(document.getElementById('hours3').value) || 0,
+                parseFloat(document.getElementById('hours4').value) || 0,
+                parseFloat(document.getElementById('hours5').value) || 0,
+                parseFloat(document.getElementById('hours6').value) || 0
+            ];
+            const totalHours = hours.reduce((a, b) => a + b, 0);
+
+            if (totalHours === 0 && !selectedOptions.industry) {
+                alert('请至少填写一些内容');
+                return;
+            }
+
+            let score = 50;
+            
+            if (totalHours > 10) score += 15;
+            if (totalHours > 20) score += 10;
+            
+            if (selectedOptions.responsible === 'boss' || selectedOptions.responsible === 'staff') {
+                score += 15;
+            }
+            
+            if (selectedOptions.bottleneck === 'research' || selectedOptions.bottleneck === 'writing') {
+                score += 10;
+            }
+            
+            if (selectedOptions.aiExp === 'tried') {
+                score += 5;
+            } else if (selectedOptions.aiExp === 'using') {
+                score += 10;
+            }
+            
+            if (selectedPainpoints.length >= 2) {
+                score += 10;
+            }
+
+            score = Math.min(score, 95);
+
+            let label = '';
+            let desc = '';
+            let details = [];
+
+            if (score >= 80) {
+                label = '高潜力！自动化效果显著';
+                desc = '你的企业有很大的内容自动化空间，预计可节省60-80%的内容制作时间。';
+                details = [
+                    '每周内容工时超过行业平均水平',
+                    '非专业人员负责内容制作，效率提升空间大',
+                    '已尝试过AI工具，接受度较高',
+                    '建议：立即接入自动化系统，优先从最耗时的环节入手'
+                ];
+            } else if (score >= 60) {
+                label = '中等潜力，值得尝试';
+                desc = '你的企业可以通过自动化节省40-60%的内容制作时间。';
+                details = [
+                    '内容制作有一定重复性',
+                    '存在明确的效率瓶颈',
+                    '建议：先从单个任务开始试点，验证效果后再扩展'
+                ];
+            } else {
+                label = '潜力待挖掘';
+                desc = '你的企业内容制作量适中，可以通过自动化优化流程。';
+                details = [
+                    '当前内容工时相对合理',
+                    '建议：从标准化程度最高的任务开始尝试自动化'
+                ];
+            }
+
+            document.getElementById('resultScore').textContent = score + '%';
+            document.getElementById('resultLabel').textContent = label;
+            document.getElementById('resultDesc').textContent = desc;
+            document.getElementById('resultDetails').innerHTML = details.map(d => `<li>${d}</li>`).join('');
+
+            document.getElementById('surveyForm').style.display = 'none';
+            document.getElementById('resultPage').style.display = 'block';
+
+            saveSurvey(totalHours, score);
+        }
+
+        async function saveSurvey(totalHours, score) {
+            const data = {
+                industry: selectedOptions.industry || '',
+                size: selectedOptions.size || '',
+                hours: {
+                    h1: document.getElementById('hours1').value,
+                    h2: document.getElementById('hours2').value,
+                    h3: document.getElementById('hours3').value,
+                    h4: document.getElementById('hours4').value,
+                    h5: document.getElementById('hours5').value,
+                    h6: document.getElementById('hours6').value
+                },
+                responsible: selectedOptions.responsible || '',
+                bottleneck: selectedOptions.bottleneck || '',
+                painpoints: selectedPainpoints,
+                painpointOther: document.getElementById('painpointOther').value || '',
+                aiExp: selectedOptions.aiExp || '',
+                payment: selectedOptions.payment || '',
+                contactName: document.getElementById('contactName').value || '',
+                contactCompany: document.getElementById('contactCompany').value || '',
+                contactWechat: document.getElementById('contactWechat').value || '',
+                totalHours: totalHours,
+                score: score,
+                createdAt: new Date().toISOString()
+            };
+
+            try {
+                await fetch('/api/survey/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+            } catch (e) {
+                console.log('Save failed:', e);
+            }
+        }
+    </script>
+</body>
+</html>

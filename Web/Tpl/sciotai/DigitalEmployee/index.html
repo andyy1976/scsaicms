@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>内容数字员工工作台 - CMS集成版</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #f5f7fa; min-height: 100vh; color: #333; }
+        
+        .de-container { display: flex; min-height: 100vh; }
+        
+        /* Header Banner */
+        .de-banner {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+        }
+        .de-banner-title { display: flex; align-items: center; gap: 12px; }
+        .de-banner-title h1 { font-size: 18px; font-weight: 600; }
+        .de-banner-title .tag { background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 20px; font-size: 12px; }
+        .de-banner-actions { display: flex; gap: 12px; }
+        .de-banner-btn { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; transition: all 0.2s; text-decoration: none; }
+        .de-banner-btn:hover { background: rgba(255,255,255,0.25); }
+        .de-banner-btn.standalone { background: #10b981; border-color: #10b981; }
+        
+        /* Sidebar */
+        .de-sidebar { width: 250px; background: #1e293b; color: #94a3b8; padding: 20px 0; flex-shrink: 0; display: flex; flex-direction: column; }
+        .de-sidebar-header { padding: 0 24px 20px; border-bottom: 1px solid #334155; margin-bottom: 20px; }
+        .de-sidebar-header h1 { font-size: 18px; font-weight: 700; color: #f1f5f9; display: flex; align-items: center; gap: 10px; }
+        .de-sidebar-header h1 span { width: 32px; height: 32px; background: linear-gradient(135deg, #6366f1, #8b5cf6); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+        .de-sidebar-menu { flex: 1; overflow-y: auto; }
+        .de-menu-item { display: flex; align-items: center; gap: 12px; padding: 12px 24px; cursor: pointer; transition: all 0.2s; font-size: 14px; }
+        .de-menu-item:hover { background: #334155; color: #f1f5f9; }
+        .de-menu-item.active { background: rgba(99, 102, 241, 0.15); color: #a5b4fc; border-left: 3px solid #6366f1; }
+        .de-menu-item .icon { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+        .de-menu-divider { height: 1px; background: #334155; margin: 16px 0; }
+        .de-menu-section { padding: 8px 24px; font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        /* Main */
+        .de-main { flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+        .de-main-header { background: white; padding: 16px 32px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
+        .de-main-header .title-area h2 { font-size: 22px; font-weight: 700; color: #1e293b; }
+        .de-main-header .title-area p { font-size: 13px; color: #64748b; margin-top: 4px; }
+        .de-main-header .actions { display: flex; gap: 12px; }
+        
+        .de-content { flex: 1; padding: 24px 32px; overflow-y: auto; }
+        
+        /* Cards */
+        .de-card { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 24px; border: 1px solid #f1f5f9; }
+        .de-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .de-card-title { font-size: 16px; font-weight: 600; color: #1e293b; display: flex; align-items: center; gap: 8px; }
+        .de-card-title .badge { padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; background: #e0e7ff; color: #4338ca; }
+        .de-card-title .badge-cms { background: #d1fae5; color: #065f46; }
+        
+        /* Grid */
+        .de-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        .de-stat-card { background: linear-gradient(135deg, #f8fafc, #f1f5f9); border-radius: 12px; padding: 24px; border: 1px solid #e2e8f0; transition: transform 0.2s; }
+        .de-stat-card:hover { transform: translateY(-2px); }
+        .de-stat-card .stat-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; font-size: 18px; }
+        .de-stat-card .stat-value { font-size: 28px; font-weight: 700; color: #1e293b; margin-bottom: 4px; }
+        .de-stat-card .stat-label { font-size: 13px; color: #64748b; }
+        
+        /* Buttons */
+        .de-btn { padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; border: none; cursor: pointer; transition: all 0.2s; }
+        .de-btn-primary { background: #6366f1; color: white; }
+        .de-btn-primary:hover { background: #4f46e5; }
+        .de-btn-secondary { background: #f1f5f9; color: #64748b; }
+        .de-btn-secondary:hover { background: #e2e8f0; }
+        .de-btn-success { background: #10b981; color: white; }
+        .de-btn-success:hover { background: #059669; }
+        .de-btn-sm { padding: 6px 14px; font-size: 13px; }
+        
+        /* Forms */
+        .de-input, .de-select { width: 100%; padding: 10px 14px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; transition: all 0.2s; background: white; }
+        .de-input:focus, .de-select:focus { border-color: #6366f1; outline: none; box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1); }
+        .de-textarea { width: 100%; padding: 12px 14px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; min-height: 200px; resize: vertical; transition: all 0.2s; }
+        .de-textarea:focus { border-color: #6366f1; outline: none; box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1); }
+        .de-form-group { margin-bottom: 20px; }
+        .de-form-group label { display: block; font-size: 14px; font-weight: 600; color: #475569; margin-bottom: 8px; }
+        .de-form-group label .required { color: #ef4444; margin-left: 4px; }
+        
+        /* Tabs */
+        .de-tab-group { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+        .de-tab { padding: 8px 18px; border-radius: 6px; font-size: 13px; cursor: pointer; transition: all 0.2s; border: 1px solid #e2e8f0; background: white; color: #64748b; font-weight: 500; }
+        .de-tab.active { background: #6366f1; color: white; border-color: #6366f1; }
+        
+        /* Radio */
+        .de-radio-group { display: flex; gap: 20px; flex-wrap: wrap; }
+        .de-radio-item { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px; color: #475569; }
+        .de-radio-item input[type="radio"] { width: 16px; height: 16px; cursor: pointer; accent-color: #6366f1; }
+        
+        /* Sections */
+        .de-section { display: none; }
+        .de-section.active { display: block; animation: fadeIn 0.2s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Table */
+        .de-table { width: 100%; border-collapse: collapse; }
+        .de-table th, .de-table td { padding: 12px 16px; text-align: left; border-bottom: 1px solid #f1f5f9; }
+        .de-table th { background: #f8fafc; font-weight: 600; color: #64748b; font-size: 13px; }
+        .de-table td { font-size: 14px; color: #334155; }
+        .de-table tr:hover { background: #f8fafc; }
+        
+        /* Progress */
+        .de-progress-bar { height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden; }
+        .de-progress-fill { height: 100%; background: linear-gradient(90deg, #6366f1, #8b5cf6); border-radius: 4px; }
+        
+        /* Tags */
+        .de-tag { display: inline-block; padding: 3px 10px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .de-tag-high { background: #fee2e2; color: #dc2626; }
+        .de-tag-medium { background: #fef3c7; color: #d97706; }
+        .de-tag-low { background: #d1fae5; color: #059669; }
+        .de-tag-feature { background: #e0e7ff; color: #4338ca; }
+        .de-tag-improve { background: #fce7f3; color: #be185d; }
+        .de-tag-bug { background: #fee2e2; color: #dc2626; }
+        
+        /* Article Cards */
+        .de-article-card { padding: 16px; background: #f8fafc; border-radius: 8px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: flex-start; }
+        .de-article-card .article-info h4 { font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 4px; }
+        .de-article-card .article-info p { font-size: 12px; color: #64748b; }
+        .de-article-card .article-meta { text-align: right; }
+        
+        /* Feedback Cards */
+        .de-feedback-card { padding: 20px; background: #f8fafc; border-radius: 8px; margin-bottom: 16px; }
+        
+        /* Info Box */
+        .de-info-box { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 16px; margin-bottom: 20px; }
+        .de-info-box h4 { color: #1e40af; font-size: 14px; margin-bottom: 8px; }
+        .de-info-box p { color: #3b82f6; font-size: 13px; line-height: 1.6; }
+        
+        /* Feature Grid */
+        .de-feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .de-feature-card { background: white; border-radius: 12px; padding: 24px; border: 1px solid #e2e8f0; transition: all 0.3s; cursor: pointer; }
+        .de-feature-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+        .de-feature-card .icon { width: 48px; height: 48px; background: #e0e7ff; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 16px; }
+        .de-feature-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+        .de-feature-card p { font-size: 13px; color: #64748b; line-height: 1.6; }
+        .de-feature-card.cms { border-color: #d1fae5; }
+        .de-feature-card.cms .icon { background: #d1fae5; }
+        
+        /* Alert */
+        .de-alert { padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; font-size: 14px; }
+        .de-alert-info { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+        .de-alert-success { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
+        .de-alert-warning { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+    </style>
+</head>
+<body>
+    <!-- Header Banner -->
+    <div class="de-banner">
+        <div class="de-banner-title">
+            <span style="font-size: 24px;">🤖</span>
+            <h1>内容数字员工</h1>
+            <span class="tag">CMS集成版</span>
+        </div>
+        <div class="de-banner-actions">
+            <a href="http://localhost:3456" target="_blank" class="de-banner-btn standalone">
+                🚀 进入独立工具版
+            </a>
+            <a href="/tools" class="de-banner-btn">
+                🏠 返回首页
+            </a>
+        </div>
+    </div>
+
+    <div class="de-container">
+        <aside class="de-sidebar">
+            <div class="de-sidebar-header">
+                <h1><span>📦</span> CMS集成</h1>
+            </div>
+            
+            <div class="de-sidebar-menu">
+                <div class="de-menu-section">概览</div>
+                <div class="de-menu-item active" onclick="switchTab('dashboard')">
+                    <span class="icon">🏠</span> 工作台首页
+                </div>
+                
+                <div class="de-menu-divider"></div>
+                <div class="de-menu-section">CMS集成功能</div>
+                <div class="de-menu-item" onclick="switchTab('cms-import')">
+                    <span class="icon">📥</span> CMS内容导入
+                    <span class="badge">NEW</span>
+                </div>
+                <div class="de-menu-item" onclick="switchTab('cms-rewrite')">
+                    <span class="icon">✨</span> CMS存量改写
+                </div>
+                <div class="de-menu-item" onclick="switchTab('smart-column')">
+                    <span class="icon">📑</span> 智能栏目生成
+                </div>
+                <div class="de-menu-item" onclick="switchTab('read-feedback')">
+                    <span class="icon">📊</span> 阅读反馈分析
+                </div>
+                
+                <div class="de-menu-divider"></div>
+                <div class="de-menu-section">通用AI功能</div>
+                <div class="de-menu-item" onclick="switchTab('rewrite')">
+                    <span class="icon">🖊️</span> AI改写工具
+                </div>
+                <div class="de-menu-item" onclick="switchTab('content-fission')">
+                    <span class="icon">✂️</span> 内容裂变
+                </div>
+                <div class="de-menu-item" onclick="switchTab('diagnosis')">
+                    <span class="icon">📋</span> 能力诊断问卷
+                </div>
+                
+                <div class="de-menu-divider"></div>
+                <div class="de-menu-section">互动与反馈</div>
+                <div class="de-menu-item" onclick="switchTab('feedback')">
+                    <span class="icon">💬</span> 需求征集
+                </div>
+                
+                <div class="de-menu-divider"></div>
+                <div class="de-menu-section">独立工具</div>
+                <div class="de-menu-item" onclick="openStandalone()">
+                    <span class="icon">🚀</span> 打开完整工具箱
+                </div>
+            </div>
+        </aside>
+
+        <main class="de-main">
+            <header class="de-main-header">
+                <div class="title-area">
+                    <h2 id="pageTitle">工作台概览</h2>
+                    <p id="pageDesc">一站式内容自动化解决方案，提升企业内容生产效率</p>
+                </div>
+                <div class="actions">
+                    <button class="de-btn de-btn-secondary" onclick="openStandalone()">🚀 完整工具箱</button>
+                    <button class="de-btn de-btn-primary" onclick="location.reload()">🔄 刷新</button>
+                </div>
+            </header>
+
+            <div class="de-content">
+                <!-- 首页概览 -->
+                <div class="de-section active" id="dashboard">
+                    <div class="de-info-box">
+                        <h4>💡 CMS集成版说明</h4>
+                        <p>
+                            本版本专门针对CMS系统优化，可以直接导入CMS中的存量内容进行处理，
+                            并将结果发布回CMS。也可以使用通用AI功能处理任意来源的内容。
+                            <br><br>
+                            <strong>架构说明：</strong>
+                            <br>• <strong>CMS集成版</strong>：针对CMS存量内容优化，支持一键导入、反馈分析
+                            <br>• <strong>独立工具版</strong>：处理任意来源内容，功能更完整
+                            <br>• <strong>组合使用</strong>：在独立工具中处理后，发布到CMS
+                        </p>
+                    </div>
+
+                    <div class="de-card">
+                        <div class="de-card-header">
+                            <div class="de-card-title">📈 今日数据</div>
+                        </div>
+                        <div class="de-grid">
+                            <div class="de-stat-card">
+                                <div class="stat-icon" style="background: #dbeafe;">📄</div>
+                                <div class="stat-value" id="totalArticles">0</div>
+                                <div class="stat-label">处理文章数</div>
+                            </div>
+                            <div class="de-stat-card">
+                                <div class="stat-icon" style="background: #fce7f3;">✂️</div>
+                                <div class="stat-value" id="fissionCount">0</div>
+                                <div class="stat-label">内容裂变数</div>
+                            </div>
+                            <div class="de-stat-card">
+                                <div class="stat-icon" style="background: #d1fae5;">📊</div>
+                                <div class="stat-value" id="feedbackCount">0</div>
+                                <div class="stat-label">收到反馈数</div>
+                            </div>
+                            <div class="de-stat-card">
+                                <div class="stat-icon" style="background: #fef3c7;">💡</div>
+                                <div class="stat-value" id="ideaCount">0</div>
+                                <div class="stat-label">采纳建议数</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="de-card">
+                        <div class="de-card-header">
+                            <div class="de-card-title">🚀 快速入口</div>
+                        </div>
+                        <div class="de-feature-grid">
+                            <div class="de-feature-card cms" onclick="switchTab('cms-import')">
+                                <div class="icon">📥</div>
+                                <h3>CMS内容导入</h3>
+                                <p>一键导入CMS中的存量内容，支持批量选择和分类筛选</p>
+                            </div>
+                            <div class="de-feature-card cms" onclick="switchTab('cms-rewrite')">
+                                <div class="icon">✨</div>
+                                <h3>CMS存量改写</h3>
+                                <p>将CMS已有内容AI化改写，一键适配多平台发布需求</p>
+                            </div>
+                            <div class="de-feature-card" onclick="switchTab('content-fission')">
+                                <div class="icon">✂️</div>
+                                <h3>内容裂变</h3>
+                                <p>将长文拆解为短视频脚本、图文卡片、金句海报</p>
+                            </div>
+                            <div class="de-feature-card" onclick="switchTab('read-feedback')">
+                                <div class="icon">📊</div>
+                                <h3>阅读反馈分析</h3>
+                                <p>分析内容阅读数据，优化内容策略和生成参数</p>
+                            </div>
+                            <div class="de-feature-card" onclick="switchTab('smart-column')">
+                                <div class="icon">📑</div>
+                                <h3>智能栏目生成</h3>
+                                <p>AI自动分析内容，生成最优栏目结构和分类建议</p>
+                            </div>
+                            <div class="de-feature-card" onclick="switchTab('feedback')">
+                                <div class="icon">💬</div>
+                                <h3>需求征集</h3>
+                                <p>提交您的需求和建议，帮助我们持续改进产品</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px;">
+                        <div class="de-card">
+                            <div class="de-card-header">
+                                <div class="de-card-title">最近处理的内容</div>
+                            </div>
+                            <div id="recentArticles" style="min-height: 200px;">
+                                <div class="de-article-card">
+                                    <div class="article-info">
+                                        <h4>制造业数字化转型实践报告</h4>
+                                        <p>处理时间: 2024-01-15 14:30</p>
+                                    </div>
+                                    <div class="article-meta">
+                                        <span class="de-tag de-tag-feature">已裂变</span>
+                                    </div>
+                                </div>
+                                <div class="de-article-card">
+                                    <div class="article-info">
+                                        <h4>AI数字员工应用指南</h4>
+                                        <p>处理时间: 2024-01-15 10:20</p>
+                                    </div>
+                                    <div class="article-meta">
+                                        <span class="de-tag de-tag-feature">已改写</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="de-card">
+                            <div class="de-card-header">
+                                <div class="de-card-title">最新需求反馈</div>
+                            </div>
+                            <div id="recentFeedback" style="min-height: 200px;">
+                                <div class="de-feedback-card">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                        <strong>增加小红书风格模板</strong>
+                                        <span class="de-tag de-tag-medium">处理中</span>
+                                    </div>
+                                    <p style="font-size: 12px; color: #64748b;">来自: 张先生 | 2024-01-15</p>
+                                </div>
+                                <div class="de-feedback-card">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                        <strong>优化长文章裂变效果</strong>
+                                        <span class="de-tag de-tag-high">紧急</span>
+                                    </div>
+                                    <p style="font-size: 12px; color: #64748b;">来自: 李女士 | 2024-01-14</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CMS内容导入 -->
+                <div class="de-section" id="cms-import">
+                    <div class="de-card">
+                        <div class="de-card-header">
+                            <div class="de-card-title">📥 CMS内容导入 <span class="badge badge-cms">CMS功能</span></div>
+                        </div>
+                        <div class="de-alert de-alert-info">
+                            连接CMS系统，一键导入存量内容进行处理。处理完成后可选择发布回CMS或下载本地。
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div class="de-form-group">
+                                <label>选择CMS文章 <span class="required">*</span></label>
+                                <select id="cmsArticleSelect" class="de-select">
+                                    <option value="">-- 请选择 --</option>
+                                </select>
+                            </div>
+                            <div class="de-form-group">
+                                <label>筛选栏目</label>
+                                <select id="cmsCategoryFilter" class="de-select">
+                                    <option value="">全部栏目</option>
+                                    <option value="news">新闻动态</option>
+                                    <option value="case">成功案例</option>
+                                    <option value="product">产品介绍</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 12px;">
+                            <button class="de-btn de-btn-success" onclick="importCmsContent()">导入选中内容</button>
+                            <button class="de-btn de-btn-secondary" onclick="loadCmsArticles()">刷新列表</button>
+                        </div>
+                    </div>
+                    
+                    <div class="de-card" id="importedContentPanel" style="display: none;">
+                        <div class="de-card-header">
+                            <div class="de-card-title">已导入内容预览</div>
+                        </div>
+                        <div id="importedContent" class="de-textarea" readonly style="min-height: 300px;"></div>
+                        <div style="display: flex; gap: 12px; margin-top: 16px;">
+                            <button class="de-btn de-btn-primary" onclick="sendToRewrite()">发送到改写</button>
+                            <button class="de-btn de-btn-primary" onclick="sendToFission()">发送到裂变</button>
+                            <button class="de-btn de-btn-secondary" onclick="clearImportedContent()">清空</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CMS存量改写 -->
+                <div class="de-section" id="cms-rewrite">
+                    <div class="de-card">
+                        <div class="de-card-header">
+                            <div class="de-card-title">✨ CMS存量内容AI化改写 <span class="badge badge-cms">CMS功能</span></div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div class="de-form-group">
+                                <label>选择文章 <span class="required">*</span></label>
+                                <select id="cmsRewriteArticleSelect" class="de-select">
+                                    <option value="">加载中...</option>
+                                </select>
+                            </div>
+                            <div class="de-form-group">
+                                <label>改写动作 <span class="required">*</span></label>
+                                <select id="rewriteAction" class="de-select">
+                                    <option value="rewrite">智能改写</option>
+                                    <option value="expand">扩写</option>
+                                    <option value="shorten">缩写</option>
+                                    <option value="translate">翻译</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="de-form-group">
+                            <label>目标平台</label>
+                            <div class="de-radio-group">
+                                <label class="de-radio-item"><input type="radio" name="targetPlatform" value="wechat" checked> 公众号</label>
+                                <label class="de-radio-item"><input type="radio" name="targetPlatform" value="xiaohongshu"> 小红书</label>
+                                <label class="de-radio-item"><input type="radio" name="targetPlatform" value="zhihu"> 知乎</label>
+                                <label class="de-radio-item"><input type="radio" name="targetPlatform" value="website"> 官网</label>
+                            </div>
+                        </div>
+                        <button class="de-btn de-btn-success" onclick="doCmsRewrite()">开始改写</button>
+                        <div class="de-form-group" style="margin-top: 24px;">
+                            <label>改写结果</label>
+                            <textarea class="de-textarea" id="cmsRewriteOutput" placeholder="改写后的内容将显示在这里..." readonly></textarea>
+                        </div>
+                        <div style="display: flex; gap: 12px; margin-top: 16px;">
+                            <button class="de-btn de-btn-primary" onclick="copyCmsRewriteResult()">复制结果</button>
+                            <button class="de-btn de-btn-success" onclick="publishToCms()">发布到CMS</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI改写工具 -->
+                <div class="de-section" id="rewrite">
+                    <div class="de-card">
+                        <div class="de-card-header">
+                            <div class="de-card-title">🖊️ AI人性化改写工具 <span class="badge">核心功能</span></div>
+                            <div class="de-tab-group">
+                                <div class="de-tab active" onclick="setRewriteStyle('general')">通用风格</div>
+                                <div class="de-tab" onclick="setRewriteStyle('academic')">学术风格</div>
+                                <div class="de-tab" onclick="setRewriteStyle('marketing')">营销风格</div>
+                                <div class="de-tab" onclick="setRewriteStyle('tech')">技术翻译</div>
+                            </div>
+                        </div>
+                        <div class="de-form-group">
+                            <label>输入需要改写的文字 <span class="required">*</span></label>
+                            <textarea class="de-textarea" id="rewriteInput" placeholder="请粘贴需要改写的文字内容，支持最多3000字..."></textarea>
+                        </div>
+                        <div style="display: flex; gap: 12px;">
+                            <button class="de-btn de-btn-primary" onclick="doRewrite()">开始改写</button>
+                            <button class="de-btn de-btn-secondary" onclick="copyRewriteResult()">复制结果</button>
+                        </div>
+                        <div class="de-form-group" style="margin-top: 24px;">
+                            <label>改写结果</label>
+                            <textarea class="de-textarea" id="rewriteOutput" placeholder="改写后的内容将显示在这里..." readonly></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 内容裂变 -->
+                <div class="de-section" id="content-fission">
+                    <div class="de-card">
+                        <div class="de-card-header">
+                            <div class="de-card-title">✂️ 内容裂变引擎 <span class="badge">核心功能</span></div>
+                        </div>
+                        <div class="de-alert de-alert-info">
+                            将长文内容拆解为多种格式，适用于不同平台传播。
+                            <br>• 短视频脚本：适用于抖音、快手、视频号
+                            <br>• 图文卡片：适用于小红书、朋友圈
+                            <br>• 金句海报：适用于微博、ins
+                        </div>
+                        <div class="de-form-group">
+                            <label>输入原始文章内容 <span class="required">*</span></label>
+                            <textarea class="de-textarea" id="fissionContent" placeholder="请粘贴需要裂变的长文内容..."></textarea>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+                            <div class="de-form-group">
+                                <label>视频时长</label>
+                                <select id="fissionDuration" class="de-select">
+                                    <option value="30s">30秒</option>
+                                    <option value="60s" selected>60秒</option>
+                                    <option value="90s">90秒</option>
+                                </select>
+                            </div>
+                            <div class="de-form-group">
+                                <label>视频风格</label>
+                                <select id="fissionStyle" class="de-select">
+                                    <option value="documentary">纪录片</option>
+                                    <option value="viral" selected>爆款</option>
+                                    <option value="educational">教育</option>
+                                </select>
+                            </div>
+                            <div class="de-form-group">
+                                <label>卡片数量</label>
+                                <select id="fissionCards" class="de-select">
+                                    <option value="4">4张</option>
+                                    <option value="6" selected>6张</option>
+                                    <option value="9">9张</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 12px;">
+                            <button class="de-btn de-btn-primary" onclick="doContentFission()">开始裂变</button>
+                            <button class="de-btn de-btn-secondary" onclick="clearFission()">清空</button>
+                        </div>
+                        <div id="fissionResult" style="margin-top: 24px; display: none;">
+                            <label>裂变结果</label>
+                            <div id="fissionOutput" class="de-textarea" readonly style="min-height: 200px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 智能栏目生成 -->
+                <div class="de-section" id="smart-column">
+                    <div class="de-card">
+                        <div class="de-card-header">
+                            <div class="de-card-title">📑 CMS智能栏目生成 <span class="badge badge-cms">CMS功能</span></div>
+                        </div>
+                        <div class="de-alert de-alert-success">
+                            AI自动分析CMS中的内容，基于主题分布和阅读数据，生成最优栏目结构建议。
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                            <div class="de-form-group">
+                                <label>期望栏目数量</label>
+                                <select id="columnCount" class="de-select">
+                                    <option value="3">3个</option>
+                                    <option value="5" selected>5个</option>
+                                    <option value="8">8个</option>
+                                    <option value="10">10个</option>
+                                </select>
+                            </div>
+                            <div class="de-form-group">
+                                <label>最小文章数</label>
+                                <select id="minArticles" class="de-select">
+                                    <option value="1">1篇</option>
+                                    <option value="3" selected>3篇</option>
+                                    <option value="5">5篇</option>
+                                    <option value="10">10篇</option>
+                                </select>
+                            </div>
+                            <div class="de-form-group" style="align-self: flex-end;">
+                                <button class="de-btn de-btn-success" onclick="generateColumns()">智能生成栏目</button>
+                            </div>
+                        </div>
+                        <div id="columnResult" class="de-textarea" readonly style="margin-top: 20px; min-height: 200px;">
+                            点击上方按钮，AI将基于现有内容自动生成建议栏目结构...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 阅读反馈分析 -->
+                <div class="de-section" id="read-feedback">
+                    <div class="de-card">
+                        <div class="de-card-header">
+                            <div class="de-card-title">📊 CMS内容阅读反馈分析 <span class="badge badge-cms">CMS功能</span></div>
+                        </div>
+                        <div class="de-alert de-alert-info">
+                            分析CMS内容的阅读数据，包括阅读深度、停留时长、互动情况等，为内容优化提供依据。
+                        </div>
+                        <div class="de-grid">
+                            <div class="de-stat-card">
+                                <div class="stat-icon" style="background: #dbeafe;">👁️</div>
+                                <div class="stat-value" id="rfTotalReads">0</div>
+                                <div class="stat-label">总阅读次数</div>
+                            </div>
+                            <div class="de-stat-card">
+                                <div class="stat-icon" style="background: #fef3c7;">⏱️</div>
+                                <div class="stat-value" id="rfAvgDuration">0s</div>
+                                <div class="stat-label">平均阅读时长</div>
+                            </div>
+                            <div class="de-stat-card">
+                                <div class="stat-icon" style="background: #d1fae5;">📊</div>
+                                <div class="stat-value" id="rfAvgDepth">0%</div>
+                                <div class="stat-label">平均阅读深度</div>
+                            </div>
+                            <div class="de-stat-card">
+                                <div class="stat-icon" style="background: #fce7f3;">❤️</div>
+                                <div class="stat-value" id="rfTotalLikes">0</div>
+                                <div class="stat-label">总点赞数</div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 20px;">
+                            <table class="de-table">
+                                <thead>
+                                    <tr>
+                                        <th>排名</th>
+                                        <th>文章标题</th>
+                                        <th>阅读次数</th>
+                                        <th>平均时长</th>
+                                        <th>阅读深度</th>
+                                        <th>点赞数</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="rfArticleList">
+                                    <tr><td colspan="6" style="text-align: center; color: #94a3b8;">加载中...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 能力诊断问卷 -->
+                <div class="de-section" id="diagnosis">
+                    <div class="de-card">
+                        <div class="de-card-header">
+                            <div class="de-card-title">📋 企业内容自动化能力自测问卷</div>
+                            <span style="font-size: 13px; color: #64748b;">完成问卷，获取专属诊断报告</span>
+                        </div>
+                        <form id="diagnosisForm" onsubmit="submitDiagnosis(event)">
+                            <div class="de-form-group">
+                                <label>1. 您所在企业的规模？</label>
+                                <div class="de-radio-group">
+                                    <label class="de-radio-item"><input type="radio" name="q1" value="1"> 10人以下</label>
+                                    <label class="de-radio-item"><input type="radio" name="q1" value="2"> 10-50人</label>
+                                    <label class="de-radio-item"><input type="radio" name="q1" value="3"> 50-200人</label>
+                                    <label class="de-radio-item"><input type="radio" name="q1" value="4"> 200人以上</label>
+                                </div>
+                            </div>
+                            <div class="de-form-group">
+                                <label>2. 企业目前是否有专职内容团队？</label>
+                                <div class="de-radio-group">
+                                    <label class="de-radio-item"><input type="radio" name="q2" value="1"> 没有</label>
+                                    <label class="de-radio-item"><input type="radio" name="q2" value="2"> 1-2人兼职</label>
+                                    <label class="de-radio-item"><input type="radio" name="q2" value="3"> 3-5人专职</label>
+                                    <label class="de-radio-item"><input type="radio" name="q2" value="4"> 5人以上团队</label>
+                                </div>
+                            </div>
+                            <div class="de-form-group">
+                                <label>3. 每月产出的原创内容数量？</label>
+                                <div class="de-radio-group">
+                                    <label class="de-radio-item"><input type="radio" name="q3" value="1"> 0-2篇</label>
+                                    <label class="de-radio-item"><input type="radio" name="q3" value="2"> 3-5篇</label>
+                                    <label class="de-radio-item"><input type="radio" name="q3" value="3"> 6-10篇</label>
+                                    <label class="de-radio-item"><input type="radio" name="q3" value="4"> 10篇以上</label>
+                                </div>
+                            </div>
+                            <div class="de-form-group">
+                                <label>4. 是否使用过AI工具辅助内容创作？</label>
+                                <div class="de-radio-group">
+                                    <label class="de-radio-item"><input type="radio" name="q4" value="1"> 从未使用</label>
+                                    <label class="de-radio-item"><input type="radio" name="q4" value="2"> 偶尔试用</label>
+                                    <label class="de-radio-item"><input type="radio" name="q4" value="3"> 经常使用</label>
+                                    <label class="de-radio-item"><input type="radio" name="q4" value="4"> 深度集成</label>
+                                </div>
+                            </div>
+                            <div class="de-form-group">
+                                <label>5. 内容发布覆盖哪些平台？</label>
+                                <div class="de-radio-group">
+                                    <label class="de-radio-item"><input type="radio" name="q5" value="1"> 仅官网</label>
+                                    <label class="de-radio-item"><input type="radio" name="q5" value="2"> 官网+公众号</label>
+                                    <label class="de-radio-item"><input type="radio" name="q5" value="3"> 多平台布局</label>
+                                    <label class="de-radio-item"><input type="radio" name="q5" value="4"> 全渠道矩阵</label>
+                                </div>
+                            </div>
+                            <div class="de-form-group">
+                                <label>6. 是否有内容效果数据分析？</label>
+                                <div class="de-radio-group">
+                                    <label class="de-radio-item"><input type="radio" name="q6" value="1"> 完全没有</label>
+                                    <label class="de-radio-item"><input type="radio" name="q6" value="2"> 简单查看阅读量</label>
+                                    <label class="de-radio-item"><input type="radio" name="q6" value="3"> 定期分析报告</label>
+                                    <label class="de-radio-item"><input type="radio" name="q6" value="4"> 数据驱动优化</label>
+                                </div>
+                            </div>
+                            <button type="submit" class="de-btn de-btn-primary">提交问卷并查看结果</button>
+                        </form>
+                        <div id="diagnosisResult" style="display: none;" class="de-result-panel"></div>
+                    </div>
+                </div>
+
+                <!-- 需求征集 -->
+                <div class="de-section" id="feedback">
+                    <div class="de-card">
+                        <div class="de-card-header">
+                            <div class="de-card-title">💬 需求征集</div>
+                        </div>
+                        <div class="de-alert de-alert-info">
+                            您的反馈是我们改进的动力！无论是功能建议、产品问题还是使用体验，都欢迎告诉我们。
+                        </div>
+                        <form id="feedbackForm" onsubmit="submitFeedback(event)">
+                            <div class="de-form-group">
+                                <label>需求类别 <span class="required">*</span></label>
+                                <select id="feedbackCategory" class="de-select">
+                                    <option value="feature">功能需求</option>
+                                    <option value="improve">体验优化</option>
+                                    <option value="bug">问题反馈</option>
+                                    <option value="other">其他建议</option>
+                                </select>
+                            </div>
+                            <div class="de-form-group">
+                                <label>需求标题 <span class="required">*</span></label>
+                                <input type="text" id="feedbackTitle" class="de-input" placeholder="简洁描述您的需求">
+                            </div>
+                            <div class="de-form-group">
+                                <label>详细描述 <span class="required">*</span></label>
+                                <textarea class="de-textarea" id="feedbackContent" placeholder="详细描述您的需求或建议，包括期望效果、使用场景等..."></textarea>
+                            </div>
+                            <div class="de-form-group">
+                                <label>联系方式（选填）</label>
+                                <input type="text" id="feedbackContact" class="de-input" placeholder="邮箱或微信，方便我们联系您">
+                            </div>
+                            <div class="de-form-group">
+                                <label>优先级</label>
+                                <div class="de-radio-group">
+                                    <label class="de-radio-item"><input type="radio" name="feedbackPriority" value="high" checked> 高</label>
+                                    <label class="de-radio-item"><input type="radio" name="feedbackPriority" value="medium"> 中</label>
+                                    <label class="de-radio-item"><input type="radio" name="feedbackPriority" value="low"> 低</label>
+                                </div>
+                            </div>
+                            <button type="submit" class="de-btn de-btn-primary">提交需求</button>
+                        </form>
+                        <div id="feedbackList" style="margin-top: 30px;">
+                            <h4 style="font-size: 15px; font-weight: 600; color: #1e293b; margin-bottom: 16px;">已提交的需求</h4>
+                            <div id="feedbackItems">
+                                <div class="de-feedback-card">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                        <strong>增加小红书风格模板</strong>
+                                        <span class="de-tag de-tag-medium">处理中</span>
+                                    </div>
+                                    <p style="font-size: 13px; color: #64748b;">希望能增加一些小红书风格的改写模板...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        var currentRewriteStyle = 'general';
+        var currentImportedContent = null;
+
+        // 页面切换
+        function switchTab(tabId) {
+            document.querySelectorAll('.de-menu-item').forEach(item => item.classList.remove('active'));
+            document.querySelectorAll('.de-section').forEach(section => section.classList.remove('active'));
+            
+            document.querySelector(`[onclick="switchTab('${tabId}')"]`).classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+
+            var titles = {
+                'dashboard': '工作台概览',
+                'cms-import': 'CMS内容导入',
+                'cms-rewrite': 'CMS存量内容改写',
+                'rewrite': '内容AI化改写',
+                'content-fission': '内容裂变',
+                'smart-column': '智能栏目生成',
+                'diagnosis': '能力诊断问卷',
+                'read-feedback': '阅读反馈分析',
+                'feedback': '需求征集'
+            };
+            var descs = {
+                'dashboard': '一站式内容自动化解决方案，提升企业内容生产效率',
+                'cms-import': '一键导入CMS存量内容进行处理',
+                'cms-rewrite': '将CMS已有内容AI化改写，适配多平台发布需求',
+                'rewrite': '将AI生成的文字一键改写为真人风格，去除AI痕迹',
+                'content-fission': '将长文拆解为短视频脚本、图文卡片、金句海报',
+                'smart-column': 'AI自动分析内容，生成最优栏目结构',
+                'diagnosis': '完成问卷，获取企业内容自动化能力诊断报告',
+                'read-feedback': '分析CMS内容阅读数据，优化内容策略',
+                'feedback': '提交您的需求和建议，帮助我们持续改进'
+            };
+            
+            document.getElementById('pageTitle').innerText = titles[tabId] || '';
+            document.getElementById('pageDesc').innerText = descs[tabId] || '';
+
+            // 加载页面特定数据
+            if (tabId === 'cms-import') loadCmsArticles();
+            if (tabId === 'cms-rewrite') loadCmsArticlesForRewrite();
+            if (tabId === 'read-feedback') loadReadFeedback();
+        }
+
+        // 打开独立工具版
+        function openStandalone() {
+            window.open('http://localhost:3457', '_blank');
+        }
+
+        // 加载CMS文章列表
+        function loadCmsArticles() {
+            var select = document.getElementById('cmsArticleSelect');
+            select.innerHTML = '<option value="">加载中...</option>';
+            
+            fetch('/digitalemployee/cmsArticles')
+                .then(function(response) { return response.json(); })
+                .then(function(data) {
+                    if (data.code === 1 && data.data) {
+                        var html = '<option value="">-- 请选择文章 --</option>';
+                        data.data.forEach(function(article) {
+                            html += '<option value="' + article.id + '">' + article.title + '</option>';
+                        });
+                        select.innerHTML = html;
+                    } else {
+                        select.innerHTML = '<option value="">暂无可用文章</option>';
+                    }
+                })
+                .catch(function() {
+                    select.innerHTML = '<option value="">加载失败</option>';
+                });
+        }
+
+        function loadCmsArticlesForRewrite() {
+            loadCmsArticles();
+        }
+
+        // 导入CMS内容
+        function importCmsContent() {
+            var articleId = document.getElementById('cmsArticleSelect').value;
+            if (!articleId) {
+                alert('请选择要导入的文章');
+                return;
+            }
+            
+            fetch('/digitalemployee/getCmsArticle?id=' + articleId)
+                .then(function(response) { return response.json(); })
+                .then(function(data) {
+                    if (data.code === 1 && data.data) {
+                        currentImportedContent = data.data;
+                        document.getElementById('importedContent').value = data.data.content || '';
+                        document.getElementById('importedContentPanel').style.display = 'block';
+                    } else {
+                        alert('获取文章内容失败');
+                    }
+                })
+                .catch(function() {
+                    alert('获取文章内容失败');
+                });
+        }
+
+        function sendToRewrite() {
+            if (currentImportedContent) {
+                document.getElementById('rewriteInput').value = currentImportedContent.content || '';
+                switchTab('rewrite');
+            }
+        }
+
+        function sendToFission() {
+            if (currentImportedContent) {
+                document.getElementById('fissionContent').value = currentImportedContent.content || '';
+                switchTab('content-fission');
+            }
+        }
+
+        function clearImportedContent() {
+            currentImportedContent = null;
+            document.getElementById('importedContent').value = '';
+            document.getElementById('importedContentPanel').style.display = 'none';
+        }
+
+        // CMS改写
+        function doCmsRewrite() {
+            var articleId = document.getElementById('cmsRewriteArticleSelect').value;
+            if (!articleId) {
+                alert('请选择要改写的文章');
+                return;
+            }
+            
+            var output = document.getElementById('cmsRewriteOutput');
+            output.value = '正在改写，请稍候...';
+            
+            fetch('/digitalemployee/doCmsRewrite', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    articleId: articleId,
+                    action: document.getElementById('rewriteAction').value,
+                    platform: document.querySelector('input[name="targetPlatform"]:checked').value
+                })
+            })
+            .then(function(response) { return response.json(); })
+            .then(function(data) {
+                output.value = data.content || data.msg || '改写完成';
+            })
+            .catch(function() {
+                output.value = '改写失败，请重试';
+            });
+        }
+
+        function copyCmsRewriteResult() {
+            var content = document.getElementById('cmsRewriteOutput').value;
+            navigator.clipboard.writeText(content).then(function() {
+                alert('已复制到剪贴板');
+            });
+        }
+
+        function publishToCms() {
+            var content = document.getElementById('cmsRewriteOutput').value;
+            if (!content) {
+                alert('请先进行改写');
+                return;
+            }
+            
+            fetch('/digitalemployee/publishToCms', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ content: content })
+            })
+            .then(function(response) { return response.json(); })
+            .then(function(data) {
+                if (data.code === 1) {
+                    alert('发布成功！');
+                } else {
+                    alert('发布失败: ' + data.msg);
+                }
+            })
+            .catch(function() {
+                alert('发布失败，请重试');
+            });
+        }
+
+        // AI改写
+        function setRewriteStyle(style) {
+            currentRewriteStyle = style;
+            document.querySelectorAll('#rewrite .de-tab').forEach(function(tab) {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        function doRewrite() {
+            var input = document.getElementById('rewriteInput').value.trim();
+            if (!input) {
+                alert('请输入需要改写的内容');
+                return;
+            }
+            
+            var output = document.getElementById('rewriteOutput');
+            output.value = '正在改写，请稍候...';
+            
+            fetch('/digitalemployee/rewrite', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    content: input,
+                    style: currentRewriteStyle
+                })
+            })
+            .then(function(response) { return response.json(); })
+            .then(function(data) {
+                output.value = data.content || data.msg || '改写完成';
+            })
+            .catch(function() {
+                output.value = '改写失败，请重试';
+            });
+        }
+
+        function copyRewriteResult() {
+            var content = document.getElementById('rewriteOutput').value;
+            navigator.clipboard.writeText(content).then(function() {
+                alert('已复制到剪贴板');
+            });
+        }
+
+        // 内容裂变
+        function doContentFission() {
+            var content = document.getElementById('fissionContent').value.trim();
+            if (!content) {
+                alert('请输入需要裂变的内容');
+                return;
+            }
+            
+            var resultDiv = document.getElementById('fissionResult');
+            var outputDiv = document.getElementById('fissionOutput');
+            resultDiv.style.display = 'block';
+            outputDiv.value = '正在裂变，请稍候...';
+            
+            fetch('/digitalemployee/contentFission', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    content: content,
+                    duration: document.getElementById('fissionDuration').value,
+                    style: document.getElementById('fissionStyle').value,
+                    cardCount: parseInt(document.getElementById('fissionCards').value)
+                })
+            })
+            .then(function(response) { return response.json(); })
+            .then(function(data) {
+                if (data.content) {
+                    outputDiv.value = data.content;
+                } else if (data.videoScript) {
+                    outputDiv.value = '短视频脚本:\n' + JSON.stringify(data.videoScript, null, 2);
+                } else {
+                    outputDiv.value = '裂变完成！';
+                }
+            })
+            .catch(function() {
+                outputDiv.value = '裂变失败，请重试';
+            });
+        }
+
+        function clearFission() {
+            document.getElementById('fissionContent').value = '';
+            document.getElementById('fissionResult').style.display = 'none';
+        }
+
+        // 智能栏目生成
+        function generateColumns() {
+            var resultDiv = document.getElementById('columnResult');
+            resultDiv.value = '正在分析内容，请稍候...';
+            
+            fetch('/digitalemployee/generateColumns', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    count: parseInt(document.getElementById('columnCount').value),
+                    minArticles: parseInt(document.getElementById('minArticles').value)
+                })
+            })
+            .then(function(response) { return response.json(); })
+            .then(function(data) {
+                resultDiv.value = data.content || JSON.stringify(data, null, 2);
+            })
+            .catch(function() {
+                resultDiv.value = '生成失败，请重试';
+            });
+        }
+
+        // 阅读反馈
+        function loadReadFeedback() {
+            fetch('/digitalemployee/readFeedback')
+                .then(function(response) { return response.json(); })
+                .then(function(data) {
+                    if (data.code === 1 && data.data) {
+                        document.getElementById('rfTotalReads').textContent = data.data.totalReads || 0;
+                        document.getElementById('rfAvgDuration').textContent = (data.data.avgDuration || 0) + 's';
+                        document.getElementById('rfAvgDepth').textContent = Math.round((data.data.avgDepth || 0) * 100) + '%';
+                        document.getElementById('rfTotalLikes').textContent = data.data.totalLikes || 0;
+                        
+                        var listHtml = '';
+                        if (data.data.articles && data.data.articles.length > 0) {
+                            data.data.articles.forEach(function(article, index) {
+                                listHtml += '<tr><td>' + (index + 1) + '</td><td>' + article.title + '</td><td>' + article.reads + '</td><td>' + article.duration + 's</td><td>' + Math.round(article.depth * 100) + '%</td><td>' + article.likes + '</td></tr>';
+                            });
+                        } else {
+                            listHtml = '<tr><td colspan="6" style="text-align: center; color: #94a3b8;">暂无数据</td></tr>';
+                        }
+                        document.getElementById('rfArticleList').innerHTML = listHtml;
+                    }
+                })
+                .catch(function() {
+                    console.log('加载阅读反馈数据失败');
+                });
+        }
+
+        // 诊断问卷
+        function submitDiagnosis(event) {
+            event.preventDefault();
+            
+            var form = document.getElementById('diagnosisForm');
+            var formData = new FormData(form);
+            var answers = {};
+            for (var pair of formData.entries()) {
+                answers[pair[0]] = pair[1];
+            }
+            
+            fetch('/digitalemployee/submitDiagnosis', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(answers)
+            })
+            .then(function(response) { return response.json(); })
+            .then(function(data) {
+                var resultDiv = document.getElementById('diagnosisResult');
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = '<div class="de-card" style="margin-top: 20px; background: #ecfdf5; border-color: #a7f3d0;">' +
+                    '<h4 style="color: #065f46; margin-bottom: 12px;">诊断结果</h4>' +
+                    '<p style="color: #059669; line-height: 1.8;">' + (data.report || '感谢您的提交！') + '</p>' +
+                    '</div>';
+            })
+            .catch(function() {
+                alert('提交失败，请重试');
+            });
+        }
+
+        // 需求反馈
+        function submitFeedback(event) {
+            event.preventDefault();
+            
+            var form = document.getElementById('feedbackForm');
+            var formData = new FormData(form);
+            var data = {};
+            for (var pair of formData.entries()) {
+                data[pair[0]] = pair[1];
+            }
+            
+            fetch('/digitalemployee/submitFeedback', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(function(response) { return response.json(); })
+            .then(function(result) {
+                if (result.code === 1) {
+                    alert('提交成功！感谢您的反馈。');
+                    form.reset();
+                } else {
+                    alert('提交失败: ' + result.msg);
+                }
+            })
+            .catch(function() {
+                alert('提交失败，请重试');
+            });
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCmsArticles();
+        });
+    </script>
+</body>
+</html>

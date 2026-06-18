@@ -61,6 +61,14 @@
             
             <!-- Content Area -->
             <main class="list-content">
+                <div class="promo-card" style="background: linear-gradient(135deg, #6c5ce7, #a29bfe); border-radius: 12px; padding: 24px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; color: #fff;">
+                    <div>
+                        <h3 style="margin-bottom: 8px;">📊 测测你的企业内容生产效率能提升多少？</h3>
+                        <p style="font-size: 14px; opacity: 0.9;">填写约3分钟，免费获取《企业内容自动化潜力诊断报告》</p>
+                    </div>
+                    <a href="/survey" style="background: #fff; color: #6c5ce7; padding: 12px 24px; border-radius: 20px; text-decoration: none; font-weight: 600;">立即测试</a>
+                </div>
+                
                 <php>if(count($list) == 0){</php>
                     <!-- Empty State -->
                     <div class="empty-state">
@@ -164,26 +172,34 @@
 }
 
 .breadcrumb {
-    font-size: 14px;
-    color: rgba(255,255,255,0.7);
+    font-size: 15px;
+    color: #fff;
     margin-bottom: 15px;
+    font-weight: 500;
+    padding: 8px 16px;
+    background: rgba(0,0,0,0.5);
+    border-radius: 6px;
+    display: inline-block;
 }
 
 .breadcrumb a {
-    color: rgba(255,255,255,0.9);
+    color: #fff;
     text-decoration: none;
+    font-weight: 500;
 }
 
 .breadcrumb a:hover {
-    color: #6c5ce7;
+    color: #a5b4fc;
 }
 
 .breadcrumb .sep {
-    margin: 0 8px;
+    margin: 0 10px;
+    color: rgba(255,255,255,0.8);
 }
 
 .breadcrumb .current {
     color: #fff;
+    font-weight: 600;
 }
 
 .page-title {

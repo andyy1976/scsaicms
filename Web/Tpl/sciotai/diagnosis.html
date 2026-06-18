@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>企业内容自动化潜力诊断</title>
+    <link rel="stylesheet" href="__TMPL__css/bootstrap.min.css">
+    <link rel="stylesheet" href="__TMPL__css/base.css">
+    <style>
+        body { background: #f5f7fa; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        .diagnosis-container { max-width: 900px; margin: 40px auto; padding: 40px; background: #fff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+        .diagnosis-header { text-align: center; margin-bottom: 40px; }
+        .diagnosis-header h1 { font-size: 28px; color: #1a1f4e; margin-bottom: 12px; }
+        .diagnosis-header p { font-size: 15px; color: #666; line-height: 1.8; }
+        .diagnosis-header .highlight { color: #6c5ce7; font-weight: 600; }
+        
+        .section-title { font-size: 18px; color: #1a1f4e; font-weight: 600; margin-bottom: 20px; padding-left: 12px; border-left: 4px solid #6c5ce7; }
+        
+        .form-group { margin-bottom: 24px; }
+        .form-group label { display: block; font-size: 14px; color: #333; margin-bottom: 8px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px 16px; border: 1px solid #e8ebf0; border-radius: 8px; font-size: 14px; transition: border-color 0.3s; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #6c5ce7; }
+        .form-group textarea { resize: vertical; min-height: 80px; }
+        
+        .task-table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+        .task-table th, .task-table td { padding: 14px; text-align: left; border-bottom: 1px solid #f0f2f5; }
+        .task-table th { background: #f8f9fc; font-weight: 600; font-size: 13px; color: #666; }
+        .task-table td { font-size: 14px; }
+        .task-table input[type="number"] { width: 80px; padding: 8px; border: 1px solid #e8ebf0; border-radius: 6px; text-align: center; }
+        
+        .auto-select { width: 100%; padding: 8px; border: 1px solid #e8ebf0; border-radius: 6px; font-size: 13px; }
+        
+        .submit-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, #6c5ce7, #a29bfe); color: #fff; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(108,92,231,0.3); }
+        
+        .result-card { margin-top: 30px; padding: 30px; background: linear-gradient(135deg, #6c5ce7, #a29bfe); border-radius: 16px; color: #fff; display: none; }
+        .result-card h3 { font-size: 20px; margin-bottom: 20px; }
+        .result-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .result-item { text-align: center; padding: 16px; background: rgba(255,255,255,0.15); border-radius: 12px; }
+        .result-item .value { font-size: 28px; font-weight: 700; }
+        .result-item .label { font-size: 13px; opacity: 0.9; margin-top: 4px; }
+        
+        .recommendation { margin-top: 20px; padding: 20px; background: rgba(255,255,255,0.1); border-radius: 12px; }
+        .recommendation h4 { font-size: 15px; margin-bottom: 10px; }
+        .recommendation ul { margin: 0; padding-left: 20px; font-size: 14px; line-height: 1.8; }
+        
+        .contact-section { margin-top: 30px; padding: 24px; background: #f8f9fc; border-radius: 12px; text-align: center; }
+        .contact-section p { margin-bottom: 12px; font-size: 14px; color: #666; }
+        .contact-btn { display: inline-block; padding: 10px 24px; background: #6c5ce7; color: #fff; text-decoration: none; border-radius: 8px; font-size: 14px; font-weight: 500; }
+        
+        .info-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        
+        @media (max-width: 768px) {
+            .diagnosis-container { padding: 20px; margin: 20px 10px; }
+            .info-row { grid-template-columns: 1fr; }
+            .result-grid { grid-template-columns: 1fr; }
+            .task-table { font-size: 12px; }
+            .task-table th, .task-table td { padding: 10px 6px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="diagnosis-container">
+        <div class="diagnosis-header">
+            <h1>企业内容自动化潜力诊断</h1>
+            <p>只需3分钟，帮您算出每月能省多少工时和成本<br>
+            已有 <span class="highlight">200+</span> 企业完成诊断，平均节省 <span class="highlight">70%</span> 的内容制作时间</p>
+        </div>
+
+        <div class="section-title">一、企业基本信息</div>
+        <div class="info-row">
+            <div class="form-group">
+                <label>公司名称</label>
+                <input type="text" id="companyName" placeholder="请输入公司名称">
+            </div>
+            <div class="form-group">
+                <label>所属行业</label>
+                <select id="industry">
+                    <option value="">请选择行业</option>
+                    <option value="manufacturing">制造业/设备</option>
+                    <option value="trade">贸易/批发</option>
+                    <option value="b2b">B2B服务</option>
+                    <option value="ecommerce">电商</option>
+                    <option value="other">其他</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>联系人姓名</label>
+                <input type="text" id="contactName" placeholder="请输入联系人姓名">
+            </div>
+            <div class="form-group">
+                <label>联系电话</label>
+                <input type="tel" id="contactPhone" placeholder="请输入联系电话">
+            </div>
+        </div>
+
+        <div class="section-title">二、内容制作现状诊断</div>
+        <p style="color: #999; font-size: 13px; margin-bottom: 16px;">请填写以下任务每周的耗时，系统将自动计算自动化潜力</p>
+        <table class="task-table">
+            <thead>
+                <tr>
+                    <th>任务名称</th>
+                    <th>每周耗时（小时）</th>
+                    <th>是否重复/有规则</th>
+                    <th>可自动化程度</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>产品说明书编写</td>
+                    <td><input type="number" id="task1" value="" min="0" step="0.5"></td>
+                    <td><select class="auto-select" id="repeat1"><option value="yes">是</option><option value="no">否</option></select></td>
+                    <td><select class="auto-select" id="auto1"><option value="high">高</option><option value="medium">中</option><option value="low">低</option></select></td>
+                </tr>
+                <tr>
+                    <td>公众号文章创作</td>
+                    <td><input type="number" id="task2" value="" min="0" step="0.5"></td>
+                    <td><select class="auto-select" id="repeat2"><option value="yes">是</option><option value="no">否</option></select></td>
+                    <td><select class="auto-select" id="auto2"><option value="high">高</option><option value="medium">中</option><option value="low">低</option></select></td>
+                </tr>
+                <tr>
+                    <td>销售话术更新</td>
+                    <td><input type="number" id="task3" value="" min="0" step="0.5"></td>
+                    <td><select class="auto-select" id="repeat3"><option value="yes">是</option><option value="no">否</option></select></td>
+                    <td><select class="auto-select" id="auto3"><option value="high">高</option><option value="medium">中</option><option value="low">低</option></select></td>
+                </tr>
+                <tr>
+                    <td>客户案例整理</td>
+                    <td><input type="number" id="task4" value="" min="0" step="0.5"></td>
+                    <td><select class="auto-select" id="repeat4"><option value="yes">是</option><option value="no">否</option></select></td>
+                    <td><select class="auto-select" id="auto4"><option value="high">高</option><option value="medium">中</option><option value="low">低</option></select></td>
+                </tr>
+                <tr>
+                    <td>竞品分析报告</td>
+                    <td><input type="number" id="task5" value="" min="0" step="0.5"></td>
+                    <td><select class="auto-select" id="repeat5"><option value="yes">是</option><option value="no">否</option></select></td>
+                    <td><select class="auto-select" id="auto5"><option value="high">高</option><option value="medium">中</option><option value="low">低</option></select></td>
+                </tr>
+                <tr>
+                    <td>技术文档编写</td>
+                    <td><input type="number" id="task6" value="" min="0" step="0.5"></td>
+                    <td><select class="auto-select" id="repeat6"><option value="yes">是</option><option value="no">否</option></select></td>
+                    <td><select class="auto-select" id="auto6"><option value="high">高</option><option value="medium">中</option><option value="low">低</option></select></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="section-title">三、其他情况</div>
+        <div class="form-group">
+            <label>目前内容团队规模（人）</label>
+            <select id="teamSize">
+                <option value="0">0人（外包/老板自己写）</option>
+                <option value="1">1人</option>
+                <option value="2-3">2-3人</option>
+                <option value="4-5">4-5人</option>
+                <option value="5+">5人以上</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>目前内容制作的最大痛点（可多选）</label>
+            <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+                <label style="display: flex; align-items: center; gap: 6px; padding: 8px 16px; background: #f8f9fc; border-radius: 20px; font-size: 13px; cursor: pointer;">
+                    <input type="checkbox" name="painpoint" value="slow"> 制作速度慢
+                </label>
+                <label style="display: flex; align-items: center; gap: 6px; padding: 8px 16px; background: #f8f9fc; border-radius: 20px; font-size: 13px; cursor: pointer;">
+                    <input type="checkbox" name="painpoint" value="quality"> 质量不稳定
+                </label>
+                <label style="display: flex; align-items: center; gap: 6px; padding: 8px 16px; background: #f8f9fc; border-radius: 20px; font-size: 13px; cursor: pointer;">
+                    <input type="checkbox" name="painpoint" value="cost"> 人力成本高
+                </label>
+                <label style="display: flex; align-items: center; gap: 6px; padding: 8px 16px; background: #f8f9fc; border-radius: 20px; font-size: 13px; cursor: pointer;">
+                    <input type="checkbox" name="painpoint" value="consistency"> 风格不统一
+                </label>
+                <label style="display: flex; align-items: center; gap: 6px; padding: 8px 16px; background: #f8f9fc; border-radius: 20px; font-size: 13px; cursor: pointer;">
+                    <input type="checkbox" name="painpoint" value="update"> 更新不及时
+                </label>
+                <label style="display: flex; align-items: center; gap: 6px; padding: 8px 16px; background: #f8f9fc; border-radius: 20px; font-size: 13px; cursor: pointer;">
+                    <input type="checkbox" name="painpoint" value="multipublish"> 多平台发布繁琐
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>备注（其他想了解的问题）</label>
+            <textarea id="remark" placeholder="请输入您的问题或需求"></textarea>
+        </div>
+
+        <button class="submit-btn" onclick="generateReport()">立即生成诊断报告</button>
+
+        <div class="result-card" id="resultCard">
+            <h3>📊 您的企业内容自动化诊断报告</h3>
+            <div class="result-grid">
+                <div class="result-item">
+                    <div class="value" id="totalHours">0</div>
+                    <div class="label">每周总耗时（小时）</div>
+                </div>
+                <div class="result-item">
+                    <div class="value" id="saveHours">0</div>
+                    <div class="label">每周可节省（小时）</div>
+                </div>
+                <div class="result-item">
+                    <div class="value" id="savePercent">0%</div>
+                    <div class="label">节省比例</div>
+                </div>
+            </div>
+            <div class="recommendation">
+                <h4>💡 我们的建议</h4>
+                <ul id="recommendations"></ul>
+            </div>
+            <div style="margin-top: 20px; text-align: center;">
+                <p style="font-size: 14px; opacity: 0.9;">投资回报周期：<strong id="roiPeriod">&lt;3个月</strong></p>
+            </div>
+        </div>
+
+        <div class="contact-section">
+            <p>需要我们提供详细的解决方案报价？</p>
+            <a href="tel:400-888-8888" class="contact-btn">立即咨询</a>
+            <p style="margin-top: 8px; font-size: 12px; color: #999;">或添加微信：AI_Content_Expert</p>
+        </div>
+    </div>
+
+    <script>
+        function generateReport() {
+            const tasks = [
+                { id: 'task1', name: '产品说明书', autoId: 'auto1', repeatId: 'repeat1' },
+                { id: 'task2', name: '公众号文章', autoId: 'auto2', repeatId: 'repeat2' },
+                { id: 'task3', name: '销售话术', autoId: 'auto3', repeatId: 'repeat3' },
+                { id: 'task4', name: '客户案例', autoId: 'auto4', repeatId: 'repeat4' },
+                { id: 'task5', name: '竞品分析', autoId: 'auto5', repeatId: 'repeat5' },
+                { id: 'task6', name: '技术文档', autoId: 'auto6', repeatId: 'repeat6' }
+            ];
+
+            let totalHours = 0;
+            let saveHours = 0;
+            const autoRates = { high: 0.85, medium: 0.6, low: 0.3 };
+            const recommendations = [];
+
+            tasks.forEach(task => {
+                const hours = parseFloat(document.getElementById(task.id).value) || 0;
+                const autoLevel = document.getElementById(task.autoId).value;
+                const repeat = document.getElementById(task.repeatId).value;
+                
+                totalHours += hours;
+                
+                let rate = autoRates[autoLevel];
+                if (repeat === 'yes') rate *= 1.1;
+                
+                saveHours += hours * rate;
+
+                if (hours > 0) {
+                    const saved = Math.round(hours * rate * 10) / 10;
+                    if (saved >= 2) {
+                        recommendations.push(`${task.name}：每周可节省 ${saved} 小时`);
+                    }
+                }
+            });
+
+            const savePercent = totalHours > 0 ? Math.round((saveHours / totalHours) * 100) : 0;
+
+            document.getElementById('totalHours').textContent = totalHours.toFixed(1);
+            document.getElementById('saveHours').textContent = saveHours.toFixed(1);
+            document.getElementById('savePercent').textContent = savePercent + '%';
+
+            const recList = document.getElementById('recommendations');
+            recList.innerHTML = '';
+            recommendations.forEach(rec => {
+                const li = document.createElement('li');
+                li.textContent = rec;
+                recList.appendChild(li);
+            });
+
+            if (recommendations.length === 0) {
+                recList.innerHTML = '<li>根据您的情况，建议优先从重复性最高的任务开始尝试自动化</li>';
+            }
+
+            const monthlySave = saveHours * 4;
+            const roiMonths = monthlySave >= 20 ? '<2个月' : monthlySave >= 10 ? '2-3个月' : '3-4个月';
+            document.getElementById('roiPeriod').textContent = roiMonths;
+
+            document.getElementById('resultCard').style.display = 'block';
+
+            saveToServer();
+        }
+
+        async function saveToServer() {
+            const data = {
+                companyName: document.getElementById('companyName').value,
+                industry: document.getElementById('industry').value,
+                contactName: document.getElementById('contactName').value,
+                contactPhone: document.getElementById('contactPhone').value,
+                teamSize: document.getElementById('teamSize').value,
+                remark: document.getElementById('remark').value,
+                tasks: {
+                    task1: document.getElementById('task1').value,
+                    task2: document.getElementById('task2').value,
+                    task3: document.getElementById('task3').value,
+                    task4: document.getElementById('task4').value,
+                    task5: document.getElementById('task5').value,
+                    task6: document.getElementById('task6').value
+                },
+                painpoints: Array.from(document.querySelectorAll('input[name="painpoint"]:checked')).map(cb => cb.value)
+            };
+
+            try {
+                await fetch('/api/diagnosis/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+            } catch (e) {
+                console.log('Save failed:', e);
+            }
+        }
+    </script>
+</body>
+</html>

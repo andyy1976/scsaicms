@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>内容阅读反馈分析 - 内容数字员工</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #00b894, #55efc4);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a1f4e;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: #f8f9fc;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: #00b894;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .article-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .article-table th,
+        .article-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .article-table th {
+            background: #f8f9fc;
+            font-weight: 600;
+            color: #666;
+            font-size: 13px;
+        }
+
+        .article-table td {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .article-title {
+            max-width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00b894, #55efc4);
+            border-radius: 4px;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-high {
+            background: #dfe6e9;
+            color: #00b894;
+        }
+
+        .status-medium {
+            background: #fff3cd;
+            color: #f39c12;
+        }
+
+        .status-low {
+            background: #f8d7da;
+            color: #dc3545;
+        }
+
+        .date-filter {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        .date-filter input {
+            padding: 10px 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .date-filter button {
+            padding: 10px 24px;
+            background: #00b894;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .article-table {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📊 内容阅读反馈分析</h1>
+        <p>实时追踪文章阅读数据，优化内容策略</p>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-title">📈 总体概览</div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalReads">0</div>
+                    <div class="stat-label">总阅读次数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="avgDuration">0</div>
+                    <div class="stat-label">平均阅读时长(秒)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="avgScrollDepth">0%</div>
+                    <div class="stat-label">平均阅读深度</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalFeedback">0</div>
+                    <div class="stat-label">总反馈次数</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">📅 时间范围筛选</div>
+            <div class="date-filter">
+                <input type="date" id="startDate" value="">
+                <span>至</span>
+                <input type="date" id="endDate" value="">
+                <button onclick="loadStats()">查询</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">📚 文章阅读排行</div>
+            <table class="article-table">
+                <thead>
+                    <tr>
+                        <th>排名</th>
+                        <th>文章标题</th>
+                        <th>阅读次数</th>
+                        <th>平均时长</th>
+                        <th>阅读深度</th>
+                        <th>点赞数</th>
+                        <th>分享数</th>
+                        <th>完成度</th>
+                    </tr>
+                </thead>
+                <tbody id="articleTableBody">
+                    <tr>
+                        <td colspan="8" style="text-align: center; color: #999;">加载中...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // 设置默认日期范围（最近7天）
+        const today = new Date();
+        const sevenDaysAgo = new Date(today);
+        sevenDaysAgo.setDate(today.getDate() - 7);
+        
+        document.getElementById('startDate').value = sevenDaysAgo.toISOString().split('T')[0];
+        document.getElementById('endDate').value = today.toISOString().split('T')[0];
+
+        // 加载统计数据
+        async function loadStats() {
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+
+            try {
+                const response = await fetch(`/api/read-feedback/stats-report?startDate=${startDate}&endDate=${endDate}`);
+                const result = await response.json();
+
+                if (result.success) {
+                    // 更新总体概览
+                    document.getElementById('totalReads').textContent = result.summary.totalFeedback;
+                    document.getElementById('avgDuration').textContent = result.summary.avgDuration;
+                    document.getElementById('avgScrollDepth').textContent = result.summary.avgScrollDepth + '%';
+                    document.getElementById('totalFeedback').textContent = result.summary.totalFeedback;
+
+                    // 更新文章排行
+                    const tbody = document.getElementById('articleTableBody');
+                    tbody.innerHTML = '';
+
+                    result.articles.forEach((article, index) => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${index + 1}</td>
+                            <td class="article-title" title="${article.title}">${article.title}</td>
+                            <td>${article.reads}</td>
+                            <td>${article.avgDuration}秒</td>
+                            <td>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: ${article.avgScrollDepth}%"></div>
+                                </div>
+                                <span style="font-size: 12px; color: #666;">${article.avgScrollDepth}%</span>
+                            </td>
+                            <td>${article.likes}</td>
+                            <td>${article.shares}</td>
+                            <td>
+                                <span class="status-badge status-${article.avgScrollDepth >= 80 ? 'high' : (article.avgScrollDepth >= 50 ? 'medium' : 'low')}">
+                                    ${article.avgScrollDepth >= 80 ? '高' : (article.avgScrollDepth >= 50 ? '中' : '低')}
+                                </span>
+                            </td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+
+                    if (result.articles.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: #999;">暂无数据</td></tr>';
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading stats:', error);
+                document.getElementById('articleTableBody').innerHTML = '<tr><td colspan="8" style="text-align: center; color: #e74c3c;">加载失败</td></tr>';
+            }
+        }
+
+        // 初始化加载
+        loadStats();
+    </script>
+</body>
+</html>
