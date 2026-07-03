@@ -217,7 +217,6 @@ $_cur_typename = $article['typename'];
     </div>
     
     <div class="style-panel-body">
-        <!-- AI风格搜索 -->
         <div class="style-search-box">
             <input type="text" id="stylePrompt" placeholder="输入风格提示词，如：科技感、商务风、清新自然..." 
                    onkeydown="if(event.keyCode===13) searchStyle()">
@@ -226,12 +225,9 @@ $_cur_typename = $article['typename'];
             </button>
         </div>
         
-        <!-- 风格预设列表 -->
         <div class="style-presets-grid" id="stylePresets">
-            <!-- 风格卡片将通过JS动态生成 -->
         </div>
         
-        <!-- 当前风格信息 -->
         <div class="current-style-info" id="currentStyleInfo">
             <span class="current-style-label">当前风格：</span>
             <span class="current-style-name" id="currentStyleName">科技风格</span>
@@ -250,19 +246,16 @@ $_cur_typename = $article['typename'];
 <include file="./footer"/>
 
 <script>
-    // 阅读反馈追踪
     (function() {
         const aid = {$article.aid};
         let startTime = Date.now();
         let maxScrollDepth = 0;
         let isPageVisible = true;
 
-        // 监听页面可见性变化
         document.addEventListener('visibilitychange', function() {
             isPageVisible = !document.hidden;
         });
 
-        // 监听滚动深度
         window.addEventListener('scroll', function() {
             const scrollTop = window.scrollY;
             const docHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -270,13 +263,11 @@ $_cur_typename = $article['typename'];
             maxScrollDepth = Math.max(maxScrollDepth, scrollDepth);
         });
 
-        // 页面离开时发送阅读数据
         window.addEventListener('beforeunload', function() {
             const duration = Math.round((Date.now() - startTime) / 1000);
             sendReadFeedback(aid, 'read', duration, maxScrollDepth);
         });
 
-        // 发送阅读反馈
         function sendReadFeedback(aid, action, duration, scrollDepth) {
             try {
                 fetch('/api/read-feedback/track', {
@@ -300,7 +291,6 @@ $_cur_typename = $article['typename'];
         }
     })();
 
-    // 点赞功能
     function handleLike(aid) {
         const btn = document.getElementById('likeBtn');
         if (btn.classList.contains('liked')) {
@@ -329,7 +319,6 @@ $_cur_typename = $article['typename'];
         });
     }
 
-    // 分享功能
     function handleShare(aid) {
         fetch('/api/read-feedback/share', {
             method: 'POST',
@@ -346,12 +335,10 @@ $_cur_typename = $article['typename'];
         });
     }
 
-    // 返回顶部
     function scrollToTop() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // 返回顶部按钮显示逻辑
     window.addEventListener('scroll', function() {
         const btn = document.getElementById('backToTop');
         if (btn) {
@@ -363,9 +350,6 @@ $_cur_typename = $article['typename'];
         }
     });
 
-    // === 风格切换功能 ===
-    
-    // 预设风格配置
     const presetStyles = {
         tech: { name: '科技风格', desc: '现代科技感，蓝色主调', primary: '#0077ff', keywords: ['科技', 'AI', '数字化'] },
         business: { name: '商务风格', desc: '专业商务风格，灰色主调', primary: '#2c3e50', keywords: ['商务', '金融', '企业'] },
@@ -377,7 +361,6 @@ $_cur_typename = $article['typename'];
         dark: { name: '深色模式', desc: '暗色主题，护眼舒适', primary: '#60a5fa', keywords: ['深色', '夜间', '护眼'] }
     };
 
-    // 风格变量映射 - 升级版
     const styleVariables = {
         tech: { 
             '--primary': '#0077ff', '--primaryDark': '#0055cc', '--accent': '#00d4ff',
@@ -447,14 +430,12 @@ $_cur_typename = $article['typename'];
 
     let currentStyle = localStorage.getItem('article-style') || 'tech';
 
-    // 初始化风格
     function initStyle() {
         applyStyle(currentStyle);
         renderStylePresets();
         updateCurrentStyleName();
     }
 
-    // 应用风格
     function applyStyle(styleKey) {
         const vars = styleVariables[styleKey];
         if (!vars) return;
@@ -470,7 +451,6 @@ $_cur_typename = $article['typename'];
         updateCurrentStyleName();
     }
 
-    // 渲染风格预设列表
     function renderStylePresets() {
         const container = document.getElementById('stylePresets');
         if (!container) return;
@@ -490,7 +470,6 @@ $_cur_typename = $article['typename'];
         container.innerHTML = html;
     }
 
-    // 更新当前风格名称
     function updateCurrentStyleName() {
         const nameEl = document.getElementById('currentStyleName');
         if (nameEl && presetStyles[currentStyle]) {
@@ -499,7 +478,6 @@ $_cur_typename = $article['typename'];
         }
     }
 
-    // 切换风格面板显示
     function toggleStylePanel() {
         const panel = document.getElementById('stylePanel');
         const overlay = document.getElementById('styleOverlay');
@@ -513,7 +491,6 @@ $_cur_typename = $article['typename'];
         }
     }
 
-    // AI风格搜索
     function searchStyle() {
         const prompt = document.getElementById('stylePrompt').value.trim();
         if (!prompt) {
@@ -531,11 +508,9 @@ $_cur_typename = $article['typename'];
         }
     }
 
-    // 风格提示词分析器
     function analyzeStylePrompt(prompt) {
         const lowerPrompt = prompt.toLowerCase();
         
-        // 关键词匹配
         for (const [styleKey, style] of Object.entries(presetStyles)) {
             for (const keyword of style.keywords) {
                 if (lowerPrompt.includes(keyword)) {
@@ -547,7 +522,6 @@ $_cur_typename = $article['typename'];
             }
         }
 
-        // 情感分析
         if (lowerPrompt.includes('温暖') || lowerPrompt.includes('温馨') || lowerPrompt.includes('浪漫')) {
             return { style: 'warm', message: '匹配到「温馨风格」' };
         }
@@ -567,6 +541,5 @@ $_cur_typename = $article['typename'];
         return { style: null, message: '未找到匹配风格' };
     }
 
-    // 初始化
     initStyle();
 </script>

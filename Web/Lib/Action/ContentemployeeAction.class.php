@@ -704,6 +704,252 @@ class ContentemployeeAction extends Action
     }
     
     /**
+     * CMS存量内容AI化改写接口
+     * POST /api/content-rewrite
+     * 基于CMS已有文章内容，生成适配不同平台的衍生内容
+     */
+    public function content_rewrite()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: POST, OPTIONS');
+        header('Access-Control-Allow-Headers: Content-Type');
+        
+        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+            exit(0);
+        }
+        
+        $input = file_get_contents('php://input');
+        $postData = json_decode($input, true);
+        if (!$postData) {
+            $postData = $_POST;
+        }
+        
+        $aid = isset($postData['aid']) ? intval($postData['aid']) : 0;
+        $platform = isset($postData['platform']) ? $postData['platform'] : 'wechat';
+        $action = isset($postData['action']) ? $postData['action'] : 'rewrite'; // rewrite:改写, expand:扩写, shorten:缩写, translate:翻译
+        
+        if (!$aid) {
+            $this->ajaxReturn(['success' => false, 'message' => '请提供文章ID'], 'JSON');
+            return;
+        }
+        
+        try {
+            // 从CMS获取文章内容
+            $article = M('article', 'lvbo_')->where(['aid' => $aid])->find();
+            
+            if (!$article) {
+                $this->ajaxReturn(['success' => false, 'message' => '文章不存在'], 'JSON');
+                return;
+            }
+            
+            $title = $article['title'];
+            $content = strip_tags($article['content']);
+            $content = mb_substr($content, 0, 2000, 'utf-8');
+            
+            // 根据平台和动作生成不同的prompt
+            $prompt = $this->buildRewritePrompt($title, $content, $platform, $action);
+            
+            // 调用AI生成
+            $result = $this->callAI($prompt, 3000);
+            
+            $this->ajaxReturn([
+                'success' => true,
+                'result' => $result,
+                'originalTitle' => $title,
+                'platform' => $platform,
+                'action' => $action
+            ], 'JSON');
+            
+        } catch (Exception $e) {
+            $this->ajaxReturn([
+                'success' => false,
+                'message' => '处理失败：' . $e->getMessage()
+            ], 'JSON');
+        }
+    }
+    
+    /**
+     * 多平台内容适配接口
+     * POST /api/content-adapt
+     * 一键生成适配多个平台风格的内容版本
+     */
+    public function content_adapt()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: POST, OPTIONS');
+        header('Access-Control-Allow-Headers: Content-Type');
+        
+        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+            exit(0);
+        }
+        
+        $input = file_get_contents('php://input');
+        $postData = json_decode($input, true);
+        if (!$postData) {
+            $postData = $_POST;
+        }
+        
+        $aid = isset($postData['aid']) ? intval($postData['aid']) : 0;
+        $platforms = isset($postData['platforms']) ? $postData['platforms'] : ['wechat', 'xiaohongshu', 'zhihu'];
+        
+        if (!$aid) {
+            $this->ajaxReturn(['success' => false, 'message' => '请提供文章ID'], 'JSON');
+            return;
+        }
+        
+        try {
+            // 从CMS获取文章内容
+            $article = M('article', 'lvbo_')->where(['aid' => $aid])->find();
+            
+            if (!$article) {
+                $this->ajaxReturn(['success' => false, 'message' => '文章不存在'], 'JSON');
+                return;
+            }
+            
+            $title = $article['title'];
+            $content = strip_tags($article['content']);
+            $content = mb_substr($content, 0, 2000, 'utf-8');
+            
+            $results = [];
+            
+            foreach ($platforms as $platform) {
+                $prompt = $this->buildRewritePrompt($title, $content, $platform, 'rewrite');
+                $result = $this->callAI($prompt, 2000);
+                
+                $results[$platform] = [
+                    'title' => $this->generatePlatformTitle($title, $platform),
+                    'content' => $result,
+                    'platform' => $platform
+                ];
+            }
+            
+            $this->ajaxReturn([
+                'success' => true,
+                'results' => $results,
+                'originalTitle' => $title
+            ], 'JSON');
+            
+        } catch (Exception $e) {
+            $this->ajaxReturn([
+                'success' => false,
+                'message' => '处理失败：' . $e->getMessage()
+            ], 'JSON');
+        }
+    }
+    
+    /**
+     * 生成平台适配标题
+     */
+    private function generatePlatformTitle($title, $platform)
+    {
+        $prefixes = [
+            'wechat' => '',
+            'xiaohongshu' => '',
+            'zhihu' => '',
+            'douyin' => '',
+            'website' => ''
+        ];
+        
+        $suffixes = [
+            'wechat' => '',
+            'xiaohongshu' => '✨',
+            'zhihu' => '?',
+            'douyin' => '',
+            'website' => ''
+        ];
+        
+        return ($prefixes[$platform] ?? '') . $title . ($suffixes[$platform] ?? '');
+    }
+    
+    /**
+     * 构建改写Prompt
+     */
+    private function buildRewritePrompt($title, $content, $platform, $action)
+    {
+        $platformStyles = [
+            'wechat' => [
+                'name' => '微信公众号',
+                'style' => '专业、深度、适合阅读',
+                'format' => '标题吸引人，正文分段落，有小标题，结尾引导关注'
+            ],
+            'xiaohongshu' => [
+                'name' => '小红书',
+                'style' => '口语化、亲切、有表情符号',
+                'format' => '开头吸睛，多用emoji，分点清晰，结尾引导互动'
+            ],
+            'zhihu' => [
+                'name' => '知乎',
+                'style' => '理性、深度、有数据支撑',
+                'format' => '观点明确，逻辑清晰，引用数据，回答问题'
+            ],
+            'douyin' => [
+                'name' => '抖音',
+                'style' => '简短、有趣、节奏感强',
+                'format' => '3秒抓住注意力，口语化表达，有反转或干货'
+            ],
+            'website' => [
+                'name' => '官网',
+                'style' => '正式、专业、品牌调性',
+                'format' => '结构化呈现，突出核心价值，引导转化'
+            ]
+        ];
+        
+        $actionTypes = [
+            'rewrite' => '改写',
+            'expand' => '扩写',
+            'shorten' => '缩写',
+            'translate' => '翻译成通俗语言'
+        ];
+        
+        $platformInfo = $platformStyles[$platform] ?? $platformStyles['wechat'];
+        
+        return "请将以下文章{$actionTypes[$action] ?? '改写'}为适配{$platformInfo['name']}平台的内容：\n\n" .
+               "平台风格：{$platformInfo['style']}\n" .
+               "格式要求：{$platformInfo['format']}\n\n" .
+               "原文章标题：{$title}\n\n" .
+               "原文章内容：\n{$content}\n\n" .
+               "请输出适配后的完整内容（标题+正文），不要输出任何解释性文字。";
+    }
+    
+    /**
+     * 获取CMS文章列表（用于选择要改写的文章）
+     * GET /api/content-list
+     */
+    public function content_list()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        header('Access-Control-Allow-Origin: *');
+        
+        $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+        $limit = isset($_GET['limit']) ? intval($_GET['limit']) : 20;
+        $offset = ($page - 1) * $limit;
+        $typeid = isset($_GET['typeid']) ? intval($_GET['typeid']) : 0;
+        
+        $map = ['status' => 1];
+        if ($typeid) {
+            $map['typeid'] = $typeid;
+        }
+        
+        $article = M('article', 'lvbo_');
+        $count = $article->where($map)->count();
+        $list = $article->where($map)
+                        ->field('aid, title, typeid, addtime, hits')
+                        ->order('addtime DESC')
+                        ->limit($offset, $limit)
+                        ->select();
+        
+        $this->ajaxReturn([
+            'success' => true,
+            'data' => $list,
+            'total' => $count,
+            'page' => $page,
+            'limit' => $limit
+        ], 'JSON');
+    }
+
+    /**
      * 工具页面
      */
     public function index()

@@ -36,9 +36,19 @@
 	'api/feedback/update-status' => 'Feedback/updateStatus',
 	'api/feedback/delete' => 'Feedback/delete',
 	
+	// 内容数字员工API路由
+	'digitalemployee/cmsArticles' => 'DigitalEmployee/cmsArticles',
+	'digitalemployee/getCmsArticle' => 'DigitalEmployee/getCmsArticle',
+	'digitalemployee/doCmsRewrite' => 'DigitalEmployee/doCmsRewrite',
+	'digitalemployee/publishToCms' => 'DigitalEmployee/publishToCms',
+	'digitalemployee/contentFission' => 'DigitalEmployee/contentFission',
+	'digitalemployee/generateColumns' => 'DigitalEmployee/generateColumns',
+	'digitalemployee/readFeedback' => 'DigitalEmployee/readFeedback',
+	'digitalemployee/submitDiagnosis' => 'DigitalEmployee/submitDiagnosis',
+	'digitalemployee/submitFeedback' => 'DigitalEmployee/submitFeedback',
+	
 	// 内容数字员工工作台路由
 	'digital-employee' => 'DigitalEmployee/index',
-	'digitalemployee/:action' => 'DigitalEmployee/$1',
 	
 	// CMS内容AI化路由
 	'rewrite' => 'Rewrite/index',
