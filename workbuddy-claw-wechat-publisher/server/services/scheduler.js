@@ -113,7 +113,11 @@ async function fetchHotContent(keywords) {
 async function generateArticle(hotContent, task) {
     // 调用现有的 AI 生成逻辑
     const axios = require('axios');
-    const env = require('../.env'); // 简单读取 .env
+    
+    // 使用环境变量（由 index.js 加载的 dotenv）
+    const AI_BASE_URL = process.env.AI_BASE_URL || 'https://api.deepseek.com/v1/chat/completions';
+    const AI_MODEL = process.env.AI_MODEL || 'deepseek-chat';
+    const AI_API_KEY = process.env.AI_API_KEY || '';
     
     const prompt = `根据以下热门内容生成一篇公众号文章：
     
@@ -126,11 +130,12 @@ async function generateArticle(hotContent, task) {
 3. 符合公众号风格
 4. 长度 800-1200 字`;
 
-    const response = await axios.post(`${env.AI_BASE_URL}/chat/completions`, {
-        model: env.AI_MODEL,
+    const response = await axios.post(AI_BASE_URL, {
+        model: AI_MODEL,
         messages: [{ role: 'user', content: prompt }]
     }, {
-        headers: { 'Authorization': `Bearer ${env.AI_API_KEY}` }
+        headers: { 'Authorization': `Bearer ${AI_API_KEY}` },
+        timeout: 60000
     });
     
     return {

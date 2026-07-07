@@ -281,6 +281,13 @@ function generateContentHtml(item) {
         html += `<p>\u6765\u6e90\uff1a<a href="${escapeHtml(url)}" target="_blank">${escapeHtml(source || url)}</a></p>`;
     }
 
+    // 文章底部CTA：引导读者体验左帮右臂
+    html += '<div style="margin-top:30px;padding:24px;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:16px;text-align:center;color:#fff;">';
+    html += '<div style="font-size:20px;font-weight:700;margin-bottom:8px;">🤖 免费体验左帮右臂工业智能体</div>';
+    html += '<p style="font-size:14px;opacity:0.9;margin-bottom:16px;line-height:1.6;">BOM结构比对 · 工艺参数优化 · 智能内容生成<br>无需注册，即开即用</p>';
+    html += '<a href="/experience" style="display:inline-block;padding:12px 32px;background:#fff;color:#667eea;text-decoration:none;border-radius:30px;font-weight:600;font-size:15px;">🎯 立即体验</a>';
+    html += '</div>';
+
     return html;
 }
 

@@ -14,7 +14,7 @@
         "wechat",
         "cms"
       ],
-      "enabled": true,
+      "enabled": false,
       "createdAt": "2026-05-18T12:20:00.000Z",
       "description": "每天9点自动采集热点、生成文章、发布到CMS和公众号草稿箱"
     }

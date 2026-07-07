@@ -151,40 +151,48 @@ function parseVideoScript(scriptText) {
 function loadAIProviders() {
     try {
         const configPath = path.join(__dirname, '..', 'config', 'ai-providers.json');
-        return JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+        const config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+        return config.providers || [];
     } catch (e) {
         return [{ name: 'astron', model: 'astron-code-latest' }];
     }
 }
 
 /**
- * 调用 AI (简化版本，实际应从 enhanced-engine.js 导入)
+ * 调用 AI
  */
 async function callAI(prompt, provider) {
     const axios = require('axios');
     
-    // 这里简化实现，实际应该调用真实的 AI API
-    // 为了简化，我返回一个模拟响应
-    if (provider.name === 'mock') {
-        return JSON.stringify({
-            title: 'AI 科技速递',
-            duration: 60,
-            scenes: [
-                {
-                    id: 1,
-                    visual: '科技背景，AI 芯片，数据中心',
-                    voiceover: '最新科技突破，AI 正在改变世界',
-                    subtitle: 'AI 改变世界',
-                    duration: 10
-                }
-            ],
-            music: '科技感背景音乐',
-            hashtags: ['#AI', '#科技']
-        });
+    if (!provider.models || !provider.models[0]) {
+        throw new Error('provider 缺少 models 配置');
     }
     
-    // 实际调用（简化）
-    throw new Error('需要使用真实的 AI API 调用');
+    try {
+        const response = await axios.post(
+            provider.baseUrl,
+            {
+                model: provider.models[0],
+                messages: [
+                    { role: 'system', content: '你是一个专业的短视频脚本编剧，擅长将文章转换为吸引人的视频脚本。' },
+                    { role: 'user', content: prompt }
+                ],
+                temperature: 0.7,
+                max_tokens: 2000
+            },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': provider.headers?.Authorization || `Bearer ${provider.apiKey}`
+                },
+                timeout: 30000
+            }
+        );
+        
+        return response.data.choices[0].message.content;
+    } catch (e) {
+        throw new Error(e.message);
+    }
 }
 
 /**

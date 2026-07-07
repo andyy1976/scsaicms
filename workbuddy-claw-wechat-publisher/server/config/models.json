@@ -6,7 +6,7 @@
     "key": "sk-61f722d4e8ed4f018c84f97563094258",
     "model": "deepseek-chat",
     "enabled": true,
-    "priority": 999,
+    "priority": 1,
     "description": "DeepSeek V3 - 中文优化",
     "selected": true
   },
@@ -15,7 +15,7 @@
     "url": "https://ark.cn-beijing.volces.com/api/coding/v3",
     "key": "46bbb2c6-4ed0-4893-8b05-83179c41e83b",
     "model": "ark-code-latest",
-    "enabled": true,
+    "enabled": false,
     "priority": 2,
     "description": "火山方舟 Ark - 编程模型，备用首选",
     "selected": false
