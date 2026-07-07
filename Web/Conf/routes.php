@@ -93,5 +93,9 @@
 	// 原首页保留为内容页
 	'content' => 'Index/index',
 	'home' => 'Index/index',
-	);
+	
+		// 体验中心路由
+	'experience' => 'Experience/index',
+	's' => 'Index/search',
+);
 ?>
