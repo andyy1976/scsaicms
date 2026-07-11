@@ -96,7 +96,7 @@
 	
 		// 体验中心路由
 	'experience' => 'Experience/index',
-		'case' => 'List/index?typeid=1,
+		'case' => 'List/index?typeid=1',
 	's' => 'Index/search',
 );
 ?>
