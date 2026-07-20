@@ -1,17 +1,45 @@
 <?php
+/**
+ * 数字员工工作台控制器
+ * 统一架构：CMS(PHP:80) → workbuddy(Node:3456)
+ */
 
 class DigitalEmployeeAction extends Action {
 
     private $db;
+    private $nodeServiceUrl = 'http://localhost:3456';
 
     public function __construct() {
         parent::__construct();
-        // 数据库配置
-        $this->db = M('article'); // 使用ThinkPHP的模型
+        $this->db = M('article');
     }
 
     public function index() {
         $this->display();
+    }
+
+    /**
+     * 调用Node.js服务
+     */
+    private function callNode($endpoint, $data = [], $method = 'GET') {
+        $url = $this->nodeServiceUrl . $endpoint;
+        $ch = curl_init();
+        curl_setopt_array($ch, [
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 60,
+            CURLOPT_SSL_VERIFYPEER => false,
+        ]);
+        if ($method === 'POST') {
+            curl_setopt_array($ch, [
+                CURLOPT_POST => true,
+                CURLOPT_POSTFIELDS => json_encode($data),
+                CURLOPT_HTTPHEADER => ['Content-Type: application/json'],
+            ]);
+        }
+        $response = curl_exec($ch);
+        curl_close($ch);
+        return json_decode($response, true);
     }
 
     /**
@@ -22,6 +50,22 @@ class DigitalEmployeeAction extends Action {
         $page = I('page', 1, 'intval');
         $pageSize = I('pageSize', 20, 'intval');
 
+        // 优先通过Node.js服务
+        $query = "/api/cms/articles?page={$page}&pageSize={$pageSize}";
+        if ($typeid > 0) { $query .= "&categoryId={$typeid}"; }
+        $nodeResult = $this->callNode($query);
+        if (isset($nodeResult['success']) && $nodeResult['success'] && isset($nodeResult['data'])) {
+            $this->ajaxReturn([
+                'code' => 1,
+                'data' => $nodeResult['data'],
+                'count' => $nodeResult['total'] ?? 0,
+                'page' => $page,
+                'pageSize' => $pageSize
+            ]);
+            return;
+        }
+
+        // 降级：直接查数据库
         $where = array('status' => 1);
         if ($typeid > 0) {
             $where['typeid'] = $typeid;
@@ -77,7 +121,7 @@ class DigitalEmployeeAction extends Action {
     }
 
     /**
-     * 执行CMS存量改写
+     * 执行CMS存量改写 - 通过Node.js服务
      */
     public function doCmsRewrite() {
         $articleId = I('articleId', 0, 'intval');
@@ -93,17 +137,44 @@ class DigitalEmployeeAction extends Action {
             $this->ajaxReturn(array('code' => 0, 'msg' => '文章不存在'));
         }
 
-        // 获取原始内容
-        $content = $article['content'];
+        $title = $article['title'];
+        $content = strip_tags($article['content']);
+        $content = mb_substr($content, 0, 2000, 'utf-8');
 
-        // 调用AI改写服务
-        $rewritten = $this->callAIRewrite($content, $action, $platform);
+        // 通过Node.js服务生成
+        $result = $this->callNode('/api/content/generate', [
+            'topic' => $title,
+            'context' => $content,
+            'style' => $action === 'shorten' ? 'concise' : 'professional',
+            'platform' => $platform,
+            'wordCount' => 2000
+        ], 'POST');
 
-        $this->ajaxReturn(array(
-            'code' => 1,
-            'msg' => '改写完成',
-            'content' => $rewritten
-        ));
+        if (isset($result['success']) && $result['success']) {
+            $this->ajaxReturn(array(
+                'code' => 1,
+                'msg' => '改写完成(通过Node.js服务)',
+                'content' => $result['data']['content'] ?? $content
+            ));
+            return;
+        }
+
+        // 降级：尝试去AI味接口
+        $deaiResult = $this->callNode('/api/content/deaiify', [
+            'content' => $content,
+            'intensity' => 'medium'
+        ], 'POST');
+
+        if (isset($deaiResult['success']) && $deaiResult['success']) {
+            $this->ajaxReturn(array(
+                'code' => 1,
+                'msg' => '改写完成(去AI味)',
+                'content' => $deaiResult['data']['optimized'] ?? $content
+            ));
+            return;
+        }
+
+        $this->ajaxReturn(array('code' => 0, 'msg' => '改写服务暂时不可用'));
     }
 
     /**
